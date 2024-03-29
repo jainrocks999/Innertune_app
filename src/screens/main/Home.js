@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
 import Header from '../../components/molecules/Header';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   heightPercent as hp,
   widthPrecent as wp,
@@ -11,6 +12,9 @@ import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
+import Horizontal from '../../components/Home/Horizontal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../../components/Loader';
 
 const Img = [
   {
@@ -56,11 +60,26 @@ const Img = [
     title2: '90 affirmations',
   },
 ];
+
 const HomeScreen = () => {
+  const dispatch = useDispatch();
+  const {loading, playlist} = useSelector(state => state.home);
+  const getAllCategories = async () => {
+    const token = await AsyncStorage.getItem('token');
+    dispatch({
+      type: 'home/playlist_request',
+      payload: token,
+      url: 'playListItem',
+    });
+  };
+  useEffect(() => {
+    getAllCategories();
+  }, []);
   const navigation = useNavigation();
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <Header />
+      <Loader loading={loading} />
       <ScrollView style={styles.scrollView}>
         <View style={styles.FeatureContainer}>
           <Text style={styles.Featurecategory}>Just for You</Text>
@@ -75,7 +94,7 @@ const HomeScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <FlatList
+        {/* <FlatList
           horizontal={true}
           data={Img}
           showsHorizontalScrollIndicator={false}
@@ -107,7 +126,8 @@ const HomeScreen = () => {
               <Text style={styles.text2}>{item.title2}</Text>
             </View>
           )}
-        />
+        /> */}
+        <Horizontal data={playlist} />
 
         <View style={styles.card}>
           <LinearGradient

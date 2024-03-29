@@ -15,20 +15,42 @@ import {
   widthPrecent as wp,
 } from '../../components/atoms/responsive';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useDispatch, useSelector} from 'react-redux';
+import Loader from '../../components/Loader';
 const Login = () => {
+  const loading = useSelector(state => state.auth.loading);
   const navigation = useNavigation();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
   showAlert = viewId => Alert.alert('Alert', 'Button pressed ' + viewId);
+
+  const getToken = () => {
+    if (email !== '' && password !== '') {
+      dispatch({
+        type: 'auth/login_request',
+        payload: {
+          email,
+          password,
+          url: 'login',
+        },
+        navigation,
+      });
+    } else {
+      Alert.alert('Please fill all the value');
+    }
+  };
+
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <View style={{flexDirection: 'row',marginTop:hp(1) }}>
-        <View style={{alignSelf:'center',marginHorizontal:hp(2)}}>
-        <Icon name="arrow-back" size={30} color="black"/>
+      <Loader loading={loading} />
+      <View style={{flexDirection: 'row', marginTop: hp(1)}}>
+        <View style={{alignSelf: 'center', marginHorizontal: hp(2)}}>
+          <Icon name="arrow-back" size={30} color="black" />
         </View>
         <Image
           source={require('../../assets/logo.png')}
-          style={{height: hp(6.5), width: wp(15), marginHorizontal: wp(28),}}
+          style={{height: hp(6.5), width: wp(15), marginHorizontal: wp(28)}}
         />
       </View>
       <View
@@ -52,7 +74,7 @@ const Login = () => {
             placeholder="Email"
             keyboardType="email-address"
             underlineColorAndroid="transparent"
-            onChangeText={email => setEmail({email})}
+            onChangeText={email => setEmail(email)}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -61,7 +83,7 @@ const Login = () => {
             placeholder="Password"
             secureTextEntry={true}
             underlineColorAndroid="transparent"
-            onChangeText={password => setPassword({password})}
+            onChangeText={password => setPassword(password)}
           />
         </View>
         <View style={{flexDirection: 'row'}}>
@@ -90,10 +112,7 @@ const Login = () => {
               borderRadius: 30,
             }}
             onPress={() => {
-              navigation.navigate('Home');
-              // dispatch({
-              //   type:'auth/loginRequest'
-              // })
+              getToken();
             }}>
             <Text style={styles.loginText}>Sign in</Text>
           </TouchableOpacity>
