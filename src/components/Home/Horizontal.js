@@ -9,40 +9,49 @@ import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Octicons';
 const Horizontal = ({data}) => {
   const navigation = useNavigation();
-
   return (
     <FlatList
       horizontal={true}
       data={data}
       showsHorizontalScrollIndicator={false}
       keyExtractor={item => item.id}
-      renderItem={({item}) => (
-        <View style={styles.imageContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('playsong');
-            }}>
-            <Image source={item.image} style={styles.image} />
-            <Text style={styles.text}>{item.title}</Text>
-          </TouchableOpacity>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              marginTop: hp(-2.5),
-              marginRight: 10,
-            }}>
+      renderItem={({item}) => {
+        let title = 'Believe in yourself';
+        let image =
+          'https://stimuli.forebearpro.co.in/storage/app/public/3/download-(8).jpg';
+        if (item.category != null) {
+          image = item.category.categories_image[0].original_url;
+          title = item.category.categories_name;
+        }
+
+        return (
+          <View style={styles.imageContainer}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Popular');
+                navigation.navigate('playsong');
               }}>
-              <Icon name="heart" size={20} color="#434343" />
+              <Image source={{uri: image}} style={styles.image} />
+              <Text style={styles.text}>{title}</Text>
             </TouchableOpacity>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                marginTop: hp(-2.5),
+                marginRight: 10,
+              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Popular');
+                }}>
+                <Icon name="heart" size={20} color="#434343" />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.text2}>{'90 affirmations'}</Text>
           </View>
-          <Text style={styles.text2}>{item.title2}</Text>
-        </View>
-      )}
+        );
+      }}
     />
   );
 };

@@ -29,6 +29,18 @@ function* getAllCategories(action) {
     console.log(err);
   }
 }
+function* fetchGroups(action) {
+  const params = {
+    user_id: 1,
+  };
+  const res = yield call(Api.API_GET, {
+    token: action.payload,
+    url: action.url,
+    params,
+  });
+  console.log(JSON.stringify(res));
+}
 export default function* homeSaga() {
   yield takeEvery('home/playlist_request', getAllCategories);
+  yield takeEvery('home/group_fetch_request', fetchGroups);
 }

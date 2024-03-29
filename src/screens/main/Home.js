@@ -71,6 +71,11 @@ const HomeScreen = () => {
       payload: token,
       url: 'playListItem',
     });
+    dispatch({
+      type: 'home/group_fetch_request',
+      payload: token,
+      url: 'groups',
+    });
   };
   useEffect(() => {
     getAllCategories();
