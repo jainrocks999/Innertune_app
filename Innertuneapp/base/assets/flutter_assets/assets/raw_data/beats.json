@@ -1,0 +1,290 @@
+[
+  {
+    "id": "focus-1",
+    "name": "Deep Focus",
+    "path": "assets/beats_files/focus/deep-focus.mp3",
+    "imageUrl": "assets/beats_files/images/deep-focus.png",
+    "duration": 32000000,
+    "genre": "focus"
+  },
+  {
+    "id": "focus-3",
+    "name": "Work Focus",
+    "path": "assets/beats_files/focus/work-focus.mp3",
+    "imageUrl": "assets/beats_files/images/work-focus.png",
+    "duration": 28000000,
+    "genre": "focus"
+  },
+  {
+    "id": "sleep-1",
+    "name": "Deeper",
+    "path": "assets/beats_files/sleep/deeper.mp3",
+    "imageUrl": "assets/beats_files/images/deeper.png",
+    "duration": 35000000,
+    "genre": "sleep"
+  },
+  {
+    "id": "sleep-2",
+    "name": "Infinite Sleep",
+    "path": "assets/beats_files/sleep/infinite-sleep.mp3",
+    "imageUrl": "assets/beats_files/images/infinite-sleep.png",
+    "duration": 32000000,
+    "genre": "sleep"
+  },
+  {
+    "id": "sleep-3",
+    "name": "Sleep Well",
+    "path": "assets/beats_files/sleep/sleep-well.mp3",
+    "imageUrl": "assets/beats_files/images/sleep-well.png",
+    "duration": 32000000,
+    "genre": "sleep"
+  },
+  {
+    "id": "relax-1",
+    "name": "Binaural Journey",
+    "path": "assets/beats_files/relax/binaural-journey.mp3",
+    "imageUrl": "assets/beats_files/images/binaural-journey.png",
+    "duration": 32000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-2",
+    "name": "Born Again",
+    "path": "assets/beats_files/relax/born-again.mp3",
+    "imageUrl": "assets/beats_files/images/born-again.png",
+    "duration": 39000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-3",
+    "name": "Breathing Planet",
+    "path": "assets/beats_files/relax/breathing-planet.mp3",
+    "imageUrl": "assets/beats_files/images/breathing-planet.png",
+    "duration": 52000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-4",
+    "name": "City Rain",
+    "path": "assets/beats_files/relax/city-rain.mp3",
+    "imageUrl": "assets/beats_files/images/city-rain.png",
+    "duration": 32000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-5",
+    "name": "Cosmos & Infinite",
+    "path": "assets/beats_files/relax/cosmos-and-infinite.mp3",
+    "imageUrl": "assets/beats_files/images/cosmos-and-infinite.png",
+    "duration": 28000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-6",
+    "name": "Curative Slumber",
+    "path": "assets/beats_files/relax/curative-slumber.mp3",
+    "imageUrl": "assets/beats_files/images/curative-slumber.png",
+    "duration": 32000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-7",
+    "name": "Dazed",
+    "path": "assets/beats_files/relax/dazed.mp3",
+    "imageUrl": "assets/beats_files/images/dazed.png",
+    "duration": 28000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-8",
+    "name": "Deep Ocean",
+    "path": "assets/beats_files/relax/deep-ocean.mp3",
+    "imageUrl": "assets/beats_files/images/deep-ocean.png",
+    "duration": 51000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-10",
+    "name": "Healing Trance",
+    "path": "assets/beats_files/relax/healing-trance.mp3",
+    "imageUrl": "assets/beats_files/images/healing-trance.png",
+    "duration": 42000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-11",
+    "name": "Help Yourself",
+    "path": "assets/beats_files/relax/help-yourself.mp3",
+    "imageUrl": "assets/beats_files/images/help-yourself.png",
+    "duration": 42000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-12",
+    "name": "Infinite Universe",
+    "path": "assets/beats_files/relax/infinite-universe.mp3",
+    "imageUrl": "assets/beats_files/images/infinite-universe.png",
+    "duration": 32000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-13",
+    "name": "Loosen Up",
+    "path": "assets/beats_files/relax/loosen-up.mp3",
+    "imageUrl": "assets/beats_files/images/loosen-up.png",
+    "duration": 24000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-14",
+    "name": "No Matter Deep",
+    "path": "assets/beats_files/relax/no-matter-deep.mp3",
+    "imageUrl": "assets/beats_files/images/no-matter-deep.png",
+    "duration": 30000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-15",
+    "name": "Om Chant",
+    "path": "assets/beats_files/relax/om-chant.mp3",
+    "imageUrl": "assets/beats_files/images/om-chant.png",
+    "duration": 32000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-16",
+    "name": "Renew Humanity",
+    "path": "assets/beats_files/relax/renew-humanity.mp3",
+    "imageUrl": "assets/beats_files/images/renew-humanity.png",
+    "duration": 41000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-17",
+    "name": "Sit & Relax",
+    "path": "assets/beats_files/relax/sit-and-relax.mp3",
+    "imageUrl": "assets/beats_files/images/sit-and-relax.png",
+    "duration": 52000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-18",
+    "name": "Soundscape",
+    "path": "assets/beats_files/relax/soundscape.mp3",
+    "imageUrl": "assets/beats_files/images/soundscape.png",
+    "duration": 32000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-19",
+    "name": "Stress Relief",
+    "path": "assets/beats_files/relax/stress-relief.mp3",
+    "imageUrl": "assets/beats_files/images/stress-relief.png",
+    "duration": 57000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-21",
+    "name": "Unwind",
+    "path": "assets/beats_files/relax/unwind.mp3",
+    "imageUrl": "assets/beats_files/images/unwind.png",
+    "duration": 32000000,
+    "genre": "relax"
+  },
+  {
+    "id": "sleep-4",
+    "name": "The Journey Begins",
+    "path": "assets/beats_files/sleep/the-journey-begins.mp3",
+    "imageUrl": "assets/beats_files/images/the-journey-begins.png",
+    "duration": 29000000,
+    "genre": "sleep"
+  },
+  {
+    "id": "sleep-5",
+    "name": "Float Away",
+    "path": "assets/beats_files/sleep/float-away.mp3",
+    "imageUrl": "assets/beats_files/images/float-away.png",
+    "duration": 48000000,
+    "genre": "sleep"
+  },
+  {
+    "id": "sleep-6",
+    "name": "In the Cosmos",
+    "path": "assets/beats_files/sleep/in-the-cosmos.mp3",
+    "imageUrl": "assets/beats_files/images/in-the-cosmos.png",
+    "duration": 76000000,
+    "genre": "sleep"
+  },
+  {
+    "id": "sleep-7",
+    "name": "Dreamy Nature",
+    "path": "assets/beats_files/sleep/dreamy-nature.mp3",
+    "imageUrl": "assets/beats_files/images/dreamy-nature.png",
+    "duration": 51000000,
+    "genre": "sleep"
+  },
+  {
+    "id": "sleep-8",
+    "name": "Multiverse",
+    "path": "assets/beats_files/sleep/multiverse.mp3",
+    "imageUrl": "assets/beats_files/images/multiverse.png",
+    "duration": 51000000,
+    "genre": "sleep"
+  },
+  {
+    "id": "sleep-9",
+    "name": "Joyful Nature",
+    "path": "assets/beats_files/sleep/joyful-nature.mp3",
+    "imageUrl": "assets/beats_files/images/joyful-nature.png",
+    "duration": 28000000,
+    "genre": "sleep"
+  },
+  {
+    "id": "focus-4",
+    "name": "Focus With Peace",
+    "path": "assets/beats_files/focus/focus-with-peace.mp3",
+    "imageUrl": "assets/beats_files/images/focus-with-peace.png",
+    "duration": 37000000,
+    "genre": "focus"
+  },
+  {
+    "id": "focus-5",
+    "name": "Higher Self",
+    "path": "assets/beats_files/focus/higher-self.mp3",
+    "imageUrl": "assets/beats_files/images/higher-self.png",
+    "duration": 47000000,
+    "genre": "focus"
+  },
+  {
+    "id": "focus-6",
+    "name": "Leave Stress Behind",
+    "path": "assets/beats_files/focus/leave-stress-behind.mp3",
+    "imageUrl": "assets/beats_files/images/leave-stress.png",
+    "duration": 32000000,
+    "genre": "focus"
+  },
+  {
+    "id": "focus-7",
+    "name": "Tribe Trance",
+    "path": "assets/beats_files/focus/tribe-trance.mp3",
+    "imageUrl": "assets/beats_files/images/tribe-trance.png",
+    "duration": 40000000,
+    "genre": "focus"
+  },
+  {
+    "id": "relax-22",
+    "name": "Harmonious River",
+    "path": "assets/beats_files/relax/harmonious-river.mp3",
+    "imageUrl": "assets/beats_files/images/harmonious-river.png",
+    "duration": 36000000,
+    "genre": "relax"
+  },
+  {
+    "id": "relax-23",
+    "name": "Mountain Lake",
+    "path": "assets/beats_files/relax/mountain-lake.mp3",
+    "imageUrl": "assets/beats_files/images/mountain-lake.png",
+    "duration": 47000000,
+    "genre": "relax"
+  }
+]

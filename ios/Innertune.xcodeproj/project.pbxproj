@@ -14,6 +14,17 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-Innertune-InnertuneTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Innertune-InnertuneTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		8E661CA4DF7C4352BD74A24D /* MaterialIcons-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 73C2A2B63B21420D9F94A06D /* MaterialIcons-Regular.otf */; };
+		9BC48C70356D4E6C90789068 /* AppIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF91DF1216C44EAA8560BE53 /* AppIcons.ttf */; };
+		4B12E4E774F8434FB1670B9D /* AvenirNext-DemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 548D1EDE7BF942E398422109 /* AvenirNext-DemiBold.ttf */; };
+		897FA310828840D5AA272762 /* AvenirNext-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 50CC32BCA703415A8709C044 /* AvenirNext-Regular.ttf */; };
+		667103D3CA0F4C69994E8ACD /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA45433641A54880907A9909 /* Poppins-Light.ttf */; };
+		4F5471B14AE24E0F9A5CE564 /* Poppins-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5DC9DFD3A27F44F3B5623CCE /* Poppins-LightItalic.ttf */; };
+		31A515260F444E9FA3F5DAF1 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 842EA528BD414F0AAAA80001 /* Poppins-Medium.ttf */; };
+		968640BB097D473883C4E5E5 /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52784D2B7C704CA3B21F0915 /* Poppins-MediumItalic.ttf */; };
+		D2FBDA172E924B1F94B680CD /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31EB5A158A9D4AC6A28F20BA /* Poppins-Regular.ttf */; };
+		8618FEABF64D40BE83153FE4 /* Montserrat-Italic-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3780CB8A6E2C4E41815A4898 /* Montserrat-Italic-VariableFont_wght.ttf */; };
+		43D0AFB1082B46D7AE2519CA /* Montserrat-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FEFB9F5D3E9C4767905F9072 /* Montserrat-VariableFont_wght.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +55,17 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Innertune/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Innertune-InnertuneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Innertune-InnertuneTests.release.xcconfig"; path = "Target Support Files/Pods-Innertune-InnertuneTests/Pods-Innertune-InnertuneTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		73C2A2B63B21420D9F94A06D /* MaterialIcons-Regular.otf */ = {isa = PBXFileReference; name = "MaterialIcons-Regular.otf"; path = "../src/assets/fonts/MaterialIcons-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BF91DF1216C44EAA8560BE53 /* AppIcons.ttf */ = {isa = PBXFileReference; name = "AppIcons.ttf"; path = "../src/assets/fonts/AppIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		548D1EDE7BF942E398422109 /* AvenirNext-DemiBold.ttf */ = {isa = PBXFileReference; name = "AvenirNext-DemiBold.ttf"; path = "../src/assets/fonts/AvenirNext-DemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		50CC32BCA703415A8709C044 /* AvenirNext-Regular.ttf */ = {isa = PBXFileReference; name = "AvenirNext-Regular.ttf"; path = "../src/assets/fonts/AvenirNext-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FA45433641A54880907A9909 /* Poppins-Light.ttf */ = {isa = PBXFileReference; name = "Poppins-Light.ttf"; path = "../src/assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5DC9DFD3A27F44F3B5623CCE /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; name = "Poppins-LightItalic.ttf"; path = "../src/assets/fonts/Poppins-LightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		842EA528BD414F0AAAA80001 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; name = "Poppins-Medium.ttf"; path = "../src/assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		52784D2B7C704CA3B21F0915 /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; name = "Poppins-MediumItalic.ttf"; path = "../src/assets/fonts/Poppins-MediumItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		31EB5A158A9D4AC6A28F20BA /* Poppins-Regular.ttf */ = {isa = PBXFileReference; name = "Poppins-Regular.ttf"; path = "../src/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3780CB8A6E2C4E41815A4898 /* Montserrat-Italic-VariableFont_wght.ttf */ = {isa = PBXFileReference; name = "Montserrat-Italic-VariableFont_wght.ttf"; path = "../src/assets/fonts/Montserrat-Italic-VariableFont_wght.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FEFB9F5D3E9C4767905F9072 /* Montserrat-VariableFont_wght.ttf */ = {isa = PBXFileReference; name = "Montserrat-VariableFont_wght.ttf"; path = "../src/assets/fonts/Montserrat-VariableFont_wght.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +144,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				086957E5388548C585AEDF60 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -147,6 +170,25 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		086957E5388548C585AEDF60 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				73C2A2B63B21420D9F94A06D /* MaterialIcons-Regular.otf */,
+				BF91DF1216C44EAA8560BE53 /* AppIcons.ttf */,
+				548D1EDE7BF942E398422109 /* AvenirNext-DemiBold.ttf */,
+				50CC32BCA703415A8709C044 /* AvenirNext-Regular.ttf */,
+				FA45433641A54880907A9909 /* Poppins-Light.ttf */,
+				5DC9DFD3A27F44F3B5623CCE /* Poppins-LightItalic.ttf */,
+				842EA528BD414F0AAAA80001 /* Poppins-Medium.ttf */,
+				52784D2B7C704CA3B21F0915 /* Poppins-MediumItalic.ttf */,
+				31EB5A158A9D4AC6A28F20BA /* Poppins-Regular.ttf */,
+				3780CB8A6E2C4E41815A4898 /* Montserrat-Italic-VariableFont_wght.ttf */,
+				FEFB9F5D3E9C4767905F9072 /* Montserrat-VariableFont_wght.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -243,6 +285,17 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				8E661CA4DF7C4352BD74A24D /* MaterialIcons-Regular.otf in Resources */,
+				9BC48C70356D4E6C90789068 /* AppIcons.ttf in Resources */,
+				4B12E4E774F8434FB1670B9D /* AvenirNext-DemiBold.ttf in Resources */,
+				897FA310828840D5AA272762 /* AvenirNext-Regular.ttf in Resources */,
+				667103D3CA0F4C69994E8ACD /* Poppins-Light.ttf in Resources */,
+				4F5471B14AE24E0F9A5CE564 /* Poppins-LightItalic.ttf in Resources */,
+				31A515260F444E9FA3F5DAF1 /* Poppins-Medium.ttf in Resources */,
+				968640BB097D473883C4E5E5 /* Poppins-MediumItalic.ttf in Resources */,
+				D2FBDA172E924B1F94B680CD /* Poppins-Regular.ttf in Resources */,
+				8618FEABF64D40BE83153FE4 /* Montserrat-Italic-VariableFont_wght.ttf in Resources */,
+				43D0AFB1082B46D7AE2519CA /* Montserrat-VariableFont_wght.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

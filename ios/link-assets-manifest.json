@@ -1,0 +1,49 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/AppIcons.ttf",
+      "sha1": "69dba9a5433a685e3ae0216d89e1fcad6be46cb8"
+    },
+    {
+      "path": "src/assets/fonts/AvenirNext-DemiBold.ttf",
+      "sha1": "3b355518e925035913fcb778d9f9ae5bcdceaab7"
+    },
+    {
+      "path": "src/assets/fonts/AvenirNext-Regular.ttf",
+      "sha1": "097db081c7cb7cbeeaf212a319455b9727cf65cf"
+    },
+    {
+      "path": "src/assets/fonts/MaterialIcons-Regular.otf",
+      "sha1": "fc25284ee3d0aaa75ec5fc8e4fd96926157ed8c4"
+    },
+    {
+      "path": "src/assets/fonts/Montserrat-Italic-VariableFont_wght.ttf",
+      "sha1": "92d0e87485dff4f41184e3ae9497c5d1795c1827"
+    },
+    {
+      "path": "src/assets/fonts/Montserrat-VariableFont_wght.ttf",
+      "sha1": "debd10e57fb07dd24187c41679885129449c1435"
+    },
+    {
+      "path": "src/assets/fonts/Poppins-Light.ttf",
+      "sha1": "e247a92158e112f8bf7b638c8d95381d66b00dbb"
+    },
+    {
+      "path": "src/assets/fonts/Poppins-LightItalic.ttf",
+      "sha1": "f76102b361e705751a83b7b22fe954daf1f27dd4"
+    },
+    {
+      "path": "src/assets/fonts/Poppins-Medium.ttf",
+      "sha1": "283f21b44efbdbf276ba802be2d949a36bbc4233"
+    },
+    {
+      "path": "src/assets/fonts/Poppins-MediumItalic.ttf",
+      "sha1": "b592c62fdf88c40cfd0f031bba6423b1d4430472"
+    },
+    {
+      "path": "src/assets/fonts/Poppins-Regular.ttf",
+      "sha1": "fdd3002e7d814ee47c1c1b8487c72c6bbb3a2d00"
+    }
+  ]
+}
