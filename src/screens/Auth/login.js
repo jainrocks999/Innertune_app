@@ -39,6 +39,7 @@ const Login = () => {
     } else {
       Alert.alert('Please fill all the value');
     }
+    // navigation.reset({index:0,routes:[{name:'Home'}])
   };
 
   return (

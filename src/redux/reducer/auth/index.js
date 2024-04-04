@@ -19,15 +19,6 @@ const Auth = createSlice({
     login_error: (state, action) => {
       return {...state, loading: false};
     },
-    group_fetch_request: (state, action) => {
-      return {...state, loading: true};
-    },
-    group_fetch_success: (state, action) => {
-      return {...state, loading: false, groups: action.payload};
-    },
-    group_fetch_error: (state, action) => {
-      return {...state, loading: false};
-    },
   },
 });
 export default Auth.reducer;

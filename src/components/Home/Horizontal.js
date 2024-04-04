@@ -7,7 +7,7 @@ import {
 } from '../../components/atoms/responsive';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Octicons';
-const Horizontal = ({data}) => {
+const Horizontal = ({data, onPress}) => {
   const navigation = useNavigation();
   return (
     <FlatList
@@ -26,10 +26,7 @@ const Horizontal = ({data}) => {
 
         return (
           <View style={styles.imageContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('playsong');
-              }}>
+            <TouchableOpacity onPress={onPress}>
               <Image source={{uri: image}} style={styles.image} />
               <Text style={styles.text}>{title}</Text>
             </TouchableOpacity>

@@ -1,14 +1,14 @@
 import {
   Alert,
-  FlatList,
   Image,
   ImageBackground,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  FlatList,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   heightPercent as hp,
   widthPrecent as wp,
@@ -20,6 +20,9 @@ import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Mymodal from '../../components/molecules/Modal';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {} from 'react-native-gesture-handler';
+import CircularProgress from 'react-native-circular-progress-indicator';
 const data = [
   {id: '1', title: 'Voice'},
   {id: '2', title: 'Time'},
@@ -27,16 +30,52 @@ const data = [
 ];
 
 const Playsong = () => {
+  const flatListRef = useRef(null);
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
   const [selectedTab, setSelectedTab] = useState();
-
+  const {affirmations} = useSelector(state => state.home);
+  const [isPaused, setIsPaused] = useState(false);
+  const [visibleIndex, setVisibleIndex] = useState(1);
   const handleTabPress = title => {
-    // Alert.alert('thisis')
     setSelectedTab(title);
     setVisible(true);
   };
-  console.log('thiss vid', visible);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVisibleIndex(prevIndex => {
+        const newIndex = (prevIndex + 1) % affirmations.length;
+        flatListRef.current.scrollToIndex({
+          animated: true,
+          index: newIndex,
+        });
+        return newIndex;
+      });
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [affirmations]);
+  const [progress, setProgress] = useState(0);
+  const maxTimeInMinutes = 0.5;
+  useEffect(() => {
+    let currentTimeInSeconds = progress;
+    const maxTimeInSeconds = maxTimeInMinutes * 60;
+
+    const interval = setInterval(() => {
+      if (!isPaused) {
+        if (currentTimeInSeconds < maxTimeInSeconds) {
+          currentTimeInSeconds++;
+          // const calculatedProgress =
+          //   (currentTimeInSeconds / maxTimeInSeconds) * 100;
+          setProgress(currentTimeInSeconds);
+        } else {
+          clearInterval(interval); // Stop interval when progress reaches or exceeds the maximum timeout
+        }
+      }
+    }, 1000);
+
+    return () => clearInterval(interval); // Clear interval on unmount
+  }, [maxTimeInMinutes, isPaused]);
+
   return (
     <View style={{flex: 1}}>
       <ImageBackground
@@ -78,9 +117,11 @@ const Playsong = () => {
                   style={{
                     fontSize: hp(2),
                     fontWeight: '600',
-                    color: selectedTab === 'Playlistdetails' ? 'white' : 'black',
+                    color:
+                      selectedTab === 'Playlistdetails' ? 'white' : 'black',
                   }}>
                   Playlist Details
+                  {progress}
                 </Text>
               </View>
               <Image
@@ -89,68 +130,113 @@ const Playsong = () => {
               />
             </View>
           </TouchableOpacity>
-          <View
-            style={{
-              flexDirection: 'column',
-              marginTop: hp(2),
-              marginHorizontal: hp(4),
-              alignItems: 'flex-end',
-            }}>
-            <Feather
-              name="heart"
-              size={30}
-              color="white"
-              paddingVertical="5%"
-            />
-            <FontAwesome6
-              name="repeat"
-              size={30}
-              color="white"
-              paddingVertical="5%"
-            />
-            <Entypo
-              name="dots-three-vertical"
-              size={30}
-              color="white"
-              paddingVertical="5%"
+          <View style={{height: hp(60)}}>
+            <FlatList
+              ref={flatListRef}
+              pagingEnabled
+              showsVerticalScrollIndicator={false}
+              data={affirmations}
+              renderItem={({item, index}) =>
+                true ? (
+                  <View style={{height: hp(60)}}>
+                    <View
+                      style={{
+                        flexDirection: 'column',
+                        marginTop: hp(2),
+                        marginHorizontal: hp(4),
+                        alignItems: 'flex-end',
+                      }}>
+                      <Feather
+                        name="heart"
+                        size={30}
+                        color="white"
+                        paddingVertical="5%"
+                      />
+                      <FontAwesome6
+                        name="repeat"
+                        size={30}
+                        color="white"
+                        paddingVertical="5%"
+                      />
+                      <Entypo
+                        name="dots-three-vertical"
+                        size={30}
+                        color="white"
+                        paddingVertical="5%"
+                      />
+                    </View>
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        alignSelf: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        width: wp(70),
+                        position: 'absolute',
+                        top: '30%',
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: hp(4),
+                          color: 'white',
+                          width: '80%',
+                          // borderWidth: 1,
+                          textAlign: 'center',
+                        }}>
+                        {item['affirmation_text']}
+                      </Text>
+                    </View>
+                  </View>
+                ) : (
+                  <View style={{height: hp(60)}} />
+                )
+              }
+              keyExtractor={(item, index) => index.toString()}
             />
           </View>
-          <View
+          <TouchableOpacity
+            onPress={() => setIsPaused(prev => !prev)}
             style={{
+              height: hp(10),
               justifyContent: 'center',
               alignSelf: 'center',
-              alignItems: 'center',
-
-              flexDirection: 'column',
-              height: hp(30),
-              width: wp(70),
               position: 'absolute',
-              marginTop: hp(30),
-            }}>
-            <Text style={{fontSize: hp(4), color: 'white'}}>
-              I accept and Love My Imperfactions
-            </Text>
-          </View>
-          <View
-            style={{
-              height: hp(20),
-
-              justifyContent: 'center',
-
-              alignSelf: 'center',
-              marginTop: hp(20),
+              bottom: '16%',
+              width: hp(10),
+              // borderWidth: 5,
             }}>
             <Image
+              // tintColor={'red'}
               source={require('../../assets/play-button.png')}
-              style={{height: hp(10), width: wp(20), tintColor: 'white'}}
+              style={{
+                height: hp(10),
+                width: hp(10),
+                tintColor: 'white',
+                position: 'absolute',
+                zIndex: 0,
+              }}
             />
-          </View>
+            <CircularProgress
+              value={progress}
+              radius={hp(5)}
+              progressValueFontSize={10}
+              duration={2000}
+              progressValueColor={'#ecf0f1'}
+              maxValue={maxTimeInMinutes * 60}
+              inActiveStrokeColor="white"
+              showProgressValue={false}
+              activeStrokeWidth={5.5}
+              inActiveStrokeWidth={5.5}
+            />
+          </TouchableOpacity>
           <View
             style={{
               alignSelf: 'center',
               justifyContent: 'center',
               marginTop: hp(8),
               height: hp(7),
+              position: 'absolute',
+              bottom: '3%',
             }}>
             <FlatList
               data={data}
@@ -182,7 +268,11 @@ const Playsong = () => {
                     </Text>
                     <Image
                       source={require('../../assets/music.jpg')}
-                      style={{width: hp(7), height: hp(7), borderRadius: hp(7)}}
+                      style={{
+                        width: hp(7),
+                        height: hp(7),
+                        borderRadius: hp(7),
+                      }}
                     />
                   </View>
                 </TouchableOpacity>

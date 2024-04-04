@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Image, Alert} from 'react-native';
 import Header from '../../components/molecules/Header';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -63,23 +63,37 @@ const Img = [
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
-  const {loading, playlist} = useSelector(state => state.home);
+  const {loading, playlist, groups} = useSelector(state => state.home);
+
   const getAllCategories = async () => {
     const token = await AsyncStorage.getItem('token');
     dispatch({
       type: 'home/playlist_request',
-      payload: token,
+      token,
       url: 'playListItem',
+      playlist_id: 1,
     });
     dispatch({
       type: 'home/group_fetch_request',
-      payload: token,
+      token,
       url: 'groups',
+      user_id: 1,
     });
   };
+  console.log('fetchdd');
   useEffect(() => {
     getAllCategories();
   }, []);
+  const getAffetMations = async () => {
+    const token = await AsyncStorage.getItem('token');
+    dispatch({
+      type: 'home/affirmation_fetch_request',
+      token,
+      user_id: '1',
+      navigation,
+      url: 'affirmation',
+    });
+  };
   const navigation = useNavigation();
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
@@ -164,41 +178,102 @@ const HomeScreen = () => {
             </View>
           </LinearGradient>
         </View>
-        <View style={styles.FeatureContainer}>
-          <Text style={styles.Featurecategory}>Popular Playlist</Text>
-          <View style={{paddingHorizontal: '30%'}}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Popular');
-              }}>
-              <Text style={{fontSize: 15, fontWeight: '900', color: 'grey'}}>
-                View All
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <FlatList
-          horizontal={true}
-          data={Img}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <View style={styles.imageContainer}>
-              <Image source={item.image} style={styles.image} />
-              <Text style={styles.text}>{item.title}</Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                  marginTop: hp(-2.5),
-                  marginRight: 10,
-                }}>
-                <Icon name="heart" size={20} color="#434343" />
-              </View>
-              <Text style={styles.text2}>{item.title2}</Text>
-            </View>
-          )}
-        />
+        {
+          <>
+            <FlatList
+              data={groups}
+              renderItem={({item, index}) => (
+                <>
+                  <View style={styles.FeatureContainer}>
+                    <Text style={styles.Featurecategory}>
+                      {item?.group_name}
+                    </Text>
+                    <View style={{paddingHorizontal: '30%'}}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate('Popular');
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: 15,
+                            fontWeight: '900',
+                            color: 'grey',
+                          }}>
+                          View All
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                  <Horizontal
+                    onPress={() => {
+                      getAffetMations();
+                    }}
+                    data={playlist}
+                  />
+                  {index == 1 ? (
+                    <View style={styles.card}>
+                      <LinearGradient
+                        start={{x: 0.0, y: 0.0}}
+                        end={{x: 5, y: 0.0}}
+                        locations={[0, 0.15, 0.36]}
+                        colors={['#A89AD5', '#7153CD']}
+                        style={styles.linearGradient}>
+                        <Image
+                          source={require('../../assets/music1.jpg')}
+                          style={{
+                            height: hp(13),
+                            width: wp(25),
+                            borderRadius: 20,
+                          }}
+                        />
+                        <View
+                          style={{
+                            flexDirection: 'column',
+                            alignSelf: 'center',
+                            width: wp(50),
+                            marginHorizontal: '5%',
+                          }}>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '600',
+                              color: '#ffffff',
+                              backgroundColor: 'transparent',
+                            }}>
+                            Share Innertunes with your loved...
+                          </Text>
+                        </View>
+                      </LinearGradient>
+                    </View>
+                  ) : null}
+                </>
+              )}
+            />
+
+            {/* <FlatList
+              horizontal={true}
+              data={Img}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => (
+                <View style={styles.imageContainer}>
+                  <Image source={item.image} style={styles.image} />
+                  <Text style={styles.text}>{item.title}</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'flex-end',
+                      marginTop: hp(-2.5),
+                      marginRight: 10,
+                    }}>
+                    <Icon name="heart" size={20} color="#434343" />
+                  </View>
+                  <Text style={styles.text2}>{item.title2}</Text>
+                </View>
+              )}
+            /> */}
+          </>
+        }
         <View style={styles.card}>
           <Image
             source={require('../../assets/music1.jpg')}
