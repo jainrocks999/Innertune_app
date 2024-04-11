@@ -40,14 +40,14 @@ const Img = [
 ];
 const Voice = () => {
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
             marginTop:hp(2)
           }}>
-          <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'black'}}>
+          <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'white'}}>
             Voice Settings
           </Text>
         </View>
@@ -103,9 +103,9 @@ const Voice = () => {
             style={{width: '90%', height: 30}}
             minimumValue={0}
             maximumValue={2}
-            minimumTrackTintColor="black"
-            maximumTrackTintColor="black"
-            thumbTintColor="black"
+            minimumTrackTintColor="white"
+            maximumTrackTintColor="white"
+            thumbTintColor="white"
           />
         </View>
         <View
@@ -123,9 +123,9 @@ const Voice = () => {
             style={{width: '90%', height: 30}}
             minimumValue={0}
             maximumValue={2}
-            minimumTrackTintColor="black"
-            maximumTrackTintColor="black"
-            thumbTintColor="black"
+            minimumTrackTintColor="white"
+            maximumTrackTintColor="white"
+            thumbTintColor="white"
           />
         </View>
 

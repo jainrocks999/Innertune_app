@@ -19,10 +19,9 @@ const Horizontal = ({data, onPress}) => {
         let title = 'Believe in yourself';
         let image =
           'https://stimuli.forebearpro.co.in/storage/app/public/3/download-(8).jpg';
-        if (item.category != null) {
-          image = item.category.categories_image[0].original_url;
-          title = item.category.categories_name;
-        }
+
+        image = item?.categories_image[0]?.original_url;
+        title = item?.categories_name;
 
         return (
           <View style={styles.imageContainer}>
@@ -42,10 +41,10 @@ const Horizontal = ({data, onPress}) => {
                 onPress={() => {
                   navigation.navigate('Popular');
                 }}>
-                <Icon name="heart" size={20} color="#434343" />
+                <Icon name="heart" size={20} color="white" />
               </TouchableOpacity>
             </View>
-            <Text style={styles.text2}>{'90 affirmations'}</Text>
+            {/* <Text style={styles.text2}>{'90 affirmations'}</Text> */}
           </View>
         );
       }}
@@ -54,10 +53,10 @@ const Horizontal = ({data, onPress}) => {
 };
 const styles = StyleSheet.create({
   text: {
-    width: wp(50),
+    width: wp(60),
     marginTop: 10,
     marginLeft: 5,
-    color: 'black',
+    color: 'white',
     fontSize: 18,
     fontWeight: '400',
   },
@@ -65,7 +64,7 @@ const styles = StyleSheet.create({
     width: wp(50),
     marginTop: 4,
     marginLeft: 5,
-    color: 'black',
+    color: 'white',
     fontSize: 15,
     fontWeight: '300',
   },

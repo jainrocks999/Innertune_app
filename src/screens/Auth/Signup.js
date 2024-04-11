@@ -16,7 +16,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 
 const Signup = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
@@ -25,11 +25,11 @@ const Signup = () => {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <View style={styles.container}>
-        <View style={{  marginHorizontal: hp(1),}}>
-        <Image
-          source={require('../../assets/logo.png')}
-          style={{height: hp(10), width: wp(17)}}
-        />
+        <View style={{marginHorizontal: hp(1)}}>
+          <Image
+            source={require('../../assets/logo.png')}
+            style={{height: hp(10), width: wp(17)}}
+          />
         </View>
         <Text style={{fontSize: 50, fontWeight: '500', color: 'black'}}>
           {' '}
@@ -61,12 +61,10 @@ const Signup = () => {
           <TextInput
             style={styles.inputs}
             placeholder="Your Email"
-
             underlineColorAndroid="transparent"
             onChangeText={password => setPassword({password})}
           />
         </View>
-
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.inputs}
@@ -79,8 +77,8 @@ const Signup = () => {
         <TouchableOpacity
           style={[styles.buttonContainer, styles.loginButton]}
           onPress={() => {
-                  navigation.navigate('login')
-                }}>
+            navigation.navigate('login');
+          }}>
           <Text style={styles.loginText}>Continue</Text>
         </TouchableOpacity>
       </View>
@@ -117,7 +115,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     marginHorizontal: wp(4),
-    marginTop:hp(3)
+    marginTop: hp(3),
   },
   inputContainer: {
     borderRadius: 10,
@@ -133,7 +131,6 @@ const styles = StyleSheet.create({
     height: hp(5),
     marginLeft: wp(3),
     fontSize: hp(1.8),
-
     flex: 1,
   },
   inputIcon: {
@@ -155,7 +152,6 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     backgroundColor: 'black',
-
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

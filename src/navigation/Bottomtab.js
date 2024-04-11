@@ -20,17 +20,17 @@ import {useNavigation} from '@react-navigation/native';
 import Popularplaylist from '../screens/main/PopularPlaylist';
 const Tab = createBottomTabNavigator();
 const getIconColor = focused => ({
-  tintColor: focused ? '#bb98ed' : 'black',
+  tintColor: focused ? '#89FFBF' : 'grey',
 });
 const getTextColor = focused => ({
-  color: focused ? '#bb98ed' : 'black',
+  color: focused ? '#89FFBF' : 'grey',
 });
 const MyTabs = () => {
   const navigation = useNavigation();
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const {opened, toggleOpened} = useTabMenu();
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: '#191919'}}>
       <Tab.Navigator
         initialRouteName="Home"
         screenOptions={{
@@ -94,6 +94,7 @@ const MyTabs = () => {
                 <Image
                   source={require('../assets/plus.png')}
                   resizeMode="contain"
+                  vfffff34w3e
                   style={styles.addIcon}
                 />
               </TouchableOpacity>
@@ -190,8 +191,8 @@ const MyTabs = () => {
               <LinearGradient
                 start={{x: 0.0, y: 0.0}}
                 end={{x: 5, y: 0.0}}
-                locations={[0, 0.15, 0.36]}
-                colors={['#A89AD5', '#7153CD']}
+                locations={[0, 0.5, 0.3]}
+                colors={['#191919', '#89FFBF']}
                 style={styles.linearGradient}>
                 <Image
                   source={require('../assets/music.jpg')}
@@ -225,16 +226,12 @@ const MyTabs = () => {
 
 const styles = StyleSheet.create({
   tabBar: {
-    shadowColor: 'black',
-    shadowOffset: {
-      height: 100,
-      width: 0,
-    },
-    shadowOpacity: 100,
-    shadowRadius: 100,
-    elevation: 5,
     width: wp(100),
     height: hp(10),
+    backgroundColor: 'black',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderTopWidth:0
   },
   tabIconContainer: {
     width: wp(20),
@@ -250,7 +247,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    backgroundColor: '#6947D2',
+    backgroundColor: '#426e56',
     borderRadius: 50,
   },
   addIcon: {
@@ -263,14 +260,14 @@ const styles = StyleSheet.create({
     height: 35,
   },
   textIcon: {
-    color: '#6947D2',
+    color: '#89FFBF',
   },
   bottomSheetContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Background color of the bottom sheet
+    backgroundColor: '#191919', // Background color of the bottom sheet
     height: hp(50),
   },
   bottomSheetContent: {
-    backgroundColor: 'white', // Background color of the content within the bottom sheet
+    backgroundColor: '#191919', // Background color of the content within the bottom sheet
     padding: 20,
     height: '40%',
     justifyContent: 'center',

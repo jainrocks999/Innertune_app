@@ -7,12 +7,13 @@ import {
   Text,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   heightPercent as hp,
   widthPrecent as wp,
 } from '../../components/atoms/responsive';
 import Entypo from 'react-native-vector-icons/Entypo';
+import {useDispatch, useSelector} from 'react-redux';
 const Img = [
   {
     id: '1',
@@ -40,9 +41,24 @@ const Img = [
   },
 ];
 const All = () => {
+  const dispatch = useDispatch();
+  const {loading, playlist} = useSelector(state => state.home);
+  console.log('this issss playlistt', playlist);
+  const getAllplaylist = async () => {
+    const token = await AsyncStorage.getItem('token');
+    dispatch({
+      type: 'home/playlist_request',
+      token,
+      url: 'playListItem',
+      playlist_id: 1,
+    });
+  };
+  useEffect(() => {
+    getAllplaylist();
+  }, []);
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-      <ScrollView style={{marginTop:10,}}>
+    <SafeAreaView style={{flex: 1, backgroundColor:'#191919'}}>
+      <ScrollView style={{marginTop: 10}}>
         <FlatList
           data={Img}
           keyExtractor={item => item.id}
@@ -52,6 +68,7 @@ const All = () => {
                 <Image source={item.image} style={styles.image} />
                 <View
                   style={{flexDirection: 'column', marginHorizontal: hp(2.5)}}>
+                    {console.log(item)}
                   <Text style={styles.text}>{item.title}</Text>
                   <Text style={styles.text2}>{item.title2}</Text>
                 </View>
@@ -59,11 +76,11 @@ const All = () => {
                   <Entypo
                     name="dots-three-horizontal"
                     size={20}
-                    color="black"
+                    color="white"
                   />
                 </View>
               </View>
-            </View>
+             </View>
           )}
         />
       </ScrollView>
@@ -85,7 +102,7 @@ const styles = StyleSheet.create({
     width: wp(50),
     marginTop: 10,
     marginLeft: wp(1),
-    color: 'black',
+    color: 'white',
     fontSize: hp(2),
     fontWeight: '500',
   },
@@ -93,7 +110,7 @@ const styles = StyleSheet.create({
     width: wp(50),
     marginTop: 4,
     marginLeft: 5,
-    color: 'black',
+    color: 'white',
     fontSize: hp(1.8),
     fontWeight: '300',
   },

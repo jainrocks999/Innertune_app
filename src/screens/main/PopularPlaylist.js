@@ -68,7 +68,7 @@ const Img = [
 ];
 const Popularplaylist = () => {
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
       <Header2 />
       <View
         style={{
@@ -78,7 +78,7 @@ const Popularplaylist = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Text style={{fontSize: 25, color: 'black'}}>Popular playlist</Text>
+        <Text style={{fontSize: 25, color: 'white'}}>Popular playlist</Text>
       </View>
       <ScrollView style={{marginTop: 20}}>
         <FlatList
@@ -96,14 +96,13 @@ const Popularplaylist = () => {
                 <Image source={item.image} style={styles.image} />
                 <View style={{flexDirection: 'column'}}>
                   <Text style={styles.text}>{item.title}</Text>
-
                   <Text style={styles.text2}>{item.title2}</Text>
                 </View>
                 <View style={{justifyContent: 'center'}}>
-                  <Feather name="heart" size={25} color="black" />
+                  <Feather name="heart" size={25} color="white" />
                 </View>
                 <View style={{justifyContent: 'center', marginLeft: 30}}>
-                  <Entypo name="dots-three-vertical" size={20} color="black" />
+                  <Entypo name="dots-three-vertical" size={20} color="white" />
                 </View>
               </View>
             </View>
@@ -129,7 +128,7 @@ const styles = StyleSheet.create({
     width: wp(50),
     marginTop: 10,
     marginLeft: 5,
-    color: 'black',
+    color: 'white',
     fontSize: 18,
     fontWeight: '500',
   },
@@ -137,7 +136,7 @@ const styles = StyleSheet.create({
     width: wp(50),
     marginTop: 4,
     marginLeft: 5,
-    color: 'black',
+    color: 'white',
     fontSize: 15,
     fontWeight: '300',
   },

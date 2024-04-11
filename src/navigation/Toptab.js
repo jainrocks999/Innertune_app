@@ -21,13 +21,13 @@ const Toptab = () => {
     setSelectedTab(title);
   };
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: '#191919'}}>
       <View style={{marginHorizontal: hp(3), marginTop: 10}}>
         <Text
           style={{
             fontFamily: 'Montserrat',
             fontSize: hp(3),
-            color: 'black',
+            color: 'white',
             marginVertical: 10,
           }}>
           My Library
@@ -35,9 +35,9 @@ const Toptab = () => {
       </View>
       <View
         style={{
-          borderBottomColor: 'grey',
+    
           alignItems: 'center',
-          borderBottomWidth: 1,
+        
         }}>
         <FlatList
           data={data}
@@ -52,7 +52,7 @@ const Toptab = () => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   backgroundColor:
-                    selectedTab === item.title ? '#9E8CD5' : '#DEDEDE',
+                    selectedTab === item.title ? '#426e56' : '#DEDEDE',
                   borderRadius: 10,
                   marginHorizontal: hp(1),
                   marginVertical: 20,

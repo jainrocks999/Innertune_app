@@ -69,7 +69,7 @@ const Img = [
 const Createaffirmation = () => {
   const navigation = useNavigation();
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: '#191919'}}>
       <View
         style={{
           flexDirection: 'row',
@@ -82,7 +82,7 @@ const Createaffirmation = () => {
             onPress={() => navigation.goBack()}
             name="arrow-back"
             size={30}
-            color="black"
+            color="white"
           />
         </View>
         <View style={{height: hp(5), width: wp(100)}}>
@@ -92,17 +92,17 @@ const Createaffirmation = () => {
               fontWeight: '500',
               marginHorizontal: '15%',
               fontFamily:'Montserrat',
-              color: 'black',
+              color: 'white',
             }}>
-            Added affirmations
+           Edit List of Affirmation
           </Text>
         </View>
       </View>
-      <View style={styles.searchContainer}>
-        <Text style={{color: 'black', fontSize: 17}}>
+      {/* <View style={styles.searchContainer}>
+        <Text style={{color: 'white', fontSize: 17}}>
           Edit List of Affirmation
         </Text>
-      </View>
+      </View> */}
       <ScrollView style={{marginTop: 20}}>
         <FlatList
           data={Img}
@@ -112,18 +112,17 @@ const Createaffirmation = () => {
               style={{
                 flexDirection: 'row',
                 alignSelf: 'center',
-
                 height: hp(8),
                 width: wp(90),
                 marginVertical: 10,
-                backgroundColor: '#F8F8F8',
+                backgroundColor: 'black',
                 borderRadius: 20,
               }}>
               <View style={{justifyContent: 'center', marginHorizontal: '10%'}}>
                 <Text style={styles.text}>{item.title}</Text>
               </View>
               <View style={{justifyContent: 'center', marginHorizontal: '10%'}}>
-                <Entypo name="dots-three-horizontal" size={20} color="black" />
+                <Entypo name="dots-three-horizontal" size={20} color="white" />
               </View>
             </View>
           )}
@@ -134,7 +133,7 @@ const Createaffirmation = () => {
           style={{
             height: 45,
             marginLeft: 20,
-            backgroundColor: '#7254CD',
+            backgroundColor: '#426e56',
             alignItems: 'center',
             justifyContent: 'center',
             width: wp(60),
@@ -156,7 +155,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
 
-    backgroundColor: 'white',
+   
 
     marginTop: 30,
     paddingHorizontal: 10,
@@ -175,7 +174,7 @@ const styles = StyleSheet.create({
     width: wp(50),
 
     marginLeft: 5,
-    color: 'black',
+    color: 'white',
     fontSize: 15,
   },
   text2: {

@@ -46,7 +46,7 @@ const Img2 = [
 
 const Time = () => {
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white',}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#191919',}}>
      
         <View
           style={{
@@ -54,7 +54,7 @@ const Time = () => {
             justifyContent: 'center',
             marginTop:hp(2)
           }}>
-          <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'black'}}>
+          <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'white'}}>
             Session Length
           </Text>
         </View>

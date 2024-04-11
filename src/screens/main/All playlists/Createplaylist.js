@@ -74,7 +74,7 @@ const Createplaylist = () => {
     onChangeText;
   };
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: '#191919'}}>
       <View
         style={{
           flexDirection: 'row',
@@ -89,7 +89,7 @@ const Createplaylist = () => {
             }
             name="arrow-back"
             size={30}
-            color="black"
+            color="white"
           />
         </View>
         <View style={{height: hp(5), width: wp(100)}}>
@@ -99,7 +99,7 @@ const Createplaylist = () => {
               fontWeight: '600',
               marginHorizontal: '15%',
               fontFamily: 'Montserrat-SemiBold',
-              color: 'black',
+              color: 'white',
             }}>
             Create Your Playlist
           </Text>
@@ -139,7 +139,7 @@ const Createplaylist = () => {
                   height: hp(8),
                   width: wp(90),
                   marginVertical: 10,
-                  backgroundColor: '#F8F8F8',
+                  backgroundColor: 'black',
                   borderRadius: 20,
                 }}>
                 <View
@@ -151,7 +151,7 @@ const Createplaylist = () => {
                   <Entypo
                     name="dots-three-horizontal"
                     size={20}
-                    color="black"
+                    color="white"
                   />
                 </View>
               </View>
@@ -169,7 +169,7 @@ const Createplaylist = () => {
           style={{
             height: 45,
             marginLeft: 20,
-            backgroundColor: '#7254CD',
+            backgroundColor: '#426e56',
             alignItems: 'center',
             justifyContent: 'center',
             width: wp(70),
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     width: wp(50),
     fontFamily: 'Montserrat-Regular',
     marginLeft: 5,
-    color: 'black',
+    color: 'white',
     fontSize: hp(1.8),
   },
   input: {

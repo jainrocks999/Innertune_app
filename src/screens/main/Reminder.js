@@ -20,13 +20,12 @@ const data = [
   {id: '1', title: 'Daily Practice', time: '09:00', frequency: '1x Every Day'},
   {id: '2', title: 'Daily Practice', time: '09:00', frequency: '1x Every Day'},
   {id: '3', title: 'Daily Practice', time: '09:00', frequency: '1x Every Day'},
+  {id: '4', title: 'Daily Practice', time: '09:00', frequency: '1x Every Day'},
 ];
 const data2 = [
-  {id: '1', titles: 'Remindermodal1'},
-  {id: '2', titles: 'Remindmodal2'},
-  {id: '3', titles: 'Remindmodal3'},
-  {id: '4', titles: 'Remindmodal4'},
-  {id: '5', titles: 'Remindmodal5'},
+  {id: '1', title: 'Affirmations', time: '09:00', frequency: '1x Every Day'},
+  {id: '2', title: 'Affirmations', time: '09:00', frequency: '1x Every Day'},
+  {id: '3', title: 'Affirmations', time: '09:00', frequency: '1x Every Day'},
 ];
 const Reminder = () => {
   const navigation = useNavigation();
@@ -47,7 +46,7 @@ const Reminder = () => {
   };
   console.log('thiss vidzxc', visible);
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: '#191919'}}>
       <View
         style={{
           flexDirection: 'row',
@@ -60,7 +59,7 @@ const Reminder = () => {
             onPress={() => navigation.goBack()}
             name="arrow-back"
             size={30}
-            color="black"
+            color="white"
           />
         </View>
         <View style={{height: hp(5), width: wp(100)}}>
@@ -70,24 +69,28 @@ const Reminder = () => {
               fontWeight: '500',
               marginHorizontal: '17%',
 
-              color: 'black',
+              color: 'white',
             }}>
             Set your reminders
           </Text>
         </View>
       </View>
-      <ScrollView style={{marginTop: 40}}>
+      <ScrollView style={{marginTop: 10,}}>
         <FlatList
           data={data}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
+            <TouchableOpacity
+            onPress={() => {
+              handleModalPress('Remindmodal4');
+            }}>
             <View
               style={{
                 height: hp(10),
                 width: wp(90),
                 justifyContent: 'center',
                 alignSelf: 'center',
-                backgroundColor: '#F2F2F2',
+                backgroundColor: 'black',
                 borderRadius: 30,
                 marginVertical: 10,
                 padding: '6%',
@@ -98,10 +101,10 @@ const Reminder = () => {
                   justifyContent: 'space-between',
                   marginHorizontal: '10%',
                 }}>
-                <Text style={{color: 'black', fontSize: 15, fontWeight: '500'}}>
+                <Text style={{color: 'white', fontSize: 15, fontWeight: '500'}}>
                   {item.title}
                 </Text>
-                <Text style={{color: 'black', fontSize: 15, fontWeight: '400'}}>
+                <Text style={{color: 'white', fontSize: 15, fontWeight: '400'}}>
                   {item.time}
                 </Text>
               </View>
@@ -113,27 +116,82 @@ const Reminder = () => {
                   marginHorizontal: '10%',
                   marginVertical: 10,
                 }}>
-                <Text style={{color: 'black', fontSize: 15, fontWeight: '300'}}>
+                <Text style={{color: 'white', fontSize: 15, fontWeight: '300'}}>
                   {item.frequency}
                 </Text>
                 <ToggleSwitch
                   isOn={isSwitchOn}
-                  onColor="#7357CB"
+                  onColor="#426e56"
                   offColor="#434343"
                   size="small"
                   onToggle={handleToggle}
                 />
               </View>
             </View>
+            </TouchableOpacity>
+          )}
+        />
+        <FlatList
+          data={data2}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => (
+            <TouchableOpacity
+            onPress={() => {
+              handleModalPress('Remindmodal5');
+            }}>
+            <View
+              style={{
+                height: hp(10),
+                width: wp(90),
+                justifyContent: 'center',
+                alignSelf: 'center',
+                backgroundColor: 'black',
+                borderRadius: 30,
+                marginVertical: 10,
+                padding: '6%',
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginHorizontal: '10%',
+                }}>
+                <Text style={{color: 'white', fontSize: 15, fontWeight: '500'}}>
+                  {item.title}
+                </Text>
+                <Text style={{color: 'white', fontSize: 15, fontWeight: '400'}}>
+                  {item.time}
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginHorizontal: '10%',
+                  marginVertical: 10,
+                }}>
+                <Text style={{color: 'white', fontSize: 15, fontWeight: '300'}}>
+                  {item.frequency}
+                </Text>
+                <ToggleSwitch
+                  isOn={isSwitchOn}
+                  onColor="#426e56"
+                  offColor="#434343"
+                  size="small"
+                  onToggle={handleToggle}
+                />
+              </View>
+            </View>
+            </TouchableOpacity>
           )}
         />
       </ScrollView>
-      <View style={{alignSelf: 'center', marginBottom: hp(25)}}>
+      <View style={{alignSelf: 'center',position:'absolute',bottom:hp(8)}}>
         <TouchableOpacity
           style={{
             height: 45,
-            marginLeft: 20,
-            backgroundColor: '#7254CD',
+            backgroundColor: '#426e56',
             alignItems: 'center',
             justifyContent: 'center',
             width: wp(60),
@@ -147,6 +205,7 @@ const Reminder = () => {
         title={selectedModal}
         onClose={() => setVisible(false)}
         visible={visible}
+        titles={selectedModal}
       />
     </View>
   );

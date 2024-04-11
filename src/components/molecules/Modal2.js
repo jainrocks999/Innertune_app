@@ -8,7 +8,7 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import {heightPercent as hp, widthPrecent as wp} from '../atoms/responsive';
 import Remindermodal1 from '../../screens/main/Reminder/Remindermodal1';
 import Remindmodal5 from '../../screens/main/Reminder/Remindmodal5';
@@ -23,7 +23,6 @@ const data = [
   {id: '5', titles: 'Remindmodal5'},
 ];
 const Modal2 = ({visible, onClose, titles}) => {
-  console.log('this is visible', visible);
   return (
     <Modal
       animationType="slide"
@@ -42,21 +41,21 @@ const Modal2 = ({visible, onClose, titles}) => {
           style={{
             backgroundColor: 'white',
             height: hp(
-              titles == 'Remindmodal2'
+              titles == 'Remindermodal1'
                 ? 50
                 : titles == 'Remindmodal2'
-                ? 50
+                ? 90
                 : titles == 'Remindmodal3'
-                ? 50
+                ? 90
                 : titles == 'Remindmodal4'
-                ? 50
+                ? 90
                 : 90,
             ),
             borderTopEndRadius: 30,
             overflow: 'hidden',
             borderTopStartRadius: 30,
           }}>
-          {/* {titles == 'Remindermodal1' ? (
+          {titles == 'Remindermodal1' ? (
             <Remindermodal1 />
           ) : titles == 'Remindmodal2' ? (
             <Remindmodal2 />
@@ -66,8 +65,8 @@ const Modal2 = ({visible, onClose, titles}) => {
             <Remindmodal4 />
           ) : (
             <Remindmodal5 />
-          )} */}
-          <Remindmodal2 />
+          )}
+    
         </View>
       </TouchableOpacity>
     </Modal>

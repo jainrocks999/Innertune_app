@@ -70,13 +70,13 @@ const data3 = [
 ];
 const Setting = () => {
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: '#191919'}}>
       <View style={{marginHorizontal: 15, marginTop: 10}}>
         <Text
           style={{
             fontFamily: 'Montserrat',
             fontSize: hp(4),
-            color: 'black',
+            color: 'white',
             marginVertical: 10,
           }}>
           Settings
@@ -88,7 +88,7 @@ const Setting = () => {
             style={{
               fontFamily: 'Montserrat',
               fontSize: 20,
-              color: '#434343',
+              color: 'white',
               fontWeight: '700',
               marginVertical: 15,
             }}>
@@ -102,10 +102,10 @@ const Setting = () => {
             marginVertical: 10,
             justifyContent: 'space-around',
           }}>
-          <Entypo name="instagram" size={30} color="black" />
-          <Feather name="facebook" size={30} color="black" />
-          <FontAwesome6 name="x-twitter" size={30} color="black" />
-          <Feather name="youtube" size={30} color="black" />
+          <Entypo name="instagram" size={30} color="white" />
+          <Feather name="facebook" size={30} color="white" />
+          <FontAwesome6 name="x-twitter" size={30} color="white" />
+          <Feather name="youtube" size={30} color="white" />
         </View>
         <View>
           <FlatList
@@ -119,7 +119,7 @@ const Setting = () => {
                     width: wp(94),
                     justifyContent: 'center',
                     alignSelf: 'center',
-                    backgroundColor: '#F8F8F8',
+                    backgroundColor: 'black',
                     borderRadius: 10,
                     marginTop: 20,
                   }}>
@@ -132,7 +132,7 @@ const Setting = () => {
                     }}>
                     <Text
                       style={{
-                        color: '#434343',
+                        color: 'white',
                         fontSize: 17,
                         fontWeight: '400',
                       }}>
@@ -150,7 +150,7 @@ const Setting = () => {
             style={{
               fontFamily: 'Montserrat',
               fontSize: 20,
-              color: '#434343',
+              color: 'white',
               marginVertical: 10,
               fontWeight: '700',
             }}>
@@ -164,7 +164,7 @@ const Setting = () => {
               width: wp(94),
               justifyContent: 'center',
               alignSelf: 'center',
-              backgroundColor: '#F8F8F8',
+              backgroundColor: 'black',
               borderRadius: 10,
               marginTop: 20,
             }}>
@@ -177,7 +177,7 @@ const Setting = () => {
               }}>
               <Text
                 style={{
-                  color: '#434343',
+                  color: 'white',
                   fontSize: 17,
                   fontWeight: '400',
                 }}>
@@ -185,7 +185,7 @@ const Setting = () => {
               </Text>
               <Image
                 source={require('../../assets/flaticon/handshake.png')}
-                style={{height: hp(5), width: wp(8), borderRadius: 20}}
+                style={{height: hp(5), width: wp(8), borderRadius: 20, tintColor:'#426e56'}}
               />
             </View>
           </View>
@@ -195,7 +195,7 @@ const Setting = () => {
             style={{
               fontFamily: 'Montserrat',
               fontSize: 20,
-              color: '#434343',
+              color: 'white',
               marginVertical: 10,
               fontWeight: '700',
             }}>
@@ -212,7 +212,7 @@ const Setting = () => {
                 width: wp(94),
                 justifyContent: 'center',
                 alignSelf: 'center',
-                backgroundColor: '#F8F8F8',
+                backgroundColor: 'black',
                 borderRadius: 10,
                 marginTop: 20,
               }}>
@@ -224,7 +224,7 @@ const Setting = () => {
                   marginHorizontal: '5%',
                 }}>
                 <Text
-                  style={{color: '#434343', fontSize: 17, fontWeight: '400'}}>
+                  style={{color: 'white', fontSize: 17, fontWeight: '400'}}>
                   {item.title}
                 </Text>
                 <Image source={item.image} style={styles.image} />
@@ -240,7 +240,7 @@ const Setting = () => {
               width: wp(94),
               justifyContent: 'center',
               alignSelf: 'center',
-              backgroundColor: '#F8F8F8',
+              backgroundColor: 'black',
               borderRadius: 10,
               marginTop: 20,
             }}>
@@ -253,7 +253,7 @@ const Setting = () => {
               }}>
               <Text
                 style={{
-                  color: '#434343',
+                  color: 'white',
                   fontSize: 17,
                   fontWeight: '400',
                 }}>
@@ -261,7 +261,7 @@ const Setting = () => {
               </Text>
               <Image
                 source={require('../../assets/flaticon/star.png')}
-                style={{height: hp(5), width: wp(9), borderRadius: 20}}
+                style={{height: hp(5), width: wp(9), borderRadius: 20, tintColor:'#426e56'}}
               />
             </View>
           </View>
@@ -271,7 +271,7 @@ const Setting = () => {
             style={{
               fontFamily: 'Montserrat',
               fontSize: 20,
-              color: '#434343',
+              color: 'white',
               marginVertical: 10,
               fontWeight: '700',
             }}>
@@ -289,7 +289,7 @@ const Setting = () => {
                   width: wp(94),
                   justifyContent: 'center',
                   alignSelf: 'center',
-                  backgroundColor: '#F8F8F8',
+                  backgroundColor: 'black',
                   borderRadius: 10,
                   marginTop: 20,
                 }}>
@@ -301,7 +301,7 @@ const Setting = () => {
                     marginHorizontal: '5%',
                   }}>
                   <Text
-                    style={{color: '#434343', fontSize: 17, fontWeight: '400'}}>
+                    style={{color: 'white', fontSize: 17, fontWeight: '400'}}>
                     {item.title}
                   </Text>
                   <Image source={item.image} style={styles.image} />
@@ -322,5 +322,6 @@ const styles = StyleSheet.create({
     width: hp(3.5),
     height: hp(3.5),
     resizeMode: 'stretch',
+    tintColor:'#426e56'
   },
 });

@@ -3,9 +3,9 @@ import React from 'react'
 
 const Playlist = () => {
   return (
-    <View style={{flex:1, justifyContent:'center', backgroundColor:'white'}}>
+    <View style={{flex:1, justifyContent:'center', backgroundColor:'#191919'}}>
     <View style={{ alignItems:'center'}}>
-      <Text style={{ fontSize:20, color :'black'}}> No item</Text>
+      <Text style={{ fontSize:20, color :'white'}}> No item</Text>
     </View>
     </View>
   )

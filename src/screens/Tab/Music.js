@@ -20,6 +20,8 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Slider from '@react-native-community/slider';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {TouchableOpacity} from 'react-native';
+import {useSelector} from 'react-redux'
+import Loader from '../../components/Loader';
 
 const data = [
   {id: '1', title: 'Focus'},
@@ -29,19 +31,23 @@ const data = [
 
 const Music = () => {
   const [selectedTab, setSelectedTab] = useState('Focus');
-
+  const {loading,bgSound,bgcategories}=useSelector(state=>state.home)
+  console.log('thisis',bgcategories);
+ 
   const handleTabPress = title => {
     setSelectedTab(title);
   };
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
+        <Loader loading={loading}/>
       <View
         style={{
           flexDirection: 'row',
           justifyContent: 'center',
           marginTop: hp(2),
         }}>
-        <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'black'}}>
+      
+        <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'white'}}>
           Background Music
         </Text>
       </View>
@@ -54,20 +60,21 @@ const Music = () => {
           alignItems: 'center',
           borderBottomWidth: 1,
         }}>
+            
         <FlatList
-          data={data}
+          data={bgcategories}
           horizontal={true}
           scrollEnabled={false}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
-            <TouchableOpacity onPress={() => handleTabPress(item.title)}>
+            <TouchableOpacity onPress={() => handleTabPress(item.bg_name)}>
               <View
                 style={{
                   height: hp(6),
                   justifyContent: 'center',
                   alignItems: 'center',
                   backgroundColor:
-                    selectedTab === item.title ? 'black' : '#DEDEDE',
+                    selectedTab === item.bg_name ? '#426e56' : '#DEDEDE',
                   borderRadius: 10,
                   marginHorizontal: hp(1),
                   marginVertical: 20,
@@ -75,20 +82,20 @@ const Music = () => {
                 }}>
                 <Text
                   style={{
-                    color: selectedTab === item.title ? 'white' : 'black',
+                    color: selectedTab === item.bg_name ? 'white' : 'black',
                     fontSize: 18,
                     fontWeight: '400',
                   }}>
-                  {item.title}
+                  {item.bg_name}
                 </Text>
               </View>
             </TouchableOpacity>
           )}
         />
       </View>
-      {selectedTab == 'Focus' ? <Focus /> : ''}
-      {selectedTab == 'Relax' ? <Relax /> : ''}
-      {selectedTab == 'Sleep' ? <Sleep /> : ''}
+      {selectedTab == 'Focus' ? <Focus data={bgSound}  /> : ''}
+      {selectedTab == 'Relax' ? <Relax data={bgSound} /> : ''}
+      {selectedTab == 'Sleep' ? <Sleep data={bgSound}/> : ''}
       <View
         style={{
           height: hp(12),

@@ -23,6 +23,8 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {} from 'react-native-gesture-handler';
 import CircularProgress from 'react-native-circular-progress-indicator';
+import {useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const data = [
   {id: '1', title: 'Voice'},
   {id: '2', title: 'Time'},
@@ -30,6 +32,7 @@ const data = [
 ];
 
 const Playsong = () => {
+  const dispatch = useDispatch();
   const flatListRef = useRef(null);
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
@@ -37,7 +40,23 @@ const Playsong = () => {
   const {affirmations} = useSelector(state => state.home);
   const [isPaused, setIsPaused] = useState(false);
   const [visibleIndex, setVisibleIndex] = useState(1);
-  const handleTabPress = title => {
+  const handleTabPress = async title => {
+    const token = await AsyncStorage.getItem('token');
+    if (title == 'Music') {
+      dispatch({
+        type: 'home/bg_sound_request',
+        token,
+        url: 'bgSound',
+        user_id: 1,
+      });
+      dispatch({
+        type: 'home/bg_categories_request',
+        token,
+        url: 'bgCategories',
+        user_id: 1,
+      });
+    }
+
     setSelectedTab(title);
     setVisible(true);
   };
@@ -65,7 +84,7 @@ const Playsong = () => {
         if (currentTimeInSeconds < maxTimeInSeconds) {
           currentTimeInSeconds++;
           // const calculatedProgress =
-          //   (currentTimeInSeconds / maxTimeInSeconds) * 100;
+          //   (currentTimeInSeconds / maxTimeInSeconds)* 100;
           setProgress(currentTimeInSeconds);
         } else {
           clearInterval(interval); // Stop interval when progress reaches or exceeds the maximum timeout
@@ -81,7 +100,7 @@ const Playsong = () => {
       <ImageBackground
         source={require('../../assets/music.jpg')}
         style={{width: '100%', height: '100%'}}>
-        <View style={{backgroundColor: 'rgba(69, 71, 71,.8)', height: hp(100)}}>
+        <View style={{backgroundColor: 'rgba(69, 71, 71,.9)', height: hp(100)}}>
           <View
             style={{
               flexDirection: 'row',
@@ -102,8 +121,7 @@ const Playsong = () => {
               style={[
                 styles.card,
                 {
-                  backgroundColor:
-                    selectedTab === 'Playlistdetails' ? '#000000' : '#DEDEDE',
+                  backgroundColor: 'black',
                 },
               ]}>
               <View
@@ -117,11 +135,12 @@ const Playsong = () => {
                   style={{
                     fontSize: hp(2),
                     fontWeight: '600',
-                    color:
-                      selectedTab === 'Playlistdetails' ? 'white' : 'black',
+                    marginHorizontal: 10,
+                    fontFamily: 'Poppins-Medium',
+                    color: 'white',
                   }}>
                   Playlist Details
-                  {progress}
+                  {/* {progress} */}
                 </Text>
               </View>
               <Image
@@ -130,7 +149,33 @@ const Playsong = () => {
               />
             </View>
           </TouchableOpacity>
-          <View style={{height: hp(60)}}>
+          <View
+            style={{
+              flexDirection: 'column',
+              marginTop: hp(15),
+              marginLeft: hp(40),
+              position: 'absolute',
+            }}>
+            <Feather
+              name="heart"
+              size={30}
+              color="white"
+              paddingVertical="30%"
+            />
+            <FontAwesome6
+              name="repeat"
+              size={30}
+              color="white"
+              paddingVertical="30%"
+            />
+            <Entypo
+              name="dots-three-vertical"
+              size={30}
+              color="white"
+              paddingVertical="30%"
+            />
+          </View>
+          <View style={{height: hp(100)}}>
             <FlatList
               ref={flatListRef}
               pagingEnabled
@@ -138,33 +183,7 @@ const Playsong = () => {
               data={affirmations}
               renderItem={({item, index}) =>
                 true ? (
-                  <View style={{height: hp(60)}}>
-                    <View
-                      style={{
-                        flexDirection: 'column',
-                        marginTop: hp(2),
-                        marginHorizontal: hp(4),
-                        alignItems: 'flex-end',
-                      }}>
-                      <Feather
-                        name="heart"
-                        size={30}
-                        color="white"
-                        paddingVertical="5%"
-                      />
-                      <FontAwesome6
-                        name="repeat"
-                        size={30}
-                        color="white"
-                        paddingVertical="5%"
-                      />
-                      <Entypo
-                        name="dots-three-vertical"
-                        size={30}
-                        color="white"
-                        paddingVertical="5%"
-                      />
-                    </View>
+                  <View style={{height: hp(100)}}>
                     <View
                       style={{
                         justifyContent: 'center',
@@ -173,14 +192,15 @@ const Playsong = () => {
                         flexDirection: 'column',
                         width: wp(70),
                         position: 'absolute',
-                        top: '30%',
+                        top: '20%',
                       }}>
                       <Text
                         style={{
-                          fontSize: hp(4),
-                          color: 'white',
-                          width: '80%',
+                          fontSize: hp(3.5),
+                          color: 'black',
+                          width: wp(70),
                           // borderWidth: 1,
+                          fontFamily: 'Poppins-Medium',
                           textAlign: 'center',
                         }}>
                         {item['affirmation_text']}
@@ -188,7 +208,7 @@ const Playsong = () => {
                     </View>
                   </View>
                 ) : (
-                  <View style={{height: hp(60)}} />
+                  <View style={{height: hp(100)}} />
                 )
               }
               keyExtractor={(item, index) => index.toString()}
@@ -201,7 +221,7 @@ const Playsong = () => {
               justifyContent: 'center',
               alignSelf: 'center',
               position: 'absolute',
-              bottom: '16%',
+              bottom: '20%',
               width: hp(10),
               // borderWidth: 5,
             }}>
@@ -225,18 +245,20 @@ const Playsong = () => {
               maxValue={maxTimeInMinutes * 60}
               inActiveStrokeColor="white"
               showProgressValue={false}
-              activeStrokeWidth={5.5}
-              inActiveStrokeWidth={5.5}
+              activeStrokeWidth={10}
+              ac
+              activeStrokeColor="black"
             />
           </TouchableOpacity>
           <View
             style={{
-              alignSelf: 'center',
-              justifyContent: 'center',
-              marginTop: hp(8),
-              height: hp(7),
+              alignItems: 'center',
+             
+              height: hp(10),
+              width: wp(100),
               position: 'absolute',
-              bottom: '3%',
+              bottom: hp(3),
+           
             }}>
             <FlatList
               data={data}
@@ -247,30 +269,32 @@ const Playsong = () => {
                 <TouchableOpacity onPress={() => handleTabPress(item.title)}>
                   <View
                     style={{
-                      width: hp(14),
-                      height: hp(7),
-                      justifyContent: 'space-between',
+                      width: wp(30),
+                      height: hp(6),
                       alignItems: 'center',
+                      justifyContent: 'flex-end',
                       flexDirection: 'row',
                       backgroundColor:
                         selectedTab === item.title ? '#000000' : '#DEDEDE',
                       borderRadius: hp(5),
-                      marginHorizontal: hp(1),
+                      marginHorizontal: wp(1),
                     }}>
                     <Text
                       style={{
                         color: selectedTab === item.title ? 'white' : 'black',
                         fontSize: hp(2.1),
                         fontWeight: '400',
-                        marginHorizontal: hp(1.2),
+                        right: wp(3),
                       }}>
                       {item.title}
                     </Text>
                     <Image
                       source={require('../../assets/music.jpg')}
                       style={{
-                        width: hp(7),
-                        height: hp(7),
+                        width: hp(6),
+
+                        height: hp(6),
+
                         borderRadius: hp(7),
                       }}
                     />

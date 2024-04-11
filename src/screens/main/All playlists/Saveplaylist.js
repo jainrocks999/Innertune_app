@@ -38,7 +38,7 @@ const Saveplaylist = () => {
     console.log('Description:', description);
   };
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: '#191919'}}>
          <View
         style={{
           flexDirection: 'row',
@@ -47,7 +47,7 @@ const Saveplaylist = () => {
           justifyContent: 'center',
         }}>
         <View style={{height: hp(5), marginLeft: '15%'}}>
-          <Icon    onPress={() => navigation.goBack()}name="arrow-back" size={30} color="black" />
+          <Icon    onPress={() => navigation.goBack()}name="arrow-back" size={30} color="white" />
         </View>
         <View style={{height: hp(5), width: wp(100)}}>
           <Text
@@ -55,7 +55,7 @@ const Saveplaylist = () => {
               fontSize: 22,
               fontWeight: '500',
               marginHorizontal: '17%',
-              color: 'black',
+              color: 'white',
             }}>
       Save your Playlist
           </Text>
@@ -66,7 +66,7 @@ const Saveplaylist = () => {
           style={{
             height: hp(30),
             width: wp(50),
-            backgroundColor: '#7153CD',
+            backgroundColor: '#426e56',
             borderRadius: 20,
             alignSelf: 'center',
             alignItems: 'center',
@@ -117,7 +117,7 @@ const Saveplaylist = () => {
           style={{
             height: 45,
             marginLeft: 20,
-            backgroundColor: '#7254CD',
+            backgroundColor: '#426e56',
             alignItems: 'center',
             justifyContent: 'center',
             width: wp(60),
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   input: {
-    backgroundColor: '#F9F9F9',
+    backgroundColor: 'black',
     borderRadius: 10,
     paddingHorizontal: 10,
     marginVertical: 10,
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   label: {
     marginBottom: 5,
     fontSize: 15,
-    color:'black',
+    color:'white',
     fontWeight: '500',
   },
 });

@@ -24,7 +24,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   showAlert = viewId => Alert.alert('Alert', 'Button pressed ' + viewId);
-
+  
   const getToken = () => {
     if (email !== '' && password !== '') {
       dispatch({
@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
   },
   inputs: {
     height: hp(6),
+    width: wp(80),
     marginLeft: wp(4),
     fontSize: hp(2.1),
     fontWeight: '400',
@@ -155,7 +156,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     height: hp(10),
-
     width: 250,
     borderRadius: 30,
   },

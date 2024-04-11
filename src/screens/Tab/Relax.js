@@ -80,50 +80,56 @@ const Img = [
   },
 ];
 
-const Relax = () => {
+const Relax = ({data}) => {
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-      <ScrollView contentContainerStyle={{alignSelf: 'center', marginTop: 5}}>
-        <FlatList
-          data={Img}
-          numColumns={2}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <View
-              style={{
-                flexDirection: 'column',
-                width: wp(49),
-                alignItems: 'center',
-              }}>
-              <View style={styles.imageContainerrr}>
-                <TouchableOpacity>
-                <Image source={item.image} style={styles.imageee} />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                <View style={{flexDirection: 'column', alignSelf: 'center'}}>
-                  <Text style={styles.texttt}>{item.title}</Text>
-                </View>
-                </TouchableOpacity>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
+    <ScrollView contentContainerStyle={{alignSelf: 'center'}}>
+   
+      <FlatList
+        data={data}
+        numColumns={2}
+        keyExtractor={item => item.id}
+        renderItem={({item}) => (
+          <View
+            style={{
+              flexDirection: 'column',
+              width: wp(49),
+              alignItems: 'center',
+            }}>
+            <View style={styles.imageContainerrr}>
+              <TouchableOpacity>
+                <Image source={{uri:item?.bgsound_image[0]?.original_url}} style={styles.imageee} />
+              </TouchableOpacity>
+              <TouchableOpacity>
                 <View
                   style={{
-                    position: 'absolute',
-                    right: 10,
-                    top: 10,
-                    height: hp(4),
-                    width: wp(8),
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: 20,
-                    backgroundColor: 'white',
+                    flexDirection: 'column',
+                    alignSelf: 'center',
+                    marginTop:10
                   }}>
-                  <Fontisto name="locked" size={20} color="black" />
+                  <Text style={styles.texttt}>{item?.bgsound_name}</Text>
                 </View>
+              </TouchableOpacity>
+              <View
+                style={{
+                  position: 'absolute',
+                  right: 10,
+                  top: 10,
+                  height: hp(4),
+                  width: wp(8),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 20,
+                  backgroundColor: 'white',
+                }}>
+                <Fontisto name="locked" size={20} color="black" />
               </View>
             </View>
-          )}
-        />
-      </ScrollView>
-    </SafeAreaView>
+          </View>
+        )}
+      />
+    </ScrollView>
+  </SafeAreaView>
   );
 };
 
@@ -134,7 +140,7 @@ const styles = StyleSheet.create({
     width: hp(20),
     height: hp(15),
     borderRadius: 20,
-    marginVertical: hp(3),
+    marginVertical: hp(3.5),
     // borderWidth: 1,
     // borderColor: 'black',
     // backgroundColor: 'black',
@@ -145,7 +151,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   texttt: {
-    color: 'black',
+    color: 'white',
     fontSize: 18,
     fontWeight: '500',
   },

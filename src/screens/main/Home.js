@@ -63,7 +63,9 @@ const Img = [
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
-  const {loading, playlist, groups} = useSelector(state => state.home);
+  const {loading, playlist, groups, category} = useSelector(
+    state => state.home,
+  );
 
   const getAllCategories = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -79,8 +81,17 @@ const HomeScreen = () => {
       url: 'groups',
       user_id: 1,
     });
+    dispatch({
+      type: 'home/category_fetch_request',
+      token,
+      url: 'categories',
+      user_id: '1',
+    });
   };
-  console.log('fetchdd');
+  const test = async () => {
+    const token = await AsyncStorage.getItem('token');
+  };
+
   useEffect(() => {
     getAllCategories();
   }, []);
@@ -96,64 +107,35 @@ const HomeScreen = () => {
   };
   const navigation = useNavigation();
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
       <Header />
       <Loader loading={loading} />
       <ScrollView style={styles.scrollView}>
         <View style={styles.FeatureContainer}>
           <Text style={styles.Featurecategory}>Just for You</Text>
-          <View style={{paddingHorizontal: '30%'}}>
+          <View style={{paddingHorizontal: '20%'}}>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('Popular');
               }}>
-              <Text style={{fontSize: 15, fontWeight: '700', color: 'grey'}}>
+              <Text style={{fontSize: 15, fontWeight: '700', color: 'white'}}>
                 View All
               </Text>
             </TouchableOpacity>
           </View>
         </View>
-        {/* <FlatList
-          horizontal={true}
-          data={Img}
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <View style={styles.imageContainer}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('playsong');
-                }}>
-                <Image source={item.image} style={styles.image} />
-                <Text style={styles.text}>{item.title}</Text>
-              </TouchableOpacity>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                  marginTop: hp(-2.5),
-                  marginRight: 10,
-                }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('Popular');
-                  }}>
-                  <Icon name="heart" size={20} color="#434343" />
-                </TouchableOpacity>
-              </View>
-              <Text style={styles.text2}>{item.title2}</Text>
-            </View>
-          )}
+        {/* <Horizontal
+          data={category}
+          onPress={() => {
+            getAffetMations();
+          }}
         /> */}
-        <Horizontal data={playlist} />
-
         <View style={styles.card}>
           <LinearGradient
             start={{x: 0.0, y: 0.0}}
             end={{x: 5, y: 0.0}}
-            locations={[0, 0.15, 0.36]}
-            colors={['#A89AD5', '#7153CD']}
+            locations={[0, 0.5, 0.3]}
+            colors={['#191919', '#89FFBF']}
             style={styles.linearGradient}>
             <Image
               source={require('../../assets/music1.jpg')}
@@ -178,223 +160,76 @@ const HomeScreen = () => {
             </View>
           </LinearGradient>
         </View>
-        {
-          <>
-            <FlatList
-              data={groups}
-              renderItem={({item, index}) => (
-                <>
-                  <View style={styles.FeatureContainer}>
-                    <Text style={styles.Featurecategory}>
-                      {item?.group_name}
-                    </Text>
-                    <View style={{paddingHorizontal: '30%'}}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          navigation.navigate('Popular');
-                        }}>
-                        <Text
-                          style={{
-                            fontSize: 15,
-                            fontWeight: '900',
-                            color: 'grey',
-                          }}>
-                          View All
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  <Horizontal
-                    onPress={() => {
-                      getAffetMations();
-                    }}
-                    data={playlist}
-                  />
-                  {index == 1 ? (
-                    <View style={styles.card}>
-                      <LinearGradient
-                        start={{x: 0.0, y: 0.0}}
-                        end={{x: 5, y: 0.0}}
-                        locations={[0, 0.15, 0.36]}
-                        colors={['#A89AD5', '#7153CD']}
-                        style={styles.linearGradient}>
-                        <Image
-                          source={require('../../assets/music1.jpg')}
-                          style={{
-                            height: hp(13),
-                            width: wp(25),
-                            borderRadius: 20,
-                          }}
-                        />
-                        <View
-                          style={{
-                            flexDirection: 'column',
-                            alignSelf: 'center',
-                            width: wp(50),
-                            marginHorizontal: '5%',
-                          }}>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '600',
-                              color: '#ffffff',
-                              backgroundColor: 'transparent',
-                            }}>
-                            Share Innertunes with your loved...
-                          </Text>
-                        </View>
-                      </LinearGradient>
-                    </View>
-                  ) : null}
-                </>
-              )}
-            />
 
-            {/* <FlatList
-              horizontal={true}
-              data={Img}
-              keyExtractor={item => item.id}
-              renderItem={({item}) => (
-                <View style={styles.imageContainer}>
-                  <Image source={item.image} style={styles.image} />
-                  <Text style={styles.text}>{item.title}</Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'flex-end',
-                      marginTop: hp(-2.5),
-                      marginRight: 10,
+        <FlatList
+          data={groups}
+          renderItem={({item, index}) => (
+            <>
+              <View style={styles.FeatureContainer}>
+                <Text style={styles.Featurecategory}>
+                  {item?.group_name}
+                </Text>
+                <View style={{paddingHorizontal: '20%'}}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('Popular');
                     }}>
-                    <Icon name="heart" size={20} color="#434343" />
-                  </View>
-                  <Text style={styles.text2}>{item.title2}</Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        fontWeight: '900',
+                        color: 'white',
+                      }}>
+                      View All
+                    </Text>
+                  </TouchableOpacity>
                 </View>
-              )}
-            /> */}
-          </>
-        }
-        <View style={styles.card}>
-          <Image
-            source={require('../../assets/music1.jpg')}
-            style={{height: hp(13), width: wp(25), borderRadius: 20}}
-          />
-          <View
-            style={{
-              flexDirection: 'column',
-              alignSelf: 'center',
-              width: wp(50),
-              marginHorizontal: '5%',
-            }}>
-            <Text style={{fontSize: 20, fontWeight: '600', color: 'white'}}>
-              Share Innertunes with your loved...
-            </Text>
-          </View>
-        </View>
-        <View style={styles.FeatureContainer}>
-          <Text style={styles.Featurecategory}>Popular Playlist</Text>
-          <View style={{paddingHorizontal: '30%'}}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Popular');
-              }}>
-              <Text style={{fontSize: 15, fontWeight: '900', color: 'grey'}}>
-                View All
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <FlatList
-          horizontal={true}
-          data={Img}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <View style={styles.imageContainer}>
-              <Image source={item.image} style={styles.image} />
-              <Text style={styles.text}>{item.title}</Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                  marginTop: hp(-2.5),
-                  marginRight: 10,
-                }}>
-                <Icon name="heart" size={20} color="#434343" />
               </View>
-              <Text style={styles.text2}>{item.title2}</Text>
-            </View>
+              <Horizontal
+                onPress={() => {
+                  getAffetMations();
+                }}
+                data={category}
+              />
+              {index == 1 ? (
+                <View style={styles.card}>
+                  <LinearGradient
+                    start={{x: 0.0, y: 0.0}}
+                    end={{x: 5, y: 0.0}}
+                    locations={[0, 0.5, 0.3]}
+                    colors={['#191919', '#89FFBF']}
+                    style={styles.linearGradient}>
+                    <Image
+                      source={require('../../assets/music1.jpg')}
+                      style={{
+                        height: hp(13),
+                        width: wp(25),
+                        borderRadius: 20,
+                      }}
+                    />
+                    <View
+                      style={{
+                        flexDirection: 'column',
+                        alignSelf: 'center',
+                        width: wp(50),
+                        marginHorizontal: '5%',
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: '600',
+                          color: '#ffffff',
+                          backgroundColor: 'transparent',
+                        }}>
+                        Share Innertunes with your loved...
+                      </Text>
+                    </View>
+                  </LinearGradient>
+                </View>
+              ) : null}
+            </>
           )}
         />
-        <View style={styles.card}>
-          <Image
-            source={require('../../assets/music1.jpg')}
-            style={{height: hp(13), width: wp(25), borderRadius: 20}}
-          />
-          <View
-            style={{
-              flexDirection: 'column',
-              alignSelf: 'center',
-              width: wp(50),
-              marginHorizontal: '5%',
-            }}>
-            <Text style={{fontSize: 20, fontWeight: '600', color: 'white'}}>
-              Share Innertunes with your loved...
-            </Text>
-          </View>
-        </View>
-        <View style={styles.FeatureContainer}>
-          <Text style={styles.Featurecategory}>Popular Playlist</Text>
-          <View style={{paddingHorizontal: '30%'}}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Popular');
-              }}>
-              <Text style={{fontSize: 15, fontWeight: '900', color: 'grey'}}>
-                View All
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <FlatList
-          horizontal={true}
-          data={Img}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <View style={styles.imageContainer}>
-              <Image source={item.image} style={styles.image} />
-              <Text style={styles.text}>{item.title}</Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                  marginTop: hp(-2.5),
-                  marginRight: 10,
-                }}>
-                <Icon name="heart" size={20} color="#434343" />
-              </View>
-              <Text style={styles.text2}>{item.title2}</Text>
-            </View>
-          )}
-        />
-        <View style={styles.card}>
-          <Image
-            source={require('../../assets/music1.jpg')}
-            style={{height: hp(13), width: wp(25), borderRadius: 20}}
-          />
-          <View
-            style={{
-              flexDirection: 'column',
-              alignSelf: 'center',
-              width: wp(50),
-              marginHorizontal: '5%',
-            }}>
-            <Text style={{fontSize: 20, fontWeight: '600', color: 'white'}}>
-              Share Innertunes with your loved...
-            </Text>
-          </View>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -412,18 +247,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
     width: wp(100),
-    height: hp(7),
+    height: hp(6.5),
   },
   Featurecategory: {
     fontSize: wp(5),
-    width: wp(50),
+    width: wp(60),
     fontWeight: '400',
     fontFamily: 'Poppins-Medium',
-    color: 'black',
+    color: 'white',
     paddingHorizontal: 10,
   },
   scrollView: {
-    backgroundColor: 'white',
+    backgroundColor: '#191919',
   },
   imageContainer: {
     padding: 15,
@@ -439,10 +274,10 @@ const styles = StyleSheet.create({
     width: wp(90),
     borderColor: 'black',
     alignSelf: 'center',
-    margin: '5%',
     flexDirection: 'row',
     borderRadius: 20,
     backgroundColor: '#bb98ed',
+    marginBottom:20
   },
   linearGradient: {
     width: '100%',
@@ -452,7 +287,6 @@ const styles = StyleSheet.create({
 
   text: {
     width: wp(50),
-    marginTop: 10,
     marginLeft: 5,
     color: 'black',
     fontSize: 18,
@@ -460,7 +294,6 @@ const styles = StyleSheet.create({
   },
   text2: {
     width: wp(50),
-    marginTop: 4,
     marginLeft: 5,
     color: 'black',
     fontSize: 15,

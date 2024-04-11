@@ -59,7 +59,7 @@ const Img = [
   ];
 const Playlistdetails = () => {
   return (
-    <View style={{flex: 1, backgroundColor:'white'}}>
+    <View style={{flex: 1, backgroundColor:'#191919'}}>
       <View style={{alignItems: 'center', marginTop:hp(4),}}>
         <Image
           source={require('../../assets/music.jpg')}
@@ -71,7 +71,7 @@ const Playlistdetails = () => {
         />
       </View>
       <View style={{alignSelf:'center',marginTop:hp(1.5)}}>
-      <Text style={{color:'black',fontSize:hp(2.5),fontWeight:'500'}}>Focus on Your Health</Text>
+      <Text style={{color:'white',fontSize:hp(2.5),fontWeight:'500'}}>Focus on Your Health</Text>
       </View>
       <ScrollView style={{marginTop: 20}}>
         <FlatList
@@ -86,7 +86,7 @@ const Playlistdetails = () => {
                   height: hp(8),
                   width: wp(90),
                   marginVertical: 10,
-                  backgroundColor: '#F8F8F8',
+                  backgroundColor: 'black',
                   borderRadius: 20,
                 }}>
                 <View
@@ -99,7 +99,7 @@ const Playlistdetails = () => {
                   onPress={{}}
                     name="plus"
                     size={30}
-                    color="black"
+                    color="white"
                   />
                 </View>
               </View>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
         width: wp(50),
     
         marginLeft: 5,
-        color: 'black',
+        color: 'white',
         fontSize: 15,
       },
 });

@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   heightPercent as hp,
@@ -9,13 +9,7 @@ import Modal2 from '../../../components/molecules/Modal2';
 const Remindermodal1 = () => {
   const [visible, setVisible] = useState(false);
   const [selectedModal, setSelectedModal] = useState();
-  const data2 = [
-    {id: '1', titles: 'Remindermodal1'},
-    {id: '2', titles: 'Remindmodal2'},
-    {id: '3', titles: 'Remindmodal3'},
-    {id: '4', titles: 'Remindmodal4'},
-    {id: '5', titles: 'Remindmodal5'},
-  ];
+
   const handleModalPress = titles => {
     // Alert.alert('thisis')
     setSelectedModal(titles);
@@ -23,16 +17,22 @@ const Remindermodal1 = () => {
   };
   console.log('thiss vidzxc', visible);
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor:'#191919'}}>
       <View style={styles.bottomSheetContent}>
         <TouchableOpacity
           onPress={() => {
-            handleModalPress('Remindermodal1');
+            handleModalPress('Remindmodal2');
           }}>
           <View style={styles.card}>
+          <LinearGradient
+              start={{x: 0.0, y: 0.0}}
+              end={{x: 5, y: 0.0}}
+              locations={[0, 0.5, 0.3]}
+              colors={['#191919', '#89FFBF']}
+              style={styles.linearGradient}>
             <Image
               source={require('../../../assets/music.jpg')}
-              style={{height: hp(20), width: wp(30), borderRadius: 20}}
+              style={{height: hp(15), width: wp(30), borderRadius: 20}}
             />
             <View
               style={{
@@ -51,23 +51,23 @@ const Remindermodal1 = () => {
                 Affirmations Notifications
               </Text>
             </View>
+            </LinearGradient>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-        // onPress={() => {
-        //   navigation.navigate('createplaylist');
-        // }}
-        >
+          onPress={() => {
+            handleModalPress('Remindmodal3');
+          }}>
           <View style={styles.card}>
             <LinearGradient
               start={{x: 0.0, y: 0.0}}
               end={{x: 5, y: 0.0}}
-              locations={[0, 0.15, 0.36]}
-              colors={['#A89AD5', '#7153CD']}
+              locations={[0, 0.5, 0.3]}
+              colors={['#191919', '#89FFBF']}
               style={styles.linearGradient}>
               <Image
                 source={require('../../../assets/music.jpg')}
-                style={{height: hp(20), width: wp(30), borderRadius: 20}}
+                style={{height: hp(15), width: wp(30), borderRadius: 20}}
               />
               <View
                 style={{
@@ -94,6 +94,7 @@ const Remindermodal1 = () => {
         title={selectedModal}
         onClose={() => setVisible(false)}
         visible={visible}
+        titles={selectedModal}
       />
     </View>
   );
@@ -112,11 +113,11 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
   },
   card: {
-    height: hp(20),
+    height: hp(15),
     width: wp(80),
     borderColor: 'black',
     alignSelf: 'center',
-    margin: '2%',
+    margin: '5%',
     flexDirection: 'row',
     borderRadius: 20,
     backgroundColor: 'orange',

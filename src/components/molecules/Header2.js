@@ -23,7 +23,7 @@ const Header2 = ({placeholder, onChangeText,}) => {
       style={{
         height: hp(10),
         width: '100%',
-        backgroundColor: 'white',
+        backgroundColor: '#191919',
         marginHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',
@@ -32,7 +32,7 @@ const Header2 = ({placeholder, onChangeText,}) => {
         onPress={() => navigation.goBack()}
         name="arrow-back"
         size={30}
-        color="black"
+        color="white"
       />
 
       <View style={styles.searchContainer}>
@@ -63,11 +63,12 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: 'black',
     borderRadius: 50,
     paddingHorizontal: 10,
     marginHorizontal: 40,
-    elevation: 5,
+  borderWidth:.2,
+  borderColor:'grey',
     width: wp(70),
     height: hp(5),
   },
