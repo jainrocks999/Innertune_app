@@ -12,6 +12,7 @@ import Createaffirmation from '../screens/main/All playlists/Createaffiremation'
 import Saveplaylist from '../screens/main/All playlists/Saveplaylist';
 import Playsong from '../screens/main/Playsong';
 import Mymodal from '../components/molecules/Modal';
+import Playlistdetails from '../screens/Tab/Playlistdetails';
 
 const Stack = createStackNavigator();
 function MyStack() {
@@ -65,6 +66,11 @@ function MyStack() {
       <Stack.Screen
         name="modal"
         component={Mymodal}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Playlistdetails"
+        component={Playlistdetails}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

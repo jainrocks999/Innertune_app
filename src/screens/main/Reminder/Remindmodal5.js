@@ -48,7 +48,7 @@ const Remindmodal5 = () => {
     console.log(items.id);
     if (selectedDay.includes(items.id)) {
       const filter = [...selectedDay].filter(
-        (item, index) => item.id != items.id,
+        (item, index) => item != items.id,
       );
       console.log(filter);
       setSelectedDay(filter);

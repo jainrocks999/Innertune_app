@@ -12,8 +12,10 @@ import {
   heightPercent as hp,
   widthPrecent as wp,
 } from '../../components/atoms/responsive';
+import {useDispatch, useSelector} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
+import {useNavigation} from '@react-navigation/native';
 import Header2 from '../../components/molecules/Header2';
 import MyTabs from '../../navigation/Bottomtab';
 const Img = [
@@ -67,6 +69,11 @@ const Img = [
   },
 ];
 const Popularplaylist = () => {
+  const dispatch = useDispatch();
+  const {loading, category} = useSelector(state => state.home);
+  console.log(category);
+
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
       <Header2 />
@@ -80,33 +87,43 @@ const Popularplaylist = () => {
         }}>
         <Text style={{fontSize: 25, color: 'white'}}>Popular playlist</Text>
       </View>
-      <ScrollView style={{marginTop: 20}}>
+      <ScrollView>
         <FlatList
-          data={Img}
+          data={category}
           keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignSelf: 'center',
-                width: '100%',
-                justifyContent: 'center',
-              }}>
-              <View style={styles.imageContainer}>
-                <Image source={item.image} style={styles.image} />
-                <View style={{flexDirection: 'column'}}>
-                  <Text style={styles.text}>{item.title}</Text>
-                  <Text style={styles.text2}>{item.title2}</Text>
-                </View>
-                <View style={{justifyContent: 'center'}}>
-                  <Feather name="heart" size={25} color="white" />
-                </View>
-                <View style={{justifyContent: 'center', marginLeft: 30}}>
-                  <Entypo name="dots-three-vertical" size={20} color="white" />
+          renderItem={({item}) => {
+            let image =
+              item.categories_image[0]?.original_url ??
+              'https://stimuli.forebearpro.co.in/storage/app/public/3/download-(8).jpg';
+            return (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignSelf: 'center',
+                  width: '100%',
+                  justifyContent: 'center',
+                }}>
+                {console.log(JSON.stringify(item))}
+                <View style={styles.imageContainer}>
+                  <Image source={{uri: image}} style={styles.image} />
+                  <View style={{flexDirection: 'column'}}>
+                    <Text style={styles.text}>{item.categories_name}</Text>
+                    <Text style={styles.text2}>{item.title2}</Text>
+                  </View>
+                  <View style={{justifyContent: 'center'}}>
+                    <Feather name="heart" size={25} color="white" />
+                  </View>
+                  <View style={{justifyContent: 'center', marginLeft: 30}}>
+                    <Entypo
+                      name="dots-three-vertical"
+                      size={20}
+                      color="white"
+                    />
+                  </View>
                 </View>
               </View>
-            </View>
-          )}
+            );
+          }}
         />
       </ScrollView>
     </SafeAreaView>

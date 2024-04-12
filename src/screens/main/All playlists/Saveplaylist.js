@@ -43,6 +43,7 @@ const Saveplaylist = () => {
         style={{
           flexDirection: 'row',
           marginTop: 20,
+         
           alignItems: 'center',
           justifyContent: 'center',
         }}>
@@ -70,7 +71,7 @@ const Saveplaylist = () => {
             borderRadius: 20,
             alignSelf: 'center',
             alignItems: 'center',
-            marginTop: '20%',
+            marginTop: '10%',
             justifyContent: 'center',
           }}>
           <Image

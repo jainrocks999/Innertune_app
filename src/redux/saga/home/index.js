@@ -110,7 +110,12 @@ function* fetchAffirmation(action) {
         type: 'home/affirmation_fetch_success',
         payload: res.data,
       });
-      action.navigation.navigate('playsong');
+      yield put({
+        type:'home/playList_item',
+        payload:action.item
+      })
+      // Alert.alert(JSON.stringify(action.item))
+      action.navigation.navigate('Playlistdetails');
     } else {
       Toast.show('Error with fetching affermations');
       yield put({

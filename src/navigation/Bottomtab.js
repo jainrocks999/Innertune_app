@@ -2,12 +2,9 @@ import React, {useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/main/Home';
-import Mylibrary from '../screens/main/Mylibrary';
 import Reminder from '../screens/main/Reminder';
 import Setting from '../screens/main/Setting';
 import LinearGradient from 'react-native-linear-gradient';
-import Colors from '../themes/Colors';
-import Mymodal from '../components/molecules/Modal';
 import {BottomSheet} from 'react-native-btr';
 import {
   heightPercent as hp,
@@ -17,7 +14,7 @@ import {useTabMenu} from '../Context/context';
 import Addbutton from '../screens/main/Addbutton';
 import TopTabs from './Toptab';
 import {useNavigation} from '@react-navigation/native';
-import Popularplaylist from '../screens/main/PopularPlaylist';
+
 const Tab = createBottomTabNavigator();
 const getIconColor = focused => ({
   tintColor: focused ? '#89FFBF' : 'grey',
@@ -231,7 +228,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    borderTopWidth:0
+    borderTopWidth: 0,
   },
   tabIconContainer: {
     width: wp(20),

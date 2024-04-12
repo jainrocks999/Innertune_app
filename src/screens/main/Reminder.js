@@ -31,14 +31,15 @@ const Reminder = () => {
   const navigation = useNavigation();
   const [isSwitchOn, setIsSwitchOn] = useState(false);
 
-  const handleToggle = isOn => {
-    setIsSwitchOn(isOn);
-    console.log('changed to:', isOn);
+  const handleToggle = itemId => {
+    setSelectedToggles(prevState => ({
+      ...prevState,
+      [itemId]: !prevState[itemId],
+    }));
   };
-
   const [visible, setVisible] = useState(false);
   const [selectedModal, setSelectedModal] = useState();
-
+  const [selectedToggles, setSelectedToggles] = useState({});
   const handleModalPress = titles => {
     // Alert.alert('thisis')
     setSelectedModal(titles);
@@ -75,59 +76,62 @@ const Reminder = () => {
           </Text>
         </View>
       </View>
-      <ScrollView style={{marginTop: 10,}}>
+      <ScrollView style={{marginTop: 10}}>
         <FlatList
           data={data}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
             <TouchableOpacity
-            onPress={() => {
-              handleModalPress('Remindmodal4');
-            }}>
-            <View
-              style={{
-                height: hp(10),
-                width: wp(90),
-                justifyContent: 'center',
-                alignSelf: 'center',
-                backgroundColor: 'black',
-                borderRadius: 30,
-                marginVertical: 10,
-                padding: '6%',
+              onPress={() => {
+                handleModalPress('Remindmodal4');
               }}>
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginHorizontal: '10%',
-                }}>
-                <Text style={{color: 'white', fontSize: 15, fontWeight: '500'}}>
-                  {item.title}
-                </Text>
-                <Text style={{color: 'white', fontSize: 15, fontWeight: '400'}}>
-                  {item.time}
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginHorizontal: '10%',
+                  height: hp(10),
+                  width: wp(90),
+                  justifyContent: 'center',
+                  alignSelf: 'center',
+                  backgroundColor: 'black',
+                  borderRadius: 30,
                   marginVertical: 10,
+                  padding: '6%',
                 }}>
-                <Text style={{color: 'white', fontSize: 15, fontWeight: '300'}}>
-                  {item.frequency}
-                </Text>
-                <ToggleSwitch
-                  isOn={isSwitchOn}
-                  onColor="#426e56"
-                  offColor="#434343"
-                  size="small"
-                  onToggle={handleToggle}
-                />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginHorizontal: '10%',
+                  }}>
+                  <Text
+                    style={{color: 'white', fontSize: 15, fontWeight: '500'}}>
+                    {item.title}
+                  </Text>
+                  <Text
+                    style={{color: 'white', fontSize: 15, fontWeight: '400'}}>
+                    {item.time}
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginHorizontal: '10%',
+                    marginVertical: 10,
+                  }}>
+                  <Text
+                    style={{color: 'white', fontSize: 15, fontWeight: '300'}}>
+                    {item.frequency}
+                  </Text>
+                  <ToggleSwitch
+                    isOn={selectedToggles[item.id]}
+                    onColor="#426e56"
+                    offColor="#434343"
+                    size="small"
+                    onToggle={() => handleToggle(item.id)}
+                  />
+                </View>
               </View>
-            </View>
             </TouchableOpacity>
           )}
         />
@@ -136,58 +140,61 @@ const Reminder = () => {
           keyExtractor={item => item.id}
           renderItem={({item}) => (
             <TouchableOpacity
-            onPress={() => {
-              handleModalPress('Remindmodal5');
-            }}>
-            <View
-              style={{
-                height: hp(10),
-                width: wp(90),
-                justifyContent: 'center',
-                alignSelf: 'center',
-                backgroundColor: 'black',
-                borderRadius: 30,
-                marginVertical: 10,
-                padding: '6%',
+              onPress={() => {
+                handleModalPress('Remindmodal5');
               }}>
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginHorizontal: '10%',
-                }}>
-                <Text style={{color: 'white', fontSize: 15, fontWeight: '500'}}>
-                  {item.title}
-                </Text>
-                <Text style={{color: 'white', fontSize: 15, fontWeight: '400'}}>
-                  {item.time}
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginHorizontal: '10%',
+                  height: hp(10),
+                  width: wp(90),
+                  justifyContent: 'center',
+                  alignSelf: 'center',
+                  backgroundColor: 'black',
+                  borderRadius: 30,
                   marginVertical: 10,
+                  padding: '6%',
                 }}>
-                <Text style={{color: 'white', fontSize: 15, fontWeight: '300'}}>
-                  {item.frequency}
-                </Text>
-                <ToggleSwitch
-                  isOn={isSwitchOn}
-                  onColor="#426e56"
-                  offColor="#434343"
-                  size="small"
-                  onToggle={handleToggle}
-                />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginHorizontal: '10%',
+                  }}>
+                  <Text
+                    style={{color: 'white', fontSize: 15, fontWeight: '500'}}>
+                    {item.title}
+                  </Text>
+                  <Text
+                    style={{color: 'white', fontSize: 15, fontWeight: '400'}}>
+                    {item.time}
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginHorizontal: '10%',
+                    marginVertical: 10,
+                  }}>
+                  <Text
+                    style={{color: 'white', fontSize: 15, fontWeight: '300'}}>
+                    {item.frequency}
+                  </Text>
+                  <ToggleSwitch
+                    isOn={selectedToggles[item.id]}
+                    onColor="#426e56"
+                    offColor="#434343"
+                    size="small"
+                    onToggle={() => handleToggle(item.id)}
+                  />
+                </View>
               </View>
-            </View>
             </TouchableOpacity>
           )}
         />
       </ScrollView>
-      <View style={{alignSelf: 'center',position:'absolute',bottom:hp(8)}}>
+      <View style={{alignSelf: 'center', position: 'absolute', bottom: hp(8)}}>
         <TouchableOpacity
           style={{
             height: 45,

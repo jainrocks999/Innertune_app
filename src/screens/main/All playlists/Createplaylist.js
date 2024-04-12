@@ -68,11 +68,11 @@ const Img = [
 ];
 const Createplaylist = () => {
   const navigation = useNavigation();
-  const [text, setText] = useState('');
-  const handleClear = () => {
-    setText;
-    onChangeText;
-  };
+  // const [text, setText] = useState('');
+  // const handleClear = () => {
+  //   setText;
+  //   onChangeText;
+  // };
   return (
     <View style={{flex: 1, backgroundColor: '#191919'}}>
       <View
@@ -105,7 +105,7 @@ const Createplaylist = () => {
           </Text>
         </View>
       </View>
-      <View style={styles.searchContainer}>
+      {/* <View style={styles.searchContainer}>
         <AntDesign name="search1" size={20} color="gray" />
         <TextInput
           style={styles.input}
@@ -125,7 +125,7 @@ const Createplaylist = () => {
             onPress={handleClear}
           />
         )}
-      </View>
+      </View> */}
       <ScrollView style={{marginTop: 20}}>
         <FlatList
           data={Img}

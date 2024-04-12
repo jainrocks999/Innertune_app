@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   SafeAreaView,
   StyleSheet,
@@ -53,10 +54,12 @@ const Img = [
 const Remindmodal2 = () => {
   const [selectedDay, setSelectedDay] = useState([]);
   const handleSelectedDay = items => {
+    // Alert.alert('i am here')
     console.log(items.id);
     if (selectedDay.includes(items.id)) {
-      const filter = [...selectedDay].filter(
-        (item, index) => item.id != items.id,
+      // Alert.alert('i am here')
+      let filter = [...selectedDay].filter(
+        (item, index) => item != items.id,
       );
       console.log(filter);
       setSelectedDay(filter);

@@ -8,6 +8,7 @@ const initialState = {
   bgSound:[],
   bgcategories:[],
   createPlayList:[],
+  item:{}
 };
 const Home = createSlice({
   name: 'home',
@@ -75,6 +76,9 @@ const Home = createSlice({
     },
     createPlayList_error:(state,action)=>{
       return {...state,loading:false}
+    },
+    playList_item:(state,action)=>{
+      return{...state,item:action.payload}
     }
   },
 });

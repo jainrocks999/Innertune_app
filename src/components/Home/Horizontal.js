@@ -5,6 +5,7 @@ import {
   heightPercent as hp,
   widthPrecent as wp,
 } from '../../components/atoms/responsive';
+
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Octicons';
 const Horizontal = ({data, onPress}) => {
@@ -25,7 +26,7 @@ const Horizontal = ({data, onPress}) => {
 
         return (
           <View style={styles.imageContainer}>
-            <TouchableOpacity onPress={onPress}>
+            <TouchableOpacity onPress={()=>onPress(item)}>
               <Image source={{uri: image}} style={styles.image} />
               <Text style={styles.text}>{title}</Text>
             </TouchableOpacity>

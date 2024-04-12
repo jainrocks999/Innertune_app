@@ -16,7 +16,9 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import Playlistdetails from '../Tab/Playlistdetails';
 import Feather from 'react-native-vector-icons/Feather';
+import Tts from 'react-native-tts';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Mymodal from '../../components/molecules/Modal';
 import {useNavigation} from '@react-navigation/native';
@@ -38,6 +40,7 @@ const Playsong = () => {
   const [visible, setVisible] = useState(false);
   const [selectedTab, setSelectedTab] = useState();
   const {affirmations} = useSelector(state => state.home);
+  console.log(affirmations);
   const [isPaused, setIsPaused] = useState(false);
   const [visibleIndex, setVisibleIndex] = useState(1);
   const handleTabPress = async title => {
@@ -60,24 +63,46 @@ const Playsong = () => {
     setSelectedTab(title);
     setVisible(true);
   };
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setVisibleIndex(prevIndex => {
+  //       const newIndex = (prevIndex + 1) % affirmations.length;
+  //       flatListRef.current.scrollToIndex({
+  //         animated: true,
+  //         index: newIndex,
+  //       });
+      
+     
+  //       return newIndex;
+  //     });
+      
+  //   }, 8000);
+  //   return () => clearInterval(interval);
+  // }, [affirmations]);
   useEffect(() => {
+    setVisibleIndex(0);
     const interval = setInterval(() => {
       setVisibleIndex(prevIndex => {
         const newIndex = (prevIndex + 1) % affirmations.length;
         flatListRef.current.scrollToIndex({
           animated: true,
           index: newIndex,
+          viewPosition: 0.5,
+          viewOffset: 0,
+          duration: 500, // Adjust animation duration as needed
         });
+  
         return newIndex;
       });
     }, 8000);
     return () => clearInterval(interval);
   }, [affirmations]);
+  
   const [progress, setProgress] = useState(0);
   const maxTimeInMinutes = 0.5;
   useEffect(() => {
     let currentTimeInSeconds = progress;
-    const maxTimeInSeconds = maxTimeInMinutes * 60;
+    const maxTimeInSeconds = maxTimeInMinutes * 100;
 
     const interval = setInterval(() => {
       if (!isPaused) {
@@ -116,7 +141,7 @@ const Playsong = () => {
               />
             </View>
           </View>
-          <TouchableOpacity onPress={() => handleTabPress('Playlistdetails')}>
+        
             <View
               style={[
                 styles.card,
@@ -139,7 +164,7 @@ const Playsong = () => {
                     fontFamily: 'Poppins-Medium',
                     color: 'white',
                   }}>
-                  Playlist Details
+                  Affirmations
                   {/* {progress} */}
                 </Text>
               </View>
@@ -148,7 +173,7 @@ const Playsong = () => {
                 style={{height: hp(6), width: wp(12), borderRadius: 26}}
               />
             </View>
-          </TouchableOpacity>
+     
           <View
             style={{
               flexDirection: 'column',
@@ -212,6 +237,13 @@ const Playsong = () => {
                 )
               }
               keyExtractor={(item, index) => index.toString()}
+              onViewableItemsChanged={({viewableItems,changed})=>{
+                console.log(viewableItems[0].item.affirmation_text);
+                Tts.speak(viewableItems[0].item.affirmation_text, {
+                  iosVoiceId: 'com.apple.ttsbundle.Moira-compact',
+                  rate: 2,
+                });
+              }}
             />
           </View>
           <TouchableOpacity
@@ -227,10 +259,10 @@ const Playsong = () => {
             }}>
             <Image
               // tintColor={'red'}
-              source={require('../../assets/play-button.png')}
+              source={require('../../assets/pause.png')}
               style={{
                 height: hp(10),
-                width: hp(10),
+                width: wp(21),
                 tintColor: 'white',
                 position: 'absolute',
                 zIndex: 0,
@@ -239,13 +271,13 @@ const Playsong = () => {
             <CircularProgress
               value={progress}
               radius={hp(5)}
-              progressValueFontSize={10}
-              duration={2000}
+              progressValueFontSize={20}
+              duration={3000}
               progressValueColor={'#ecf0f1'}
               maxValue={maxTimeInMinutes * 60}
               inActiveStrokeColor="white"
               showProgressValue={false}
-              activeStrokeWidth={10}
+              activeStrokeWidth={12}
               ac
               activeStrokeColor="black"
             />
@@ -253,12 +285,11 @@ const Playsong = () => {
           <View
             style={{
               alignItems: 'center',
-             
+
               height: hp(10),
               width: wp(100),
               position: 'absolute',
               bottom: hp(3),
-           
             }}>
             <FlatList
               data={data}

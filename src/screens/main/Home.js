@@ -95,7 +95,7 @@ const HomeScreen = () => {
   useEffect(() => {
     getAllCategories();
   }, []);
-  const getAffetMations = async () => {
+  const getAffetMations = async (item) => {
     const token = await AsyncStorage.getItem('token');
     dispatch({
       type: 'home/affirmation_fetch_request',
@@ -103,6 +103,7 @@ const HomeScreen = () => {
       user_id: '1',
       navigation,
       url: 'affirmation',
+      item
     });
   };
   const navigation = useNavigation();
@@ -166,9 +167,7 @@ const HomeScreen = () => {
           renderItem={({item, index}) => (
             <>
               <View style={styles.FeatureContainer}>
-                <Text style={styles.Featurecategory}>
-                  {item?.group_name}
-                </Text>
+                <Text style={styles.Featurecategory}>{item?.group_name}</Text>
                 <View style={{paddingHorizontal: '20%'}}>
                   <TouchableOpacity
                     onPress={() => {
@@ -186,8 +185,8 @@ const HomeScreen = () => {
                 </View>
               </View>
               <Horizontal
-                onPress={() => {
-                  getAffetMations();
+                onPress={(items) => {
+                  getAffetMations(items);
                 }}
                 data={category}
               />
@@ -277,7 +276,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 20,
     backgroundColor: '#bb98ed',
-    marginBottom:20
+    marginBottom: 20,
   },
   linearGradient: {
     width: '100%',
