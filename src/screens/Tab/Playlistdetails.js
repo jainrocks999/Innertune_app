@@ -69,8 +69,8 @@ const Img = [
 
 const Playlistdetails = () => {
   const dispatch = useDispatch();
-  const {affirmations} = useSelector(state => state.home);
-  console.log(affirmations);
+  const {affirmations,favoriteList} = useSelector(state => state.home);
+  console.log('tjhidi',favoriteList.favoritelist);
   const {loading, groups, category,item} = useSelector(
     state => state.home,
   );
@@ -87,6 +87,7 @@ const Playlistdetails = () => {
           style={{
             height: hp(30),
             width: wp(100),
+            resizeMode:'stretch'
           }}
         />
       </View>

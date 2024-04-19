@@ -7,6 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {
   heightPercent as hp,
@@ -67,12 +68,23 @@ const Img = [
   },
 ];
 const Createplaylist = () => {
+  const {affirmations} = useSelector(state => state.home);
+  console.log(affirmations);
   const navigation = useNavigation();
   // const [text, setText] = useState('');
   // const handleClear = () => {
   //   setText;
   //   onChangeText;
   // };
+  const [selected, setSelected] = useState([]);
+  const hanleSelected = id => {
+    if (selected.includes(id)) {
+      const filter = [...selected].filter(item => item != id);
+      setSelected(filter)
+    } else {
+       setSelected([...selected,id])
+    }
+  };
   return (
     <View style={{flex: 1, backgroundColor: '#191919'}}>
       <View
@@ -128,7 +140,7 @@ const Createplaylist = () => {
       </View> */}
       <ScrollView style={{marginTop: 20}}>
         <FlatList
-          data={Img}
+          data={affirmations}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
             <TouchableOpacity>
@@ -144,14 +156,19 @@ const Createplaylist = () => {
                 }}>
                 <View
                   style={{justifyContent: 'center', marginHorizontal: '10%'}}>
-                  <Text style={styles.text}>{item.title}</Text>
+                  <Text style={styles.text}>
+                    {item.affirmation_text.substring(0, 30)}
+                  </Text>
                 </View>
                 <View
                   style={{justifyContent: 'center', marginHorizontal: '10%'}}>
-                  <Entypo
-                    name="dots-three-horizontal"
-                    size={20}
-                    color="white"
+                  <AntDesign
+                    onPress={() => {
+                      hanleSelected(item.id);
+                    }}
+                    name={!selected.includes(item.id)?"pluscircleo":"minuscircleo"}
+                    size={25}
+                    color={!selected.includes(item.id)?"white":'red'}
                   />
                 </View>
               </View>
@@ -177,10 +194,10 @@ const Createplaylist = () => {
             flexDirection: 'row',
           }}
           onPress={() => {
-            navigation.navigate('createaffirmation');
+            navigation.navigate('createaffirmation',{selected:selected});
           }}>
           <Text style={styles.loginText}>Added affirmations</Text>
-          <Text style={styles.loginText}>1</Text>
+          <Text style={styles.loginText}>{selected.length}</Text>
         </TouchableOpacity>
       </View>
     </View>

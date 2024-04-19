@@ -8,12 +8,17 @@ const initialState = {
   bgSound:[],
   bgcategories:[],
   createPlayList:[],
+  Createfavriote:[],
+  favoriteList:[],
   item:{}
 };
 const Home = createSlice({
   name: 'home',
   initialState,
   reducers: {
+    playList_item:(state,action)=>{
+      return{...state,item:action.payload}
+    },
     playlist_request: (state, action) => {
       return {...state, loading: true};
     },
@@ -77,9 +82,24 @@ const Home = createSlice({
     createPlayList_error:(state,action)=>{
       return {...state,loading:false}
     },
-    playList_item:(state,action)=>{
-      return{...state,item:action.payload}
-    }
+    Createfavriote_request:(state,action)=>{
+      return {...state,loading:true}
+    },
+    Createfavriote_success:(state,action)=>{
+      return {...state,Createfavriote:action.payload,loading:false}
+    },
+    Createfavriote_error:(state,action)=>{
+      return {...state,loading:false}
+    },
+    favoriteList_request:(state,action)=>{
+      return {...state,loading:true}
+    },
+    favoriteList_success:(state,action)=>{
+      return {...state,favoriteList:action.payload,loading:false}
+    },
+    favoriteList_error:(state,action)=>{
+      return {...state,loading:false}
+    },
   },
 });
 export default Home.reducer;

@@ -94,6 +94,7 @@ const Saveplaylist = () => {
               placeholderTextColor={'grey'}
               value={playlistName}
               onChangeText={handlePlaylistNameChange}
+              
             />
           </View>
           <View style={styles.inputContainer}>
@@ -107,6 +108,7 @@ const Saveplaylist = () => {
               placeholderTextColor={'grey'}
               value={description}
               onChangeText={handleDescriptionChange}
+            
               multiline={true}
               numberOfLines={4} 
             />
@@ -151,6 +153,7 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: 'black',
     borderRadius: 10,
+    color:'white',
     paddingHorizontal: 10,
     marginVertical: 10,
     borderWidth: 0.4,

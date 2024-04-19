@@ -8,8 +8,22 @@ import {
 
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Octicons';
+import {useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Horizontal = ({data, onPress}) => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const getFavriote = async item => {
+    const token = await AsyncStorage.getItem('token');
+    dispatch({
+      type: 'home/Createfavriote_request',
+      user_id: '1',
+      category_id: item.id,
+      url: 'createFavoriteList',
+      navigation,
+      token
+    });
+  };
   return (
     <FlatList
       horizontal={true}
@@ -26,7 +40,7 @@ const Horizontal = ({data, onPress}) => {
 
         return (
           <View style={styles.imageContainer}>
-            <TouchableOpacity onPress={()=>onPress(item)}>
+            <TouchableOpacity onPress={() => onPress(item)}>
               <Image source={{uri: image}} style={styles.image} />
               <Text style={styles.text}>{title}</Text>
             </TouchableOpacity>
@@ -40,7 +54,7 @@ const Horizontal = ({data, onPress}) => {
               }}>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('Popular');
+                  getFavriote(item);
                 }}>
                 <Icon name="heart" size={20} color="white" />
               </TouchableOpacity>

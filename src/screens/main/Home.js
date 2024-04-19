@@ -106,6 +106,7 @@ const HomeScreen = () => {
       item
     });
   };
+ 
   const navigation = useNavigation();
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>

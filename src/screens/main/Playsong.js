@@ -40,7 +40,6 @@ const Playsong = () => {
   const [visible, setVisible] = useState(false);
   const [selectedTab, setSelectedTab] = useState();
   const {affirmations} = useSelector(state => state.home);
-  console.log(affirmations);
   const [isPaused, setIsPaused] = useState(false);
   const [visibleIndex, setVisibleIndex] = useState(1);
   const handleTabPress = async title => {
@@ -63,22 +62,26 @@ const Playsong = () => {
     setSelectedTab(title);
     setVisible(true);
   };
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setVisibleIndex(prevIndex => {
-  //       const newIndex = (prevIndex + 1) % affirmations.length;
-  //       flatListRef.current.scrollToIndex({
-  //         animated: true,
-  //         index: newIndex,
-  //       });
-      
-     
-  //       return newIndex;
-  //     });
-      
-  //   }, 8000);
-  //   return () => clearInterval(interval);
-  // }, [affirmations]);
+  const handleHeartPress = async item => {
+    const pivot=item.group[0].pivot
+
+    const token = await AsyncStorage.getItem('token');
+    dispatch({
+      type: 'home/Createfavriote_request',
+      user_id: '1',
+      category_id: pivot.group_id,
+      affirmation_id: pivot.affirmation_id,
+      url: 'createFavoriteList',
+      navigation,
+      token,
+    });
+    // dispatch({
+    //   type:'home/Createfavriote_request',
+    //   user_id:'1',
+    //   ca
+    // })
+  };
+
   useEffect(() => {
     setVisibleIndex(0);
     const interval = setInterval(() => {
@@ -91,13 +94,32 @@ const Playsong = () => {
           viewOffset: 0,
           duration: 500, // Adjust animation duration as needed
         });
-  
+
+        // Delay Tts.speak after scrollToIndex animation completes
+        setTimeout(() => {
+          speakText(affirmations[newIndex].affirmation_text);
+        }, 600); // Adjust delay time as needed
+
         return newIndex;
       });
     }, 8000);
+
+    if (affirmations.length > 0) {
+      speakText(affirmations[0].affirmation_text);
+    }
+
     return () => clearInterval(interval);
   }, [affirmations]);
-  
+
+  const speakText = text => {
+    Tts.getInitStatus().then(() => {
+      Tts.speak(text, {
+        iosVoiceId: 'com.apple.ttsbundle.Moira-compact',
+        rate: 2,
+      });
+    });
+  };
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const maxTimeInMinutes = 0.5;
   useEffect(() => {
@@ -141,52 +163,58 @@ const Playsong = () => {
               />
             </View>
           </View>
-        
+
+          <View
+            style={[
+              styles.card,
+              {
+                backgroundColor: 'black',
+              },
+            ]}>
             <View
-              style={[
-                styles.card,
-                {
-                  backgroundColor: 'black',
-                },
-              ]}>
-              <View
+              style={{
+                flexDirection: 'row',
+                alignSelf: 'center',
+                width: wp(50),
+                marginHorizontal: '4%',
+              }}>
+              <Text
                 style={{
-                  flexDirection: 'row',
-                  alignSelf: 'center',
-                  width: wp(50),
-                  marginHorizontal: '4%',
+                  fontSize: hp(2),
+                  fontWeight: '600',
+                  marginHorizontal: 10,
+                  fontFamily: 'Poppins-Medium',
+                  color: 'white',
                 }}>
-                <Text
-                  style={{
-                    fontSize: hp(2),
-                    fontWeight: '600',
-                    marginHorizontal: 10,
-                    fontFamily: 'Poppins-Medium',
-                    color: 'white',
-                  }}>
-                  Affirmations
-                  {/* {progress} */}
-                </Text>
-              </View>
-              <Image
-                source={require('../../assets/music.jpg')}
-                style={{height: hp(6), width: wp(12), borderRadius: 26}}
-              />
+                Affirmations
+                {/* {progress} */}
+              </Text>
             </View>
-     
+            <Image
+              source={require('../../assets/music.jpg')}
+              style={{height: hp(6), width: wp(12), borderRadius: 26}}
+            />
+          </View>
+
           <View
             style={{
               flexDirection: 'column',
               marginTop: hp(15),
               marginLeft: hp(40),
               position: 'absolute',
+              zIndex: 1,
             }}>
+          <TouchableOpacity style={{zIndex:2}} onPress={(()=>{
+     handleHeartPress(affirmations[currentIndex])
+          })}>
             <Feather
               name="heart"
               size={30}
               color="white"
-              paddingVertical="30%"
+             
             />
+            </TouchableOpacity>
+
             <FontAwesome6
               name="repeat"
               size={30}
@@ -231,18 +259,15 @@ const Playsong = () => {
                         {item['affirmation_text']}
                       </Text>
                     </View>
+                  
                   </View>
                 ) : (
                   <View style={{height: hp(100)}} />
                 )
               }
               keyExtractor={(item, index) => index.toString()}
-              onViewableItemsChanged={({viewableItems,changed})=>{
-                console.log(viewableItems[0].item.affirmation_text);
-                Tts.speak(viewableItems[0].item.affirmation_text, {
-                  iosVoiceId: 'com.apple.ttsbundle.Moira-compact',
-                  rate: 2,
-                });
+              onViewableItemsChanged={({viewableItems, changed}) => {
+                setCurrentIndex(viewableItems[0].index);
               }}
             />
           </View>

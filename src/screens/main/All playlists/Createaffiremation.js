@@ -6,13 +6,15 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
-
+import React, {useEffect, useState} from 'react';
+import {useSelector} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {
   heightPercent as hp,
   widthPrecent as wp,
 } from '../../../components/atoms/responsive';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ScrollView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
@@ -66,7 +68,25 @@ const Img = [
     title2: '90 affirmations',
   },
 ];
-const Createaffirmation = () => {
+const Createaffirmation = ({route}) => {
+  const {affirmations} = useSelector(state => state.home);
+  const [selected, setSelected] = useState([]);
+  const selectedItems = route.params.selected;
+
+  useEffect(() => {
+    filterSelected();
+  }, []);
+
+  const filterSelected = () => {
+    const filter = affirmations.filter(item => selectedItems.includes(item.id));
+    setSelected(filter);
+  };
+
+  const deselectItem = itemId => {
+    const updatedSelected = selected.filter(item => item.id !== itemId);
+    setSelected(updatedSelected);
+  };
+
   const navigation = useNavigation();
   return (
     <View style={{flex: 1, backgroundColor: '#191919'}}>
@@ -91,10 +111,10 @@ const Createaffirmation = () => {
               fontSize: 22,
               fontWeight: '500',
               marginHorizontal: '15%',
-              fontFamily:'Montserrat',
+              fontFamily: 'Montserrat',
               color: 'white',
             }}>
-           Edit List of Affirmation
+            Edit List of Affirmation
           </Text>
         </View>
       </View>
@@ -105,7 +125,7 @@ const Createaffirmation = () => {
       </View> */}
       <ScrollView style={{marginTop: 20}}>
         <FlatList
-          data={Img}
+          data={selected}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
             <View
@@ -118,12 +138,22 @@ const Createaffirmation = () => {
                 backgroundColor: 'black',
                 borderRadius: 20,
               }}>
-              <View style={{justifyContent: 'center', marginHorizontal: '10%'}}>
-                <Text style={styles.text}>{item.title}</Text>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  marginHorizontal: '5%',
+                  width: wp(70),
+                }}>
+                <Text style={styles.text}>
+                  {item.affirmation_text.substring(0, 39)}
+                </Text>
               </View>
-              <View style={{justifyContent: 'center', marginHorizontal: '10%'}}>
-                <Entypo name="dots-three-horizontal" size={20} color="white" />
-              </View>
+
+              <TouchableOpacity
+                style={{justifyContent: 'center'}}
+                onPress={() => deselectItem(item.id)}>
+                <AntDesign name="minuscircleo" size={25} color="red" />
+              </TouchableOpacity>
             </View>
           )}
         />
@@ -155,8 +185,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
 
-   
-
     marginTop: 30,
     paddingHorizontal: 10,
   },
@@ -171,9 +199,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   text: {
-    width: wp(50),
+    width: wp(55),
 
-    marginLeft: 5,
     color: 'white',
     fontSize: 15,
   },

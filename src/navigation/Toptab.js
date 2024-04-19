@@ -15,11 +15,10 @@ import {
   widthPrecent as wp,
 } from '../components/atoms/responsive';
 import {TouchableOpacity} from 'react-native';
-const data = [
-  {id: '1', title: 'Affirmation'},
-  {id: '2', title: 'Playlist'},
-  {id: '3', title: 'By me'},
-];
+import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+
 const Img = [
   {
     id: '1',
@@ -33,49 +32,60 @@ const Img = [
     title: 'abcd',
     title2: 'by You',
   },
-  {
-    id: '3',
-    image: require('../assets/music.jpg'),
-    title: 'abcd',
-    title2: 'by You',
-  },
-  {
-    id: '4',
-    image: require('../assets/music.jpg'),
-    title: 'abcd',
-    title2: 'by You',
-  },
-  {
-    id: '5',
-    image: require('../assets/music.jpg'),
-    title: 'abcd',
-    title2: 'by You',
-  },
-  {
-    id: '6',
-    image: require('../assets/music.jpg'),
-    title: 'abcd',
-    title2: 'by You',
-  },
-  {
-    id: '7',
-    image: require('../assets/music.jpg'),
-    title: 'abcd',
-    title2: 'by You',
-  },
-  {
-    id: '8',
-    image: require('../assets/music.jpg'),
-    title: 'abcd',
-    title2: 'by You',
-  },
+  // {
+  //   id: '3',
+  //   image: require('../assets/music.jpg'),
+  //   title: 'abcd',
+  //   title2: 'by You',
+  // },
+  // {
+  //   id: '4',
+  //   image: require('../assets/music.jpg'),
+  //   title: 'abcd',
+  //   title2: 'by You',
+  // },
+  // {
+  //   id: '5',
+  //   image: require('../assets/music.jpg'),
+  //   title: 'abcd',
+  //   title2: 'by You',
+  // },
+  // {
+  //   id: '6',
+  //   image: require('../assets/music.jpg'),
+  //   title: 'abcd',
+  //   title2: 'by You',
+  // },
+  // {
+  //   id: '7',
+  //   image: require('../assets/music.jpg'),
+  //   title: 'abcd',
+  //   title2: 'by You',
+  // },
+  // {
+  //   id: '8',
+  //   image: require('../assets/music.jpg'),
+  //   title: 'abcd',
+  //   title2: 'by You',
+  // },
 ];
 
 const Toptab = () => {
-  const [selectedTab, setSelectedTab] = useState('All');
-  const handleTabPress = title => {
-    setSelectedTab(title);
+  const dispatch = useDispatch();
+ 
+  const getfavoriteList = async (item) => {
+    const token = await AsyncStorage.getItem('token');
+    dispatch({
+      type: 'home/favoriteList_request',
+      token,
+      user_id: '1',
+      navigation,
+      url: 'favoriteList',
+      item
+    });
   };
+ 
+  const navigation = useNavigation();
   return (
     <View style={{flex: 1, backgroundColor: '#191919', height: '100%'}}>
       <View style={{marginHorizontal: hp(3), marginTop: 10}}>
@@ -90,7 +100,9 @@ const Toptab = () => {
         </Text>
       </View>
 
-      <TouchableOpacity>
+      <TouchableOpacity   onPress={(items) => {
+                  getfavoriteList(items);
+                }}>
         <View
           style={{
             flexDirection: 'row',
@@ -102,13 +114,21 @@ const Toptab = () => {
               start={{x: 0.5, y: 0.0}}
               end={{x: 0.0, y: 1}}
               locations={[0, 1]}
-              colors={['#000000', '#FFFFFF']}
+              colors={['#89FFBF', '#000000']}
               style={styles.linearGradient}>
               <View style={{justifyContent: 'center'}}>
-                <Entypo name="heart" size={30} color="#426e56" />
+                <Entypo name="heart" size={30} color="white" />
               </View>
               <View style={{flexDirection: 'column', justifyContent: 'center'}}>
-                <Text style={styles.text}>Afffirmation liked</Text>
+                <Text
+                  style={{
+                    width: wp(50),
+                    color: 'black',
+                    fontSize: hp(2),
+                    fontWeight: '500',
+                  }}>
+                  Afffirmation liked
+                </Text>
                 <Text style={styles.text2}>90 affirmations</Text>
               </View>
             </LinearGradient>
@@ -123,19 +143,27 @@ const Toptab = () => {
             top: hp(3),
           }}>
           <View style={styles.imageContainer}>
-          <LinearGradient
+            <LinearGradient
               start={{x: 0.5, y: 0.0}}
               end={{x: 0.0, y: 1}}
               locations={[0, 1]}
-              colors={['#000000', '#FFFFFF']}
+              colors={['#89FFBF', '#000000']}
               style={styles.linearGradient}>
-            <View style={{justifyContent: 'center'}}>
-              <Entypo name="heart" size={30} color="#426e56" />
-            </View>
-            <View style={{flexDirection: 'column', justifyContent: 'center'}}>
-              <Text style={styles.text}>Liked Playlist</Text>
-              <Text style={styles.text2}>90 affirmations</Text>
-            </View>
+              <View style={{justifyContent: 'center'}}>
+                <Entypo name="heart" size={30} color="white" />
+              </View>
+              <View style={{flexDirection: 'column', justifyContent: 'center'}}>
+                <Text
+                  style={{
+                    width: wp(50),
+                    color: 'black',
+                    fontSize: hp(2),
+                    fontWeight: '500',
+                  }}>
+                  Liked Playlist
+                </Text>
+                <Text style={styles.text2}>90 affirmations</Text>
+              </View>
             </LinearGradient>
           </View>
         </View>
