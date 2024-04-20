@@ -21,45 +21,55 @@ const Img2 = [
     id: '1',
     image: require('../../assets/music.jpg'),
     title: '1 min',
+    value: 1,
   },
   {
     id: '2',
     image: require('../../assets/music.jpg'),
     title: '3 min',
+    value: 3,
   },
   {
     id: '3',
     image: require('../../assets/music.jpg'),
     title: '5 min',
+    value: 5,
   },
   {
     id: '4',
     image: require('../../assets/music.jpg'),
     title: '8 min',
+    value: 8,
   },
   {
     id: '5',
     image: require('../../assets/music.jpg'),
     title: '10 min',
+    value: 10,
   },
 ];
 
-const Time = () => {
+const Time = ({maxTimeInMinutes, onPress}) => {
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#191919',}}>
-     
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            marginTop:hp(2)
-          }}>
-          <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'white'}}>
-            Session Length
-          </Text>
-        </View>
-      
-        <View style={{height:hp(20),width:wp(100),marginHorizontal:hp(1),marginVertical:hp(6)}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          marginTop: hp(2),
+        }}>
+        <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'white'}}>
+          Session Length
+        </Text>
+      </View>
+
+      <View
+        style={{
+          height: hp(20),
+          width: wp(100),
+          marginHorizontal: hp(1),
+          marginVertical: hp(6),
+        }}>
         <FlatList
           horizontal={true}
           scrollEnabled={true}
@@ -67,7 +77,9 @@ const Time = () => {
           data={Img2}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
-            <TouchableOpacity style={styles.imageContainerr}>
+            <TouchableOpacity
+              onPress={() => onPress(item)}
+              style={styles.imageContainerr}>
               <View>
                 <Image source={item.image} style={styles.imagee} />
                 <Text style={styles.textt}>{item.title}</Text>
@@ -75,8 +87,7 @@ const Time = () => {
             </TouchableOpacity>
           )}
         />
-     </View>
-
+      </View>
     </SafeAreaView>
   );
 };

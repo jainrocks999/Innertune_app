@@ -13,7 +13,7 @@ import Saveplaylist from '../screens/main/All playlists/Saveplaylist';
 import Playsong from '../screens/main/Playsong';
 import Mymodal from '../components/molecules/Modal';
 import Playlistdetails from '../screens/Tab/Playlistdetails';
-
+import Menu from '../screens/main/Menu';
 const Stack = createStackNavigator();
 function MyStack() {
   return (
@@ -71,6 +71,11 @@ function MyStack() {
       <Stack.Screen
         name="Playlistdetails"
         component={Playlistdetails}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Menu"
+        component={Menu}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

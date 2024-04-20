@@ -95,7 +95,7 @@ const HomeScreen = () => {
   useEffect(() => {
     getAllCategories();
   }, []);
-  const getAffetMations = async (item) => {
+  const getAffetMations = async item => {
     const token = await AsyncStorage.getItem('token');
     dispatch({
       type: 'home/affirmation_fetch_request',
@@ -103,10 +103,10 @@ const HomeScreen = () => {
       user_id: '1',
       navigation,
       url: 'affirmation',
-      item
+      item,
     });
   };
- 
+
   const navigation = useNavigation();
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
@@ -132,13 +132,13 @@ const HomeScreen = () => {
             getAffetMations();
           }}
         /> */}
-        <View style={styles.card}>
+        <View style={styles.cardd}>
           <LinearGradient
             start={{x: 0.0, y: 0.0}}
             end={{x: 5, y: 0.0}}
             locations={[0, 0.5, 0.3]}
             colors={['#191919', '#89FFBF']}
-            style={styles.linearGradient}>
+            style={styles.linearGradientt}>
             <Image
               source={require('../../assets/music1.jpg')}
               style={{height: hp(13), width: wp(25), borderRadius: 20}}
@@ -186,45 +186,92 @@ const HomeScreen = () => {
                 </View>
               </View>
               <Horizontal
-                onPress={(items) => {
+                onPress={items => {
                   getAffetMations(items);
                 }}
                 data={category}
               />
               {index == 1 ? (
-                <View style={styles.card}>
-                  <LinearGradient
-                    start={{x: 0.0, y: 0.0}}
-                    end={{x: 5, y: 0.0}}
-                    locations={[0, 0.5, 0.3]}
-                    colors={['#191919', '#89FFBF']}
-                    style={styles.linearGradient}>
-                    <Image
-                      source={require('../../assets/music1.jpg')}
-                      style={{
-                        height: hp(13),
-                        width: wp(25),
-                        borderRadius: 20,
-                      }}
-                    />
-                    <View
-                      style={{
-                        flexDirection: 'column',
-                        alignSelf: 'center',
-                        width: wp(50),
-                        marginHorizontal: '5%',
-                      }}>
-                      <Text
-                        style={{
-                          fontSize: 20,
-                          fontWeight: '600',
-                          color: '#ffffff',
-                          backgroundColor: 'transparent',
-                        }}>
-                        Share Innertunes with your loved...
-                      </Text>
-                    </View>
-                  </LinearGradient>
+                <View
+                  style={{
+                    width: wp(100),
+                    justifyContent: 'space-around',
+                    marginVertical: 10,
+                  }}>
+                  <View style={styles.card}>
+                    <TouchableOpacity>
+                      <LinearGradient
+                        start={{x: 0.0, y: 0.0}}
+                        end={{x: 5, y: 0.0}}
+                        locations={[0, 0.5, 0.3]}
+                        colors={['#191919', '#89FFBF']}
+                        style={styles.linearGradient}>
+                        <Image
+                          source={require('../../assets/review.jpg')}
+                          style={{
+                            height: hp(30),
+                            width: wp(40),
+                            borderRadius: 20,
+                          }}
+                        />
+                        <View
+                          style={{
+                            flexDirection: 'column',
+                            alignSelf: 'flex-end',
+                            position: 'absolute',
+                            width: wp(35),
+                            marginHorizontal: '5%',
+                            bottom: hp(2),
+                          }}>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '600',
+                              color: '#ffffff',
+                              backgroundColor: 'transparent',
+                            }}>
+                            Leave us review...
+                          </Text>
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                      <LinearGradient
+                        start={{x: 0.0, y: 0.0}}
+                        end={{x: 5, y: 0.0}}
+                        locations={[0, 0.5, 0.3]}
+                        colors={['#191919', '#89FFBF']}
+                        style={styles.linearGradient}>
+                        <Image
+                          source={require('../../assets/music1.jpg')}
+                          style={{
+                            height: hp(30),
+                            width: wp(40),
+                            borderRadius: 20,
+                          }}
+                        />
+                        <View
+                          style={{
+                            flexDirection: 'column',
+                            alignSelf: 'flex-end',
+                            position: 'absolute',
+                            width: wp(35),
+                            marginHorizontal: '5%',
+                            bottom: hp(2),
+                          }}>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '600',
+                              color: '#ffffff',
+                              backgroundColor: 'transparent',
+                            }}>
+                            Share Innertunes with your loved...
+                          </Text>
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               ) : null}
             </>
@@ -298,6 +345,35 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 15,
     fontWeight: '300',
+  },
+  card: {
+    height: hp(30),
+
+    width: wp(40),
+    borderColor: 'black',
+
+    flexDirection: 'row',
+    borderRadius: 20,
+  },
+  linearGradient: {
+    flexDirection: 'row',
+    marginHorizontal: 20,
+    borderRadius: 20,
+  },
+  linearGradientt: {
+    flexDirection: 'row',
+    width: wp(90),
+    borderRadius: 20,
+  },
+  cardd: {
+    height: hp(13),
+    width: wp(90),
+    borderColor: 'black',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    borderRadius: 20,
+    backgroundColor: '#bb98ed',
+    marginBottom: 20,
   },
 });
 

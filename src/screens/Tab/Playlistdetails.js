@@ -69,13 +69,13 @@ const Img = [
 
 const Playlistdetails = () => {
   const dispatch = useDispatch();
-  const {affirmations,favoriteList} = useSelector(state => state.home);
-  console.log('tjhidi',favoriteList.favoritelist);
-  const {loading, groups, category,item} = useSelector(
-    state => state.home,
-  );
-  const image = item?.categories_image[0]?.original_url??'https://stimuli.forebearpro.co.in/storage/app/public/3/download-(8).jpg';
-  const title = item?.categories_name??'Believe in yourself';
+  const {affirmations, favoriteList} = useSelector(state => state.home);
+  console.log('tjhidi', favoriteList.favoritelist);
+  const {loading, groups, category, item} = useSelector(state => state.home);
+  const image =
+    item?.categories_image[0]?.original_url ??
+    'https://stimuli.forebearpro.co.in/storage/app/public/3/download-(8).jpg';
+  const title = item?.categories_name ?? 'Believe in yourself';
   const navigation = useNavigation();
 
   return (
@@ -83,11 +83,11 @@ const Playlistdetails = () => {
       <Loader loading={loading} />
       <View style={{alignItems: 'center'}}>
         <Image
-          source={{uri:image}}
+          source={{uri: image}}
           style={{
             height: hp(30),
             width: wp(100),
-            resizeMode:'stretch'
+            resizeMode: 'stretch',
           }}
         />
       </View>
@@ -118,6 +118,7 @@ const Playlistdetails = () => {
           {title}
         </Text>
       </View>
+
       <View
         style={{
           flexDirection: 'row',
@@ -129,29 +130,45 @@ const Playlistdetails = () => {
         <Feather name="heart" size={20} color="white" />
 
         <Entypo name="share" size={20} color="white" marginHorizontal="10%" />
-        <Entypo name="dots-three-horizontal" size={20} color="white" />
+        <Entypo
+          onPress={() => {
+            navigation.navigate('Menu');
+          }}
+          name="dots-three-horizontal"
+          size={20}
+          color="white"
+        />
+
         <TouchableOpacity
           onPress={() => {
-           navigation.navigate('playsong')
+            navigation.navigate('playsong');
           }}
-          data={category}>
+          style={{
+            height: hp(8),
+            width: wp(16),
+            left: wp(32),
+            tintColor: '#426e56',
+          }}>
           <Image
             source={require('../../assets/playkey.png')}
             style={{
-              height: hp(8),
-              width: wp(16),
-              left: wp(35),
+              // height: hp(8),
+              // width: wp(16),
+              // left: wp(35),
+              height: '100%',
+              width: '100%',
               tintColor: '#426e56',
             }}
           />
         </TouchableOpacity>
       </View>
+
       <ScrollView style={{marginTop: 20}}>
         <FlatList
           data={affirmations}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Menu')}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -164,10 +181,11 @@ const Playlistdetails = () => {
                 }}>
                 <View
                   style={{justifyContent: 'center', marginHorizontal: '10%'}}>
-                  <Text style={styles.text}>{item.affirmation_text.substring(0,30)}</Text>
+                  <Text style={styles.text}>
+                    {item.affirmation_text.substring(0, 30)}
+                  </Text>
                 </View>
-                <View
-                  style={{justifyContent: 'center', }}>
+                <View style={{justifyContent: 'center'}}>
                   <Entypo
                     name="dots-three-horizontal"
                     size={20}

@@ -71,12 +71,11 @@ const Img = [
 const Popularplaylist = () => {
   const dispatch = useDispatch();
   const {loading, category, groups} = useSelector(state => state.home);
-  console.log(category);
 
   const navigation = useNavigation();
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
-      <Header2/>
+      <Header2 />
       <View
         style={{
           height: hp(10),

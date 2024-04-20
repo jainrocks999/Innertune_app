@@ -16,6 +16,7 @@ import {
 } from '../../components/atoms/responsive';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Slider from '@react-native-community/slider';
+import Tts from 'react-native-tts';
 const Img = [
   {
     id: '1',
@@ -38,97 +39,116 @@ const Img = [
     title: 'Max',
   },
 ];
-const Voice = () => {
+const Voice = ({voice, onPress, selectedVoice}) => {
+  function filterByLanguage(array, languages) {
+    return array.filter(item => languages.includes(item.language));
+  }
+  const myvoice = [
+    {id: 'en-au-x-auc-local', name: 'Lily', language: 'en-AU'}, //female //anny
+    {id: 'en-us-x-iob-local', name: 'Annie', language: 'en-US'},
+    {id: 'en-au-x-aub-local', name: 'John', language: 'en-AU'}, //male
+    {id: 'en-in-x-ahp-local', name: 'Beth', language: 'en-IN'},
+    {id: 'en-us-x-iom-local', name: 'Smith', language: 'en-US'},
+    {id: 'en-in-x-cxx-local', name: 'Kimm', language: 'en-IN'},
+  ];
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            marginTop:hp(2)
-          }}>
-          <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'white'}}>
-            Voice Settings
-          </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            margin: hp(2),
-          }}>
-          <Text style={{fontSize: hp(2), fontWeight: '500', color: 'grey'}}>
-            Voice Over
-          </Text>
-        </View>
-        <View style={{margin: hp(1)}}>
-          <FlatList
-            data={Img}
-            horizontal
-            scrollEnabled={false}
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={item => item.id}
-            renderItem={({item}) => (
-              <TouchableOpacity>
-                <View
-                  style={{
-                    width: hp(14),
-                    height: hp(7),
-                    borderRadius: hp(7),
-                    backgroundColor: 'black',
-                    marginHorizontal: wp(1),
-                  }}>
-                  <View style={styles.imageContainer}>
-                    <Image source={item.image} style={styles.image} />
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          marginTop: hp(2),
+        }}>
+        <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'white'}}>
+          Voice Settings
+        </Text>
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          margin: hp(2),
+        }}>
+        <Text style={{fontSize: hp(2), fontWeight: '500', color: 'grey'}}>
+          Voice Over
+        </Text>
+      </View>
+      <View style={{margin: hp(1)}}>
+        <FlatList
+          data={myvoice}
+          horizontal
+          scrollEnabled={true}
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={item => item.id}
+          renderItem={({item, index}) => (
+            <TouchableOpacity onPress={() => onPress(item)}>
+              <View
+                style={{
+                  paddingRight: '4%',
+                  height: hp(7),
+                  borderRadius: hp(7),
+                  backgroundColor: selectedVoice === item.id ? 'black' : 'gray',
+                  marginHorizontal: wp(1),
+                  width: selectedVoice === item.id ? wp(40) : wp(30), // Adjust the width here
+                  justifyContent: 'center', // Center the content vertically
+                }}>
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={require('../../assets/music.jpg')}
+                    style={styles.image}
+                  />
+                  {
                     <View style={{marginHorizontal: hp(1)}}>
-                      <Text style={styles.text}>{item.title}</Text>
+                      <Text style={styles.text}>{item.name}</Text>
                     </View>
-                  </View>
+                  }
                 </View>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            margin: hp(2),
-          }}>
-          <Text style={{fontSize: hp(2), fontWeight: '500', color: 'grey'}}>
-            Voice Volume
-          </Text>
-        </View>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
 
-        <View style={[{alignItems:'center'}]}>
-          <Slider
-            style={{width: '90%', height: 30}}
-            minimumValue={0}
-            maximumValue={2}
-            minimumTrackTintColor="white"
-            maximumTrackTintColor="white"
-            thumbTintColor="white"
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginHorizontal: hp(2),
-            marginTop: hp(2),
-          }}>
-          <Text style={{fontSize: hp(2), fontWeight: '500', color: 'grey'}}>
-            Affirmation Delay
-          </Text>
-        </View>
-        <View style={{marginTop: hp(3) , alignItems:'center'}}>
-          <Slider
-            style={{width: '90%', height: 30}}
-            minimumValue={0}
-            maximumValue={2}
-            minimumTrackTintColor="white"
-            maximumTrackTintColor="white"
-            thumbTintColor="white"
-          />
-        </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          margin: hp(2),
+        }}>
+        <Text style={{fontSize: hp(2), fontWeight: '500', color: 'grey'}}>
+          Voice Volume
+        </Text>
+      </View>
 
+      <View style={[{alignItems: 'center'}]}>
+        <Slider
+          style={{width: '90%', height: 30}}
+          minimumValue={0}
+          maximumValue={2}
+          minimumTrackTintColor="white"
+          maximumTrackTintColor="white"
+          thumbTintColor="white"
+        />
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          marginHorizontal: hp(2),
+          marginTop: hp(2),
+        }}>
+        <Text style={{fontSize: hp(2), fontWeight: '500', color: 'grey'}}>
+          Affirmation Delay
+        </Text>
+      </View>
+      <View style={{marginTop: hp(3), alignItems: 'center'}}>
+        <Slider
+          style={{width: '90%', height: 30}}
+          minimumValue={0}
+          maximumValue={2}
+          minimumTrackTintColor="white"
+          maximumTrackTintColor="white"
+          thumbTintColor="white"
+        />
+      </View>
     </SafeAreaView>
   );
 };

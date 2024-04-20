@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {
@@ -27,6 +28,7 @@ import {} from 'react-native-gesture-handler';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Clipboard} from 'react-native';
 const data = [
   {id: '1', title: 'Voice'},
   {id: '2', title: 'Time'},
@@ -35,6 +37,11 @@ const data = [
 
 const Playsong = () => {
   const dispatch = useDispatch();
+  const [maxTimeInMinutes, setMaxTimeInMinuts] = useState(1);
+  const [currentTimeInSeconds, setCurrentTimeInSeconds] = useState(0);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
   const flatListRef = useRef(null);
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
@@ -63,7 +70,7 @@ const Playsong = () => {
     setVisible(true);
   };
   const handleHeartPress = async item => {
-    const pivot=item.group[0].pivot
+    const pivot = item.group[0].pivot;
 
     const token = await AsyncStorage.getItem('token');
     dispatch({
@@ -81,66 +88,147 @@ const Playsong = () => {
     //   ca
     // })
   };
+  const currentTimeRef = useRef(0);
 
   useEffect(() => {
     setVisibleIndex(0);
-    const interval = setInterval(() => {
-      setVisibleIndex(prevIndex => {
-        const newIndex = (prevIndex + 1) % affirmations.length;
-        flatListRef.current.scrollToIndex({
-          animated: true,
-          index: newIndex,
-          viewPosition: 0.5,
-          viewOffset: 0,
-          duration: 500, // Adjust animation duration as needed
+    const intervalForAffirmations = setInterval(() => {
+      if (!isPaused) {
+        setVisibleIndex(prevIndex => {
+          const newIndex = (prevIndex + 1) % 5;
+          flatListRef.current.scrollToIndex({
+            animated: true,
+            index: newIndex,
+            viewPosition: 0.5,
+            viewOffset: 0,
+            duration: 500,
+          });
+          readText(affirmations[newIndex].affirmation_text); // Read text directly after scrolling
+          return newIndex;
         });
-
-        // Delay Tts.speak after scrollToIndex animation completes
-        setTimeout(() => {
-          speakText(affirmations[newIndex].affirmation_text);
-        }, 600); // Adjust delay time as needed
-
-        return newIndex;
-      });
+      }
     }, 8000);
 
-    if (affirmations.length > 0) {
-      speakText(affirmations[0].affirmation_text);
-    }
-
-    return () => clearInterval(interval);
-  }, [affirmations]);
-
-  const speakText = text => {
-    Tts.getInitStatus().then(() => {
-      Tts.speak(text, {
-        iosVoiceId: 'com.apple.ttsbundle.Moira-compact',
-        rate: 2,
-      });
-    });
-  };
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const maxTimeInMinutes = 0.5;
+    return () => clearInterval(intervalForAffirmations);
+  }, [affirmations, isPaused]);
   useEffect(() => {
-    let currentTimeInSeconds = progress;
-    const maxTimeInSeconds = maxTimeInMinutes * 100;
+    const maxTimeInSeconds = maxTimeInMinutes * 60;
+    let currentTime = currentTimeRef.current || 0;
+    const initialProgress = (currentTime / maxTimeInSeconds) * 100;
+    setProgress(initialProgress);
 
-    const interval = setInterval(() => {
+    const intervalForProgress = setInterval(() => {
       if (!isPaused) {
-        if (currentTimeInSeconds < maxTimeInSeconds) {
-          currentTimeInSeconds++;
-          // const calculatedProgress =
-          //   (currentTimeInSeconds / maxTimeInSeconds)* 100;
-          setProgress(currentTimeInSeconds);
-        } else {
-          clearInterval(interval); // Stop interval when progress reaches or exceeds the maximum timeout
+        if (currentTime < maxTimeInSeconds) {
+          currentTime++;
+          const newProgress = (currentTime / maxTimeInSeconds) * 100;
+          setProgress(newProgress);
+          currentTimeRef.current = currentTime;
+        } else if (progress < 100) {
+          clearInterval(intervalForProgress);
+          setProgress(100);
+          setIsPaused(true);
+          Tts.pause();
         }
+      } else {
+        Tts.pause();
       }
     }, 1000);
 
-    return () => clearInterval(interval); // Clear interval on unmount
+    if (!isPaused) {
+      Tts.resume();
+    }
+
+    return () => {
+      clearInterval(intervalForProgress);
+      Tts.stop();
+    };
   }, [maxTimeInMinutes, isPaused]);
+
+  const handlePlayPauseClick = () => {
+    setIsPaused(prevIsPaused => !prevIsPaused);
+    if (isPaused & (progress == 100)) {
+      setProgress(0);
+      currentTimeRef.current = 0;
+    }
+  };
+  console.log('thjissi', progress);
+  const [voices, setVoices] = useState([]);
+  const [ttsStatus, setTtsStatus] = useState('initiliazing');
+  const [selectedVoice, setSelectedVoice] = useState(null);
+  const [speechRate, setSpeechRate] = useState(0.3);
+  const [speechPitch, setSpeechPitch] = useState(0.5);
+
+  useEffect(() => {
+    // Tts.addEventListener('tts-start', _event => setTtsStatus('started'));
+    // Tts.addEventListener('tts-finish', _event => setTtsStatus('finished'));
+    // Tts.addEventListener('tts-cancel', _event => setTtsStatus('cancelled'));
+    Tts.setDefaultRate(speechRate);
+    Tts.setDefaultPitch(speechPitch);
+    Tts.getInitStatus().then(initTts);
+    // return () => {
+    //   Tts.removeEventListener('tts-start', _event => setTtsStatus('started'));
+    //   Tts.removeEventListener('tts-finish', _event => setTtsStatus('finished'));
+    //   Tts.removeEventListener('tts-cancel', _event =>
+    //     setTtsStatus('cancelled'),
+    //   );
+    // };
+  }, []);
+  const initTts = async () => {
+    const voices = await Tts.voices();
+
+    const availableVoices = voices
+      .filter(v => !v.networkConnectionRequired && !v.notInstalled)
+      .map(v => {
+        return {id: v.id, name: v.name, language: v.language};
+      });
+    let selectedVoice = null;
+    if (voices && voices.length > 0) {
+      selectedVoice = 'en-au-x-auc-local';
+      try {
+        await Tts.setDefaultLanguage('en-AU');
+      } catch (err) {
+        //Samsung S9 has always this error:
+        //"Language is not supported"
+        console.log(`setDefaultLanguage error `, err);
+      }
+
+      await Tts.setDefaultVoice('en-au-x-auc-local');
+      if (affirmations.length > 0) {
+        readText(affirmations[0].affirmation_text);
+      }
+      setVoices(availableVoices);
+      setSelectedVoice(selectedVoice);
+      setTtsStatus('initialized');
+    } else {
+      setTtsStatus('initialized');
+    }
+  };
+  const updateSpeechRate = async rate => {
+    await Tts.setDefaultRate(speechRate);
+    setSpeechRate(rate);
+  };
+  const updateSpeechPitch = async rate => {
+    await Tts.setDefaultPitch(rate);
+    setSpeechPitch(rate);
+  };
+  const onVoicePress = async voice => {
+    try {
+      await Tts.setDefaultLanguage(voice.language);
+    } catch (err) {
+      // Samsung S9 has always this error:
+      // "Language is not supported"
+      console.log(`setDefaultLanguage error `, err);
+    }
+    await Tts.setDefaultVoice(voice.id);
+    readText(affirmations[currentIndex].affirmation_text);
+    setSelectedVoice(voice.id);
+  };
+
+  const readText = async text => {
+    Tts.stop();
+    Tts.speak(text);
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -195,45 +283,44 @@ const Playsong = () => {
               style={{height: hp(6), width: wp(12), borderRadius: 26}}
             />
           </View>
-
           <View
             style={{
-              flexDirection: 'column',
+              flexDirection: 'row',
               marginTop: hp(15),
-              marginLeft: hp(40),
+              alignSelf: 'center',
+              marginTop: hp(60),
+              right: wp(10),
               position: 'absolute',
               zIndex: 1,
             }}>
-          <TouchableOpacity style={{zIndex:2}} onPress={(()=>{
-     handleHeartPress(affirmations[currentIndex])
-          })}>
-            <Feather
-              name="heart"
-              size={30}
-              color="white"
-             
-            />
+            <TouchableOpacity
+              style={{zIndex: 2}}
+              onPress={() => {
+                handleHeartPress(affirmations[currentIndex]);
+              }}>
+              <Feather name="heart" size={30} color="white" />
             </TouchableOpacity>
 
             <FontAwesome6
               name="repeat"
               size={30}
               color="white"
-              paddingVertical="30%"
+              marginHorizontal="22%"
             />
-            <Entypo
-              name="dots-three-vertical"
-              size={30}
-              color="white"
-              paddingVertical="30%"
-            />
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Menu');
+              }}>
+              <Entypo name="dots-three-horizontal" size={30} color="white" />
+            </TouchableOpacity>
           </View>
+
           <View style={{height: hp(100)}}>
             <FlatList
               ref={flatListRef}
               pagingEnabled
               showsVerticalScrollIndicator={false}
-              data={affirmations}
+              data={affirmations.slice(0, 5)}
               renderItem={({item, index}) =>
                 true ? (
                   <View style={{height: hp(100)}}>
@@ -245,7 +332,7 @@ const Playsong = () => {
                         flexDirection: 'column',
                         width: wp(70),
                         position: 'absolute',
-                        top: '20%',
+                        top: '10%',
                       }}>
                       <Text
                         style={{
@@ -259,7 +346,6 @@ const Playsong = () => {
                         {item['affirmation_text']}
                       </Text>
                     </View>
-                  
                   </View>
                 ) : (
                   <View style={{height: hp(100)}} />
@@ -272,22 +358,23 @@ const Playsong = () => {
             />
           </View>
           <TouchableOpacity
-            onPress={() => setIsPaused(prev => !prev)}
+            onPress={() => handlePlayPauseClick()}
             style={{
-              height: hp(10),
               justifyContent: 'center',
               alignSelf: 'center',
+              alignItems: 'center',
               position: 'absolute',
               bottom: '20%',
-              width: hp(10),
-              // borderWidth: 5,
             }}>
             <Image
-              // tintColor={'red'}
-              source={require('../../assets/pause.png')}
+              source={
+                isPaused
+                  ? require('../../assets/play-button.png')
+                  : require('../../assets/pause-button.png')
+              }
               style={{
-                height: hp(10),
-                width: wp(21),
+                height: hp(3),
+                width: wp(6),
                 tintColor: 'white',
                 position: 'absolute',
                 zIndex: 0,
@@ -297,13 +384,12 @@ const Playsong = () => {
               value={progress}
               radius={hp(5)}
               progressValueFontSize={20}
-              duration={3000}
+              duration={200}
               progressValueColor={'#ecf0f1'}
-              maxValue={maxTimeInMinutes * 60}
+              maxValue={100}
               inActiveStrokeColor="white"
               showProgressValue={false}
-              activeStrokeWidth={12}
-              ac
+              activeStrokeWidth={wp(3)}
               activeStrokeColor="black"
             />
           </TouchableOpacity>
@@ -364,6 +450,13 @@ const Playsong = () => {
           title={selectedTab}
           onClose={() => setVisible(false)}
           visible={visible}
+          voices={voices}
+          onVoicePress={onVoicePress}
+          selectedVoice={selectedVoice}
+          maxTimeInMinutes={maxTimeInMinutes}
+          onTimePress={item => {
+            setMaxTimeInMinuts(item.value);
+          }}
         />
       </ImageBackground>
     </View>
