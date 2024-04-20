@@ -14,6 +14,8 @@ import {useTabMenu} from '../Context/context';
 import Addbutton from '../screens/main/Addbutton';
 import TopTabs from './Toptab';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 const getIconColor = focused => ({
@@ -26,6 +28,18 @@ const MyTabs = () => {
   const navigation = useNavigation();
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const {opened, toggleOpened} = useTabMenu();
+  const dispatch = useDispatch();
+  const getAffetMations = async () => {
+    const token = await AsyncStorage.getItem('token');
+    dispatch({
+      type: 'home/affirmation_fetch_request',
+      token,
+      user_id: '1',
+      // navigation: null,
+      url: 'affirmation',
+    });
+    navigation.navigate('createplaylist');
+  };
   return (
     <View style={{flex: 1, backgroundColor: '#191919'}}>
       <Tab.Navigator
@@ -182,7 +196,7 @@ const MyTabs = () => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('createplaylist');
+              getAffetMations();
             }}>
             <View style={styles.card}>
               <LinearGradient

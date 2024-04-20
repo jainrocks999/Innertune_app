@@ -80,16 +80,69 @@ const Img = [
     title2: '90 affirmations',
   },
 ];
+const data2 = [
+  {
+    id: '1',
+    name: 'Relaxing nature',
+    music: {
+      url: require('../../assets/backound/backOne.wav'),
+      title: 'Titel',
+      artist: 'Innertune',
+      artwork: `asset:/files/backOne.wav`,
+      duration: null,
+    },
+    image:
+      'https://stimuli.forebearpro.co.in/storage/app/public/7/gugsali8_happy-faces_625x300_20_March_23.png',
+  },
+  {
+    id: '2',
+    name: 'stress relief ',
+    music: {
+      url: require('../../assets/backound/backTwo.wav'),
+      title: 'Titel',
+      artist: 'Innertune',
+      artwork: `asset:/files/backOne.wav`,
+      duration: null,
+    },
+    image:
+      'https://stimuli.forebearpro.co.in/storage/app/public/11/[FREE---HDconvert.com]-dkfk.png',
+  },
+  {
+    id: '3',
+    name: 'stress relief ',
+    music: {
+      url: require('../../assets/backound/backOne.wav'),
+      title: 'Titel',
+      artist: 'Innertune',
+      artwork: `asset:/files/backOne.wav`,
+      duration: null,
+    },
+    image:
+      'https://stimuli.forebearpro.co.in/storage/app/public/8/hollybood1.jpg',
+  },
+  {
+    id: '4  ',
+    name: 'Clam and peace ',
+    music: {
+      url: require('../../assets/backound/backTwo.wav'),
+      title: 'Titel',
+      artist: 'Innertune',
+      artwork: `asset:/files/backOne.wav`,
+      duration: null,
+    },
+    image:
+      'https://stimuli.forebearpro.co.in/storage/app/public/7/gugsali8_happy-faces_625x300_20_March_23.png',
+  },
+];
 
-const Focus = ({data}) => {
+const Focus = ({data, onPress}) => {
   // Alert.alert(JSON.stringify(data))
- 
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
       <ScrollView contentContainerStyle={{alignSelf: 'center'}}>
-     
         <FlatList
-          data={data}
+          data={data2}
           numColumns={2}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
@@ -100,17 +153,17 @@ const Focus = ({data}) => {
                 alignItems: 'center',
               }}>
               <View style={styles.imageContainerrr}>
-                <TouchableOpacity>
-                  <Image source={{uri:item?.bgsound_image[0]?.original_url}} style={styles.imageee} />
+                <TouchableOpacity onPress={() => onPress(item)}>
+                  <Image source={{uri: item.image}} style={styles.imageee} />
                 </TouchableOpacity>
                 <TouchableOpacity>
                   <View
                     style={{
                       flexDirection: 'column',
                       alignSelf: 'center',
-                      marginTop:10
+                      marginTop: 10,
                     }}>
-                    <Text style={styles.texttt}>{item?.bgsound_name}</Text>
+                    <Text style={styles.texttt}>{item?.name}</Text>
                   </View>
                 </TouchableOpacity>
                 <View
@@ -123,9 +176,9 @@ const Focus = ({data}) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     borderRadius: 20,
-                    backgroundColor: 'white',
+                    backgroundColor: null,
                   }}>
-                  <Fontisto name="locked" size={20} color="black" />
+                  {/* <Fontisto name="locked" size={20} color="black" /> */}
                 </View>
               </View>
             </View>

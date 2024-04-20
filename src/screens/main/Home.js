@@ -66,14 +66,16 @@ const HomeScreen = () => {
   const {loading, playlist, groups, category} = useSelector(
     state => state.home,
   );
+  //https://stimuli.forebearpro.co.in/api/v1/playList?user_id=2
+  console.log('hisisissi', JSON.stringify(playlist));
 
   const getAllCategories = async () => {
     const token = await AsyncStorage.getItem('token');
     dispatch({
       type: 'home/playlist_request',
       token,
-      url: 'playListItem',
-      playlist_id: 1,
+      url: 'playList',
+      user_id: '1',
     });
     dispatch({
       type: 'home/group_fetch_request',
@@ -172,7 +174,7 @@ const HomeScreen = () => {
                 <View style={{paddingHorizontal: '20%'}}>
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate('Popular');
+                      navigation.navigate('Popular', {name: item?.group_name});
                     }}>
                     <Text
                       style={{

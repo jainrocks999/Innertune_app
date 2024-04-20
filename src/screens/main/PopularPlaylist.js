@@ -68,7 +68,8 @@ const Img = [
     title2: '90 affirmations',
   },
 ];
-const Popularplaylist = () => {
+const Popularplaylist = ({route}) => {
+  route.params.name;
   const dispatch = useDispatch();
   const {loading, category, groups} = useSelector(state => state.home);
 
@@ -83,7 +84,7 @@ const Popularplaylist = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Text style={{fontSize: 25, color: 'white'}}>Popular playlist</Text>
+        <Text style={{fontSize: 25, color: 'white'}}>{route.params.name}</Text>
       </View>
       <ScrollView>
         <FlatList

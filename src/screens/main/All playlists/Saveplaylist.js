@@ -18,11 +18,15 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ScrollView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Saveplaylist = () => {
+const Saveplaylist = ({route}) => {
+  const selectedItems = route.params.selected;
   const navigation = useNavigation();
   const [playlistName, setPlaylistName] = useState('');
   const [description, setDescription] = useState('');
+  console.log('this sis seledcte itme', selectedItems);
 
   const handlePlaylistNameChange = text => {
     setPlaylistName(text);
@@ -31,24 +35,40 @@ const Saveplaylist = () => {
   const handleDescriptionChange = text => {
     setDescription(text);
   };
+  const dispatch = useDispatch();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // You can perform actions with playlistName and description here
-    console.log('Playlist Name:', playlistName);
-    console.log('Description:', description);
+    // console.log('Playlist Name:', playlistName);
+    // console.log('Description:', description);
+    const token = await AsyncStorage.getItem('token');
+    dispatch({
+      type: 'home/createPlayList_request',
+      description: description,
+      title: playlistName,
+      user_id: '1',
+      url: 'createPlayList',
+      token,
+      navigation,
+    });
   };
   return (
     <View style={{flex: 1, backgroundColor: '#191919'}}>
-         <View
+      <View
         style={{
           flexDirection: 'row',
           marginTop: 20,
-         
+
           alignItems: 'center',
           justifyContent: 'center',
         }}>
         <View style={{height: hp(5), marginLeft: '15%'}}>
-          <Icon    onPress={() => navigation.goBack()}name="arrow-back" size={30} color="white" />
+          <Icon
+            onPress={() => navigation.goBack()}
+            name="arrow-back"
+            size={30}
+            color="white"
+          />
         </View>
         <View style={{height: hp(5), width: wp(100)}}>
           <Text
@@ -58,7 +78,7 @@ const Saveplaylist = () => {
               marginHorizontal: '17%',
               color: 'white',
             }}>
-      Save your Playlist
+            Save your Playlist
           </Text>
         </View>
       </View>
@@ -94,7 +114,6 @@ const Saveplaylist = () => {
               placeholderTextColor={'grey'}
               value={playlistName}
               onChangeText={handlePlaylistNameChange}
-              
             />
           </View>
           <View style={styles.inputContainer}>
@@ -108,9 +127,8 @@ const Saveplaylist = () => {
               placeholderTextColor={'grey'}
               value={description}
               onChangeText={handleDescriptionChange}
-            
               multiline={true}
-              numberOfLines={4} 
+              numberOfLines={4}
             />
           </View>
         </View>
@@ -127,7 +145,7 @@ const Saveplaylist = () => {
             borderRadius: 10,
           }}
           onPress={() => {
-            navigation.navigate('saveplaylist');
+            handleSubmit();
           }}>
           <Text style={styles.loginText}>Save Playlist</Text>
         </TouchableOpacity>
@@ -153,7 +171,7 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: 'black',
     borderRadius: 10,
-    color:'white',
+    color: 'white',
     paddingHorizontal: 10,
     marginVertical: 10,
     borderWidth: 0.4,
@@ -161,7 +179,7 @@ const styles = StyleSheet.create({
   label: {
     marginBottom: 5,
     fontSize: 15,
-    color:'white',
+    color: 'white',
     fontWeight: '500',
   },
 });

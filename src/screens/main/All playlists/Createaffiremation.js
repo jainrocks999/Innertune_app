@@ -170,7 +170,7 @@ const Createaffirmation = ({route}) => {
             borderRadius: 10,
           }}
           onPress={() => {
-            navigation.navigate('saveplaylist');
+            navigation.navigate('saveplaylist', {selected: selectedItems});
           }}>
           <Text style={styles.loginText}>Next</Text>
         </TouchableOpacity>

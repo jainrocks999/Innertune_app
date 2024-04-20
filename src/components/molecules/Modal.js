@@ -33,6 +33,8 @@ const Mymodal = ({
   selectedVoice,
   maxTimeInMinutes,
   onTimePress,
+  ttsVolume,
+  onMusicPress,
 }) => {
   console.log(title);
   const [selectedTab, setSelectedTab] = useState('Voice');
@@ -72,7 +74,7 @@ const Mymodal = ({
               onPress={item => onVoicePress(item)}
             />
           ) : title == 'Music' ? (
-            <Music />
+            <Music onPress={onMusicPress} />
           ) : title == 'Time' ? (
             <Time
               onPress={item => onTimePress(item)}

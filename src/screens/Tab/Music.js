@@ -20,7 +20,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Slider from '@react-native-community/slider';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {TouchableOpacity} from 'react-native';
-import {useSelector} from 'react-redux'
+import {useSelector} from 'react-redux';
 import Loader from '../../components/Loader';
 
 const data = [
@@ -29,24 +29,23 @@ const data = [
   {id: '3', title: 'Sleep'},
 ];
 
-const Music = () => {
+const Music = ({onPress}) => {
   const [selectedTab, setSelectedTab] = useState('Focus');
-  const {loading,bgSound,bgcategories}=useSelector(state=>state.home)
-  console.log('thisis',bgcategories);
- 
+  const {loading, bgSound, bgcategories} = useSelector(state => state.home);
+  console.log('thisis', bgcategories);
+
   const handleTabPress = title => {
     setSelectedTab(title);
   };
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
-        <Loader loading={loading}/>
+      <Loader loading={loading} />
       <View
         style={{
           flexDirection: 'row',
           justifyContent: 'center',
           marginTop: hp(2),
         }}>
-      
         <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'white'}}>
           Background Music
         </Text>
@@ -60,7 +59,6 @@ const Music = () => {
           alignItems: 'center',
           borderBottomWidth: 1,
         }}>
-            
         <FlatList
           data={bgcategories}
           horizontal={true}
@@ -93,9 +91,9 @@ const Music = () => {
           )}
         />
       </View>
-      {selectedTab == 'Focus' ? <Focus data={bgSound}  /> : ''}
+      {selectedTab == 'Focus' ? <Focus onPress={onPress} data={bgSound} /> : ''}
       {selectedTab == 'Relax' ? <Relax data={bgSound} /> : ''}
-      {selectedTab == 'Sleep' ? <Sleep data={bgSound}/> : ''}
+      {selectedTab == 'Sleep' ? <Sleep data={bgSound} /> : ''}
       <View
         style={{
           height: hp(12),

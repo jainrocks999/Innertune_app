@@ -6,7 +6,7 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import Entypo from 'react-native-vector-icons/Entypo';
 
@@ -15,9 +15,9 @@ import {
   widthPrecent as wp,
 } from '../components/atoms/responsive';
 import {TouchableOpacity} from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const Img = [
   {
@@ -72,8 +72,19 @@ const Img = [
 
 const Toptab = () => {
   const dispatch = useDispatch();
- 
-  const getfavoriteList = async (item) => {
+  useEffect(() => {
+    getplaylist();
+  }, []);
+  const getplaylist = async () => {
+    const token = await AsyncStorage.getItem('token');
+    dispatch({
+      type: 'home/playlist_request',
+      token,
+      url: 'playList',
+      user_id: '1',
+    });
+  };
+  const getfavoriteList = async item => {
     const token = await AsyncStorage.getItem('token');
     dispatch({
       type: 'home/favoriteList_request',
@@ -81,10 +92,12 @@ const Toptab = () => {
       user_id: '1',
       navigation,
       url: 'favoriteList',
-      item
+      item,
     });
   };
- 
+  const {playlist} = useSelector(state => state.home);
+  console.log('tjhissisi', JSON.stringify(playlist));
+
   const navigation = useNavigation();
   return (
     <View style={{flex: 1, backgroundColor: '#191919', height: '100%'}}>
@@ -100,9 +113,10 @@ const Toptab = () => {
         </Text>
       </View>
 
-      <TouchableOpacity   onPress={(items) => {
-                  getfavoriteList(items);
-                }}>
+      <TouchableOpacity
+        onPress={items => {
+          getfavoriteList(items);
+        }}>
         <View
           style={{
             flexDirection: 'row',
@@ -182,8 +196,8 @@ const Toptab = () => {
       </View>
 
       <FlatList
-        data={Img}
-        keyExtractor={item => item.id}
+        data={playlist[0].playlist}
+        keyExtractor={item => item?.id}
         renderItem={({item}) => (
           <View
             style={{
@@ -203,7 +217,7 @@ const Toptab = () => {
                     marginHorizontal: hp(2.5),
                   }}>
                   <Text style={styles.text}>{item.title}</Text>
-                  <Text style={styles.text2}>{item.title2}</Text>
+                  <Text style={styles.text2}>{item.description}</Text>
                 </View>
                 <View style={{justifyContent: 'center', paddingRight: 20}}>
                   <Entypo

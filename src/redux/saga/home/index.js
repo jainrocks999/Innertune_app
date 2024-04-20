@@ -5,7 +5,7 @@ import {Alert} from 'react-native';
 function* getplaylist(action) {
   try {
     let params = {
-      playlist_id: action.playlist_id,
+      user_id: action.user_id,
     };
     const res = yield call(Api.API_GET, {
       token: action.token,
@@ -114,7 +114,7 @@ function* fetchAffirmation(action) {
         payload: action.item,
       });
       // Alert.alert(JSON.stringify(action.item))
-      action.navigation.navigate('Playlistdetails');
+      action.navigation?.navigate('Playlistdetails');
     } else {
       Toast.show('Error with fetching affermations');
       yield put({
@@ -193,21 +193,24 @@ function* getbgcategories(action) {
   }
 }
 function* fetchCreatePlaylist(action) {
+  console.log(action);
   try {
-    const params = {
-      user_id: action.user_id,
-    };
-    const res = yield call(Api.API_GET, {
+    let formdata = new FormData();
+    formdata.append('description', action.description);
+    formdata.append('title', action.title);
+    formdata.append('user_id', action.user_id);
+    const res = yield call(Api.API_POST, {
+      formdata,
       token: action.token,
       url: action.url,
-      params,
     });
-    console.log(res.data);
+
     if (res.status) {
       yield put({
         type: 'home/createPlayList_success',
         payload: res.data,
       });
+      Toast.show('Plalist created successs');
     } else {
       Toast.show('Error with fetching createplaylist ');
       yield put({
@@ -224,8 +227,8 @@ function* fetchCreatePlaylist(action) {
   }
 }
 function* fetchCreatefavriote(action) {
-  Alert.alert('called')
-  
+  Alert.alert('called');
+
   try {
     console.log(action);
     let formdata = new FormData();
@@ -244,7 +247,7 @@ function* fetchCreatefavriote(action) {
         type: 'home/Createfavriote_success',
         payload: res.data,
       });
-      Toast.show('Added into Favriote List')
+      Toast.show('Added into Favriote List');
     } else {
       Toast.show('Error with fetching Createfavriote ');
       yield put({
@@ -276,7 +279,7 @@ function* getfavoriteList(action) {
         type: 'home/favoriteList_success',
         payload: res.data,
       });
-      action.navigation.navigate('Playlistdetails')
+      action.navigation.navigate('Playlistdetails');
     } else {
       Toast.show('Error with fetching favoriteList');
       yield put({

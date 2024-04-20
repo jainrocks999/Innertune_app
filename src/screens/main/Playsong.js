@@ -8,6 +8,7 @@ import {
   View,
   FlatList,
   ToastAndroid,
+  Platform,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {
@@ -29,6 +30,10 @@ import CircularProgress from 'react-native-circular-progress-indicator';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Clipboard} from 'react-native';
+import {setupPlayer} from '../../utils/Setup';
+import TrackPlayer from 'react-native-track-player';
+import RNFS from 'react-native-fs';
+
 const data = [
   {id: '1', title: 'Voice'},
   {id: '2', title: 'Time'},
@@ -49,6 +54,7 @@ const Playsong = () => {
   const {affirmations} = useSelector(state => state.home);
   const [isPaused, setIsPaused] = useState(false);
   const [visibleIndex, setVisibleIndex] = useState(1);
+
   const handleTabPress = async title => {
     const token = await AsyncStorage.getItem('token');
     if (title == 'Music') {
@@ -112,12 +118,15 @@ const Playsong = () => {
     return () => clearInterval(intervalForAffirmations);
   }, [affirmations, isPaused]);
   useEffect(() => {
+    player('Sleeping.wav');
+  }, []);
+  useEffect(() => {
     const maxTimeInSeconds = maxTimeInMinutes * 60;
     let currentTime = currentTimeRef.current || 0;
     const initialProgress = (currentTime / maxTimeInSeconds) * 100;
     setProgress(initialProgress);
 
-    const intervalForProgress = setInterval(() => {
+    const intervalForProgress = setInterval(async () => {
       if (!isPaused) {
         if (currentTime < maxTimeInSeconds) {
           currentTime++;
@@ -129,14 +138,17 @@ const Playsong = () => {
           setProgress(100);
           setIsPaused(true);
           Tts.pause();
+          await TrackPlayer.pause();
         }
       } else {
         Tts.pause();
+        await TrackPlayer.pause();
       }
     }, 1000);
 
     if (!isPaused) {
       Tts.resume();
+      TrackPlayer.play();
     }
 
     return () => {
@@ -152,7 +164,7 @@ const Playsong = () => {
       currentTimeRef.current = 0;
     }
   };
-  console.log('thjissi', progress);
+
   const [voices, setVoices] = useState([]);
   const [ttsStatus, setTtsStatus] = useState('initiliazing');
   const [selectedVoice, setSelectedVoice] = useState(null);
@@ -160,19 +172,19 @@ const Playsong = () => {
   const [speechPitch, setSpeechPitch] = useState(0.5);
 
   useEffect(() => {
-    // Tts.addEventListener('tts-start', _event => setTtsStatus('started'));
-    // Tts.addEventListener('tts-finish', _event => setTtsStatus('finished'));
-    // Tts.addEventListener('tts-cancel', _event => setTtsStatus('cancelled'));
+    Tts.addEventListener('tts-start', _event => setTtsStatus('started'));
+    Tts.addEventListener('tts-finish', _event => setTtsStatus('finished'));
+    Tts.addEventListener('tts-cancel', _event => setTtsStatus('cancelled'));
     Tts.setDefaultRate(speechRate);
     Tts.setDefaultPitch(speechPitch);
     Tts.getInitStatus().then(initTts);
-    // return () => {
-    //   Tts.removeEventListener('tts-start', _event => setTtsStatus('started'));
-    //   Tts.removeEventListener('tts-finish', _event => setTtsStatus('finished'));
-    //   Tts.removeEventListener('tts-cancel', _event =>
-    //     setTtsStatus('cancelled'),
-    //   );
-    // };
+    return () => {
+      Tts.removeEventListener('tts-start', _event => setTtsStatus('started'));
+      Tts.removeEventListener('tts-finish', _event => setTtsStatus('finished'));
+      Tts.removeEventListener('tts-cancel', _event =>
+        setTtsStatus('cancelled'),
+      );
+    };
   }, []);
   const initTts = async () => {
     const voices = await Tts.voices();
@@ -224,10 +236,29 @@ const Playsong = () => {
     readText(affirmations[currentIndex].affirmation_text);
     setSelectedVoice(voice.id);
   };
-
+  const path = Platform.select({
+    android: 'asset:/files/',
+    ios: RNFS.MainBundlePath + '/files/',
+  });
   const readText = async text => {
     Tts.stop();
     Tts.speak(text);
+  };
+  const player = async sound => {
+    const isSetup = await setupPlayer();
+    console.log(isSetup);
+    if (isSetup) {
+      const track = {
+        url: require('../../assets/backound/backOne.wav'),
+        title: 'Titel',
+        artist: 'Innertune',
+        artwork: `asset:/files/backOne.wav`,
+        duration: null,
+      };
+      await TrackPlayer.reset();
+      await TrackPlayer.add(sound?.music ?? track);
+      await TrackPlayer.play();
+    }
   };
 
   return (
@@ -457,6 +488,7 @@ const Playsong = () => {
           onTimePress={item => {
             setMaxTimeInMinuts(item.value);
           }}
+          onMusicPress={player}
         />
       </ImageBackground>
     </View>

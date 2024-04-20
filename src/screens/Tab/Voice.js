@@ -9,6 +9,7 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
+  Clipboard,
 } from 'react-native';
 import {
   heightPercent as hp,
