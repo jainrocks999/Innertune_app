@@ -127,15 +127,15 @@ const Playlistdetails = () => {
           marginHorizontal: hp(3),
           marginTop: hp(2),
         }}>
-        <Feather name="heart" size={20} color="white" />
+        <Feather name="heart" size={25} color="white" />
 
-        <Entypo name="share" size={20} color="white" marginHorizontal="10%" />
+        <Entypo name="share" size={25} color="white" marginHorizontal="10%" />
         <Entypo
           onPress={() => {
             navigation.navigate('Menu');
           }}
           name="dots-three-horizontal"
-          size={20}
+          size={25}
           color="white"
         />
 
@@ -146,7 +146,7 @@ const Playlistdetails = () => {
           style={{
             height: hp(8),
             width: wp(16),
-            left: wp(32),
+            left: wp(35),
             tintColor: '#426e56',
           }}>
           <Image

@@ -45,12 +45,12 @@ const Voice = ({voice, onPress, selectedVoice}) => {
     return array.filter(item => languages.includes(item.language));
   }
   const myvoice = [
-    {id: 'en-au-x-auc-local', name: 'Lily', language: 'en-AU'}, //female //anny
-    {id: 'en-us-x-iob-local', name: 'Annie', language: 'en-US'},
-    {id: 'en-au-x-aub-local', name: 'John', language: 'en-AU'}, //male
-    {id: 'en-in-x-ahp-local', name: 'Beth', language: 'en-IN'},
-    {id: 'en-us-x-iom-local', name: 'Smith', language: 'en-US'},
-    {id: 'en-in-x-cxx-local', name: 'Kimm', language: 'en-IN'},
+    {id: 'en-au-x-auc-local', name: 'Lily', language: 'en-AU', image: require('../../assets/profilepic/profile3.jpg')}, //female //anny
+    {id: 'en-us-x-iob-local', name: 'Annie', language: 'en-US', image: require('../../assets/profilepic/profile4.jpg')},
+    {id: 'en-au-x-aub-local', name: 'John', language: 'en-AU', image: require('../../assets/profilepic/profile2.jpg')}, //male
+    {id: 'en-in-x-ahp-local', name: 'Beth', language: 'en-IN', image: require('../../assets/profilepic/profile1.jpg')},
+    {id: 'en-us-x-iom-local', name: 'Smith', language: 'en-US', image: require('../../assets/profilepic/profile5.jpg')},
+    {id: 'en-in-x-cxx-local', name: 'Kimm', language: 'en-IN', image: require('../../assets/profilepic/profile6.jpg')},
   ];
 
   return (
@@ -95,7 +95,7 @@ const Voice = ({voice, onPress, selectedVoice}) => {
                 }}>
                 <View style={styles.imageContainer}>
                   <Image
-                    source={require('../../assets/music.jpg')}
+                    source={item.image}
                     style={styles.image}
                   />
                   {

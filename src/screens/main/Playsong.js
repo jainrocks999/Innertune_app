@@ -35,9 +35,9 @@ import TrackPlayer from 'react-native-track-player';
 import RNFS from 'react-native-fs';
 
 const data = [
-  {id: '1', title: 'Voice'},
-  {id: '2', title: 'Time'},
-  {id: '3', title: 'Music'},
+  {id: '1', title: 'Voice',     image: require('../../assets/profilepic/profile2.jpg'),},
+  {id: '2', title: 'Time',    image: require('../../assets/timer.jpg'),},
+  {id: '3', title: 'Music',    image: require('../../assets/music1.jpg'),},
 ];
 
 const Playsong = () => {
@@ -462,12 +462,11 @@ const Playsong = () => {
                       {item.title}
                     </Text>
                     <Image
-                      source={require('../../assets/music.jpg')}
+                      source={item.image}
                       style={{
                         width: hp(6),
-
+                        color: selectedTab === item.image ? 'white' : 'black',
                         height: hp(6),
-
                         borderRadius: hp(7),
                       }}
                     />

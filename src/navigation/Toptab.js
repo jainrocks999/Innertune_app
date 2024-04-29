@@ -205,11 +205,31 @@ const Toptab = () => {
               alignSelf: 'center',
               justifyContent: 'center',
             }}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Menu');
+              }}>
               <View style={styles.imageeContainer}>
-                <View style={{justifyContent: 'center'}}>
-                  <Image source={item.image} style={styles.image} />
-                </View>
+                <LinearGradient
+                  style={{borderRadius: 20}}
+                  start={{x: 0.5, y: 0.0}}
+                  end={{x: 0.0, y: 1}}
+                  locations={[0, 1]}
+                  colors={['#89FFBF', '#000000']}>
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      height: hp(8),
+                      width: wp(16),
+                      alignItems: 'center',
+                      borderRadius: '10%',
+                    }}>
+                    <Image
+                      source={require('../assets/playlist.png')}
+                      style={styles.image}
+                    />
+                  </View>
+                </LinearGradient>
                 <View
                   style={{
                     flexDirection: 'column',
@@ -261,8 +281,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   image: {
-    width: hp(10),
-    height: hp(10),
+    width: hp(4),
+    height: hp(4),
     borderRadius: 30,
   },
   text: {

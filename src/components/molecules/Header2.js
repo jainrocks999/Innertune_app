@@ -24,6 +24,7 @@ const Header2 = ({placeholder, onChangeText,}) => {
         height: hp(10),
         width: '100%',
         backgroundColor: '#191919',
+       
         marginHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',

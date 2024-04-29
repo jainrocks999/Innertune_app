@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
-import {View, Image, Text, StyleSheet, TextInput} from 'react-native';
+import {View, Image, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 import {heightPercent as hp, widthPrecent as wp} from '../atoms/responsive';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native';
 const Header = ({placeholder, onChangeText}) => {
+  const navigation = useNavigation();
   const [text, setText] = useState('');
   const handleClear = () => {
     setText;
@@ -18,10 +20,15 @@ const Header = ({placeholder, onChangeText}) => {
         flexDirection: 'row',
         alignItems: 'center',
       }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('goal');
+            }}>
       <Image
         source={require('../../assets/logo.png')}
         style={{height: hp(7), width: wp(13), marginRight: 15,tintColor:'white'}}
       />
+      </TouchableOpacity>
       <View style={styles.searchContainer}>
         <AntDesign name="search1" size={20} color="white" />
         <TextInput

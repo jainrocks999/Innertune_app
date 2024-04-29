@@ -42,7 +42,7 @@ const Horizontal = ({data, onPress}) => {
           <View style={styles.imageContainer}>
             <TouchableOpacity onPress={() => onPress(item)}>
               <Image source={{uri: image}} style={styles.image} />
-              <Text style={styles.text}>{title}</Text>
+              <Text style={styles.text}>{title.substring(0, 20)}</Text>
             </TouchableOpacity>
             <View
               style={{
@@ -50,7 +50,8 @@ const Horizontal = ({data, onPress}) => {
                 alignItems: 'center',
                 justifyContent: 'flex-end',
                 marginTop: hp(-2.5),
-                marginRight: 10,
+
+             
               }}>
               <TouchableOpacity
                 onPress={() => {
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
   text: {
     width: wp(60),
     marginTop: 10,
-    marginLeft: 5,
+    marginLeft: 10,
     color: 'white',
     fontSize: 18,
     fontWeight: '400',
@@ -84,11 +85,11 @@ const styles = StyleSheet.create({
     fontWeight: '300',
   },
   imageContainer: {
-    padding: 15,
+    padding: 12,
   },
   image: {
-    width: hp(32),
-    height: hp(18),
+    width: hp(30),
+    height: hp(20),
     resizeMode: 'stretch',
     borderRadius: 20,
   },

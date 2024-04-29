@@ -14,6 +14,8 @@ import Playsong from '../screens/main/Playsong';
 import Mymodal from '../components/molecules/Modal';
 import Playlistdetails from '../screens/Tab/Playlistdetails';
 import Menu from '../screens/main/Menu';
+import Goal from '../screens/Auth/Goal';
+import AudioRecorder from '../components/molecules/Audiorecord';
 const Stack = createStackNavigator();
 function MyStack() {
   return (
@@ -76,6 +78,16 @@ function MyStack() {
       <Stack.Screen
         name="Menu"
         component={Menu}
+        options={{headerShown: false}}
+      />
+         <Stack.Screen
+        name="goal"
+        component={Goal}
+        options={{headerShown: false}}
+      />
+         <Stack.Screen
+        name="audiorecorder"
+        component={AudioRecorder}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

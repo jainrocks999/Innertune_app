@@ -210,7 +210,7 @@ function* fetchCreatePlaylist(action) {
         type: 'home/createPlayList_success',
         payload: res.data,
       });
-      Toast.show('Plalist created successs');
+      Toast.show('Playlist created successfully');
     } else {
       Toast.show('Error with fetching createplaylist ');
       yield put({

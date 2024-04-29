@@ -135,29 +135,30 @@ const Remindmodal3 = () => {
           keyExtractor={item => item.id}
           renderItem={({item}) => (
             <TouchableOpacity
-            onPress={() => {
-              handleSelectedDay(item);
-            }}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginHorizontal: wp(1),
-              height: hp(5),
-              width: wp(10),
-              backgroundColor: selectedDay.includes(item.id)
-                ? '#426e56'
-                : 'white',
-              borderRadius: 50,
-            }}>
-            <Text
-              style={[
-                styles.text,
-                {color: selectedDay.includes(item.id) ? 'white' : 'black'},
-              ]}>
-              {item.title}
-            </Text>
-          </TouchableOpacity>
+              onPress={() => {
+                handleSelectedDay(item);
+              }}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+        
+                justifyContent: 'center',
+                marginHorizontal: wp(1),
+                height: hp(5),
+                width: hp(5),
+                backgroundColor: selectedDay.includes(item.id)
+                  ? '#426e56'
+                  : 'white',
+                borderRadius: 50,
+              }}>
+              <Text
+                style={[
+                  styles.text,
+                  {color: selectedDay.includes(item.id) ? 'white' : 'black',left:2},
+                ]}>
+                {item.title}
+              </Text>
+            </TouchableOpacity>
           )}
         />
       </View>

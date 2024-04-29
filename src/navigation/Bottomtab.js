@@ -168,7 +168,7 @@ const MyTabs = () => {
         <View style={styles.bottomSheetContent}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('createaffirmation');
+              navigation.navigate('audiorecorder');
             }}>
             <View style={styles.card}>
               <Image
@@ -238,14 +238,14 @@ const MyTabs = () => {
 const styles = StyleSheet.create({
   tabBar: {
     width: wp(100),
-    height: hp(10),
+    height: hp(8),
     backgroundColor: 'black',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     borderTopWidth: 0,
   },
   tabIconContainer: {
-    width: wp(20),
+    width: wp(16),
     height: hp(8),
     top: 1,
     position: 'absolute',
@@ -267,23 +267,23 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   tabIcon: {
-    width: 28,
-    height: 35,
+    width: 24,
+    height: 32,
   },
   textIcon: {
     color: '#89FFBF',
   },
   bottomSheetContainer: {
-    backgroundColor: '#191919', // Background color of the bottom sheet
+    backgroundColor: '#191919',
     height: hp(50),
   },
   bottomSheetContent: {
-    backgroundColor: '#191919', // Background color of the content within the bottom sheet
+    backgroundColor: '#191919', 
     padding: 20,
     height: '40%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderTopLeftRadius: 20, // Add border radius to style the shape of the bottom sheet
+    borderTopLeftRadius: 20, 
     borderTopRightRadius: 20,
   },
   bottomSheetText: {

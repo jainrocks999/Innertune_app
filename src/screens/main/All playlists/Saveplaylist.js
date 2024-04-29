@@ -20,6 +20,8 @@ import {ScrollView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { launchImageLibrary as _launchImageLibrary, launchCamera as _launchCamera } from 'react-native-image-picker';
+let launchImageLibrary = _launchImageLibrary;
 
 const Saveplaylist = ({route}) => {
   const selectedItems = route.params.selected;
@@ -51,6 +53,31 @@ const Saveplaylist = ({route}) => {
       token,
       navigation,
     });
+    navigation.navigate('library');
+  };
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const openImagePicker = () => {
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+
+    launchImageLibrary(options, handleResponse);
+  };
+
+
+  const handleResponse = (response) => {
+    if (response.didCancel) {
+      console.log('User cancelled image picker');
+    } else if (response.error) {
+      console.log('Image picker error: ', response.error);
+    } else {
+      let imageUri = response.uri || response.assets?.[0]?.uri;
+      setSelectedImage(imageUri);
+    }
   };
   return (
     <View style={{flex: 1, backgroundColor: '#191919'}}>
@@ -83,6 +110,7 @@ const Saveplaylist = ({route}) => {
         </View>
       </View>
       <ScrollView>
+        <TouchableOpacity onPress={openImagePicker}>
         <View
           style={{
             height: hp(30),
@@ -105,6 +133,7 @@ const Saveplaylist = ({route}) => {
           />
           <Text style={{color: 'white', fontSize: 30}}>Upload File</Text>
         </View>
+        </TouchableOpacity>
         <View style={styles.container}>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>My Playlist</Text>

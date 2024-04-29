@@ -19,33 +19,28 @@ import Slider from '@react-native-community/slider';
 const Img2 = [
   {
     id: '1',
-    image: require('../../assets/music.jpg'),
-    title: '1 min',
-    value: 1,
+    title: '1',
+    title2: 'min',
   },
   {
     id: '2',
-    image: require('../../assets/music.jpg'),
-    title: '3 min',
-    value: 3,
+    title: '5',
+    title2: 'min',
   },
   {
     id: '3',
-    image: require('../../assets/music.jpg'),
-    title: '5 min',
-    value: 5,
+    title: '10',
+    title2: 'min',
   },
   {
     id: '4',
-    image: require('../../assets/music.jpg'),
-    title: '8 min',
-    value: 8,
+    title: '20',
+    title2: 'min',
   },
   {
     id: '5',
-    image: require('../../assets/music.jpg'),
-    title: '10 min',
-    value: 10,
+    title: '30',
+    title2: 'min',
   },
 ];
 
@@ -80,9 +75,14 @@ const Time = ({maxTimeInMinutes, onPress}) => {
             <TouchableOpacity
               onPress={() => onPress(item)}
               style={styles.imageContainerr}>
-              <View>
-                <Image source={item.image} style={styles.imagee} />
-                <Text style={styles.textt}>{item.title}</Text>
+              <View
+               style={{
+                justifyContent: 'center',
+                alignSelf: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={styles.textt}>{item.title}</Text>
+                <Text style={styles.textt}>{item.title2}</Text>
               </View>
             </TouchableOpacity>
           )}
@@ -114,7 +114,8 @@ const styles = StyleSheet.create({
   },
   textt: {
     color: 'white',
-    fontSize: 18,
+    fontSize: hp(3),
+
     fontWeight: '500',
   },
 });

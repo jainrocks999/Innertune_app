@@ -19,45 +19,33 @@ import Loader from '../../components/Loader';
 const Img = [
   {
     id: '1',
-    image: require('../../assets/music.jpg'),
-    title: 'Believe in yourself',
-    title2: '90 affirmations',
+    image: require('../../assets/profilepic/profile1.jpg'),
+    title: 'Control Stress and Anxiety',
   },
   {
     id: '2',
-    image: require('../../assets/music.jpg'),
-    title: 'Believe in yourself',
-    title2: '90 affirmations',
+    image: require('../../assets/profilepic/profile2.jpg'),
+    title: 'Be a Better Friend',
   },
   {
     id: '3',
-    image: require('../../assets/music.jpg'),
-    title: 'Believe in yourself',
-    title2: '90 affirmations',
+    image: require('../../assets/profilepic/profile3.jpg'),
+    title: 'Liked affirmations',
   },
   {
     id: '4',
-    image: require('../../assets/music.jpg'),
-    title: 'Believe in yourself',
-    title2: '90 affirmations',
+    image: require('../../assets/profilepic/profile4.jpg'),
+    title: 'Billionaire Mindset',
   },
   {
     id: '5',
-    image: require('../../assets/music.jpg'),
-    title: 'Believe in yourself',
-    title2: '90 affirmations',
+    image: require('../../assets/profilepic/profile5.jpg'),
+    title: 'Manifest Wealth',
   },
   {
     id: '6',
-    image: require('../../assets/music.jpg'),
-    title: 'Believe in yourself',
-    title2: '90 affirmations',
-  },
-  {
-    id: '7',
-    image: require('../../assets/music.jpg'),
-    title: 'Believe in yourself',
-    title2: '90 affirmations',
+    image: require('../../assets/profilepic/profile6.jpg'),
+    title: 'Awaken Your Money Power',
   },
 ];
 
@@ -116,24 +104,113 @@ const HomeScreen = () => {
       <Loader loading={loading} />
       <ScrollView style={styles.scrollView}>
         <View style={styles.FeatureContainer}>
-          <Text style={styles.Featurecategory}>Just for You</Text>
+          <Text style={styles.Featurecategory}>Last sessions</Text>
+        </View>
+        <View
+          style={{
+            alignItems: 'center',
+
+            width: wp(100),
+            height: hp(35),
+            top: hp(1),
+          }}>
+          <FlatList
+            data={Img}
+            numColumns={2}
+            showsHorizontalScrollIndicator={false}
+            scrollEnabled={false}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => (
+              <TouchableOpacity>
+                <View style={styles.carddd}>
+                  {/* <LinearGradient
+              start={{x: 0.0, y: 0.0}}
+              end={{x: 5, y: 0.0}}
+              locations={[0, 0.5, 0.3]}
+              colors={['#191919', '#89FFBF']}
+              style={styles.linearGradienttt}> */}
+                  <Image
+                    source={item.image}
+                    style={{height: hp(8), width: wp(16), borderRadius: 20}}
+                  />
+                  <View
+                    style={{
+                      flexDirection: 'column',
+                      alignSelf: 'center',
+                      width: wp(45),
+                      marginHorizontal: '5%',
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        width: wp(26),
+                        fontWeight: '400',
+                        fontFamily: 'Poppins-Medium',
+                        color: '#ffffff',
+                        backgroundColor: 'transparent',
+                      }}>
+                      {item.title}
+                    </Text>
+                  </View>
+                  {/* </LinearGradient> */}
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+        <View style={styles.FeatureContainer}>
+          <Text style={styles.Featurecategory}>Just For You</Text>
           <View style={{paddingHorizontal: '20%'}}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Popular');
+                getFavriote(item);
               }}>
-              <Text style={{fontSize: 15, fontWeight: '700', color: 'white'}}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: '900',
+                  color: 'white',
+                }}>
                 View All
               </Text>
             </TouchableOpacity>
           </View>
         </View>
-        {/* <Horizontal
-          data={category}
-          onPress={() => {
-            getAffetMations();
+        <FlatList
+          horizontal={true}
+          data={Img}
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => {
+            return (
+              <View style={styles.imageContainer}>
+                <TouchableOpacity>
+                  <Image
+                    source={require('../../assets/music.jpg')}
+                    style={styles.image}
+                  />
+                  <Text style={styles.textttt}>Believe in yourself</Text>
+                </TouchableOpacity>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                    marginTop: hp(-2.5),
+                  }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      getFavriote(item);
+                    }}>
+                    <Icon name="heart" size={20} color="white" />
+                  </TouchableOpacity>
+                </View>
+                {/* <Text style={styles.text2}>{'90 affirmations'}</Text> */}
+              </View>
+            );
           }}
-        /> */}
+        />
+
         <View style={styles.cardd}>
           <LinearGradient
             start={{x: 0.0, y: 0.0}}
@@ -164,6 +241,59 @@ const HomeScreen = () => {
             </View>
           </LinearGradient>
         </View>
+        
+        <View style={styles.FeatureContainer}>
+          <Text style={styles.Featurecategory}>Populer Playlist</Text>
+          <View style={{paddingHorizontal: '20%'}}>
+            <TouchableOpacity
+              onPress={() => {
+                getFavriote(item);
+              }}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: '900',
+                  color: 'white',
+                }}>
+                View All
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <FlatList
+          horizontal={true}
+          data={Img}
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => {
+            return (
+              <View style={styles.imageContainer}>
+                <TouchableOpacity>
+                  <Image
+                    source={require('../../assets/music.jpg')}
+                    style={styles.image}
+                  />
+                  <Text style={styles.textttt}>Believe in yourself</Text>
+                </TouchableOpacity>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                    marginTop: hp(-2.5),
+                  }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      getFavriote(item);
+                    }}>
+                    <Icon name="heart" size={20} color="white" />
+                  </TouchableOpacity>
+                </View>
+                {/* <Text style={styles.text2}>{'90 affirmations'}</Text> */}
+              </View>
+            );
+          }}
+        />
 
         <FlatList
           data={groups}
@@ -310,24 +440,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#191919',
   },
   imageContainer: {
-    padding: 15,
+    padding: 12,
   },
   image: {
-    width: hp(32),
-    height: hp(18),
+    width: hp(30),
+    height: hp(20),
     resizeMode: 'stretch',
     borderRadius: 20,
   },
-  card: {
-    height: hp(13),
-    width: wp(90),
-    borderColor: 'black',
-    alignSelf: 'center',
-    flexDirection: 'row',
-    borderRadius: 20,
-    backgroundColor: '#bb98ed',
-    marginBottom: 20,
-  },
+
   linearGradient: {
     width: '100%',
     flexDirection: 'row',
@@ -338,6 +459,14 @@ const styles = StyleSheet.create({
     width: wp(50),
     marginLeft: 5,
     color: 'black',
+    fontSize: 18,
+    fontWeight: '400',
+  },
+  textttt: {
+    width: wp(60),
+    marginTop: 10,
+    marginLeft: 10,
+    color: 'white',
     fontSize: 18,
     fontWeight: '400',
   },
@@ -364,18 +493,35 @@ const styles = StyleSheet.create({
   },
   linearGradientt: {
     flexDirection: 'row',
-    width: wp(90),
+    width: wp(100),
+    borderRadius: 20,
+  },
+  linearGradienttt: {
+    flexDirection: 'row',
+    width: wp(45),
     borderRadius: 20,
   },
   cardd: {
     height: hp(13),
-    width: wp(90),
+    width: wp(100),
+    left: wp(4),
+    marginVertical:hp(4),
     borderColor: 'black',
     alignSelf: 'center',
     flexDirection: 'row',
     borderRadius: 20,
     backgroundColor: '#bb98ed',
     marginBottom: 20,
+  },
+  carddd: {
+    height: hp(8),
+    width: wp(45),
+    borderColor: 'black',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    borderRadius: 20,
+    backgroundColor: 'black',
+    margin: 10,
   },
 });
 

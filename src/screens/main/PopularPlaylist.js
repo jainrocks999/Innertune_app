@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import React from 'react';
@@ -16,8 +17,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import Header2 from '../../components/molecules/Header2';
 import MyTabs from '../../navigation/Bottomtab';
+import Loader from '../../components/Loader';
 const Img = [
   {
     id: '1',
@@ -71,22 +74,38 @@ const Img = [
 const Popularplaylist = ({route}) => {
   route.params.name;
   const dispatch = useDispatch();
-  const {loading, category, groups} = useSelector(state => state.home);
+  const {loading, category} = useSelector(state => state.home);
 
   const navigation = useNavigation();
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
-      <Header2 />
+      <Loader />
       <View
         style={{
-          height: hp(10),
-          width: wp(100),
-          justifyContent: 'center',
-          alignItems: 'center',
+          flexDirection: 'row',
+          marginTop: 25,
         }}>
-        <Text style={{fontSize: 25, color: 'white'}}>{route.params.name}</Text>
+        <View style={{height: hp(5), width: wp(10), left: wp(5)}}>
+          <Icon
+            onPress={() => navigation.goBack()}
+            name="arrow-back"
+            size={30}
+            color="white"
+          />
+        </View>
+        <View
+          style={{
+            height: hp(5),
+            width: wp(100),
+            alignItems: 'center',
+            right: wp(7),
+          }}>
+          <Text style={{fontSize: 25, color: 'white'}}>
+            {route.params.name}
+          </Text>
+        </View>
       </View>
-      <ScrollView>
+      <ScrollView style={{top: hp(2)}}>
         <FlatList
           data={category}
           keyExtractor={item => item.id}
@@ -113,11 +132,16 @@ const Popularplaylist = ({route}) => {
                     <Feather name="heart" size={25} color="white" />
                   </View> */}
                   <View style={{justifyContent: 'center', marginLeft: 30}}>
-                    <Entypo
-                      name="dots-three-vertical"
-                      size={20}
-                      color="white"
-                    />
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate('Menu');
+                      }}>
+                      <Entypo
+                        name="dots-three-vertical"
+                        size={20}
+                        color="white"
+                      />
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>
