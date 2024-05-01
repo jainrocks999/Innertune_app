@@ -29,10 +29,10 @@ const data = [
   {id: '3', title: 'Sleep'},
 ];
 
-const Music = ({onPress}) => {
+const Music = ({onPress, bgVolume, onVolumeChange}) => {
   const [selectedTab, setSelectedTab] = useState('Focus');
   const {loading, bgSound, bgcategories} = useSelector(state => state.home);
-  console.log('thisis', bgcategories);
+  // console.log('thisis', JSON.stringify(bgSound));
 
   const handleTabPress = title => {
     setSelectedTab(title);
@@ -91,9 +91,10 @@ const Music = ({onPress}) => {
           )}
         />
       </View>
-      {selectedTab == 'Focus' ? <Focus onPress={onPress} data={bgSound} /> : ''}
-      {selectedTab == 'Relax' ? <Relax data={bgSound} /> : ''}
-      {selectedTab == 'Sleep' ? <Sleep data={bgSound} /> : ''}
+      {/* {selectedTab == 'Focus' ? <Focus onPress={onPress} data={bgSound} /> : ''} */}
+      {<Relax onPress={onPress} data={bgSound} />}
+      {/* {selectedTab == 'Sleep' ? <Sleep onPress={onPress} data={bgSound} /> : ''} */}
+      {/* {selectedTab == 'Focus' ? <Sleep onPress={onPress} data={bgSound} /> : ''} */}
       <View
         style={{
           height: hp(12),
@@ -120,10 +121,14 @@ const Music = ({onPress}) => {
           <Slider
             style={{width: '90%', height: 20}}
             minimumValue={0}
-            maximumValue={2}
+            maximumValue={1}
+            value={bgVolume}
             minimumTrackTintColor="white"
             maximumTrackTintColor="white"
             thumbTintColor="white"
+            onValueChange={value => {
+              onVolumeChange(value);
+            }}
           />
         </View>
       </View>

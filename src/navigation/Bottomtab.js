@@ -19,10 +19,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 const getIconColor = focused => ({
-  tintColor: focused ? '#89FFBF' : 'grey',
+  tintColor: focused ? '#D485D1' : '#fff',
 });
 const getTextColor = focused => ({
-  color: focused ? '#89FFBF' : 'grey',
+  color: focused ? '#D485D1' : '#ffff',
 });
 const MyTabs = () => {
   const navigation = useNavigation();
@@ -238,19 +238,21 @@ const MyTabs = () => {
 const styles = StyleSheet.create({
   tabBar: {
     width: wp(100),
-    height: hp(8),
+    height: hp(10),
     backgroundColor: 'black',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     borderTopWidth: 0,
+    paddingTop: '2%',
   },
   tabIconContainer: {
-    width: wp(16),
+    width: wp(17),
     height: hp(8),
     top: 1,
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
+    elevation: 5,
   },
   addIconContainer: {
     height: 50,
@@ -258,8 +260,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    backgroundColor: '#426e56',
+    // backgroundColor: '#426e56',
+    backgroundColor: '#B72658',
     borderRadius: 50,
+    elevation: 5,
   },
   addIcon: {
     width: 25,
@@ -269,21 +273,23 @@ const styles = StyleSheet.create({
   tabIcon: {
     width: 24,
     height: 32,
+    elevation: 5,
   },
   textIcon: {
     color: '#89FFBF',
+    elevation: 5,
   },
   bottomSheetContainer: {
     backgroundColor: '#191919',
     height: hp(50),
   },
   bottomSheetContent: {
-    backgroundColor: '#191919', 
+    backgroundColor: '#191919',
     padding: 20,
     height: '40%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderTopLeftRadius: 20, 
+    borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
   bottomSheetText: {

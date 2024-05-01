@@ -33,11 +33,16 @@ import {Clipboard} from 'react-native';
 import {setupPlayer} from '../../utils/Setup';
 import TrackPlayer from 'react-native-track-player';
 import RNFS from 'react-native-fs';
+// import {affirmations} from './affmatin';
 
 const data = [
-  {id: '1', title: 'Voice',     image: require('../../assets/profilepic/profile2.jpg'),},
-  {id: '2', title: 'Time',    image: require('../../assets/timer.jpg'),},
-  {id: '3', title: 'Music',    image: require('../../assets/music1.jpg'),},
+  {
+    id: '1',
+    title: 'Voice',
+    image: require('../../assets/profilepic/profile2.jpg'),
+  },
+  {id: '2', title: 'Time', image: require('../../assets/timer.jpg')},
+  {id: '3', title: 'Music', image: require('../../assets/music1.jpg')},
 ];
 
 const Playsong = () => {
@@ -45,17 +50,21 @@ const Playsong = () => {
   const [maxTimeInMinutes, setMaxTimeInMinuts] = useState(1);
   const [currentTimeInSeconds, setCurrentTimeInSeconds] = useState(0);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [bgVolume, setBgVolume] = useState(0.1);
   const [progress, setProgress] = useState(0);
   const flatListRef = useRef(null);
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
   const [selectedTab, setSelectedTab] = useState();
+  // const v
   const {affirmations} = useSelector(state => state.home);
   const [isPaused, setIsPaused] = useState(false);
-  const [visibleIndex, setVisibleIndex] = useState(1);
+  const [visibleIndex, setVisibleIndex] = useState(0);
+  // Clipboard.setString(JSON.stringify(affirmations));
 
   const handleTabPress = async title => {
+    setSelectedTab(title);
+    setVisible(true);
     const token = await AsyncStorage.getItem('token');
     if (title == 'Music') {
       dispatch({
@@ -71,9 +80,6 @@ const Playsong = () => {
         user_id: 1,
       });
     }
-
-    setSelectedTab(title);
-    setVisible(true);
   };
   const handleHeartPress = async item => {
     const pivot = item.group[0].pivot;
@@ -96,27 +102,32 @@ const Playsong = () => {
   };
   const currentTimeRef = useRef(0);
 
-  useEffect(() => {
-    setVisibleIndex(0);
-    const intervalForAffirmations = setInterval(() => {
-      if (!isPaused) {
-        setVisibleIndex(prevIndex => {
-          const newIndex = (prevIndex + 1) % 5;
-          flatListRef.current.scrollToIndex({
-            animated: true,
-            index: newIndex,
-            viewPosition: 0.5,
-            viewOffset: 0,
-            duration: 500,
-          });
-          readText(affirmations[newIndex].affirmation_text); // Read text directly after scrolling
-          return newIndex;
-        });
-      }
-    }, 8000);
+  // useEffect(() => {
+  //   if (!isPaused) {
+  //     setVisibleIndex(0);
+  //     const intervalForAffirmations = setInterval(() => {
+  //       if (!isPaused) {
+  //         setVisibleIndex(prevIndex => {
+  //           const newIndex = (prevIndex + 1) % 5;
+  //           flatListRef.current.scrollToIndex({
+  //             animated: true,
+  //             index: newIndex,
+  //             viewPosition: 0.5,
+  //             viewOffset: 0,
+  //             duration: 500,
+  //           });
+  //           readText(affirmations[newIndex].affirmation_text);
+  //           return newIndex;
+  //         });
+  //       }
+  //     }, 8000);
 
-    return () => clearInterval(intervalForAffirmations);
-  }, [affirmations, isPaused]);
+  //     return () => clearInterval(intervalForAffirmations);
+  //   } else {
+  //     Tts.resume();
+  //   }
+  // }, [affirmations, isPaused, visibleIndex]);
+
   useEffect(() => {
     player('Sleeping.wav');
   }, []);
@@ -137,7 +148,7 @@ const Playsong = () => {
           clearInterval(intervalForProgress);
           setProgress(100);
           setIsPaused(true);
-          Tts.pause();
+          Tts.stop();
           await TrackPlayer.pause();
         }
       } else {
@@ -147,7 +158,7 @@ const Playsong = () => {
     }, 1000);
 
     if (!isPaused) {
-      Tts.resume();
+      readText(affirmations[visibleIndex].affirmation_text);
       TrackPlayer.play();
     }
 
@@ -162,30 +173,103 @@ const Playsong = () => {
     if (isPaused & (progress == 100)) {
       setProgress(0);
       currentTimeRef.current = 0;
+      flatListRef.current.scrollToIndex({
+        animated: true,
+        index: 0,
+        viewPosition: 0.5,
+        viewOffset: 0,
+        duration: 500,
+      });
+      setVisibleIndex(0);
     }
   };
 
   const [voices, setVoices] = useState([]);
   const [ttsStatus, setTtsStatus] = useState('initiliazing');
   const [selectedVoice, setSelectedVoice] = useState(null);
-  const [speechRate, setSpeechRate] = useState(0.3);
-  const [speechPitch, setSpeechPitch] = useState(0.5);
+  const [speechRate, setSpeechRate] = useState(0.4);
+  const [speechPitch, setSpeechPitch] = useState(1);
+
+  // useEffect(() => {
+  //   if (flatListRef.current) {
+  //     flatListRef.current.scrollToIndex({
+  //       animated: true,
+  //       index: visibleIndex,
+  //       viewPosition: 0.5,
+  //       viewOffset: 0,
+  //       duration: 500,
+  //     });
+  //     readText(affirmations[visibleIndex].affirmation_text);
+  //   }
+  // }, [visibleIndex]);
+
+  // useEffect(() => {
+  //   Tts.getInitStatus().then(initTts);
+  //   //   Tts.addEventListener('tts-start', _event => setTtsStatus('started'));
+  //   Tts.addEventListener('tts-finish', _event => {
+  //     if (visibleIndex < affirmations.length - 1) {
+  //       setVisibleIndex(visibleIndex + 1);
+  //     } else {
+  //       setVisibleIndex(0);
+  //     }
+  //   });
+  //   //   Tts.addEventListener('tts-cancel', _event => setTtsStatus('cancelled'));
+  //   Tts.setDefaultRate(speechRate);
+  //   Tts.setDefaultPitch(speechPitch);
+
+  //   return () => {
+  //     // Tts.removeEventListener('tts-start', _event => setTtsStatus('started'));
+  //     // Tts.removeEventListener('tts-finish', _event => handleAffirmationEnd());
+  //     Tts.removeEventListener('tts-finish', event => {
+  //       if (visibleIndex < affirmations.length - 1) {
+  //         setVisibleIndex(visibleIndex + 1);
+  //       } else {
+  //         setVisibleIndex(0);
+  //       }
+  //     });
+  //     // Tts.removeEventListener('tts-cancel', _event =>
+  //     //   setTtsStatus('cancelled'),
+  //     // );
+  //   };
+  // }, []);
+  const updateSpokenAffirmation = index => {
+    readText(affirmations[index].affirmation_text);
+  };
+  const handleTTSFinish = () => {
+    setVisibleIndex(prevIndex => {
+      const newIndex = (prevIndex + 1) % 5;
+      flatListRef.current.scrollToIndex({
+        animated: true,
+        index: newIndex,
+        viewPosition: 0.5,
+        viewOffset: 0,
+        duration: 500,
+      });
+      // readText(affirmations[newIndex].affirmation_text); // Read text after automatic scroll
+      return newIndex;
+    });
+  };
 
   useEffect(() => {
-    Tts.addEventListener('tts-start', _event => setTtsStatus('started'));
-    Tts.addEventListener('tts-finish', _event => setTtsStatus('finished'));
-    Tts.addEventListener('tts-cancel', _event => setTtsStatus('cancelled'));
+    Tts.getInitStatus().then(initTts);
+    Tts.addEventListener('tts-finish', handleTTSFinish);
     Tts.setDefaultRate(speechRate);
     Tts.setDefaultPitch(speechPitch);
-    Tts.getInitStatus().then(initTts);
+    TrackPlayer.setVolume(0.5);
+    // Tts.setVolume(0.5);
+
     return () => {
-      Tts.removeEventListener('tts-start', _event => setTtsStatus('started'));
-      Tts.removeEventListener('tts-finish', _event => setTtsStatus('finished'));
-      Tts.removeEventListener('tts-cancel', _event =>
-        setTtsStatus('cancelled'),
-      );
+      Tts.removeEventListener('tts-finish', handleTTSFinish);
     };
   }, []);
+
+  // useEffect(() => {
+  //   updateSpokenAffirmation(currentIndex);
+  //   return () => {
+  //     Tts.removeEventListener('tts-finish', handleTTSFinish);
+  //   };
+  // }, [currentIndex]);
+
   const initTts = async () => {
     const voices = await Tts.voices();
 
@@ -200,8 +284,6 @@ const Playsong = () => {
       try {
         await Tts.setDefaultLanguage('en-AU');
       } catch (err) {
-        //Samsung S9 has always this error:
-        //"Language is not supported"
         console.log(`setDefaultLanguage error `, err);
       }
 
@@ -227,14 +309,31 @@ const Playsong = () => {
   const onVoicePress = async voice => {
     try {
       await Tts.setDefaultLanguage(voice.language);
+      if (isPaused & (progress == 100)) {
+        setIsPaused(false);
+        setProgress(0);
+        currentTimeRef.current = 0;
+        flatListRef.current.scrollToIndex({
+          animated: true,
+          index: 0,
+          viewPosition: 0.5,
+          viewOffset: 0,
+          duration: 500,
+        });
+        setVisibleIndex(0);
+        await Tts.setDefaultVoice(voice.id);
+        readText(affirmations[visibleIndex].affirmation_text);
+        setSelectedVoice(voice.id);
+      } else {
+        await Tts.setDefaultVoice(voice.id);
+        readText(affirmations[visibleIndex].affirmation_text);
+        setSelectedVoice(voice.id);
+      }
     } catch (err) {
       // Samsung S9 has always this error:
       // "Language is not supported"
       console.log(`setDefaultLanguage error `, err);
     }
-    await Tts.setDefaultVoice(voice.id);
-    readText(affirmations[currentIndex].affirmation_text);
-    setSelectedVoice(voice.id);
   };
   const path = Platform.select({
     android: 'asset:/files/',
@@ -245,11 +344,12 @@ const Playsong = () => {
     Tts.speak(text);
   };
   const player = async sound => {
+    console.log(sound.music);
     const isSetup = await setupPlayer();
     console.log(isSetup);
     if (isSetup) {
       const track = {
-        url: require('../../assets/backound/backOne.wav'),
+        url: 'https://stimuli.forebearpro.co.in/storage/app/public/98/BGFOUR.mp3',
         title: 'Titel',
         artist: 'Innertune',
         artwork: `asset:/files/backOne.wav`,
@@ -257,10 +357,14 @@ const Playsong = () => {
       };
       await TrackPlayer.reset();
       await TrackPlayer.add(sound?.music ?? track);
+      await TrackPlayer.setRepeatMode(1);
       await TrackPlayer.play();
     }
   };
-
+  const setVovluem = async value => {
+    await TrackPlayer.setVolume(value);
+    setBgVolume(value);
+  };
   return (
     <View style={{flex: 1}}>
       <ImageBackground
@@ -327,9 +431,9 @@ const Playsong = () => {
             <TouchableOpacity
               style={{zIndex: 2}}
               onPress={() => {
-                handleHeartPress(affirmations[currentIndex]);
+                handleHeartPress(affirmations[visibleIndex]);
               }}>
-              <Feather name="heart" size={30} color="white" />
+              <EvilIcons name="heart" size={30} color="white" />
             </TouchableOpacity>
 
             <FontAwesome6
@@ -350,8 +454,9 @@ const Playsong = () => {
             <FlatList
               ref={flatListRef}
               pagingEnabled
+              initialScrollIndex={0}
               showsVerticalScrollIndicator={false}
-              data={affirmations.slice(0, 5)}
+              data={affirmations}
               renderItem={({item, index}) =>
                 true ? (
                   <View style={{height: hp(100)}}>
@@ -383,8 +488,25 @@ const Playsong = () => {
                 )
               }
               keyExtractor={(item, index) => index.toString()}
-              onViewableItemsChanged={({viewableItems, changed}) => {
-                setCurrentIndex(viewableItems[0].index);
+              onViewableItemsChanged={async ({viewableItems, changed}) => {
+                const newIndex = viewableItems[0].index;
+                readText(affirmations[newIndex].affirmation_text); // Read text when view changes
+                setVisibleIndex(newIndex);
+                setIsPaused(false);
+                if (isPaused & (progress == 100)) {
+                  // setIsPaused(false);
+                  setProgress(0);
+                  currentTimeRef.current = 0;
+                }
+              }}
+              onScrollToIndexFailed={info => {
+                const wait = new Promise(resolve => setTimeout(resolve, 500));
+                wait.then(() => {
+                  flatListRef.current?.scrollToIndex({
+                    index: info.index,
+                    animated: true,
+                  });
+                });
               }}
             />
           </View>
@@ -479,13 +601,16 @@ const Playsong = () => {
         <Mymodal
           title={selectedTab}
           onClose={() => setVisible(false)}
+          onVolumeChange={setVovluem}
+          bgVolume={bgVolume}
           visible={visible}
           voices={voices}
           onVoicePress={onVoicePress}
           selectedVoice={selectedVoice}
           maxTimeInMinutes={maxTimeInMinutes}
           onTimePress={item => {
-            setMaxTimeInMinuts(item.value);
+            setMaxTimeInMinuts(item.title);
+            console.log(item);
           }}
           onMusicPress={player}
         />

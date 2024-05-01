@@ -1,8 +1,15 @@
 import React, {useState} from 'react';
-import {View, Image, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import {heightPercent as hp, widthPrecent as wp} from '../atoms/responsive';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 const Header = ({placeholder, onChangeText}) => {
   const navigation = useNavigation();
   const [text, setText] = useState('');
@@ -10,6 +17,7 @@ const Header = ({placeholder, onChangeText}) => {
     setText;
     onChangeText;
   };
+
   return (
     <View
       style={{
@@ -20,14 +28,19 @@ const Header = ({placeholder, onChangeText}) => {
         flexDirection: 'row',
         alignItems: 'center',
       }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('goal');
-            }}>
-      <Image
-        source={require('../../assets/logo.png')}
-        style={{height: hp(7), width: wp(13), marginRight: 15,tintColor:'white'}}
-      />
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('goal');
+        }}>
+        <Image
+          source={require('../../assets/logo.png')}
+          style={{
+            height: hp(7),
+            width: wp(13),
+            marginRight: 15,
+            tintColor: 'white',
+          }}
+        />
       </TouchableOpacity>
       <View style={styles.searchContainer}>
         <AntDesign name="search1" size={20} color="white" />
@@ -36,11 +49,9 @@ const Header = ({placeholder, onChangeText}) => {
           placeholder="Search"
           placeholderTextColor="grey"
           value={text}
-          
           onChangeText={value => {
             setText(value);
             onChangeText(value);
-
           }}
         />
         {text.length > 0 && (
@@ -59,11 +70,11 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf:'center',
+    alignSelf: 'center',
     backgroundColor: '#0a0a0a',
     borderRadius: 50,
-    borderWidth:.2,
-    borderColor:'grey',
+    borderWidth: 0.2,
+    borderColor: 'grey',
     paddingHorizontal: 10,
     width: wp(75),
     height: hp(5),
@@ -71,7 +82,7 @@ const styles = StyleSheet.create({
   input: {
     marginLeft: 10,
     width: wp(50),
-    color:'white'
+    color: 'white',
   },
 });
 export default Header;

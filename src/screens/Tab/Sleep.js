@@ -80,56 +80,71 @@ const Img = [
   },
 ];
 
-const Sleep = ({data}) => {
+const Sleep = ({data, onPress}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
-    <ScrollView contentContainerStyle={{alignSelf: 'center'}}>
-   
-      <FlatList
-        data={data}
-        numColumns={2}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => (
-          <View
-            style={{
-              flexDirection: 'column',
-              width: wp(49),
-              alignItems: 'center',
-            }}>
-            <View style={styles.imageContainerrr}>
-              <TouchableOpacity>
-                <Image source={{uri:item?.bgsound_image[0]?.original_url}} style={styles.imageee} />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <View
-                  style={{
-                    flexDirection: 'column',
-                    alignSelf: 'center',
-                    marginTop:10
+      <ScrollView contentContainerStyle={{alignSelf: 'center'}}>
+        <FlatList
+          data={data}
+          numColumns={2}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => (
+            <View
+              style={{
+                flexDirection: 'column',
+                width: wp(49),
+                alignItems: 'center',
+              }}>
+              <View style={styles.imageContainerrr}>
+                <TouchableOpacity
+                  onPress={() => {
+                    const obj = {
+                      ...item,
+                      music: {
+                        url: item.media[1]?.original_url,
+                        title: 'Titel',
+                        artist: 'Innertune',
+                        artwork: item.media[0]?.original_url,
+                        duration: null,
+                      },
+                    };
+                    onPress(obj);
                   }}>
-                  <Text style={styles.texttt}>{item?.bgsound_name}</Text>
-                </View>
-              </TouchableOpacity>
-              <View
-                style={{
-                  position: 'absolute',
-                  right: 10,
-                  top: 10,
-                  height: hp(4),
-                  width: wp(8),
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: 20,
-                  backgroundColor: 'white',
-                }}>
-                <Fontisto name="locked" size={20} color="black" />
+                  <Image
+                    source={{uri: item?.bgsound_image[0]?.original_url}}
+                    style={styles.imageee}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <View
+                    style={{
+                      flexDirection: 'column',
+                      alignSelf: 'center',
+                      marginTop: 10,
+                    }}>
+                    <Text style={styles.texttt}>{item?.bgsound_name}</Text>
+                  </View>
+                </TouchableOpacity>
+                {/* <View
+                  style={{
+                    // position: 'absolute',
+                    // right: 10,
+                    // top: 10,
+                    height: hp(4),
+                    width: wp(8),
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 20,
+                    backgroundColor: null,
+                  }}>
+                  {/* <Fontisto name="locked" size={20} color="black" /> 
+                </View> */}
               </View>
             </View>
-          </View>
-        )}
-      />
-    </ScrollView>
-  </SafeAreaView>
+          )}
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

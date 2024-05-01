@@ -80,60 +80,6 @@ const Img = [
     title2: '90 affirmations',
   },
 ];
-const data2 = [
-  {
-    id: '1',
-    name: 'Relaxing nature',
-    music: {
-      url: require('../../assets/backound/backOne.wav'),
-      title: 'Titel',
-      artist: 'Innertune',
-      artwork: `asset:/files/backOne.wav`,
-      duration: null,
-    },
-    image:
-      'https://stimuli.forebearpro.co.in/storage/app/public/7/gugsali8_happy-faces_625x300_20_March_23.png',
-  },
-  {
-    id: '2',
-    name: 'stress relief ',
-    music: {
-      url: require('../../assets/backound/backTwo.wav'),
-      title: 'Titel',
-      artist: 'Innertune',
-      artwork: `asset:/files/backOne.wav`,
-      duration: null,
-    },
-    image:
-      'https://stimuli.forebearpro.co.in/storage/app/public/11/[FREE---HDconvert.com]-dkfk.png',
-  },
-  {
-    id: '3',
-    name: 'stress relief ',
-    music: {
-      url: require('../../assets/backound/backOne.wav'),
-      title: 'Titel',
-      artist: 'Innertune',
-      artwork: `asset:/files/backOne.wav`,
-      duration: null,
-    },
-    image:
-      'https://stimuli.forebearpro.co.in/storage/app/public/8/hollybood1.jpg',
-  },
-  {
-    id: '4  ',
-    name: 'Clam and peace ',
-    music: {
-      url: require('../../assets/backound/backTwo.wav'),
-      title: 'Titel',
-      artist: 'Innertune',
-      artwork: `asset:/files/backOne.wav`,
-      duration: null,
-    },
-    image:
-      'https://stimuli.forebearpro.co.in/storage/app/public/7/gugsali8_happy-faces_625x300_20_March_23.png',
-  },
-];
 
 const Focus = ({data, onPress}) => {
   // Alert.alert(JSON.stringify(data))
@@ -142,7 +88,7 @@ const Focus = ({data, onPress}) => {
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
       <ScrollView contentContainerStyle={{alignSelf: 'center'}}>
         <FlatList
-          data={data2}
+          data={data}
           numColumns={2}
           keyExtractor={item => item.id}
           renderItem={({item}) => (

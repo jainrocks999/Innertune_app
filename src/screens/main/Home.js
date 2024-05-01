@@ -51,6 +51,9 @@ const Img = [
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
+  const getFavriote = item => {
+    console.log(item);
+  };
   const {loading, playlist, groups, category} = useSelector(
     state => state.home,
   );
@@ -100,7 +103,11 @@ const HomeScreen = () => {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
-      <Header />
+      <Header
+        onChangeText={text => {
+          console.log(text);
+        }}
+      />
       <Loader loading={loading} />
       <ScrollView style={styles.scrollView}>
         <View style={styles.FeatureContainer}>
@@ -176,7 +183,7 @@ const HomeScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <FlatList
+        {/* <FlatList
           horizontal={true}
           data={Img}
           showsHorizontalScrollIndicator={false}
@@ -205,18 +212,26 @@ const HomeScreen = () => {
                     <Icon name="heart" size={20} color="white" />
                   </TouchableOpacity>
                 </View>
-                {/* <Text style={styles.text2}>{'90 affirmations'}</Text> */}
+                {/* <Text style={styles.text2}>{'90 affirmations'}</Text> 
               </View>
             );
           }}
+        /> */}
+        <Horizontal
+          onPress={items => {
+            getAffetMations(items);
+          }}
+          data={category}
         />
+        {/* Light color  :-  #D485D1 
+Dark color   :-  #B72658 */}
 
         <View style={styles.cardd}>
           <LinearGradient
             start={{x: 0.0, y: 0.0}}
             end={{x: 5, y: 0.0}}
-            locations={[0, 0.5, 0.3]}
-            colors={['#191919', '#89FFBF']}
+            locations={[0, 0.3, 0.0]}
+            colors={['#B72658', '#D485D1']}
             style={styles.linearGradientt}>
             <Image
               source={require('../../assets/music1.jpg')}
@@ -241,7 +256,7 @@ const HomeScreen = () => {
             </View>
           </LinearGradient>
         </View>
-        
+
         <View style={styles.FeatureContainer}>
           <Text style={styles.Featurecategory}>Populer Playlist</Text>
           <View style={{paddingHorizontal: '20%'}}>
@@ -260,7 +275,7 @@ const HomeScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <FlatList
+        {/* <FlatList
           horizontal={true}
           data={Img}
           showsHorizontalScrollIndicator={false}
@@ -289,10 +304,16 @@ const HomeScreen = () => {
                     <Icon name="heart" size={20} color="white" />
                   </TouchableOpacity>
                 </View>
-                {/* <Text style={styles.text2}>{'90 affirmations'}</Text> */}
+                {/* <Text style={styles.text2}>{'90 affirmations'}</Text> 
               </View>
             );
           }}
+        /> */}
+        <Horizontal
+          onPress={items => {
+            getAffetMations(items);
+          }}
+          data={category}
         />
 
         <FlatList
@@ -493,7 +514,7 @@ const styles = StyleSheet.create({
   },
   linearGradientt: {
     flexDirection: 'row',
-    width: wp(100),
+    width: wp(90),
     borderRadius: 20,
   },
   linearGradienttt: {
@@ -505,12 +526,12 @@ const styles = StyleSheet.create({
     height: hp(13),
     width: wp(100),
     left: wp(4),
-    marginVertical:hp(4),
+    marginVertical: hp(4),
     borderColor: 'black',
     alignSelf: 'center',
     flexDirection: 'row',
     borderRadius: 20,
-    backgroundColor: '#bb98ed',
+    // backgroundColor: '#bb98ed',
     marginBottom: 20,
   },
   carddd: {

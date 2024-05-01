@@ -80,56 +80,95 @@ const Img = [
   },
 ];
 
-const Relax = ({data}) => {
+const Relax = ({data, onPress}) => {
+  // logh;
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
-    <ScrollView contentContainerStyle={{alignSelf: 'center'}}>
-   
-      <FlatList
-        data={data}
-        numColumns={2}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => (
-          <View
-            style={{
-              flexDirection: 'column',
-              width: wp(49),
-              alignItems: 'center',
-            }}>
-            <View style={styles.imageContainerrr}>
-              <TouchableOpacity>
-                <Image source={{uri:item?.bgsound_image[0]?.original_url}} style={styles.imageee} />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <View
-                  style={{
-                    flexDirection: 'column',
-                    alignSelf: 'center',
-                    marginTop:10
-                  }}>
-                  <Text style={styles.texttt}>{item?.bgsound_name}</Text>
-                </View>
-              </TouchableOpacity>
-              <View
-                style={{
-                  position: 'absolute',
-                  right: 10,
-                  top: 10,
-                  height: hp(4),
-                  width: wp(8),
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: 20,
-                  backgroundColor: 'white',
-                }}>
-                <Fontisto name="locked" size={20} color="black" />
+    // <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
+    //   {/* <ScrollView contentContainerStyle={{alignSelf: 'center'}}> */}
+    //   <View style={{paddingBottom: hp(10)}}>
+    //     <FlatList
+    //       data={data}
+    //       numColumns={2}
+    //       keyExtractor={item => item.id}
+    //       renderItem={({item}) => (
+    //         <View
+    //           style={{
+    //             flexDirection: 'column',
+    //             width: wp(49),
+    //             alignItems: 'center',
+    //           }}>
+    //           <View style={styles.imageContainerrr}>
+    //             <TouchableOpacity>
+    //               <Image
+    //                 source={{uri: item?.bgsound_image[0]?.original_url}}
+    //                 style={styles.imageee}
+    //               />
+    //             </TouchableOpacity>
+    //             <TouchableOpacity>
+    //               <View
+    //                 style={{
+    //                   flexDirection: 'column',
+    //                   alignSelf: 'center',
+    //                   marginTop: 10,
+    //                 }}>
+    //                 <Text style={styles.texttt}>{item?.bgsound_name}</Text>
+    //               </View>
+    //             </TouchableOpacity>
+    //             <View
+    //               style={{
+    //                 position: 'absolute',
+    //                 right: 10,
+    //                 top: 10,
+    //                 height: hp(4),
+    //                 width: wp(8),
+    //                 justifyContent: 'center',
+    //                 alignItems: 'center',
+    //                 borderRadius: 20,
+    //                 backgroundColor: 'white',
+    //               }}>
+    //               <Fontisto name="locked" size={20} color="black" />
+    //             </View>
+    //           </View>
+    //         </View>
+    //       )}
+    //     />
+    //   </View>
+    //   {/* </ScrollView> */}
+    // </SafeAreaView>
+    <View style={{backgroundColor: '#191919', flex: 1}}>
+      <View style={{width: '100%', alignItems: 'center', marginTop: '5%'}}>
+        <FlatList
+          data={data}
+          numColumns={2}
+          renderItem={({item, index}) => (
+            <TouchableOpacity
+              onPress={() => {
+                const obj = {
+                  ...item,
+                  music: {
+                    url: item.media[1]?.original_url,
+                    title: 'Titel',
+                    artist: 'Innertune',
+                    artwork: item.media[0]?.original_url,
+                    duration: null,
+                  },
+                };
+                onPress(obj);
+              }}
+              activeOpacity={0.7}
+              style={{alignItems: 'center'}}>
+              <View style={styles.listContainer}>
+                <Image
+                  source={{uri: item?.bgsound_image[0]?.original_url}}
+                  style={styles.imageee}
+                />
               </View>
-            </View>
-          </View>
-        )}
-      />
-    </ScrollView>
-  </SafeAreaView>
+              <Text style={styles.texttt}>{item?.bgsound_name}</Text>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
+    </View>
   );
 };
 
@@ -154,5 +193,15 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     fontWeight: '500',
+    marginBottom: hp(3),
+  },
+  listContainer: {
+    // borderWidth: 1,
+    borderColor: 'white',
+    height: hp(18),
+    width: wp(45),
+    marginHorizontal: wp(2),
+    marginVertical: wp(2),
+    borderRadius: 20,
   },
 });

@@ -16,10 +16,11 @@ import Playlistdetails from '../screens/Tab/Playlistdetails';
 import Menu from '../screens/main/Menu';
 import Goal from '../screens/Auth/Goal';
 import AudioRecorder from '../components/molecules/Audiorecord';
+import Welecome from '../screens/Intro_Screens/Welecome';
 const Stack = createStackNavigator();
 function MyStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Welecome">
       <Stack.Screen
         name="splash"
         component={Splash}
@@ -80,14 +81,19 @@ function MyStack() {
         component={Menu}
         options={{headerShown: false}}
       />
-         <Stack.Screen
+      <Stack.Screen
         name="goal"
         component={Goal}
         options={{headerShown: false}}
       />
-         <Stack.Screen
+      <Stack.Screen
         name="audiorecorder"
         component={AudioRecorder}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Welecome"
+        component={Welecome}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

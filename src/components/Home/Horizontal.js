@@ -21,7 +21,7 @@ const Horizontal = ({data, onPress}) => {
       category_id: item.id,
       url: 'createFavoriteList',
       navigation,
-      token
+      token,
     });
   };
   return (
@@ -32,66 +32,56 @@ const Horizontal = ({data, onPress}) => {
       keyExtractor={item => item.id}
       renderItem={({item}) => {
         let title = 'Believe in yourself';
-        let image =
-          'https://stimuli.forebearpro.co.in/storage/app/public/3/download-(8).jpg';
+        // let image =
+        //   'https://stimuli.forebearpro.co.in/storage/app/public/3/download-(8).jpg';
 
-        image = item?.categories_image[0]?.original_url;
+        let image =
+          item?.categories_image[0]?.original_url ??
+          'https://stimuli.forebearpro.co.in/storage/app/public/3/download-(8).jpg';
         title = item?.categories_name;
 
         return (
-          <View style={styles.imageContainer}>
-            <TouchableOpacity onPress={() => onPress(item)}>
-              <Image source={{uri: image}} style={styles.image} />
-              <Text style={styles.text}>{title.substring(0, 20)}</Text>
-            </TouchableOpacity>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                marginTop: hp(-2.5),
-
-             
-              }}>
-              <TouchableOpacity
-                onPress={() => {
-                  getFavriote(item);
-                }}>
-                <Icon name="heart" size={20} color="white" />
-              </TouchableOpacity>
+          <TouchableOpacity onPress={() => onPress(item)} style={styles.main}>
+            <Icon
+              style={{position: 'absolute', zIndex: 1, left: 20, top: 10}}
+              name="heart"
+              color={'white'}
+              size={20}
+            />
+            <View style={styles.container}>
+              <Image
+                style={{height: '100%', width: '100%'}}
+                source={{uri: image}}
+                resizeMode="cover"
+              />
             </View>
-            {/* <Text style={styles.text2}>{'90 affirmations'}</Text> */}
-          </View>
+            <Text style={styles.title}>{title}</Text>
+          </TouchableOpacity>
         );
       }}
     />
   );
 };
 const styles = StyleSheet.create({
-  text: {
-    width: wp(60),
-    marginTop: 10,
-    marginLeft: 10,
+  main: {
+    alignItems: 'center',
+    marginHorizontal: wp(2.5),
+  },
+  container: {
+    height: wp(43),
+    width: wp(43),
+    overflow: 'hidden',
+    // borderWidth: 2,
+
+    borderRadius: wp(5),
+  },
+  title: {
     color: 'white',
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  text2: {
-    width: wp(50),
-    marginTop: 4,
-    marginLeft: 5,
-    color: 'white',
-    fontSize: 15,
-    fontWeight: '300',
-  },
-  imageContainer: {
-    padding: 12,
-  },
-  image: {
-    width: hp(30),
-    height: hp(20),
-    resizeMode: 'stretch',
-    borderRadius: 20,
+    marginTop: wp(2),
+    fontSize: wp(5),
+    width: wp(43),
+    // marginLeft: hp(4),
+    marginLeft: wp(4),
   },
 });
 

@@ -148,6 +148,7 @@ const Playlistdetails = () => {
             width: wp(16),
             left: wp(35),
             tintColor: '#426e56',
+            // backgroundColor: 'red',
           }}>
           <Image
             source={require('../../assets/playkey.png')}
