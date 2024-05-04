@@ -17,6 +17,12 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../components/Loader';
+import Background from './compoents/Background';
+import Intro from './compoents/Intro';
+import Input from './compoents/Input';
+import Buttun from './compoents/Buttun';
+import Line from './compoents/Line';
+import Social from './compoents/Social';
 const Login = () => {
   const loading = useSelector(state => state.auth.loading);
   const navigation = useNavigation();
@@ -24,7 +30,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   showAlert = viewId => Alert.alert('Alert', 'Button pressed ' + viewId);
-  
+
   const getToken = () => {
     if (email !== '' && password !== '') {
       dispatch({
@@ -43,9 +49,140 @@ const Login = () => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <Background>
       <Loader loading={loading} />
-      <View style={{flexDirection: 'row', marginTop: hp(1)}}>
+      <Intro title1="Welcome" title2="Back" title3="Let's Sign In here" />
+      <View style={{alignItems: 'center'}}>
+        <Input
+          placeholder="Email"
+          keyboardType="email-address"
+          underlineColorAndroid="transparent"
+          onChangeText={email => setEmail(email)}
+        />
+        <Input
+          placeholder="Password"
+          secureTextEntry={true}
+          underlineColorAndroid="transparent"
+          onChangeText={password => setPassword(password)}
+        />
+        <Text
+          onPress={() => {
+            navigation.navigate('Forgot');
+          }}
+          style={{
+            color: '#fff',
+            alignSelf: 'flex-end',
+            marginRight: '6%',
+            marginTop: '3%',
+          }}>
+          Forgot Your password ?
+        </Text>
+        <Buttun
+          onPress={() => {
+            getToken();
+          }}
+          title="Sign In"
+        />
+      </View>
+      <Line />
+      <View style={{alignItems: 'center', marginTop: '7%'}}>
+        <Social />
+      </View>
+      <Text style={{alignSelf: 'center', marginTop: '5%', color: 'white'}}>
+        Don't have an account ?{' '}
+        <Text
+          onPress={() => {
+            navigation.navigate('signup');
+          }}
+          style={{color: '#B72658', fontSize: wp(5), fontWeight: '500'}}>
+          {' Sign Up'}
+        </Text>
+      </Text>
+    </Background>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '10%',
+  },
+  inputContainer: {
+    borderRadius: 10,
+    borderWidth: 1,
+    width: wp(85),
+    height: hp(6),
+    marginBottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  inputs: {
+    height: hp(6),
+    width: wp(80),
+    marginLeft: wp(4),
+    fontSize: hp(2.1),
+    fontWeight: '400',
+    borderBottomColor: '#FFFFFF',
+  },
+  inputIcon: {
+    width: 30,
+    height: 30,
+    marginLeft: 15,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  buttonContainer: {
+    height: hp(10),
+    width: 250,
+    borderRadius: 30,
+  },
+  loginButton: {
+    backgroundColor: 'black',
+    marginTop: '30%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loginText: {
+    color: 'white',
+    fontSize: hp(2.5),
+    fontWeight: '500',
+  },
+  mainContainer: {
+    flex: 1,
+    backgroundColor: '#191919',
+  },
+  round1: {
+    height: hp(45),
+    width: hp(45),
+    backgroundColor: 'rgba(60, 60, 60,0.5)',
+    borderRadius: hp(22.5),
+    position: 'absolute',
+    right: wp(-26),
+    top: hp(-15),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  round2: {
+    height: hp(35),
+    width: hp(35),
+    backgroundColor: 'rgba(10, 10, 10, 0.1)',
+    borderRadius: hp(17.5),
+    position: 'absolute',
+  },
+  roundSecond: {
+    position: 'absolute',
+    left: wp(-55),
+    top: hp(30),
+  },
+});
+
+export default Login;
+{
+  /*
+ <View style={{flexDirection: 'row', marginTop: hp(1)}}>
         <View style={{alignSelf: 'center', marginHorizontal: hp(2)}}>
           <Icon name="arrow-back" size={30} color="black" />
         </View>
@@ -118,59 +255,5 @@ const Login = () => {
             <Text style={styles.loginText}>Sign in</Text>
           </TouchableOpacity>
         </View>
-      </View>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: '10%',
-  },
-  inputContainer: {
-    borderRadius: 10,
-    borderWidth: 1,
-    width: wp(85),
-    height: hp(6),
-    marginBottom: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  inputs: {
-    height: hp(6),
-    width: wp(80),
-    marginLeft: wp(4),
-    fontSize: hp(2.1),
-    fontWeight: '400',
-    borderBottomColor: '#FFFFFF',
-  },
-  inputIcon: {
-    width: 30,
-    height: 30,
-    marginLeft: 15,
-    justifyContent: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  buttonContainer: {
-    height: hp(10),
-    width: 250,
-    borderRadius: 30,
-  },
-  loginButton: {
-    backgroundColor: 'black',
-    marginTop: '30%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  loginText: {
-    color: 'white',
-    fontSize: hp(2.5),
-    fontWeight: '500',
-  },
-});
-
-export default Login;
+      </View>*/
+}

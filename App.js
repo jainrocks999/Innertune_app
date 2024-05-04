@@ -4,15 +4,18 @@ import AppNavigator from './src/navigation/AppNavigator';
 import {LogBox} from 'react-native';
 import {Provider} from 'react-redux';
 import store from './src/redux/store';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const App = () => {
   LogBox.ignoreAllLogs();
   return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <AppNavigator />
-      </NavigationContainer>
-    </Provider>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <Provider store={store}>
+        <NavigationContainer>
+          <AppNavigator />
+        </NavigationContainer>
+      </Provider>
+    </GestureHandlerRootView>
   );
 };
 

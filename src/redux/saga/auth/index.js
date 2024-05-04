@@ -15,11 +15,11 @@ function* doLogin(action) {
         token: res?.access_token,
         url: data.url,
       });
-      console.log('this is main res',JSON.stringify(mainRes));
+      console.log('this is main res', JSON.stringify(mainRes));
       yield AsyncStorage.setItem('token', mainRes?.data?.token);
       yield put({type: 'auth/login_success', payload: mainRes.data});
       Toast.show('Login Success');
-      action.navigation.reset({index: 0, routes: [{name: 'Home'}]});
+      action.navigation.replace('Welecome2');
     } else {
       yield put({
         type: 'auth/login_error',

@@ -17,10 +17,15 @@ import Menu from '../screens/main/Menu';
 import Goal from '../screens/Auth/Goal';
 import AudioRecorder from '../components/molecules/Audiorecord';
 import Welecome from '../screens/Intro_Screens/Welecome';
+import Welecome2 from '../screens/Intro_Screens/Welecome2';
+import ChooseAfferamtion from '../screens/Intro_Screens/ChooseAfferamtion';
+import AksReminder from '../screens/Intro_Screens/AksReminder';
+import Intrested from '../screens/Intro_Screens/Intrested';
+import Forgot from '../screens/Auth/Forgot';
 const Stack = createStackNavigator();
 function MyStack() {
   return (
-    <Stack.Navigator initialRouteName="Welecome">
+    <Stack.Navigator initialRouteName="splash">
       <Stack.Screen
         name="splash"
         component={Splash}
@@ -34,6 +39,11 @@ function MyStack() {
       <Stack.Screen
         name="login"
         component={Login}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Forgot"
+        component={Forgot}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -94,6 +104,26 @@ function MyStack() {
       <Stack.Screen
         name="Welecome"
         component={Welecome}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ChooseAfferamtion"
+        component={ChooseAfferamtion}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="AksReminder"
+        component={AksReminder}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Welecome2"
+        component={Welecome2}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Intrested"
+        component={Intrested}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

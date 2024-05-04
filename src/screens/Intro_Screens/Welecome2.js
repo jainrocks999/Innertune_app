@@ -16,7 +16,13 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import LinearGradient from 'react-native-linear-gradient';
-import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  FadeOut,
+  useSharedValue,
+  withDelay,
+  withTiming,
+} from 'react-native-reanimated';
 const affirmations = [
   {
     title: 'You are capable of achieving great things',
@@ -55,11 +61,14 @@ const affirmations = [
   },
 ];
 
-const Welecome = ({navigation}) => {
+const Welecome2 = ({navigation}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollX = useRef(new Animated2.Value(0)).current;
   const flatListRef = useRef(null);
   const ITEM_WIDTH = wp(100);
+  let intervalId = useRef(null);
+  const DURATION = 1000;
+  const DELAY = 500;
 
   useEffect(() => {
     const listenerId = scrollX.addListener(({value}) => {
@@ -71,20 +80,73 @@ const Welecome = ({navigation}) => {
       scrollX.removeListener(listenerId);
     };
   }, []);
+  const opacity = {
+    opacity0: useSharedValue(0),
+    opacity1: useSharedValue(0),
+    opacity2: useSharedValue(0),
+    opacity3: useSharedValue(0),
+    opacity4: useSharedValue(0),
+  };
 
   const onViewableItemsChanged = React.useRef(({viewableItems}) => {
-    // Getting the index of the first viewable item
-    if (viewableItems && viewableItems.length > 0) {
-      setCurrentIndex(viewableItems[0].index);
-    }
+    const newIndex = viewableItems[0].index;
+    Object.keys(opacity).forEach(key => {
+      if (key !== `opacity${newIndex}`) {
+        opacity[key].value = withTiming(0, {duration: 0});
+      }
+    });
+    setTimeout(() => {
+      opacity[`opacity${newIndex}`].value = withDelay(
+        0 * DELAY,
+        withTiming(1, {duration: DURATION}),
+      );
+    }, 100);
+
+    setCurrentIndex(newIndex);
   });
+  const scrollToNextItem = async () => {
+    const newIndex = currentIndex + 1;
+
+    if (newIndex === affirmations.length) {
+      clearInterval(intervalId.current);
+      return;
+    }
+
+    // Set opacity of current element to 1
+
+    // Loop through all elements and set opacity to 0 except for the current one
+    flatListRef.current.scrollToIndex({index: newIndex, animated: true});
+    Object.keys(opacity).forEach(key => {
+      if (key !== `opacity${newIndex}`) {
+        opacity[key].value = withTiming(0, {duration: 0});
+      }
+    });
+
+    // Set opacity of current element to 1 with delay
+    setTimeout(() => {
+      opacity[`opacity${newIndex}`].value = withDelay(
+        0 * DELAY,
+        withTiming(1, {duration: DURATION}),
+      );
+    }, 100);
+  };
+  useEffect(() => {
+    intervalId.current = setInterval(scrollToNextItem, 4000);
+    // opacity1.value = withDelay(1 * DELAY, withTiming(0, {duration: 500}));
+    return () => clearInterval(intervalId.current);
+  }, [currentIndex]);
+  useEffect(() => {
+    opacity.opacity0.value = withDelay(
+      1 * DELAY,
+      withTiming(1, {duration: DURATION}),
+    );
+  }, []);
 
   const onNextPress = () => {
     if (currentIndex !== affirmations.length - 1) {
-      const nextIndex = (currentIndex + 1) % affirmations.length;
-
-      flatListRef.current.scrollToIndex({Animated2: true, index: nextIndex});
-      setCurrentIndex(nextIndex);
+      // const nextIndex = (currentIndex + 1) % affirmations.length;
+      // flatListRef.current.scrollToIndex({Animated2: true, index: nextIndex});
+      // setCurrentIndex(nextIndex);
     } else {
       navigation.navigate('ChooseAfferamtion');
     }
@@ -114,21 +176,30 @@ const Welecome = ({navigation}) => {
         Let's Personalize Your experience
       </Text>
       {/* <Text style={styles.txt}></Text> */}
-      <Animated.View
-        entering={FadeIn}
-        exiting={FadeOut}
-        style={{height: hp(82), marginTop: '8%'}}>
+      <View
+        onLayout={even => {
+          console.log('layouttt', even.nativeEvent.layout);
+        }}
+        style={{height: hp(78), marginTop: '8%'}}>
         <FlatList
+          horizontal
           scrollEventThrottle={1}
           data={affirmations}
           ref={flatListRef}
+          snapToAlignment="start"
           pagingEnabled
+          onScroll={even => {
+            console.log('thissis', even.nativeEvent.contentOffset);
+          }}
           renderItem={({item, index}) => {
-            return currentIndex == index ? (
+            return true == true ? (
               <Animated.View
                 entering={FadeIn}
                 exiting={FadeOut}
-                style={[styles.listContianer]}>
+                style={[
+                  styles.listContianer,
+                  {opacity: opacity[`opacity${index}`]},
+                ]}>
                 <LinearGradient
                   start={{x: 1, y: 0}}
                   end={{x: 1, y: 1}}
@@ -161,8 +232,13 @@ const Welecome = ({navigation}) => {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       marginTop: '14%',
+                      // opacity: opacity[`opacity${index}`],
                     }}>
-                    <Text style={styles.txt2}>
+                    <Text
+                      style={[
+                        styles.txt2,
+                        // {opacity: opacity[`opacity${index}`]},
+                      ]}>
                       {item.title.substring(0, 15)}....
                     </Text>
                     <View style={{flexDirection: 'row', marginRight: '0%'}}>
@@ -178,18 +254,26 @@ const Welecome = ({navigation}) => {
                       })}
                     </View>
                   </View>
-                  <Text style={styles.txt3}>{item.description}</Text>
+                  <Text
+                    style={[
+                      styles.txt3,
+                      // {opacity: opacity[`opacity${index}`]},
+                    ]}>
+                    {item.description}
+                  </Text>
                 </LinearGradient>
               </Animated.View>
             ) : (
-              <View style={{height: hp(82)}}></View>
+              <View style={{height: hp(78), width: wp(100)}}></View>
             );
           }}
           onViewableItemsChanged={onViewableItemsChanged.current}
         />
-        <View style={{position: 'absolute', right: '5%', top: '15%'}}>
+        <View
+          style={{position: 'absolute', alignSelf: 'center', bottom: hp(8)}}>
           <FlatList
             data={affirmations}
+            horizontal
             renderItem={({item, index}) => {
               return (
                 <View
@@ -204,45 +288,47 @@ const Welecome = ({navigation}) => {
             }}
           />
         </View>
-      </Animated.View>
-      <TouchableOpacity
-        onPress={onNextPress}
-        style={[
-          styles.nextBtn,
-          {
-            height: currentIndex == affirmations.length - 1 ? hp(6) : hp(7),
-            width: currentIndex == affirmations.length - 1 ? '60%' : hp(7),
-            borderRadius:
-              currentIndex !== affirmations.length - 1 ? hp(3.5) : 12,
-            overflow: 'hidden',
-          },
-        ]}>
-        <LinearGradient
-          style={{
-            height: '100%',
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          start={{x: 0.0, y: 0.0}}
-          end={{x: 5, y: 0.0}}
-          locations={[0, 0.4, 0.2]}
-          colors={['#B72658', '#D485D1']}>
-          {currentIndex == affirmations.length - 1 ? (
-            <Text
-              style={{color: 'white', fontSize: wp(5.5), fontWeight: '400'}}>
-              {'Get Started'}
-            </Text>
-          ) : (
-            <Entypo name="chevron-right" size={30} color={'white'} />
-          )}
-        </LinearGradient>
-      </TouchableOpacity>
+      </View>
+      {currentIndex == affirmations.length - 1 ? (
+        <TouchableOpacity
+          onPress={onNextPress}
+          style={[
+            styles.nextBtn,
+            {
+              height: currentIndex == affirmations.length - 1 ? hp(6) : hp(7),
+              width: currentIndex == affirmations.length - 1 ? '60%' : hp(7),
+              borderRadius:
+                currentIndex !== affirmations.length - 1 ? hp(3.5) : 12,
+              overflow: 'hidden',
+            },
+          ]}>
+          <LinearGradient
+            style={{
+              height: '100%',
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            start={{x: 0.0, y: 0.0}}
+            end={{x: 5, y: 0.0}}
+            locations={[0, 0.4, 0.2]}
+            colors={['#B72658', '#D485D1']}>
+            {currentIndex == affirmations.length - 1 ? (
+              <Text
+                style={{color: 'white', fontSize: wp(5.5), fontWeight: '400'}}>
+                {'Get Started'}
+              </Text>
+            ) : (
+              <Entypo name="chevron-right" size={30} color={'white'} />
+            )}
+          </LinearGradient>
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
 
-export default Welecome;
+export default Welecome2;
 
 const styles = StyleSheet.create({
   container: {
@@ -261,7 +347,7 @@ const styles = StyleSheet.create({
   listContianer: {
     backgroundColor: '#fff',
     width: wp(100),
-    height: hp(82),
+    height: hp(78),
     // borderWidth: 5,
   },
   gradient: {
@@ -286,10 +372,10 @@ const styles = StyleSheet.create({
   },
   dot: {
     backgroundColor: 'grey',
-    height: hp(5),
-    width: hp(0.6),
+    height: hp(0.6),
+    width: hp(5),
     borderRadius: hp(1.5),
-    marginVertical: '15%',
+    marginHorizontal: wp(1),
   },
   nextBtn: {
     alignSelf: 'center',

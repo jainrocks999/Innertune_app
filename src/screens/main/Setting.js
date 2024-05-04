@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  Alert,
 } from 'react-native';
 import React from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -17,6 +18,8 @@ import {
   heightPercent as hp,
   widthPrecent as wp,
 } from '../../components/atoms/responsive';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 const data = [
   {
     id: '1',
@@ -68,7 +71,8 @@ const data3 = [
     image: require('../../assets/flaticon/switch.png'),
   },
 ];
-const Setting = () => {
+const Setting = ({}) => {
+  const navigation = useNavigation();
   return (
     <View style={{flex: 1, backgroundColor: '#191919'}}>
       <View style={{marginHorizontal: 15, marginTop: 10}}>
@@ -185,7 +189,12 @@ const Setting = () => {
               </Text>
               <Image
                 source={require('../../assets/flaticon/handshake.png')}
-                style={{height: hp(5), width: wp(8), borderRadius: 20, tintColor:'#426e56'}}
+                style={{
+                  height: hp(5),
+                  width: wp(8),
+                  borderRadius: 20,
+                  tintColor: '#426e56',
+                }}
               />
             </View>
           </View>
@@ -223,8 +232,7 @@ const Setting = () => {
                   justifyContent: 'space-between',
                   marginHorizontal: '5%',
                 }}>
-                <Text
-                  style={{color: 'white', fontSize: 17, fontWeight: '400'}}>
+                <Text style={{color: 'white', fontSize: 17, fontWeight: '400'}}>
                   {item.title}
                 </Text>
                 <Image source={item.image} style={styles.image} />
@@ -261,7 +269,12 @@ const Setting = () => {
               </Text>
               <Image
                 source={require('../../assets/flaticon/star.png')}
-                style={{height: hp(5), width: wp(9), borderRadius: 20, tintColor:'#426e56'}}
+                style={{
+                  height: hp(5),
+                  width: wp(9),
+                  borderRadius: 20,
+                  tintColor: '#426e56',
+                }}
               />
             </View>
           </View>
@@ -293,7 +306,34 @@ const Setting = () => {
                   borderRadius: 10,
                   marginTop: 20,
                 }}>
-                <View
+                <TouchableOpacity
+                  onPress={async () => {
+                    if (item.title === 'Sign out') {
+                      Alert.alert(
+                        'Logout',
+                        'Are you sure you want to logout?',
+                        [
+                          {
+                            text: 'Cancel',
+                            onPress: () => console.log('Cancel Pressed'),
+                            style: 'cancel',
+                          },
+                          {
+                            text: 'Logout',
+                            onPress: async () => {
+                              await AsyncStorage.clear();
+                              navigation.reset({
+                                index: 0,
+                                routes: [{name: 'login'}],
+                              });
+                            },
+                            style: 'destructive',
+                          },
+                        ],
+                        {cancelable: true},
+                      );
+                    }
+                  }}
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -305,7 +345,7 @@ const Setting = () => {
                     {item.title}
                   </Text>
                   <Image source={item.image} style={styles.image} />
-                </View>
+                </TouchableOpacity>
               </View>
             )}
           />
@@ -322,6 +362,6 @@ const styles = StyleSheet.create({
     width: hp(3.5),
     height: hp(3.5),
     resizeMode: 'stretch',
-    tintColor:'#426e56'
+    tintColor: '#426e56',
   },
 });

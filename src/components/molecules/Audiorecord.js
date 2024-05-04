@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, StyleSheet, View, Image} from 'react-native';
 import {heightPercent as hp, widthPrecent as wp} from '../atoms/responsive';
 import Icon from 'react-native-vector-icons/Ionicons';
+
 import {useNavigation} from '@react-navigation/native';
 
 const AudioRecorder = () => {

@@ -2,6 +2,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Background from './compoents/Background';
 const Splash = () => {
   const navigation = useNavigation();
 
@@ -20,17 +21,14 @@ const Splash = () => {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      <TouchableOpacity onPress={() => {}}>
-        <Text style={{color: 'black', fontSize: 20}}>splash</Text>
-      </TouchableOpacity>
-    </View>
+    <Background>
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}></View>
+    </Background>
   );
 };
 
