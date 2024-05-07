@@ -13,7 +13,6 @@ import Saveplaylist from '../screens/main/All playlists/Saveplaylist';
 import Playsong from '../screens/main/Playsong';
 import Mymodal from '../components/molecules/Modal';
 import Playlistdetails from '../screens/Tab/Playlistdetails';
-import Menu from '../screens/main/Menu';
 import Goal from '../screens/Auth/Goal';
 import AudioRecorder from '../components/molecules/Audiorecord';
 import Welecome from '../screens/Intro_Screens/Welecome';
@@ -22,6 +21,7 @@ import ChooseAfferamtion from '../screens/Intro_Screens/ChooseAfferamtion';
 import AksReminder from '../screens/Intro_Screens/AksReminder';
 import Intrested from '../screens/Intro_Screens/Intrested';
 import Forgot from '../screens/Auth/Forgot';
+import Playlistdetails2 from '../screens/Tab/Playlist2';
 const Stack = createStackNavigator();
 function MyStack() {
   return (
@@ -87,10 +87,15 @@ function MyStack() {
         options={{headerShown: false}}
       />
       <Stack.Screen
+        name="Playlistdetails2"
+        component={Playlistdetails2}
+        options={{headerShown: false}}
+      />
+      {/* <Stack.Screen
         name="Menu"
         component={Menu}
         options={{headerShown: false}}
-      />
+      /> */}
       <Stack.Screen
         name="goal"
         component={Goal}

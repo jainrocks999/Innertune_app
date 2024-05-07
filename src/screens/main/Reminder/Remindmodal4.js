@@ -1,10 +1,19 @@
-import {FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {
   heightPercent as hp,
   widthPrecent as wp,
 } from '../../../components/atoms/responsive';
 import Modal2 from '../../../components/molecules/Modal2';
+import Buttun from '../../Auth/compoents/Buttun';
 const Img = [
   {
     id: '1',
@@ -47,9 +56,7 @@ const Remindmodal4 = () => {
   const handleSelectedDay = items => {
     console.log(items.id);
     if (selectedDay.includes(items.id)) {
-      const filter = [...selectedDay].filter(
-        (item, index) => item != items.id,
-      );
+      const filter = [...selectedDay].filter((item, index) => item != items.id);
       console.log(filter);
       setSelectedDay(filter);
     } else {
@@ -68,61 +75,60 @@ const Remindmodal4 = () => {
           Daily Practice
         </Text>
       </View>
-
-
-     
       <View
         style={{
+          width: '100%',
+          borderColor: '#333',
+          alignSelf: 'center',
+          borderWidth: 0.5,
+          marginTop: '3.3%',
+        }}
+      />
+
+      <View
+        style={{
+          width: '100%',
           flexDirection: 'row',
           justifyContent: 'space-between',
+          marginTop: '6%',
+          paddingHorizontal: '5%',
           alignItems: 'center',
-          marginTop: hp(7),
-          paddingHorizontal: wp(8),
-          // borderTopWidth:1,
-          // borderBottomWidth:1,
-          // borderTopColor:'grey',
-          // borderBottomColor:'grey',
-          height:hp(7)
         }}>
-        <Text style={{color: 'white', fontSize: hp(2)}}>  When </Text>
-        <View style={{flexDirection: 'row'}}>
-          <View
-            style={{
-              height: hp(3),
-              width: wp(6),
-              backgroundColor: '#426e56',
-              borderRadius: 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text style={{color: 'white', fontSize: 20}}> - </Text>
+        <Text style={{color: 'white', fontSize: wp(5)}}>When</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '55%',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+          <View style={styles.cicrcle}>
+            <Entypo name="minus" style={styles.icon} />
           </View>
-          <Text style={{color: 'white', fontSize: 20, marginHorizontal: wp(3)}}>
-            9:00
-          </Text>
-          <View
-            style={{
-              height: hp(3),
-              width: wp(6),
-              backgroundColor: '#426e56',
-              borderRadius: 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text style={{color: 'white', fontSize: 20}}> + </Text>
+          <Text style={{color: 'white', fontSize: wp(6)}}>9:00</Text>
+          <View style={styles.cicrcle}>
+            <Entypo name="plus" style={styles.icon} />
           </View>
         </View>
       </View>
-   
+      <View
+        style={{
+          width: '100%',
+          borderColor: '#333',
+          alignSelf: 'center',
+          borderWidth: 0.5,
+          marginTop: '6.3%',
+        }}
+      />
       <View
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginTop: hp(7),
-          paddingHorizontal: wp(8),
+          marginTop: '6%',
+          paddingHorizontal: '4.8%',
         }}>
-        <Text style={{color: 'white', fontSize: hp(2)}}> Repeat </Text>
+        <Text style={{color: 'white', fontSize: wp(5)}}> Repeat </Text>
       </View>
       <View
         style={{
@@ -134,35 +140,23 @@ const Remindmodal4 = () => {
           horizontal
           keyExtractor={item => item.id}
           renderItem={({item}) => (
-            <TouchableOpacity
-            onPress={() => {
-              handleSelectedDay(item);
-            }}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginHorizontal: wp(1),
-              height: hp(5),
-              width: wp(10),
-              backgroundColor: selectedDay.includes(item.id)
-                ? '#426e56'
-                : 'white',
-              borderRadius: 50,
-            }}>
-            <Text
-              style={[
-                styles.text,
-                {color: selectedDay.includes(item.id) ? 'white' : 'black'},
-              ]}>
-              {item.title}
-            </Text>
-          </TouchableOpacity>
+            <View style={styles.listCircle}>
+              <Text
+                style={{marginLeft: '5%', color: '#B72658', fontWeight: '500'}}>
+                {item.title}
+              </Text>
+            </View>
           )}
         />
       </View>
-      <View style={{alignSelf: 'center', bottom: hp(6), position:'absolute'}}>
-        <TouchableOpacity
+      <View
+        style={{
+          alignSelf: 'center',
+          bottom: hp(6),
+          width: '100%',
+          position: 'absolute',
+        }}>
+        {/* <TouchableOpacity
           style={{
             height: 45,
             marginLeft: 20,
@@ -175,9 +169,19 @@ const Remindmodal4 = () => {
           // onPress={() => {
           //   navigation.navigate('saveplaylist');
           // }}
-          >
+        >
           <Text style={styles.loginText}>Close</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <Buttun
+          style={{
+            alignSelf: 'center',
+            height: hp(7),
+            width: '60%',
+            borderRadius: wp(2),
+            elevation: 4,
+          }}
+          title="Close"
+        />
       </View>
     </SafeAreaView>
   );
@@ -194,5 +198,28 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 20,
     fontWeight: '400',
+  },
+  cicrcle: {
+    height: hp(5.5),
+    width: hp(5.5),
+    backgroundColor: '#fff',
+    borderRadius: hp(2.75),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  icon: {
+    color: '#B72658',
+    fontSize: wp(7),
+    textAlign: 'center',
+    // marginTop: '-5%',
+  },
+  listCircle: {
+    height: hp(5.5),
+    width: hp(5.5),
+    backgroundColor: '#fff',
+    marginHorizontal: wp(1),
+    borderRadius: hp(2.75),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

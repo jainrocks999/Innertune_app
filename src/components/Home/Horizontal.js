@@ -37,7 +37,7 @@ const Horizontal = ({data, onPress}) => {
 
         let image =
           item?.categories_image[0]?.original_url ??
-          'https://stimuli.forebearpro.co.in/storage/app/public/3/download-(8).jpg';
+          'https://img.freepik.com/free-photo/outdoor-adventurers-hiking-towards-mountain-peak-sunrise-silhouette-generated-by-ai_188544-30928.jpg';
         title = item?.categories_name;
 
         return (
@@ -71,8 +71,6 @@ const styles = StyleSheet.create({
     height: wp(43),
     width: wp(43),
     overflow: 'hidden',
-    // borderWidth: 2,
-
     borderRadius: wp(5),
   },
   title: {
@@ -80,7 +78,6 @@ const styles = StyleSheet.create({
     marginTop: wp(2),
     fontSize: wp(5),
     width: wp(43),
-    // marginLeft: hp(4),
     marginLeft: wp(4),
   },
 });

@@ -19,7 +19,63 @@ const Header = ({placeholder, onChangeText}) => {
   };
 
   return (
-    <View
+    <View style={styles.container}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('goal');
+        }}>
+        <Image
+          source={require('../../assets/logo/stimuili-logos1-.png')}
+          style={{
+            height: hp(6.5),
+            width: hp(6.5),
+            marginRight: 15,
+            borderRadius: hp(3.25),
+            // tintColor: 'white',
+          }}
+        />
+      </TouchableOpacity>
+      <View style={styles.inputContainer}>
+        <AntDesign name="search1" size={20} color="black" />
+        <TextInput
+          placeholder="Search"
+          placeholderTextColor="black"
+          style={styles.input}
+        />
+      </View>
+    </View>
+  );
+};
+const styles = StyleSheet.create({
+  searchContainer: {},
+  input: {
+    marginLeft: 10,
+    width: wp(50),
+    color: 'black',
+  },
+  inputContainer: {
+    height: hp(6.5),
+    borderWidth: wp(0.1),
+    borderColor: 'grey',
+    width: '80%',
+    borderRadius: wp(7),
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingLeft: '5%',
+    backgroundColor: 'white',
+  },
+  container: {
+    height: hp(10),
+    width: '100%',
+    paddingHorizontal: wp(3),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+});
+export default Header;
+{
+  /*    <View
       style={{
         height: hp(10),
         width: '100%',
@@ -33,12 +89,13 @@ const Header = ({placeholder, onChangeText}) => {
           navigation.navigate('goal');
         }}>
         <Image
-          source={require('../../assets/logo.png')}
+          source={require('../../assets/logo/stimuili-logos1-.png')}
           style={{
             height: hp(7),
-            width: wp(13),
+            width: hp(7),
             marginRight: 15,
-            tintColor: 'white',
+            borderRadius: hp(3.5),
+            // tintColor: 'white',
           }}
         />
       </TouchableOpacity>
@@ -63,26 +120,5 @@ const Header = ({placeholder, onChangeText}) => {
           />
         )}
       </View>
-    </View>
-  );
-};
-const styles = StyleSheet.create({
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
-    backgroundColor: '#0a0a0a',
-    borderRadius: 50,
-    borderWidth: 0.2,
-    borderColor: 'grey',
-    paddingHorizontal: 10,
-    width: wp(75),
-    height: hp(5),
-  },
-  input: {
-    marginLeft: 10,
-    width: wp(50),
-    color: 'white',
-  },
-});
-export default Header;
+    </View>*/
+}

@@ -20,11 +20,14 @@ import {ScrollView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { launchImageLibrary as _launchImageLibrary, launchCamera as _launchCamera } from 'react-native-image-picker';
+import {
+  launchImageLibrary as _launchImageLibrary,
+  launchCamera as _launchCamera,
+} from 'react-native-image-picker';
 let launchImageLibrary = _launchImageLibrary;
 
 const Saveplaylist = ({route}) => {
-  const selectedItems = route.params.selected;
+  const selectedItems = route.params.selected ?? [];
   const navigation = useNavigation();
   const [playlistName, setPlaylistName] = useState('');
   const [description, setDescription] = useState('');
@@ -68,8 +71,7 @@ const Saveplaylist = ({route}) => {
     launchImageLibrary(options, handleResponse);
   };
 
-
-  const handleResponse = (response) => {
+  const handleResponse = response => {
     if (response.didCancel) {
       console.log('User cancelled image picker');
     } else if (response.error) {
@@ -111,28 +113,28 @@ const Saveplaylist = ({route}) => {
       </View>
       <ScrollView>
         <TouchableOpacity onPress={openImagePicker}>
-        <View
-          style={{
-            height: hp(30),
-            width: wp(50),
-            backgroundColor: '#426e56',
-            borderRadius: 20,
-            alignSelf: 'center',
-            alignItems: 'center',
-            marginTop: '10%',
-            justifyContent: 'center',
-          }}>
-          <Image
-            source={require('../../../assets/upload.png')}
+          <View
             style={{
-              height: hp(15),
-              width: wp(24),
+              height: hp(30),
+              width: wp(50),
+              backgroundColor: '#426e56',
               borderRadius: 20,
-              tintColor: 'white',
-            }}
-          />
-          <Text style={{color: 'white', fontSize: 30}}>Upload File</Text>
-        </View>
+              alignSelf: 'center',
+              alignItems: 'center',
+              marginTop: '10%',
+              justifyContent: 'center',
+            }}>
+            <Image
+              source={require('../../../assets/upload.png')}
+              style={{
+                height: hp(15),
+                width: wp(24),
+                borderRadius: 20,
+                tintColor: 'white',
+              }}
+            />
+            <Text style={{color: 'white', fontSize: 30}}>Upload File</Text>
+          </View>
         </TouchableOpacity>
         <View style={styles.container}>
           <View style={styles.inputContainer}>

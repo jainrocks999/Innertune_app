@@ -2,6 +2,7 @@ import {
   Alert,
   FlatList,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -13,6 +14,9 @@ import {
   widthPrecent as wp,
 } from '../../../components/atoms/responsive';
 import Modal2 from '../../../components/molecules/Modal2';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Feather from 'react-native-vector-icons/Feather';
+import Buttun from '../../Auth/compoents/Buttun';
 const Img = [
   {
     id: '1',
@@ -58,9 +62,7 @@ const Remindmodal2 = () => {
     console.log(items.id);
     if (selectedDay.includes(items.id)) {
       // Alert.alert('i am here')
-      let filter = [...selectedDay].filter(
-        (item, index) => item != items.id,
-      );
+      let filter = [...selectedDay].filter((item, index) => item != items.id);
       console.log(filter);
       setSelectedDay(filter);
     } else {
@@ -68,6 +70,265 @@ const Remindmodal2 = () => {
     }
   };
   return (
+    <View style={{flex: 1, backgroundColor: '#191919'}}>
+      <View style={{height: '2%'}} />
+      <Text
+        style={{
+          alignSelf: 'center',
+          color: 'white',
+          fontSize: wp(6),
+
+          fontWeight: 'bold',
+        }}>
+        Affirmations
+      </Text>
+      <View style={{height: '2%'}} />
+      <View
+        style={{
+          width: '100%',
+          borderColor: '#333',
+          alignSelf: 'center',
+          borderWidth: 0.5,
+        }}
+      />
+      <View style={{height: '2%'}} />
+      <View style={styles.sec_container}>
+        <View style={styles.rowContainer}>
+          <View style={styles.cicrcle}>
+            <Entypo name="minus" style={styles.icon} />
+          </View>
+          <Text style={{color: '#fff', fontSize: wp(11), marginTop: '-5%'}}>
+            7X
+          </Text>
+          <View style={styles.cicrcle}>
+            <Entypo name="plus" style={styles.icon} />
+          </View>
+        </View>
+        <Text style={{color: '#eee', marginTop: '3%', fontSize: wp(5)}}>
+          How many
+        </Text>
+      </View>
+      <View style={{height: '2%'}} />
+      <View
+        style={{
+          width: '100%',
+          borderColor: '#333',
+          alignSelf: 'center',
+          borderWidth: 0.5,
+        }}
+      />
+      <View style={{height: '2%'}} />
+      <View style={styles.playlisttime}>
+        <Text style={styles.txt2}>select the playlist</Text>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={styles.txt2}>Genral </Text>
+          <Feather
+            name="chevron-right"
+            style={[styles.txt2, {fontSize: wp(6.5), marginTop: '5%'}]}
+          />
+        </View>
+      </View>
+      <View
+        style={{
+          width: '100%',
+          borderColor: '#333',
+          alignSelf: 'center',
+          borderWidth: 0.5,
+          marginTop: '5%',
+        }}
+      />
+      <View style={{height: '2%'}} />
+      <View style={styles.playlisttime}>
+        <Text style={styles.txt2}>start at</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '35%',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+          <View style={styles.cicrcle2}>
+            <Entypo name="minus" style={styles.icon2} />
+          </View>
+          <Text style={{color: 'white', fontSize: wp(4)}}>9:00</Text>
+          <View style={styles.cicrcle2}>
+            <Entypo name="plus" style={styles.icon2} />
+          </View>
+        </View>
+      </View>
+      <View
+        style={{
+          width: '100%',
+          borderColor: '#333',
+          alignSelf: 'center',
+          borderWidth: 0.5,
+          marginTop: '5%',
+        }}
+      />
+      <View style={{height: '2%'}} />
+      <View style={styles.playlisttime}>
+        <Text style={styles.txt2}>finish at</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '35%',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+          <View style={styles.cicrcle2}>
+            <Entypo name="minus" style={styles.icon2} />
+          </View>
+          <Text style={{color: 'white', fontSize: wp(4)}}>9:00</Text>
+          <View style={styles.cicrcle2}>
+            <Entypo name="plus" style={styles.icon2} />
+          </View>
+        </View>
+      </View>
+      <View
+        style={{
+          width: '100%',
+          borderColor: '#333',
+          alignSelf: 'center',
+          borderWidth: 0.5,
+          marginTop: '5%',
+        }}
+      />
+      <View style={{height: '0%'}} />
+      <View
+        style={{
+          marginTop: hp(2),
+          alignItems: 'center',
+        }}>
+        <Text style={styles.txt2}>Repeat</Text>
+        <View
+          style={{
+            marginTop: '2%',
+            borderColor: 'white',
+            height: hp(7),
+          }}>
+          <FlatList
+            data={Img}
+            horizontal
+            keyExtractor={item => item.id}
+            renderItem={({item}) => (
+              <View style={styles.listCircle}>
+                <Text
+                  style={{
+                    marginLeft: '5%',
+                    color: '#B72658',
+                    fontWeight: '500',
+                  }}>
+                  {item.title}
+                </Text>
+              </View>
+            )}
+          />
+        </View>
+      </View>
+      <View style={{height: '2%'}} />
+      <View style={{width: '100%', alignItems: 'center'}}>
+        <Text style={{color: 'white', textAlign: 'center', width: '65%'}}>
+          Remind yourself on selected Affirmations
+        </Text>
+      </View>
+      <View style={{height: '1%'}} />
+      <Buttun
+        style={{
+          alignSelf: 'center',
+          height: hp(7),
+          width: '60%',
+          borderRadius: wp(2),
+          elevation: 4,
+        }}
+        title="Create"
+      />
+    </View>
+  );
+};
+
+export default Remindmodal2;
+
+const styles = StyleSheet.create({
+  text: {
+    color: 'white',
+    fontSize: hp(2),
+  },
+  loginText: {
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: '400',
+  },
+  sec_container: {
+    backgroundColor: '#121212',
+    height: '22%',
+
+    width: '90%',
+    alignSelf: 'center',
+    borderRadius: wp(4),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cicrcle: {
+    height: hp(4.5),
+    width: hp(4.5),
+    backgroundColor: '#fff',
+    borderRadius: hp(2.75),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cicrcle2: {
+    height: hp(4),
+    width: hp(4),
+    backgroundColor: '#fff',
+    borderRadius: hp(2.75),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  icon: {
+    color: '#B72658',
+    fontSize: wp(4),
+    textAlign: 'center',
+    // marginTop: '-5%',
+  },
+  icon2: {
+    color: '#B72658',
+    fontSize: wp(3.5),
+    textAlign: 'center',
+    // marginTop: '-5%',
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    width: '47%',
+    justifyContent: 'space-between',
+    marginTop: '0%',
+    alignItems: 'center',
+  },
+  playlisttime: {
+    flexDirection: 'row',
+
+    justifyContent: 'space-between',
+    width: '85%',
+    alignSelf: 'center',
+  },
+  txt2: {
+    color: 'white',
+    fontSize: wp(5.5),
+    textAlign: 'center',
+    fontWeight: '600',
+  },
+  listCircle: {
+    height: hp(5.5),
+    width: hp(5.5),
+    backgroundColor: '#fff',
+    marginHorizontal: wp(1),
+    borderRadius: hp(2.75),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+{
+  /*
+
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
       <View
         style={{
@@ -96,14 +357,18 @@ const Remindmodal2 = () => {
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <View
             style={{
-              height: hp(5),
-              width: wp(10),
-              backgroundColor: '#426e56',
-              borderRadius: 50,
-              justifyContent: 'center',
+              flexDirection: 'row',
+              width: '55%',
               alignItems: 'center',
+              justifyContent: 'space-between',
             }}>
-            <Text style={{color: 'white', fontSize: hp(4)}}> - </Text>
+            <View style={styles.cicrcle}>
+              <Entypo name="minus" style={styles.icon} />
+            </View>
+            <Text style={{color: 'white', fontSize: wp(6)}}>9:00</Text>
+            <View style={styles.cicrcle}>
+              <Entypo name="plus" style={styles.icon} />
+            </View>
           </View>
           <Text style={{color: 'white', fontSize: 50}}> 7x </Text>
           <View
@@ -151,7 +416,7 @@ const Remindmodal2 = () => {
             style={{
               height: hp(3),
               width: wp(6),
-              backgroundColor: '#426e56',
+              backgroundColor: '#B72658',
               borderRadius: 50,
               justifyContent: 'center',
               alignItems: 'center',
@@ -238,7 +503,7 @@ const Remindmodal2 = () => {
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-        
+
                 justifyContent: 'center',
                 marginHorizontal: wp(1),
                 height: hp(5),
@@ -251,7 +516,10 @@ const Remindmodal2 = () => {
               <Text
                 style={[
                   styles.text,
-                  {color: selectedDay.includes(item.id) ? 'white' : 'black',left:2},
+                  {
+                    color: selectedDay.includes(item.id) ? 'white' : 'black',
+                    left: 2,
+                  },
                 ]}>
                 {item.title}
               </Text>
@@ -278,19 +546,5 @@ const Remindmodal2 = () => {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
-  );
-};
-
-export default Remindmodal2;
-
-const styles = StyleSheet.create({
-  text: {
-    color: 'white',
-    fontSize: hp(2),
-  },
-  loginText: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    fontWeight: '400',
-  },
-});
+*/
+}

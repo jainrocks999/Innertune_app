@@ -98,10 +98,10 @@ const ChooseAfferamtion = ({navigation}) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}
-          start={{x: 0.0, y: 0.0}}
-          end={{x: 5, y: 0.0}}
-          locations={[0, 0.4, 0.2]}
-          colors={['#B72658', '#D485D1']}>
+          start={{x: 1.4, y: 0}}
+          end={{x: 0, y: 1}}
+          locations={[0, 1]}
+          colors={['#D485D1', '#B72658']}>
           <Text style={{color: 'white', fontSize: wp(5.5), fontWeight: '400'}}>
             {'Next'}
           </Text>
@@ -149,11 +149,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     zIndex: 1,
     position: 'absolute',
-    height: hp(6),
-    width: wp(50),
+    height: hp(7),
+    width: '60%',
     elevation: 4,
     borderRadius: 5,
     overflow: 'hidden',
     bottom: hp(4),
+    borderWidth: 1,
+    // borderColor: 'white',
   },
 });

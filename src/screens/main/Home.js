@@ -57,8 +57,6 @@ const HomeScreen = () => {
   const {loading, playlist, groups, category} = useSelector(
     state => state.home,
   );
-  //https://stimuli.forebearpro.co.in/api/v1/playList?user_id=2
-  console.log('hisisissi', JSON.stringify(playlist));
 
   const getAllCategories = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -116,10 +114,6 @@ const HomeScreen = () => {
         <View
           style={{
             alignItems: 'center',
-
-            width: wp(100),
-            height: hp(35),
-            top: hp(1),
           }}>
           <FlatList
             data={Img}
@@ -128,40 +122,56 @@ const HomeScreen = () => {
             scrollEnabled={false}
             keyExtractor={item => item.id}
             renderItem={({item}) => (
-              <TouchableOpacity>
-                <View style={styles.carddd}>
-                  {/* <LinearGradient
-              start={{x: 0.0, y: 0.0}}
-              end={{x: 5, y: 0.0}}
-              locations={[0, 0.5, 0.3]}
-              colors={['#191919', '#89FFBF']}
-              style={styles.linearGradienttt}> */}
-                  <Image
-                    source={item.image}
-                    style={{height: hp(8), width: wp(16), borderRadius: 20}}
-                  />
-                  <View
-                    style={{
-                      flexDirection: 'column',
-                      alignSelf: 'center',
-                      width: wp(45),
-                      marginHorizontal: '5%',
-                    }}>
-                    <Text
-                      style={{
-                        fontSize: 13,
-                        width: wp(26),
-                        fontWeight: '400',
-                        fontFamily: 'Poppins-Medium',
-                        color: '#ffffff',
-                        backgroundColor: 'transparent',
-                      }}>
-                      {item.title}
-                    </Text>
-                  </View>
-                  {/* </LinearGradient> */}
-                </View>
-              </TouchableOpacity>
+              // <TouchableOpacity>
+              //   <View style={styles.carddd}>
+              //     {/* <LinearGradient
+              // start={{x: 0.0, y: 0.0}}
+              // end={{x: 5, y: 0.0}}
+              // locations={[0, 0.5, 0.3]}
+              // colors={['#191919', '#89FFBF']}
+              // style={styles.linearGradienttt}> */}
+              //     <Image
+              //       source={item.image}
+              //       style={{height: hp(8), width: wp(16), borderRadius: 20}}
+              //     />
+              //     <View
+              //       style={{
+              //         flexDirection: 'column',
+              //         alignSelf: 'center',
+              //         width: wp(45),
+              //         marginHorizontal: '5%',
+              //       }}>
+              //       <Text
+              //         style={{
+              //           fontSize: 13,
+              //           width: wp(26),
+              //           fontWeight: '400',
+              //           fontFamily: 'Poppins-Medium',
+              //           color: '#ffffff',
+              //           backgroundColor: 'transparent',
+              //         }}>
+              //         {'item.title'}
+              //       </Text>
+              //     </View>
+              //     {/* </LinearGradient> */}
+              //   </View>
+              // </TouchableOpacity>
+              <View style={styles.lastSestionItem}>
+                <Image
+                  source={item.image}
+                  style={{height: hp(8), width: hp(8), borderRadius: hp(4)}}
+                />
+                <Text
+                  style={{
+                    marginLeft: '5%',
+                    fontWeight: '400',
+                    fontFamily: 'Poppins-Medium',
+                    color: '#ffffff',
+                    width: '50%',
+                  }}>
+                  {item.title.substring(0, 17)}
+                </Text>
+              </View>
             )}
           />
         </View>
@@ -223,7 +233,7 @@ const HomeScreen = () => {
           }}
           data={category}
         />
-        {/* Light color  :-  #D485D1 
+        {/* Light color  :-  #               
 Dark color   :-  #B72658 */}
 
         <View style={styles.cardd}>
@@ -457,9 +467,7 @@ const styles = StyleSheet.create({
     color: 'white',
     paddingHorizontal: 10,
   },
-  scrollView: {
-    backgroundColor: '#191919',
-  },
+  scrollView: {},
   imageContainer: {
     padding: 12,
   },
@@ -543,6 +551,17 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: 'black',
     margin: 10,
+  },
+  lastSestionItem: {
+    // paddingVertical: '1%',
+    width: '46%',
+    marginHorizontal: '2%',
+    marginVertical: '2%',
+    backgroundColor: 'black',
+    borderRadius: wp(6),
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingRight: '2%',
   },
 });
 

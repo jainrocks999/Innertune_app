@@ -114,7 +114,7 @@ function* fetchAffirmation(action) {
         payload: action.item,
       });
       // Alert.alert(JSON.stringify(action.item))
-      action.navigation?.navigate('Playlistdetails');
+      action.navigation?.navigate('Playlistdetails2');
     } else {
       Toast.show('Error with fetching affermations');
       yield put({

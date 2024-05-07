@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,7 +16,7 @@ const Splash = () => {
     if (token != null) {
       navigation.reset({index: 0, routes: [{name: 'Home'}]});
     } else {
-      navigation.navigate('login');
+      navigation.replace('login');
     }
   };
 
@@ -27,7 +27,18 @@ const Splash = () => {
           flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
-        }}></View>
+        }}>
+        <Image
+          style={{
+            height: 180,
+            width: 180,
+            margin: '6%',
+            marginBottom: '3%',
+            borderRadius: 90,
+          }}
+          source={require('../../assets/logo/stimuili-logos1-.png')}
+        />
+      </View>
     </Background>
   );
 };

@@ -1,4 +1,11 @@
-import {FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import {
   heightPercent as hp,
@@ -47,9 +54,7 @@ const Remindmodal3 = () => {
   const handleSelectedDay = items => {
     console.log(items.id);
     if (selectedDay.includes(items.id)) {
-      const filter = [...selectedDay].filter(
-        (item, index) => item != items.id,
-      );
+      const filter = [...selectedDay].filter((item, index) => item != items.id);
       console.log(filter);
       setSelectedDay(filter);
     } else {
@@ -69,8 +74,6 @@ const Remindmodal3 = () => {
         </Text>
       </View>
 
-
-     
       <View
         style={{
           flexDirection: 'row',
@@ -82,9 +85,9 @@ const Remindmodal3 = () => {
           // borderBottomWidth:1,
           // borderTopColor:'grey',
           // borderBottomColor:'grey',
-          height:hp(7)
+          height: hp(7),
         }}>
-        <Text style={{color: 'white', fontSize: hp(2)}}>  When </Text>
+        <Text style={{color: 'white', fontSize: hp(2)}}> When </Text>
         <View style={{flexDirection: 'row'}}>
           <View
             style={{
@@ -113,7 +116,7 @@ const Remindmodal3 = () => {
           </View>
         </View>
       </View>
-   
+
       <View
         style={{
           flexDirection: 'row',
@@ -141,7 +144,7 @@ const Remindmodal3 = () => {
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-        
+
                 justifyContent: 'center',
                 marginHorizontal: wp(1),
                 height: hp(5),
@@ -154,7 +157,10 @@ const Remindmodal3 = () => {
               <Text
                 style={[
                   styles.text,
-                  {color: selectedDay.includes(item.id) ? 'white' : 'black',left:2},
+                  {
+                    color: selectedDay.includes(item.id) ? 'white' : 'black',
+                    left: 2,
+                  },
                 ]}>
                 {item.title}
               </Text>
@@ -162,7 +168,7 @@ const Remindmodal3 = () => {
           )}
         />
       </View>
-      <View style={{alignSelf: 'center', bottom: hp(6), position:'absolute'}}>
+      <View style={{alignSelf: 'center', bottom: hp(6), position: 'absolute'}}>
         <TouchableOpacity
           style={{
             height: 45,
@@ -176,7 +182,7 @@ const Remindmodal3 = () => {
           // onPress={() => {
           //   navigation.navigate('saveplaylist');
           // }}
-          >
+        >
           <Text style={styles.loginText}>Create</Text>
         </TouchableOpacity>
       </View>

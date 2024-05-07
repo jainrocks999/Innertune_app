@@ -125,20 +125,28 @@ const Toptab = () => {
           }}>
           <View style={styles.imageContainer}>
             <LinearGradient
-              start={{x: 0.5, y: 0.0}}
-              end={{x: 0.0, y: 1}}
-              locations={[0, 1]}
-              colors={['#89FFBF', '#000000']}
+              // start={{x: 1.4, y: 0}}
+              // end={{x: 0, y: 1}}
+              // locations={[0, 1]}
+              // colors={['#D485D1', '#B72658']}
+              start={{x: 1, y: 0}}
+              end={{x: -0.2, y: 0}}
+              locations={[0.3, 1]}
+              colors={['#D485D1', '#B72658']}
               style={styles.linearGradient}>
-              <View style={{justifyContent: 'center'}}>
+              <View style={{justifyContent: 'center', marginLeft: '5%'}}>
                 <Entypo name="heart" size={30} color="white" />
               </View>
-              <View style={{flexDirection: 'column', justifyContent: 'center'}}>
+              <View
+                style={{
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}>
                 <Text
                   style={{
                     width: wp(50),
-                    color: 'black',
-                    fontSize: hp(2),
+                    color: '#fff',
+                    fontSize: wp(5),
                     fontWeight: '500',
                   }}>
                   Afffirmation liked
@@ -158,20 +166,20 @@ const Toptab = () => {
           }}>
           <View style={styles.imageContainer}>
             <LinearGradient
-              start={{x: 0.5, y: 0.0}}
-              end={{x: 0.0, y: 1}}
-              locations={[0, 1]}
-              colors={['#89FFBF', '#000000']}
+              start={{x: 1, y: 0}}
+              end={{x: -0.2, y: 0}}
+              locations={[0.3, 1]}
+              colors={['#D485D1', '#B72658']}
               style={styles.linearGradient}>
-              <View style={{justifyContent: 'center'}}>
+              <View style={{justifyContent: 'center', marginLeft: '5%'}}>
                 <Entypo name="heart" size={30} color="white" />
               </View>
               <View style={{flexDirection: 'column', justifyContent: 'center'}}>
                 <Text
                   style={{
                     width: wp(50),
-                    color: 'black',
-                    fontSize: hp(2),
+                    color: '#fff',
+                    fontSize: wp(5),
                     fontWeight: '500',
                   }}>
                   Liked Playlist
@@ -210,26 +218,28 @@ const Toptab = () => {
                 navigation.navigate('Menu');
               }}>
               <View style={styles.imageeContainer}>
-                <LinearGradient
+                {/* <LinearGradient
                   style={{borderRadius: 20}}
-                  start={{x: 0.5, y: 0.0}}
-                  end={{x: 0.0, y: 1}}
+                  start={{x: 0.5, y: 0}}
+                  end={{x: 0, y: 1}}
                   locations={[0, 1]}
-                  colors={['#89FFBF', '#000000']}>
-                  <View
-                    style={{
-                      justifyContent: 'center',
-                      height: hp(8),
-                      width: wp(16),
-                      alignItems: 'center',
-                      borderRadius: '10%',
-                    }}>
-                    <Image
-                      source={require('../assets/playlist.png')}
-                      style={styles.image}
-                    />
-                  </View>
-                </LinearGradient>
+                  colors={['#D485D1', '#fff']}> */}
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    height: hp(8),
+                    width: wp(16),
+                    alignItems: 'center',
+                    borderRadius: wp(2),
+                    backgroundColor: 'white',
+                  }}>
+                  <Image
+                    source={require('../assets/playlist.png')}
+                    style={styles.image}
+                    tintColor={'#B72658'}
+                  />
+                </View>
+                {/* </LinearGradient> */}
                 <View
                   style={{
                     flexDirection: 'column',
@@ -270,8 +280,9 @@ const styles = StyleSheet.create({
   linearGradient: {
     width: '100%',
     flexDirection: 'row',
-    borderRadius: 20,
+    borderRadius: wp(2),
     justifyContent: 'space-around',
+    paddingRight: '20%',
   },
 
   imageeContainer: {

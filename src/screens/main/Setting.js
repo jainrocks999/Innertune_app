@@ -123,7 +123,7 @@ const Setting = ({}) => {
                     width: wp(94),
                     justifyContent: 'center',
                     alignSelf: 'center',
-                    backgroundColor: 'black',
+                    backgroundColor: '#4A4949',
                     borderRadius: 10,
                     marginTop: 20,
                   }}>
@@ -142,7 +142,11 @@ const Setting = ({}) => {
                       }}>
                       {item.title}
                     </Text>
-                    <Image source={item.image} style={styles.image} />
+                    <Image
+                      tintColor="#D1CECE"
+                      source={item.image}
+                      style={styles.image}
+                    />
                   </View>
                 </View>
               </TouchableOpacity>
@@ -168,7 +172,7 @@ const Setting = ({}) => {
               width: wp(94),
               justifyContent: 'center',
               alignSelf: 'center',
-              backgroundColor: 'black',
+              backgroundColor: '#4A4949',
               borderRadius: 10,
               marginTop: 20,
             }}>
@@ -181,7 +185,7 @@ const Setting = ({}) => {
               }}>
               <Text
                 style={{
-                  color: 'white',
+                  color: '#fff',
                   fontSize: 17,
                   fontWeight: '400',
                 }}>
@@ -193,7 +197,7 @@ const Setting = ({}) => {
                   height: hp(5),
                   width: wp(8),
                   borderRadius: 20,
-                  tintColor: '#426e56',
+                  tintColor: '#D1CECE',
                 }}
               />
             </View>
@@ -221,7 +225,7 @@ const Setting = ({}) => {
                 width: wp(94),
                 justifyContent: 'center',
                 alignSelf: 'center',
-                backgroundColor: 'black',
+                backgroundColor: '#4A4949',
                 borderRadius: 10,
                 marginTop: 20,
               }}>
@@ -232,10 +236,14 @@ const Setting = ({}) => {
                   justifyContent: 'space-between',
                   marginHorizontal: '5%',
                 }}>
-                <Text style={{color: 'white', fontSize: 17, fontWeight: '400'}}>
+                <Text style={{color: '#fff', fontSize: 17, fontWeight: '400'}}>
                   {item.title}
                 </Text>
-                <Image source={item.image} style={styles.image} />
+                <Image
+                  tintColor="#D1CECE"
+                  source={item.image}
+                  style={styles.image}
+                />
               </View>
             </View>
           )}
@@ -248,7 +256,7 @@ const Setting = ({}) => {
               width: wp(94),
               justifyContent: 'center',
               alignSelf: 'center',
-              backgroundColor: 'black',
+              backgroundColor: '#4A4949',
               borderRadius: 10,
               marginTop: 20,
             }}>
@@ -273,7 +281,7 @@ const Setting = ({}) => {
                   height: hp(5),
                   width: wp(9),
                   borderRadius: 20,
-                  tintColor: '#426e56',
+                  tintColor: '#D1CECE',
                 }}
               />
             </View>
@@ -302,7 +310,7 @@ const Setting = ({}) => {
                   width: wp(94),
                   justifyContent: 'center',
                   alignSelf: 'center',
-                  backgroundColor: 'black',
+                  backgroundColor: '#4A4949',
                   borderRadius: 10,
                   marginTop: 20,
                 }}>
@@ -341,10 +349,14 @@ const Setting = ({}) => {
                     marginHorizontal: '5%',
                   }}>
                   <Text
-                    style={{color: 'white', fontSize: 17, fontWeight: '400'}}>
+                    style={{color: '#fff', fontSize: 17, fontWeight: '400'}}>
                     {item.title}
                   </Text>
-                  <Image source={item.image} style={styles.image} />
+                  <Image
+                    tintColor="#D1CECE"
+                    source={item.image}
+                    style={styles.image}
+                  />
                 </TouchableOpacity>
               </View>
             )}
@@ -362,6 +374,5 @@ const styles = StyleSheet.create({
     width: hp(3.5),
     height: hp(3.5),
     resizeMode: 'stretch',
-    tintColor: '#426e56',
   },
 });

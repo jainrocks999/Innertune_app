@@ -15,7 +15,7 @@ function* doLogin(action) {
         token: res?.access_token,
         url: data.url,
       });
-      console.log('this is main res', JSON.stringify(mainRes));
+
       yield AsyncStorage.setItem('token', mainRes?.data?.token);
       yield put({type: 'auth/login_success', payload: mainRes.data});
       Toast.show('Login Success');
@@ -24,7 +24,7 @@ function* doLogin(action) {
       yield put({
         type: 'auth/login_error',
       });
-      Toast.show('Invalid email or password');
+      Toast.show('Invalid email or password2');
     }
   } catch (err) {
     yield put({

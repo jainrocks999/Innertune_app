@@ -17,40 +17,40 @@ const Remindermodal1 = () => {
   };
   console.log('thiss vidzxc', visible);
   return (
-    <View style={{flex: 1, backgroundColor:'#191919'}}>
+    <View style={{flex: 1, backgroundColor: '#111'}}>
       <View style={styles.bottomSheetContent}>
         <TouchableOpacity
           onPress={() => {
             handleModalPress('Remindmodal2');
           }}>
           <View style={styles.card}>
-          <LinearGradient
-              start={{x: 0.0, y: 0.0}}
-              end={{x: 5, y: 0.0}}
-              locations={[0, 0.5, 0.3]}
-              colors={['#191919', '#89FFBF']}
+            <LinearGradient
+              start={{x: 1.4, y: 0}}
+              end={{x: 0, y: 1}}
+              locations={[0, 1]}
+              colors={['#D485D1', '#B72658']}
               style={styles.linearGradient}>
-            <Image
-              source={require('../../../assets/music.jpg')}
-              style={{height: hp(15), width: wp(30), borderRadius: 20}}
-            />
-            <View
-              style={{
-                flexDirection: 'row',
-                alignSelf: 'center',
-                width: wp(50),
-                marginHorizontal: '10%',
-              }}>
-              <Text
+              <Image
+                source={require('../../../assets/music.jpg')}
+                style={{height: hp(15), width: wp(30), borderRadius: 20}}
+              />
+              <View
                 style={{
-                  fontSize: 20,
-                  fontWeight: '600',
-                  color: '#ffffff',
-                  backgroundColor: 'transparent',
+                  flexDirection: 'row',
+                  alignSelf: 'center',
+                  width: wp(50),
+                  marginHorizontal: '10%',
                 }}>
-                Affirmations Notifications
-              </Text>
-            </View>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: '600',
+                    color: '#ffffff',
+                    backgroundColor: 'transparent',
+                  }}>
+                  Affirmations Notifications
+                </Text>
+              </View>
             </LinearGradient>
           </View>
         </TouchableOpacity>
@@ -60,10 +60,14 @@ const Remindermodal1 = () => {
           }}>
           <View style={styles.card}>
             <LinearGradient
-              start={{x: 0.0, y: 0.0}}
-              end={{x: 5, y: 0.0}}
-              locations={[0, 0.5, 0.3]}
-              colors={['#191919', '#89FFBF']}
+              // start={{x: 0.0, y: 0.0}}
+              // end={{x: 5, y: 0.0}}
+              // locations={[0, 0.5, 0.3]}
+              // colors={['#191919', '#89FFBF']}
+              start={{x: 1.4, y: 0}}
+              end={{x: 0, y: 1}}
+              locations={[0, 1]}
+              colors={['#D485D1', '#B72658']}
               style={styles.linearGradient}>
               <Image
                 source={require('../../../assets/music.jpg')}
@@ -104,12 +108,11 @@ export default Remindermodal1;
 
 const styles = StyleSheet.create({
   bottomSheetContent: {
-    // Background color of the content within the bottom sheet
     padding: 20,
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderTopLeftRadius: 20, // Add border radius to style the shape of the bottom sheet
+    borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
   card: {

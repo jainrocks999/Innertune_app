@@ -203,7 +203,7 @@ const MyTabs = () => {
                 start={{x: 0.0, y: 0.0}}
                 end={{x: 5, y: 0.0}}
                 locations={[0, 0.5, 0.3]}
-                colors={['#191919', '#89FFBF']}
+                colors={['#D485D1', '#B72658']}
                 style={styles.linearGradient}>
                 <Image
                   source={require('../assets/music.jpg')}
@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
     margin: '2%',
     flexDirection: 'row',
     borderRadius: 20,
-    backgroundColor: 'orange',
+    backgroundColor: '#D485D1',
   },
   linearGradient: {
     width: '100%',

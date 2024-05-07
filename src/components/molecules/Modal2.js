@@ -8,7 +8,7 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {heightPercent as hp, widthPrecent as wp} from '../atoms/responsive';
 import Remindermodal1 from '../../screens/main/Reminder/Remindermodal1';
 import Remindmodal5 from '../../screens/main/Reminder/Remindmodal5';
@@ -44,7 +44,7 @@ const Modal2 = ({visible, onClose, titles}) => {
               titles == 'Remindermodal1'
                 ? 50
                 : titles == 'Remindmodal2'
-                ? 90
+                ? 95
                 : titles == 'Remindmodal3'
                 ? 90
                 : titles == 'Remindmodal4'
@@ -60,13 +60,12 @@ const Modal2 = ({visible, onClose, titles}) => {
           ) : titles == 'Remindmodal2' ? (
             <Remindmodal2 />
           ) : titles == 'Remindmodal3' ? (
-            <Remindmodal3 />
+            <Remindmodal4 />
           ) : titles == 'Remindmodal4' ? (
             <Remindmodal4 />
           ) : (
             <Remindmodal5 />
           )}
-    
         </View>
       </TouchableOpacity>
     </Modal>

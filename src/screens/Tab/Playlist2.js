@@ -15,6 +15,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import AntDesign from 'react-native-vector-icons/MaterialCommunityIcons';
 import Horizontal from '../../components/Home/Horizontal';
 // import {affirmations} from '../main/affmatin';
 import {Image} from 'react-native';
@@ -22,12 +23,11 @@ import {
   heightPercent as hp,
   widthPrecent as wp,
 } from '../../components/atoms/responsive';
-import {affirmations} from '../main/affmatin';
-
 import {ScrollView} from 'react-native';
 import Loader from '../../components/Loader';
 import LinearGradient from 'react-native-linear-gradient';
 import Menu from '../../components/Playlist/Menu';
+import Buttun from '../Auth/compoents/Buttun';
 const Img = [
   {
     id: '1',
@@ -83,7 +83,9 @@ const Playlistdetails = () => {
   const dispatch = useDispatch();
   const {favoriteList} = useSelector(state => state.home);
   console.log('tjhidi', favoriteList.favoritelist);
-  const {loading, groups, category, item} = useSelector(state => state.home);
+  const {loading, affirmations, groups, category, item} = useSelector(
+    state => state.home,
+  );
   const image =
     // item?.categories_image[0]?.original_url ??
     'https://img.freepik.com/free-photo/relaxed-woman-enjoying-sea_1098-1441.jpg';
@@ -113,23 +115,112 @@ const Playlistdetails = () => {
         visible={menuvisible}
       />
       <Loader loading={loading} />
-      <Animated.View
-        style={[styles.header, {transform: [{translateY: translateY}]}]}>
-        <LinearGradient
-          start={{x: 0.3, y: 0}}
-          end={{x: 0.3, y: 1}}
-          locations={[-3, 0.7, 1]}
-          colors={['rgba(0,0,0,1)', 'rgba(0, 0, 0, 0.5)', 'rgba(0, 0, 0, 0)']}
-          style={[styles.gradient, {top: 0}]}
-        />
-        <Image
-          source={{uri: image}}
+      <View style={[styles.header]}>
+        <View style={{height: '3%'}} />
+        <View
           style={{
             height: '100%',
-            width: wp(100),
-            resizeMode: 'stretch',
-          }}
-        />
+            width: '90%',
+            alignSelf: 'center',
+            borderRadius: wp(2),
+            elevation: 5,
+            overflow: 'hidden',
+            shadowColor: 'rgba(255,255,255,.5)',
+          }}>
+          <LinearGradient
+            start={{x: 0.3, y: 0}}
+            end={{x: 0.3, y: 1}}
+            locations={[-3, 0.7, 1]}
+            colors={['rgba(0,0,0,1)', 'rgba(0, 0, 0, 0.5)', 'rgba(0, 0, 0, 0)']}
+            style={[styles.gradient, {top: 0}]}
+          />
+          <Entypo
+            name="chevron-left"
+            size={30}
+            color={'white'}
+            style={{position: 'absolute', zIndex: 8, margin: '4%'}}
+          />
+          <Text
+            style={{
+              position: 'absolute',
+              zIndex: 7,
+              color: 'white',
+              top: '2%',
+              fontSize: wp(7),
+              fontWeight: '600',
+              right: '5%',
+            }}>
+            {title}
+          </Text>
+          <Image
+            source={require('../../assets/profilepic/plalist.png')}
+            style={{
+              height: '100%',
+              width: '100%',
+            }}
+          />
+          <LinearGradient
+            start={{x: 0.6, y: 0}}
+            end={{x: 0.6, y: 1}}
+            locations={[-3, 0.2, 1]}
+            colors={[
+              'rgba(0, 0, 0, 0)',
+              'rgba(0, 0, 0, 0.5)',
+              'rgba(0, 0, 0, 1)',
+            ]}
+            style={[styles.gradient, {bottom: 0, height: '60%'}]}
+          />
+          <View
+            style={{
+              position: 'absolute',
+              zIndex: 5,
+              color: 'white',
+              alignSelf: 'center',
+              bottom: '18%',
+              height: '8%',
+              width: '50%',
+              borderRadius: wp(1),
+              elevation: 5,
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'row',
+            }}>
+            <Buttun
+              style={{
+                height: '100%',
+                width: '100%',
+                flexDirection: 'row',
+                elevation: 3,
+                shadowColor: '#fff',
+              }}
+              onPress={() => navigation.navigate('playsong')}
+              title={'Play'}
+              playlist
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '35%',
+              position: 'absolute',
+              zIndex: 5,
+              alignSelf: 'center',
+              bottom: '5%',
+              justifyContent: 'space-between',
+            }}>
+            <Feather name="heart" size={25} color="white" />
+            <Entypo name="share" size={25} color="white" />
+            <Entypo
+              onPress={() => {
+                navigation.navigate('Menu');
+              }}
+              name="dots-three-vertical"
+              size={25}
+              color="white"
+            />
+          </View>
+        </View>
         <View
           style={{
             flexDirection: 'row',
@@ -137,151 +228,13 @@ const Playlistdetails = () => {
             alignItems: 'center',
             position: 'absolute',
             zIndex: 5,
-          }}>
-          <View style={{height: hp(5), marginLeft: wp(5)}}>
-            <Icon
-              onPress={() => navigation.goBack()}
-              name="arrow-back"
-              size={30}
-              color="white"
-            />
-          </View>
-        </View>
-        <LinearGradient
-          start={{x: 0.5, y: 0}}
-          end={{x: 0.5, y: 1}}
-          locations={[-0.9, 0.7, 1]}
-          colors={['rgba(0, 0, 0, 0)', '#191919']}
-          style={[styles.gradient, {height: '20%'}]}></LinearGradient>
-      </Animated.View>
-
-      <View style={{marginLeft: wp(6), marginTop: hp(1), flexDirection: 'row'}}>
-        <Icon
-          onPress={() => navigation.goBack()}
-          name="arrow-back"
-          size={30}
-          color="white"
-        />
-        <Text
-          style={{
-            color: 'white',
-            fontSize: hp(3),
-            fontWeight: '500',
-            fontFamily: 'Poppins-Medium',
-            marginLeft: '4%',
-          }}>
-          {title}
-        </Text>
+          }}></View>
       </View>
-      <View>
-        <View
-          style={{
-            flexDirection: 'row',
-
-            alignItems: 'center',
-            marginHorizontal: hp(3),
-            marginTop: hp(1),
-          }}>
-          <Feather name="heart" size={25} color="white" />
-
-          <Entypo name="share" size={25} color="white" marginHorizontal="10%" />
-          <Entypo name="dots-three-horizontal" size={25} color="white" />
-
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('playsong');
-            }}
-            style={{
-              height: hp(8),
-              width: hp(8),
-              left: wp(35),
-              backgroundColor: '#191919',
-              borderRadius: hp(4),
-            }}>
-            <Image
-              source={require('../../assets/playkey.png')}
-              style={{
-                height: '100%',
-                width: '100%',
-                tintColor: '#fff',
-              }}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <ScrollView
-        style={styles.scrollView}
-        scrollEventThrottle={16}
-        contentContainerStyle={styles.scrollViewContent}
-        onScroll={e => {
-          scrollY.setValue(e.nativeEvent.contentOffset.y);
-        }}>
-        <View>
-          <View style={{marginTop: hp(1.8), marginLeft: wp(6)}}>
-            <Text
-              style={{
-                color: 'white',
-                fontSize: hp(3.5),
-                fontWeight: '500',
-                fontFamily: 'Poppins-Medium',
-              }}>
-              {title}
-            </Text>
-          </View>
-          <View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginHorizontal: hp(3),
-                marginTop: hp(1),
-              }}>
-              <Feather name="heart" size={25} color="white" />
-              <Entypo
-                name="share"
-                size={25}
-                color="white"
-                marginHorizontal="10%"
-              />
-              <Entypo
-                onPress={() => {
-                  navigation.navigate('Menu');
-                }}
-                name="dots-three-horizontal"
-                size={25}
-                color="white"
-              />
-
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('playsong');
-                }}
-                style={{
-                  height: hp(8),
-                  width: hp(8),
-                  left: wp(35),
-                  backgroundColor: '#191919',
-                  borderRadius: hp(4),
-                }}>
-                <Image
-                  source={require('../../assets/playkey.png')}
-                  style={{
-                    height: '100%',
-                    width: '100%',
-                    tintColor: '#fff',
-                  }}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
+      <View style={{paddingTop: hp(4)}}>
         <FlatList
           data={affirmations}
-          scrollEnabled={false}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
-            // <TouchableOpacity onPress={() => navigation.navigate('Menu')}>
             <View
               style={{
                 flexDirection: 'row',
@@ -290,7 +243,7 @@ const Playlistdetails = () => {
                 width: wp(90),
                 marginVertical: 10,
                 backgroundColor: '#4A4949',
-                borderRadius: 20,
+                borderRadius: 8,
               }}>
               <View style={{justifyContent: 'center', marginHorizontal: '10%'}}>
                 <Text style={styles.text}>
@@ -309,16 +262,9 @@ const Playlistdetails = () => {
                 />
               </View>
             </View>
-            // </TouchableOpacity>
           )}
         />
-        {/* <Horizontal
-          onPress={() => {
-            getAffetMations();
-          }}
-          data={category}
-        /> */}
-      </ScrollView>
+      </View>
     </View>
   );
 };
@@ -329,20 +275,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#191919',
   },
   header: {
-    height: hp(50),
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    left: 0,
-    elevation: 4,
+    height: hp(68),
+    // position: 'absolute',
+    // top: 0,
+    // right: 0,
+    // left: 0,
+    // elevation: 4,
     zIndex: 1,
   },
   scrollView: {
     flex: 1,
   },
-  scrollViewContent: {
-    paddingTop: hp(32),
-  },
+  scrollViewContent: {marginTop: hp(23)},
   text: {
     width: wp(60),
 

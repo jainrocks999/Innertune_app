@@ -16,6 +16,7 @@ import {
   widthPrecent as wp,
 } from '../../components/atoms/responsive';
 import {useNavigation} from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
 const data = [
   {id: '1', title: 'Daily Practice', time: '09:00', frequency: '1x Every Day'},
   {id: '2', title: 'Daily Practice', time: '09:00', frequency: '1x Every Day'},
@@ -79,6 +80,7 @@ const Reminder = () => {
       <ScrollView style={{marginTop: 10}}>
         <FlatList
           data={data}
+          pagingEnabled={false}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
             <TouchableOpacity
@@ -91,23 +93,25 @@ const Reminder = () => {
                   width: wp(90),
                   justifyContent: 'center',
                   alignSelf: 'center',
-                  backgroundColor: 'black',
-                  borderRadius: 30,
+                  backgroundColor: '#4A4949',
+                  borderRadius: wp(2),
                   marginVertical: 10,
-                  padding: '6%',
+                  padding: '0%',
+                  // alignItems: 'center',
                 }}>
                 <View
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    marginHorizontal: '10%',
+                    marginHorizontal: '7%',
+                    marginTop: '3%',
                   }}>
                   <Text
-                    style={{color: 'white', fontSize: 15, fontWeight: '500'}}>
+                    style={{color: '#fff', fontSize: 15, fontWeight: '500'}}>
                     {item.title}
                   </Text>
                   <Text
-                    style={{color: 'white', fontSize: 15, fontWeight: '400'}}>
+                    style={{color: '#fff', fontSize: 15, fontWeight: '400'}}>
                     {item.time}
                   </Text>
                 </View>
@@ -116,18 +120,21 @@ const Reminder = () => {
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    marginHorizontal: '10%',
+                    marginHorizontal: '7%',
                     marginVertical: 10,
                   }}>
                   <Text
-                    style={{color: 'white', fontSize: 15, fontWeight: '300'}}>
+                    style={{color: '#fff', fontSize: 15, fontWeight: '300'}}>
                     {item.frequency}
                   </Text>
                   <ToggleSwitch
                     isOn={selectedToggles[item.id]}
-                    onColor="#426e56"
-                    offColor="#434343"
-                    size="small"
+                    onColor="#DEDEDE"
+                    circleColor={
+                      selectedToggles[item.id] ? '#B72658' : '#191919'
+                    }
+                    offColor="#DEDEDE"
+                    size="medium"
                     onToggle={() => handleToggle(item.id)}
                   />
                 </View>
@@ -135,7 +142,7 @@ const Reminder = () => {
             </TouchableOpacity>
           )}
         />
-        <FlatList
+        {/* <FlatList
           data={data2}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
@@ -149,7 +156,7 @@ const Reminder = () => {
                   width: wp(90),
                   justifyContent: 'center',
                   alignSelf: 'center',
-                  backgroundColor: 'black',
+                  backgroundColor: 'white',
                   borderRadius: 30,
                   marginVertical: 10,
                   padding: '6%',
@@ -161,11 +168,11 @@ const Reminder = () => {
                     marginHorizontal: '10%',
                   }}>
                   <Text
-                    style={{color: 'white', fontSize: 15, fontWeight: '500'}}>
+                    style={{color: 'black', fontSize: 15, fontWeight: '500'}}>
                     {item.title}
                   </Text>
                   <Text
-                    style={{color: 'white', fontSize: 15, fontWeight: '400'}}>
+                    style={{color: 'black', fontSize: 15, fontWeight: '400'}}>
                     {item.time}
                   </Text>
                 </View>
@@ -178,34 +185,51 @@ const Reminder = () => {
                     marginVertical: 10,
                   }}>
                   <Text
-                    style={{color: 'white', fontSize: 15, fontWeight: '300'}}>
+                    style={{color: 'black', fontSize: 15, fontWeight: '300'}}>
                     {item.frequency}
                   </Text>
                   <ToggleSwitch
                     isOn={selectedToggles[item.id]}
                     onColor="#426e56"
                     offColor="#434343"
-                    size="small"
+                    size="medium"
                     onToggle={() => handleToggle(item.id)}
                   />
                 </View>
               </View>
             </TouchableOpacity>
           )}
-        />
+        /> */}
       </ScrollView>
       <View style={{alignSelf: 'center', position: 'absolute', bottom: hp(8)}}>
         <TouchableOpacity
           style={{
-            height: 45,
+            height: hp(6.5),
             backgroundColor: '#426e56',
             alignItems: 'center',
             justifyContent: 'center',
-            width: wp(60),
-            borderRadius: 10,
+            width: wp(90),
+            overflow: 'hidden',
+            borderRadius: 8,
           }}
           onPress={() => handleModalPress('Remindermodal1')}>
-          <Text style={styles.loginText}>Add New Reminder</Text>
+          <LinearGradient
+            style={{
+              height: '100%',
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            // start={{x: 0.0, y: 0.0}}
+            // end={{x: 5, y: 0.0}}
+            // locations={[0, 0.4, 0.2]}
+            // colors={['#B72658', '#D485D1']}
+            start={{x: 1.4, y: 0}}
+            end={{x: 0, y: 1}}
+            locations={[0, 1]}
+            colors={['#D485D1', '#B72658']}>
+            <Text style={styles.loginText}>Add New Reminder</Text>
+          </LinearGradient>
         </TouchableOpacity>
       </View>
       <Modal2

@@ -17,6 +17,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import Buttun from '../../Auth/compoents/Buttun';
 const Img = [
   {
     id: '1',
@@ -80,9 +81,9 @@ const Createplaylist = () => {
   const hanleSelected = id => {
     if (selected.includes(id)) {
       const filter = [...selected].filter(item => item != id);
-      setSelected(filter)
+      setSelected(filter);
     } else {
-       setSelected([...selected,id])
+      setSelected([...selected, id]);
     }
   };
   return (
@@ -138,67 +139,59 @@ const Createplaylist = () => {
           />
         )}
       </View> */}
-      <ScrollView style={{marginTop: 20}}>
+      <ScrollView contentContainerStyle={{marginTop: 20, alignItems: 'center'}}>
         <FlatList
           data={affirmations}
           keyExtractor={item => item.id}
+          scrollEnabled={false}
           renderItem={({item}) => (
-            <TouchableOpacity>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignSelf: 'center',
-                  height: hp(8),
-                  width: wp(90),
-                  marginVertical: 10,
-                  backgroundColor: 'black',
-                  borderRadius: 20,
-                }}>
-                <View
-                  style={{justifyContent: 'center', marginHorizontal: '10%'}}>
-                  <Text style={styles.text}>
-                    {item.affirmation_text.substring(0, 30)}
-                  </Text>
-                </View>
-                <View
-                  style={{justifyContent: 'center', marginHorizontal: '10%'}}>
-                  <AntDesign
-                    onPress={() => {
-                      hanleSelected(item.id);
-                    }}
-                    name={!selected.includes(item.id)?"pluscircleo":"minuscircleo"}
-                    size={25}
-                    color={!selected.includes(item.id)?"white":'red'}
-                  />
-                </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                height: hp(8),
+                width: wp(90),
+                marginVertical: hp(1),
+                backgroundColor: '#4A4949',
+                borderRadius: 8,
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingHorizontal: wp(4),
+              }}>
+              <Text style={styles.text}>
+                {item.affirmation_text.substring(0, 30)}
+              </Text>
+
+              <View style={{justifyContent: 'center'}}>
+                <AntDesign
+                  onPress={() => {
+                    hanleSelected(item.id);
+                  }}
+                  name={
+                    !selected.includes(item.id) ? 'pluscircleo' : 'minuscircleo'
+                  }
+                  size={25}
+                  color={!selected.includes(item.id) ? '#fff' : 'red'}
+                />
               </View>
-            </TouchableOpacity>
+            </View>
           )}
         />
       </ScrollView>
       <View
         style={{
-          alignSelf: 'center',
-          flexDirection: 'row',
-          margin: hp(2),
+          height: hp(12),
+          alignItems: 'center',
+          // justifyContent: 'center',
         }}>
-        <TouchableOpacity
-          style={{
-            height: 45,
-            marginLeft: 20,
-            backgroundColor: '#426e56',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: wp(70),
-            borderRadius: 10,
-            flexDirection: 'row',
-          }}
+        <Buttun
           onPress={() => {
-            navigation.navigate('createaffirmation',{selected:selected});
-          }}>
-          <Text style={styles.loginText}>Added affirmations</Text>
-          <Text style={styles.loginText}>{selected.length}</Text>
-        </TouchableOpacity>
+            navigation.navigate('createaffirmation', {selected});
+          }}
+          title={`${'Added Affirmations '}${selected.length}`}
+          style={{
+            width: '68%',
+          }}
+        />
       </View>
     </View>
   );
@@ -220,11 +213,11 @@ const styles = StyleSheet.create({
     height: hp(5),
   },
   text: {
-    width: wp(50),
+    // width: wp(50),
     fontFamily: 'Montserrat-Regular',
     marginLeft: 5,
-    color: 'white',
-    fontSize: hp(1.8),
+    color: '#fff',
+    fontSize: wp(5),
   },
   input: {
     marginLeft: 10,

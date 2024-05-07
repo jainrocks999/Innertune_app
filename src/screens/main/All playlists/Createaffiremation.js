@@ -18,6 +18,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ScrollView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import Buttun from '../../Auth/compoents/Buttun';
 const Img = [
   {
     id: '1',
@@ -123,7 +124,7 @@ const Createaffirmation = ({route}) => {
           Edit List of Affirmation
         </Text>
       </View> */}
-      <ScrollView style={{marginTop: 20}}>
+      <ScrollView contentContainerStyle={{alignItems: 'center', marginTop: 20}}>
         <FlatList
           data={selected}
           keyExtractor={item => item.id}
@@ -131,49 +132,50 @@ const Createaffirmation = ({route}) => {
             <View
               style={{
                 flexDirection: 'row',
-                alignSelf: 'center',
                 height: hp(8),
                 width: wp(90),
-                marginVertical: 10,
-                backgroundColor: 'black',
-                borderRadius: 20,
+                marginVertical: hp(1),
+                backgroundColor: '#4A4949',
+                borderRadius: 8,
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingHorizontal: wp(4),
               }}>
-              <View
-                style={{
-                  justifyContent: 'center',
-                  marginHorizontal: '5%',
-                  width: wp(70),
-                }}>
-                <Text style={styles.text}>
-                  {item.affirmation_text.substring(0, 39)}
-                </Text>
-              </View>
+              <Text style={styles.text}>
+                {item.affirmation_text.substring(0, 30)}
+              </Text>
 
-              <TouchableOpacity
-                style={{justifyContent: 'center'}}
-                onPress={() => deselectItem(item.id)}>
-                <AntDesign name="minuscircleo" size={25} color="red" />
-              </TouchableOpacity>
+              <View style={{justifyContent: 'center'}}>
+                <AntDesign
+                  onPress={() => {
+                    hanleSelected(item.id);
+                  }}
+                  name={
+                    !selected.includes(item.id) ? 'pluscircleo' : 'minuscircleo'
+                  }
+                  size={25}
+                  color={!selected.includes(item.id) ? '#fff' : 'red'}
+                />
+              </View>
             </View>
           )}
         />
       </ScrollView>
-      <View style={{alignSelf: 'center', margin: hp(2)}}>
-        <TouchableOpacity
-          style={{
-            height: 45,
-            marginLeft: 20,
-            backgroundColor: '#426e56',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: wp(60),
-            borderRadius: 10,
-          }}
+      <View
+        style={{
+          height: hp(12),
+          alignItems: 'center',
+          width: '100%',
+        }}>
+        <Buttun
           onPress={() => {
-            navigation.navigate('saveplaylist', {selected: selectedItems});
-          }}>
-          <Text style={styles.loginText}>Next</Text>
-        </TouchableOpacity>
+            navigation.navigate('saveplaylist', {selected});
+          }}
+          title={`${'Next'}`}
+          style={{
+            width: '58%',
+          }}
+        />
       </View>
     </View>
   );
@@ -199,10 +201,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   text: {
-    width: wp(55),
-
     color: 'white',
-    fontSize: 15,
+    fontSize: wp(5),
   },
   text2: {
     width: wp(50),
