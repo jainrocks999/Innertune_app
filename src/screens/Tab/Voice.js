@@ -18,6 +18,7 @@ import {
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Slider from '@react-native-community/slider';
 import Tts from 'react-native-tts';
+import {fonts} from '../../Context/Conctants';
 const Img = [
   {
     id: '1',
@@ -91,7 +92,13 @@ const Voice = ({voice, onPress, selectedVoice}) => {
           justifyContent: 'center',
           marginTop: hp(2),
         }}>
-        <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'white'}}>
+        <Text
+          style={{
+            fontSize: hp(2.5),
+            //fontWeight: '500',
+            color: 'white',
+            fontFamily: fonts.bold,
+          }}>
           Voice Settings
         </Text>
       </View>
@@ -100,7 +107,13 @@ const Voice = ({voice, onPress, selectedVoice}) => {
           flexDirection: 'row',
           margin: hp(2),
         }}>
-        <Text style={{fontSize: hp(2), fontWeight: '500', color: 'grey'}}>
+        <Text
+          style={{
+            fontSize: hp(2),
+            fontWeight: '500',
+            color: 'grey',
+            fontFamily: fonts.medium,
+          }}>
           Voice Over
         </Text>
       </View>
@@ -142,7 +155,13 @@ const Voice = ({voice, onPress, selectedVoice}) => {
           flexDirection: 'row',
           margin: hp(2),
         }}>
-        <Text style={{fontSize: hp(2), fontWeight: '500', color: 'grey'}}>
+        <Text
+          style={{
+            fontSize: hp(2),
+            fontWeight: '500',
+            color: 'grey',
+            fontFamily: fonts.medium,
+          }}>
           Voice Volume
         </Text>
       </View>
@@ -163,7 +182,13 @@ const Voice = ({voice, onPress, selectedVoice}) => {
           marginHorizontal: hp(2),
           marginTop: hp(2),
         }}>
-        <Text style={{fontSize: hp(2), fontWeight: '500', color: 'grey'}}>
+        <Text
+          style={{
+            fontSize: hp(2),
+            fontWeight: '500',
+            color: 'grey',
+            fontFamily: fonts.medium,
+          }}>
           Affirmation Delay
         </Text>
       </View>
@@ -195,5 +220,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     fontWeight: '500',
+    fontFamily: fonts.bold,
   },
 });

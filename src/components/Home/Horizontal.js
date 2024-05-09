@@ -10,6 +10,7 @@ import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Octicons';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {fonts} from '../../Context/Conctants';
 const Horizontal = ({data, onPress}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -76,9 +77,10 @@ const styles = StyleSheet.create({
   title: {
     color: 'white',
     marginTop: wp(2),
-    fontSize: wp(5),
+    fontSize: wp(4.5),
     width: wp(43),
     marginLeft: wp(4),
+    fontFamily: fonts.regular,
   },
 });
 

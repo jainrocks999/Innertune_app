@@ -13,6 +13,7 @@ import {
   heightPercent as hp,
 } from '../../components/atoms/responsive';
 import LinearGradient from 'react-native-linear-gradient';
+import {fonts} from '../../Context/Conctants';
 const affirmations = [
   {id: 1, text: 'I am worthy of love and respect, just as I am.'},
   {
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: wp(5.8),
     fontWeight: '500',
-
+    fontFamily: fonts.medium,
     marginLeft: '4%',
   },
   listContainer: {
@@ -144,6 +145,7 @@ const styles = StyleSheet.create({
     color: 'white',
     elevation: 3,
     fontWeight: '500',
+    fontFamily: fonts.medium,
   },
   nextBtn: {
     alignSelf: 'center',

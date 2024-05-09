@@ -16,6 +16,7 @@ import {
 } from '../../components/atoms/responsive';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Slider from '@react-native-community/slider';
+import {fonts} from '../../Context/Conctants';
 const Img2 = [
   {
     id: '1',
@@ -53,7 +54,13 @@ const Time = ({maxTimeInMinutes, onPress}) => {
           justifyContent: 'center',
           marginTop: hp(2),
         }}>
-        <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'white'}}>
+        <Text
+          style={{
+            fontSize: hp(2.5),
+            fontWeight: '500',
+            color: 'white',
+            fontFamily: fonts.bold,
+          }}>
           Session Length
         </Text>
       </View>
@@ -76,12 +83,12 @@ const Time = ({maxTimeInMinutes, onPress}) => {
               onPress={() => onPress(item)}
               style={styles.imageContainerr}>
               <View
-               style={{
-                justifyContent: 'center',
-                alignSelf: 'center',
-                alignItems: 'center',
-              }}>
-              <Text style={styles.textt}>{item.title}</Text>
+                style={{
+                  justifyContent: 'center',
+                  alignSelf: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text style={styles.textt}>{item.title}</Text>
                 <Text style={styles.textt}>{item.title2}</Text>
               </View>
             </TouchableOpacity>
@@ -104,7 +111,7 @@ const styles = StyleSheet.create({
     marginHorizontal: hp(0.5),
     borderWidth: 1,
     borderColor: 'black',
-    backgroundColor: 'black',
+    backgroundColor: '#4A4949',
   },
   imagee: {
     width: hp(6),
@@ -115,7 +122,7 @@ const styles = StyleSheet.create({
   textt: {
     color: 'white',
     fontSize: hp(3),
-
+    fontFamily: fonts.medium,
     fontWeight: '500',
   },
 });

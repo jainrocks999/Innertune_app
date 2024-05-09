@@ -20,6 +20,7 @@ import Input from './compoents/Input';
 import Buttun from './compoents/Buttun';
 import Line from './compoents/Line';
 import Social from './compoents/Social';
+import {fonts} from '../../Context/Conctants';
 
 const Signup = () => {
   const navigation = useNavigation();
@@ -62,13 +63,24 @@ const Signup = () => {
       <View style={{alignItems: 'center', marginTop: '7%'}}>
         <Social />
       </View>
-      <Text style={{alignSelf: 'center', marginTop: '5%', color: 'white'}}>
+      <Text
+        style={{
+          alignSelf: 'center',
+          marginTop: '5%',
+          color: 'white',
+          fontFamily: fonts.medium,
+        }}>
         Already have an account ?{' '}
         <Text
           onPress={() => {
             navigation.navigate('login');
           }}
-          style={{color: '#B72658', fontSize: wp(5), fontWeight: '500'}}>
+          style={{
+            fontFamily: fonts.medium,
+            color: '#B72658',
+            fontSize: wp(5),
+            fontWeight: '500',
+          }}>
           {' Sign In'}
         </Text>
       </Text>

@@ -6,6 +6,7 @@ import {TouchableOpacity} from 'react-native';
 import {FlatList} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
+import {fonts} from '../../Context/Conctants';
 
 const Menu = ({visible, selectedItem, onClose}) => {
   const data = [
@@ -57,7 +58,12 @@ const Menu = ({visible, selectedItem, onClose}) => {
                 )}
 
                 <Text
-                  style={{color: 'white', fontSize: wp(5), marginLeft: '5%'}}>
+                  style={{
+                    color: 'white',
+                    fontSize: wp(5),
+                    marginLeft: '5%',
+                    fontFamily: fonts.medium,
+                  }}>
                   {item.text}
                 </Text>
               </View>
@@ -65,7 +71,13 @@ const Menu = ({visible, selectedItem, onClose}) => {
           }}
         />
         <TouchableOpacity onPress={onClose} style={styles.close}>
-          <Text style={{color: '#fff', fontSize: wp(6), fontWeight: 'bold'}}>
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: wp(6.5),
+              fontFamily: fonts.medium,
+              // fontWeight: 'bol000d',
+            }}>
             Close
           </Text>
         </TouchableOpacity>
@@ -93,6 +105,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#fff',
     textAlign: 'left',
+    fontFamily: fonts.medium,
   },
   close: {
     bottom: hp(10),

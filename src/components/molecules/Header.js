@@ -10,6 +10,7 @@ import {
 import {heightPercent as hp, widthPrecent as wp} from '../atoms/responsive';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
+import {fonts} from '../../Context/Conctants';
 const Header = ({placeholder, onChangeText}) => {
   const navigation = useNavigation();
   const [text, setText] = useState('');
@@ -52,6 +53,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     width: wp(50),
     color: 'black',
+    fontFamily: fonts.medium,
   },
   inputContainer: {
     height: hp(6.5),

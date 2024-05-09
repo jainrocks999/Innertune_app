@@ -22,6 +22,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import Loader from '../../components/Loader';
+import {fonts} from '../../Context/Conctants';
 
 const data = [
   {id: '1', title: 'Focus'},
@@ -46,7 +47,13 @@ const Music = ({onPress, bgVolume, onVolumeChange}) => {
           justifyContent: 'center',
           marginTop: hp(2),
         }}>
-        <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'white'}}>
+        <Text
+          style={{
+            fontSize: hp(2.5),
+            fontWeight: '500',
+            color: 'white',
+            fontFamily: fonts.bold,
+          }}>
           Background Music
         </Text>
       </View>
@@ -72,7 +79,7 @@ const Music = ({onPress, bgVolume, onVolumeChange}) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   backgroundColor:
-                    selectedTab === item.bg_name ? '#426e56' : '#DEDEDE',
+                    selectedTab === item.bg_name ? '#D485D1' : '#DEDEDE',
                   borderRadius: 10,
                   marginHorizontal: hp(1),
                   marginVertical: 20,
@@ -83,6 +90,7 @@ const Music = ({onPress, bgVolume, onVolumeChange}) => {
                     color: selectedTab === item.bg_name ? 'white' : 'black',
                     fontSize: 18,
                     fontWeight: '400',
+                    fontFamily: fonts.bold,
                   }}>
                   {item.bg_name}
                 </Text>
@@ -98,7 +106,7 @@ const Music = ({onPress, bgVolume, onVolumeChange}) => {
       <View
         style={{
           height: hp(12),
-          backgroundColor: 'black',
+          backgroundColor: '#4A4949',
           // borderTopWidth: 1.5,
           // borderTopColor: 'grey',
           borderTopEndRadius: 30,
@@ -113,7 +121,13 @@ const Music = ({onPress, bgVolume, onVolumeChange}) => {
             marginLeft: wp(5.5),
             marginTop: hp(2),
           }}>
-          <Text style={{fontSize: hp(2), fontWeight: '500', color: 'white'}}>
+          <Text
+            style={{
+              fontSize: hp(2),
+              fontWeight: '500',
+              color: 'white',
+              fontFamily: fonts.medium,
+            }}>
             Background Volume
           </Text>
         </View>

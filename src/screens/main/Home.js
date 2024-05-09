@@ -15,6 +15,7 @@ import {useNavigation} from '@react-navigation/native';
 import Horizontal from '../../components/Home/Horizontal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../components/Loader';
+import {fonts} from '../../Context/Conctants';
 
 const Img = [
   {
@@ -185,8 +186,9 @@ const HomeScreen = () => {
               <Text
                 style={{
                   fontSize: 15,
-                  fontWeight: '900',
+                  // fontWeight: '900',
                   color: 'white',
+                  fontFamily: fonts.bold,
                 }}>
                 View All
               </Text>
@@ -276,9 +278,10 @@ Dark color   :-  #B72658 */}
               }}>
               <Text
                 style={{
-                  fontSize: 15,
-                  fontWeight: '900',
+                  ontSize: 15,
+                  // fontWeight: '900',
                   color: 'white',
+                  fontFamily: fonts.bold,
                 }}>
                 View All
               </Text>
@@ -339,9 +342,10 @@ Dark color   :-  #B72658 */}
                     }}>
                     <Text
                       style={{
-                        fontSize: 15,
-                        fontWeight: '900',
+                        ontSize: 15,
+                        // fontWeight: '900',
                         color: 'white',
+                        fontFamily: fonts.bold,
                       }}>
                       View All
                     </Text>
@@ -425,9 +429,10 @@ Dark color   :-  #B72658 */}
                           <Text
                             style={{
                               fontSize: 20,
-                              fontWeight: '600',
+                              // fontWeight: '600',
                               color: '#ffffff',
                               backgroundColor: 'transparent',
+                              fontFamily: fonts.bold,
                             }}>
                             Share Innertunes with your loved...
                           </Text>
@@ -463,7 +468,7 @@ const styles = StyleSheet.create({
     fontSize: wp(5),
     width: wp(60),
     fontWeight: '400',
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fonts.bold,
     color: 'white',
     paddingHorizontal: 10,
   },
@@ -557,7 +562,7 @@ const styles = StyleSheet.create({
     width: '46%',
     marginHorizontal: '2%',
     marginVertical: '2%',
-    backgroundColor: 'black',
+    backgroundColor: '#4A4949',
     borderRadius: wp(6),
     flexDirection: 'row',
     alignItems: 'center',

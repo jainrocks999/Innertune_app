@@ -33,6 +33,7 @@ import {Clipboard} from 'react-native';
 import {setupPlayer} from '../../utils/Setup';
 import TrackPlayer from 'react-native-track-player';
 import RNFS from 'react-native-fs';
+import {fonts} from '../../Context/Conctants';
 // import {affirmations} from './affmatin';
 
 const data = [
@@ -102,35 +103,10 @@ const Playsong = () => {
   };
   const currentTimeRef = useRef(0);
 
-  // useEffect(() => {
-  //   if (!isPaused) {
-  //     setVisibleIndex(0);
-  //     const intervalForAffirmations = setInterval(() => {
-  //       if (!isPaused) {
-  //         setVisibleIndex(prevIndex => {
-  //           const newIndex = (prevIndex + 1) % 5;
-  //           flatListRef.current.scrollToIndex({
-  //             animated: true,
-  //             index: newIndex,
-  //             viewPosition: 0.5,
-  //             viewOffset: 0,
-  //             duration: 500,
-  //           });
-  //           readText(affirmations[newIndex].affirmation_text);
-  //           return newIndex;
-  //         });
-  //       }
-  //     }, 8000);
-
-  //     return () => clearInterval(intervalForAffirmations);
-  //   } else {
-  //     Tts.resume();
-  //   }
-  // }, [affirmations, isPaused, visibleIndex]);
-
   useEffect(() => {
     player('Sleeping.wav');
   }, []);
+  console.log(affirmations);
   useEffect(() => {
     const maxTimeInSeconds = maxTimeInMinutes * 60;
     let currentTime = currentTimeRef.current || 0;
@@ -190,54 +166,12 @@ const Playsong = () => {
   const [speechRate, setSpeechRate] = useState(0.4);
   const [speechPitch, setSpeechPitch] = useState(1);
 
-  // useEffect(() => {
-  //   if (flatListRef.current) {
-  //     flatListRef.current.scrollToIndex({
-  //       animated: true,
-  //       index: visibleIndex,
-  //       viewPosition: 0.5,
-  //       viewOffset: 0,
-  //       duration: 500,
-  //     });
-  //     readText(affirmations[visibleIndex].affirmation_text);
-  //   }
-  // }, [visibleIndex]);
-
-  // useEffect(() => {
-  //   Tts.getInitStatus().then(initTts);
-  //   //   Tts.addEventListener('tts-start', _event => setTtsStatus('started'));
-  //   Tts.addEventListener('tts-finish', _event => {
-  //     if (visibleIndex < affirmations.length - 1) {
-  //       setVisibleIndex(visibleIndex + 1);
-  //     } else {
-  //       setVisibleIndex(0);
-  //     }
-  //   });
-  //   //   Tts.addEventListener('tts-cancel', _event => setTtsStatus('cancelled'));
-  //   Tts.setDefaultRate(speechRate);
-  //   Tts.setDefaultPitch(speechPitch);
-
-  //   return () => {
-  //     // Tts.removeEventListener('tts-start', _event => setTtsStatus('started'));
-  //     // Tts.removeEventListener('tts-finish', _event => handleAffirmationEnd());
-  //     Tts.removeEventListener('tts-finish', event => {
-  //       if (visibleIndex < affirmations.length - 1) {
-  //         setVisibleIndex(visibleIndex + 1);
-  //       } else {
-  //         setVisibleIndex(0);
-  //       }
-  //     });
-  //     // Tts.removeEventListener('tts-cancel', _event =>
-  //     //   setTtsStatus('cancelled'),
-  //     // );
-  //   };
-  // }, []);
   const updateSpokenAffirmation = index => {
     readText(affirmations[index].affirmation_text);
   };
   const handleTTSFinish = () => {
     setVisibleIndex(prevIndex => {
-      const newIndex = (prevIndex + 1) % 5;
+      const newIndex = (prevIndex + 1) % affirmations.length;
       flatListRef.current.scrollToIndex({
         animated: true,
         index: newIndex,
@@ -256,19 +190,11 @@ const Playsong = () => {
     Tts.setDefaultRate(speechRate);
     Tts.setDefaultPitch(speechPitch);
     TrackPlayer.setVolume(0.5);
-    // Tts.setVolume(0.5);
 
     return () => {
       Tts.removeEventListener('tts-finish', handleTTSFinish);
     };
   }, []);
-
-  // useEffect(() => {
-  //   updateSpokenAffirmation(currentIndex);
-  //   return () => {
-  //     Tts.removeEventListener('tts-finish', handleTTSFinish);
-  //   };
-  // }, [currentIndex]);
 
   const initTts = async () => {
     const voices = await Tts.voices();
@@ -370,7 +296,13 @@ const Playsong = () => {
       <ImageBackground
         source={require('../../assets/music.jpg')}
         style={{width: '100%', height: '100%'}}>
-        <View style={{backgroundColor: 'rgba(69, 71, 71,.9)', height: hp(100)}}>
+        <View
+          style={{
+            backgroundColor: '#191919',
+            height: hp(100),
+            zIndex: 1,
+            opacity: 0.93,
+          }}>
           <View
             style={{
               flexDirection: 'row',
@@ -392,6 +324,8 @@ const Playsong = () => {
               styles.card,
               {
                 backgroundColor: 'black',
+                elevation: 3,
+                shadowColor: '#fff',
               },
             ]}>
             <View
@@ -403,20 +337,38 @@ const Playsong = () => {
               }}>
               <Text
                 style={{
-                  fontSize: hp(2),
+                  fontSize: hp(2.5),
                   fontWeight: '600',
                   marginHorizontal: 10,
-                  fontFamily: 'Poppins-Medium',
+                  // fontFamily: 'Poppins-Medium',
                   color: 'white',
+                  fontFamily: fonts.medium,
                 }}>
                 Affirmations
-                {/* {progress} */}
               </Text>
             </View>
-            <Image
-              source={require('../../assets/music.jpg')}
-              style={{height: hp(6), width: wp(12), borderRadius: 26}}
-            />
+            <View
+              style={{
+                elevation: 5,
+                shadowColor: '#fff',
+                height: hp(6),
+                width: hp(6),
+                borderWidth: 1,
+                borderRadius: hp(3.5),
+                overflow: 'hidden',
+                // borderColor: '#fff',
+                backgroundColor: '#fff',
+              }}>
+              <Image
+                source={require('../../assets/music.jpg')}
+                style={{
+                  height: '100%',
+                  width: '100%',
+                  marginLeft: '5%',
+                  borderRadius: hp(3),
+                }}
+              />
+            </View>
           </View>
           <View
             style={{
@@ -433,7 +385,7 @@ const Playsong = () => {
               onPress={() => {
                 handleHeartPress(affirmations[visibleIndex]);
               }}>
-              <EvilIcons name="heart" size={30} color="white" />
+              <Feather name="heart" size={30} color="white" />
             </TouchableOpacity>
 
             <FontAwesome6
@@ -472,12 +424,11 @@ const Playsong = () => {
                       }}>
                       <Text
                         style={{
-                          fontSize: hp(3.5),
-                          color: 'black',
+                          fontSize: hp(4.0),
+                          color: '#fff',
                           width: wp(70),
-                          // borderWidth: 1,
-                          fontFamily: 'Poppins-Medium',
                           textAlign: 'center',
+                          fontFamily: fonts.medium,
                         }}>
                         {item['affirmation_text']}
                       </Text>
@@ -522,28 +473,29 @@ const Playsong = () => {
             <Image
               source={
                 isPaused
-                  ? require('../../assets/play-button.png')
-                  : require('../../assets/pause-button.png')
+                  ? require('../../assets/flaticon/play.png')
+                  : require('../../assets/flaticon/pause.png')
               }
               style={{
-                height: hp(3),
-                width: wp(6),
-                tintColor: 'white',
+                height: hp(3.5),
+                width: hp(3.5),
+                tintColor: !isPaused ? '#fff' : '#fff',
                 position: 'absolute',
                 zIndex: 0,
               }}
             />
             <CircularProgress
               value={progress}
-              radius={hp(5)}
-              progressValueFontSize={20}
+              radius={hp(5.3)}
+              // progressValueFontSize={wp(1)}
               duration={200}
               progressValueColor={'#ecf0f1'}
               maxValue={100}
-              inActiveStrokeColor="white"
+              inActiveStrokeColor="#fff"
               showProgressValue={false}
-              activeStrokeWidth={wp(3)}
-              activeStrokeColor="black"
+              activeStrokeWidth={wp(0.8)}
+              inActiveStrokeWidth={wp(0.8)}
+              activeStrokeColor="#B72658"
             />
           </TouchableOpacity>
           <View
@@ -580,6 +532,7 @@ const Playsong = () => {
                         fontSize: hp(2.1),
                         fontWeight: '400',
                         right: wp(3),
+                        fontFamily: fonts.medium,
                       }}>
                       {item.title}
                     </Text>

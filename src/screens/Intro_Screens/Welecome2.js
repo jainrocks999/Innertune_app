@@ -23,6 +23,7 @@ import Animated, {
   withDelay,
   withTiming,
 } from 'react-native-reanimated';
+import {fonts} from '../../Context/Conctants';
 const affirmations = [
   {
     title: 'You are capable of achieving great things',
@@ -67,7 +68,7 @@ const Welecome2 = ({navigation}) => {
   const flatListRef = useRef(null);
   const ITEM_WIDTH = wp(100);
   let intervalId = useRef(null);
-  const DURATION = 1000;
+  const DURATION = 800;
   const DELAY = 500;
 
   useEffect(() => {
@@ -343,6 +344,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     zIndex: 1,
     marginLeft: '3%',
+    fontFamily: fonts.bold,
   },
   listContianer: {
     backgroundColor: '#fff',
@@ -364,11 +366,14 @@ const styles = StyleSheet.create({
     marginLeft: '2%',
     marginTop: '2%',
     fontSize: wp(6),
+    fontFamily: fonts.medium,
   },
+
   txt3: {
     color: 'white',
-    fontSize: wp(4),
+    fontSize: wp(5),
     marginLeft: '2%',
+    fontFamily: fonts.regular,
   },
   dot: {
     backgroundColor: 'grey',

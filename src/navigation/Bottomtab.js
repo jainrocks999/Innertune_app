@@ -16,6 +16,7 @@ import TopTabs from './Toptab';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {fonts} from '../Context/Conctants';
 
 const Tab = createBottomTabNavigator();
 const getIconColor = focused => ({
@@ -278,6 +279,7 @@ const styles = StyleSheet.create({
   textIcon: {
     color: '#89FFBF',
     elevation: 5,
+    fontFamily: fonts.regular,
   },
   bottomSheetContainer: {
     backgroundColor: '#191919',

@@ -28,6 +28,7 @@ import Loader from '../../components/Loader';
 import LinearGradient from 'react-native-linear-gradient';
 import Menu from '../../components/Playlist/Menu';
 import Buttun from '../Auth/compoents/Buttun';
+import {fonts} from '../../Context/Conctants';
 const Img = [
   {
     id: '1',
@@ -86,9 +87,7 @@ const Playlistdetails = () => {
   const {loading, affirmations, groups, category, item} = useSelector(
     state => state.home,
   );
-  const image =
-    // item?.categories_image[0]?.original_url ??
-    'https://img.freepik.com/free-photo/relaxed-woman-enjoying-sea_1098-1441.jpg';
+  const image = item?.categories_image[0]?.original_url ?? '';
   const title = item?.categories_name ?? 'Believe in yourself';
   const navigation = useNavigation();
   const HEADER_HEIGHT = 50;
@@ -96,7 +95,8 @@ const Playlistdetails = () => {
   const diffClamp = Animated.diffClamp(scrollY, 0, hp(55));
   const translateY = diffClamp.interpolate({
     inputRange: [0, hp(55)],
-    outputRange: [0, hp(-55)],
+    outputRange: [hp(0), hp(-60)],
+    extrapolate: 'clamp',
   });
   const onScroll = Animated.event(
     [{nativeEvent: {contentOffset: {y: scrollY}}}],
@@ -115,70 +115,161 @@ const Playlistdetails = () => {
         visible={menuvisible}
       />
       <Loader loading={loading} />
-      <View style={[styles.header]}>
-        <View style={{height: '3%'}} />
+      <Animated.View
+        style={[styles.header, {transform: [{translateY: translateY}]}]}>
         <View
           style={{
             height: '100%',
-            width: '90%',
-            alignSelf: 'center',
-            borderRadius: wp(2),
-            elevation: 5,
-            overflow: 'hidden',
-            shadowColor: 'rgba(255,255,255,.5)',
+            width: '100%',
+            backgroundColor: 'black',
+            zIndex: 100,
           }}>
-          <LinearGradient
-            start={{x: 0.3, y: 0}}
-            end={{x: 0.3, y: 1}}
-            locations={[-3, 0.7, 1]}
-            colors={['rgba(0,0,0,1)', 'rgba(0, 0, 0, 0.5)', 'rgba(0, 0, 0, 0)']}
-            style={[styles.gradient, {top: 0}]}
-          />
-          <Entypo
-            name="chevron-left"
-            size={30}
-            color={'white'}
-            style={{position: 'absolute', zIndex: 8, margin: '4%'}}
-          />
-          <Text
-            style={{
-              position: 'absolute',
-              zIndex: 7,
-              color: 'white',
-              top: '2%',
-              fontSize: wp(7),
-              fontWeight: '600',
-              right: '5%',
-            }}>
-            {title}
-          </Text>
-          <Image
-            source={require('../../assets/profilepic/plalist.png')}
-            style={{
-              height: '100%',
-              width: '100%',
-            }}
-          />
-          <LinearGradient
-            start={{x: 0.6, y: 0}}
-            end={{x: 0.6, y: 1}}
-            locations={[-3, 0.2, 1]}
-            colors={[
-              'rgba(0, 0, 0, 0)',
-              'rgba(0, 0, 0, 0.5)',
-              'rgba(0, 0, 0, 1)',
-            ]}
-            style={[styles.gradient, {bottom: 0, height: '60%'}]}
-          />
+          <View style={{height: '3%'}} />
           <View
             style={{
+              height: '100%',
+              width: '90%',
+              alignSelf: 'center',
+              borderRadius: wp(2),
+              elevation: 5,
+              overflow: 'hidden',
+              shadowColor: 'rgba(255,255,255,.5)',
+            }}>
+            <LinearGradient
+              start={{x: 0.3, y: 0}}
+              end={{x: 0.3, y: 1}}
+              locations={[-3, 0.7, 1]}
+              colors={[
+                'rgba(0,0,0,1)',
+                'rgba(0, 0, 0, 0.5)',
+                'rgba(0, 0, 0, 0)',
+              ]}
+              style={[styles.gradient, {top: 0}]}
+            />
+            <Entypo
+              onPress={() => navigation.goBack()}
+              name="chevron-left"
+              size={30}
+              color={'white'}
+              style={{position: 'absolute', zIndex: 8, margin: '4%'}}
+            />
+            <Text
+              style={{
+                position: 'absolute',
+                zIndex: 7,
+                color: 'white',
+                bottom: '8%',
+                fontSize: wp(6),
+                fontWeight: '600',
+                left: '5%',
+                fontFamily: fonts.medium,
+              }}>
+              {title}
+            </Text>
+            <Image
+              source={
+                image == ''
+                  ? require('../../assets/profilepic/plalist.png')
+                  : {uri: image}
+              }
+              style={{
+                height: '100%',
+                width: '100%',
+              }}
+            />
+            <LinearGradient
+              start={{x: 0.6, y: 0}}
+              end={{x: 0.6, y: 1}}
+              locations={[-3, 0.2, 1]}
+              colors={[
+                'rgba(0, 0, 0, 0)',
+                'rgba(0, 0, 0, 0.5)',
+                'rgba(0, 0, 0, 1)',
+              ]}
+              style={[styles.gradient, {bottom: 0, height: '60%'}]}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginTop: 20,
+              alignItems: 'center',
               position: 'absolute',
+              zIndex: 5,
+            }}>
+            {/* <Entypo
+              name="chevron-left"
+              size={30}
+              color={'white'}
+              style={{position: 'absolute', zIndex: 8, margin: '4%'}}
+            /> */}
+          </View>
+        </View>
+      </Animated.View>
+      <View
+        style={{
+          height: '8%',
+          flexDirection: 'row',
+          // borderWidth: 1,
+          // borderColor: '#fff',
+          paddingHorizontal: wp(5),
+          alignItems: 'center',
+        }}>
+        <Entypo
+          onPress={() => navigation.goBack()}
+          name="chevron-left"
+          size={30}
+          color={'white'}
+          style={{
+            zIndex: 0,
+            margin: '4%',
+          }}
+        />
+        <Text
+          style={{color: '#fff', fontSize: wp(5.5), fontFamily: fonts.medium}}>
+          {title}
+        </Text>
+        {/* <Buttun
+          style={{
+            height: '60%',
+            width: '40%',
+            flexDirection: 'row',
+            elevation: 3,
+            shadowColor: '#fff',
+            position: 'absolute',
+            right: wp(1),
+            bottom: -40,
+            zIndex: 2,
+          }}
+          onPress={() => navigation.navigate('playsong')}
+          title={'Play'}
+          playlist
+        /> */}
+      </View>
+      <ScrollView
+        style={styles.scrollView}
+        scrollEventThrottle={16}
+        contentContainerStyle={styles.scrollViewContent}
+        onScroll={e => {
+          scrollY.setValue(e.nativeEvent.contentOffset.y);
+        }}>
+        <View
+          style={{
+            borderColor: '#fff',
+            height: '5%',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginVertical: hp(2),
+            paddingHorizontal: wp(7),
+            marginTop: '3%',
+          }}>
+          <View
+            style={{
               zIndex: 5,
               color: 'white',
               alignSelf: 'center',
-              bottom: '18%',
-              height: '8%',
-              width: '50%',
+              height: '75%',
+              width: '45%',
               borderRadius: wp(1),
               elevation: 5,
               alignItems: 'center',
@@ -202,12 +293,13 @@ const Playlistdetails = () => {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              width: '35%',
-              position: 'absolute',
+              width: '45%',
+
               zIndex: 5,
               alignSelf: 'center',
-              bottom: '5%',
+              // bottom: '5%',
               justifyContent: 'space-between',
+              marginTop: '8%',
             }}>
             <Feather name="heart" size={25} color="white" />
             <Entypo name="share" size={25} color="white" />
@@ -221,19 +313,12 @@ const Playlistdetails = () => {
             />
           </View>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: 20,
-            alignItems: 'center',
-            position: 'absolute',
-            zIndex: 5,
-          }}></View>
-      </View>
-      <View style={{paddingTop: hp(4)}}>
         <FlatList
           data={affirmations}
           keyExtractor={item => item.id}
+          contentContainerStyle={{
+            marginTop: '8%',
+          }}
           renderItem={({item}) => (
             <View
               style={{
@@ -247,7 +332,7 @@ const Playlistdetails = () => {
               }}>
               <View style={{justifyContent: 'center', marginHorizontal: '10%'}}>
                 <Text style={styles.text}>
-                  {item.affirmation_text.substring(0, 30)}
+                  {item.affirmation_text.substring(0, 40)}
                 </Text>
               </View>
               <View style={{justifyContent: 'center'}}>
@@ -264,7 +349,7 @@ const Playlistdetails = () => {
             </View>
           )}
         />
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -275,24 +360,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#191919',
   },
   header: {
-    height: hp(68),
-    // position: 'absolute',
-    // top: 0,
-    // right: 0,
-    // left: 0,
-    // elevation: 4,
-    zIndex: 1,
+    height: hp(50),
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    left: 0,
+    elevation: 4,
+    zIndex: 8,
+    backgroundColor: '#191919',
+
+    borderColor: '#fff',
   },
   scrollView: {
     flex: 1,
   },
-  scrollViewContent: {marginTop: hp(23)},
+  scrollViewContent: {paddingTop: hp(43)},
   text: {
     width: wp(60),
-
     marginLeft: 5,
     color: 'white',
-    fontSize: hp(2),
+    fontSize: hp(2.5),
+    fontFamily: fonts.regular,
   },
   gradient: {
     position: 'absolute',

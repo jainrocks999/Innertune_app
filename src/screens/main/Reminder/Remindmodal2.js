@@ -17,6 +17,7 @@ import Modal2 from '../../../components/molecules/Modal2';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import Buttun from '../../Auth/compoents/Buttun';
+import {fonts} from '../../../Context/Conctants';
 const Img = [
   {
     id: '1',
@@ -69,6 +70,57 @@ const Remindmodal2 = () => {
       setSelectedDay([...selectedDay, items.id]);
     }
   };
+  const [currentTime1, setCurrentTime1] = useState('9:00');
+  const [currentTime2, setCurrentTime2] = useState('9:00');
+  const updateTime1 = increment => {
+    let [hour, minute] = currentTime1.split(':');
+    hour = parseInt(hour);
+    minute = parseInt(minute);
+
+    if (increment) {
+      minute += 30;
+      if (minute >= 60) {
+        minute = 0;
+        hour = (hour + 1) % 24;
+      }
+    } else {
+      minute -= 30;
+      if (minute < 0) {
+        minute = 30;
+        hour = (hour - 1 + 24) % 24;
+      }
+    }
+
+    hour = (hour < 10 ? '0' : '') + hour;
+    minute = (minute < 10 ? '0' : '') + minute;
+
+    setCurrentTime1(hour + ':' + minute);
+  };
+  const updateTime2 = increment => {
+    let [hour, minute] = currentTime2.split(':');
+    hour = parseInt(hour);
+    minute = parseInt(minute);
+
+    if (increment) {
+      minute += 30;
+      if (minute >= 60) {
+        minute = 0;
+        hour = (hour + 1) % 24;
+      }
+    } else {
+      minute -= 30;
+      if (minute < 0) {
+        minute = 30;
+        hour = (hour - 1 + 24) % 24;
+      }
+    }
+
+    hour = (hour < 10 ? '0' : '') + hour;
+    minute = (minute < 10 ? '0' : '') + minute;
+
+    setCurrentTime2(hour + ':' + minute);
+  };
+  const [reapeat, setRepeat] = useState(7);
   return (
     <View style={{flex: 1, backgroundColor: '#191919'}}>
       <View style={{height: '2%'}} />
@@ -77,8 +129,8 @@ const Remindmodal2 = () => {
           alignSelf: 'center',
           color: 'white',
           fontSize: wp(6),
-
           fontWeight: 'bold',
+          fontFamily: fonts.bold,
         }}>
         Affirmations
       </Text>
@@ -94,17 +146,45 @@ const Remindmodal2 = () => {
       <View style={{height: '2%'}} />
       <View style={styles.sec_container}>
         <View style={styles.rowContainer}>
-          <View style={styles.cicrcle}>
+          <TouchableOpacity
+            onPress={() => {
+              if (reapeat != 0) {
+                setRepeat(reapeat - 1);
+              } else {
+                setRepeat(30);
+              }
+            }}
+            style={styles.cicrcle}>
             <Entypo name="minus" style={styles.icon} />
-          </View>
-          <Text style={{color: '#fff', fontSize: wp(11), marginTop: '-5%'}}>
-            7X
+          </TouchableOpacity>
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: wp(11),
+              marginTop: '-5%',
+              fontFamily: fonts.medium,
+            }}>
+            {reapeat}X
           </Text>
-          <View style={styles.cicrcle}>
+          <TouchableOpacity
+            onPress={() => {
+              if (reapeat != 30) {
+                setRepeat(reapeat + 1);
+              } else {
+                setRepeat(0);
+              }
+            }}
+            style={styles.cicrcle}>
             <Entypo name="plus" style={styles.icon} />
-          </View>
+          </TouchableOpacity>
         </View>
-        <Text style={{color: '#eee', marginTop: '3%', fontSize: wp(5)}}>
+        <Text
+          style={{
+            color: '#eee',
+            marginTop: '3%',
+            fontSize: wp(5),
+            fontFamily: fonts.medium,
+          }}>
           How many
         </Text>
       </View>
@@ -119,7 +199,7 @@ const Remindmodal2 = () => {
       />
       <View style={{height: '2%'}} />
       <View style={styles.playlisttime}>
-        <Text style={styles.txt2}>select the playlist</Text>
+        <Text style={styles.txt2}>Select the playlist</Text>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={styles.txt2}>Genral </Text>
           <Feather
@@ -139,7 +219,7 @@ const Remindmodal2 = () => {
       />
       <View style={{height: '2%'}} />
       <View style={styles.playlisttime}>
-        <Text style={styles.txt2}>start at</Text>
+        <Text style={styles.txt2}>Start at</Text>
         <View
           style={{
             flexDirection: 'row',
@@ -147,13 +227,20 @@ const Remindmodal2 = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <View style={styles.cicrcle2}>
+          <TouchableOpacity
+            onPress={() => updateTime1(false)}
+            style={styles.cicrcle2}>
             <Entypo name="minus" style={styles.icon2} />
-          </View>
-          <Text style={{color: 'white', fontSize: wp(4)}}>9:00</Text>
-          <View style={styles.cicrcle2}>
+          </TouchableOpacity>
+          <Text
+            style={{color: 'white', fontSize: wp(4), fontFamily: fonts.medium}}>
+            {currentTime1}
+          </Text>
+          <TouchableOpacity
+            onPress={() => updateTime1(true)}
+            style={styles.cicrcle2}>
             <Entypo name="plus" style={styles.icon2} />
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
       <View
@@ -167,7 +254,7 @@ const Remindmodal2 = () => {
       />
       <View style={{height: '2%'}} />
       <View style={styles.playlisttime}>
-        <Text style={styles.txt2}>finish at</Text>
+        <Text style={styles.txt2}>Finish at</Text>
         <View
           style={{
             flexDirection: 'row',
@@ -175,13 +262,20 @@ const Remindmodal2 = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <View style={styles.cicrcle2}>
+          <TouchableOpacity
+            onPress={() => updateTime2(false)}
+            style={styles.cicrcle2}>
             <Entypo name="minus" style={styles.icon2} />
-          </View>
-          <Text style={{color: 'white', fontSize: wp(4)}}>9:00</Text>
-          <View style={styles.cicrcle2}>
+          </TouchableOpacity>
+          <Text
+            style={{color: 'white', fontSize: wp(4), fontFamily: fonts.medium}}>
+            {currentTime2}
+          </Text>
+          <TouchableOpacity
+            onPress={() => updateTime2(true)}
+            style={styles.cicrcle2}>
             <Entypo name="plus" style={styles.icon2} />
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
       <View
@@ -217,6 +311,7 @@ const Remindmodal2 = () => {
                     marginLeft: '5%',
                     color: '#B72658',
                     fontWeight: '500',
+                    fontFamily: fonts.bold,
                   }}>
                   {item.title}
                 </Text>
@@ -227,7 +322,13 @@ const Remindmodal2 = () => {
       </View>
       <View style={{height: '2%'}} />
       <View style={{width: '100%', alignItems: 'center'}}>
-        <Text style={{color: 'white', textAlign: 'center', width: '65%'}}>
+        <Text
+          style={{
+            color: 'white',
+            textAlign: 'center',
+            width: '65%',
+            fontFamily: fonts.medium,
+          }}>
           Remind yourself on selected Affirmations
         </Text>
       </View>
@@ -315,6 +416,7 @@ const styles = StyleSheet.create({
     fontSize: wp(5.5),
     textAlign: 'center',
     fontWeight: '600',
+    fontFamily: fonts.medium,
   },
   listCircle: {
     height: hp(5.5),

@@ -18,6 +18,7 @@ import {TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
+import {fonts} from '../Context/Conctants';
 
 const Img = [
   {
@@ -104,7 +105,7 @@ const Toptab = () => {
       <View style={{marginHorizontal: hp(3), marginTop: 10}}>
         <Text
           style={{
-            fontFamily: 'Montserrat',
+            fontFamily: fonts.bold,
             fontSize: hp(3),
             color: 'white',
             marginVertical: 10,
@@ -148,6 +149,7 @@ const Toptab = () => {
                     color: '#fff',
                     fontSize: wp(5),
                     fontWeight: '500',
+                    fontFamily: fonts.bold,
                   }}>
                   Afffirmation liked
                 </Text>
@@ -181,6 +183,7 @@ const Toptab = () => {
                     color: '#fff',
                     fontSize: wp(5),
                     fontWeight: '500',
+                    fontFamily: fonts.bold,
                   }}>
                   Liked Playlist
                 </Text>
@@ -194,7 +197,7 @@ const Toptab = () => {
       <View style={{marginHorizontal: hp(3), marginTop: hp(3)}}>
         <Text
           style={{
-            fontFamily: 'Montserrat',
+            fontFamily: fonts.bold, // fontFamily: 'Montserrat',
             fontSize: hp(2.5),
             color: 'white',
             marginVertical: 10,
@@ -301,6 +304,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: hp(2),
     fontWeight: '500',
+    fontFamily: fonts.bold,
   },
   text2: {
     width: wp(50),
@@ -308,5 +312,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: hp(1.8),
     fontWeight: '300',
+    fontFamily: fonts.medium,
   },
 });

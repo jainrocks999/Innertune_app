@@ -5,6 +5,7 @@ import {
   heightPercent as hp,
   widthPrecent as wp,
 } from '../../../components/atoms/responsive';
+import {fonts} from '../../../Context/Conctants';
 
 const Input = ({...props}) => {
   return (
@@ -12,7 +13,7 @@ const Input = ({...props}) => {
       <TextInput
         {...props}
         placeholderTextColor={'#fff'}
-        style={{fontSize: wp(5), color: '#fff'}}
+        style={{fontSize: wp(5), fontFamily: fonts.medium, color: '#fff'}}
       />
     </View>
   );

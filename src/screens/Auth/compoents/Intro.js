@@ -6,6 +6,7 @@ import {
 } from '../../../components/atoms/responsive';
 import {Image} from 'react-native';
 import {Line} from 'react-native-svg';
+import {fonts} from '../../../Context/Conctants';
 
 const Intro = ({title1, title2, title3, style}) => {
   return (
@@ -22,7 +23,13 @@ const Intro = ({title1, title2, title3, style}) => {
       <View style={{marginLeft: '6%'}}>
         <Text style={styles.title}>{title1}</Text>
         <Text style={styles.title}>{title2}</Text>
-        <Text style={{fontSize: wp(4), color: 'white', width: '55%'}}>
+        <Text
+          style={{
+            fontSize: wp(5),
+            color: 'white',
+            width: '55%',
+            fontFamily: 'OpenSans_Condensed-Regular',
+          }}>
           {title3}
         </Text>
       </View>
@@ -38,6 +45,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'white',
-    fontSize: wp(8),
+    fontSize: wp(9),
+    fontFamily: fonts.medium,
   },
 });

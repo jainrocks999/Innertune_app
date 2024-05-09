@@ -10,6 +10,7 @@ import {
   heightPercent as hp,
   widthPrecent as wp,
 } from '../../components/atoms/responsive';
+import {fonts} from '../../Context/Conctants';
 
 const Forgot = () => {
   return (
@@ -36,13 +37,24 @@ const Forgot = () => {
       <View style={{alignItems: 'center', marginTop: '10%'}}>
         <Social />
       </View>
-      <Text style={{alignSelf: 'center', marginTop: '5%', color: 'white'}}>
+      <Text
+        style={{
+          alignSelf: 'center',
+          marginTop: '5%',
+          color: 'white',
+          fontFamily: fonts.medium,
+        }}>
         Don't have an account ?{' '}
         <Text
           onPress={() => {
             navigation.navigate('signup');
           }}
-          style={{color: '#B72658', fontSize: wp(5), fontWeight: '500'}}>
+          style={{
+            color: '#B72658',
+            fontSize: wp(5),
+            fontWeight: '500',
+            fontFamily: fonts.medium,
+          }}>
           {' Sign Up'}
         </Text>
       </Text>

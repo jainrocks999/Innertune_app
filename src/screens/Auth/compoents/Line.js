@@ -4,6 +4,7 @@ import {
   widthPrecent as wp,
   heightPercent as hp,
 } from '../../../components/atoms/responsive';
+import {fonts} from '../../../Context/Conctants';
 
 const Line = () => {
   return (
@@ -15,6 +16,7 @@ const Line = () => {
           fontSize: wp(5),
           fontWeight: '800',
           marginTop: '-1.2%',
+          fontFamily: fonts.regular,
         }}>
         or
       </Text>

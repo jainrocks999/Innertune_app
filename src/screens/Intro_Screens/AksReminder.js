@@ -8,6 +8,7 @@ import {
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import {TouchableOpacity} from 'react-native';
+import {fonts} from '../../Context/Conctants';
 
 const AksReminder = ({navigation}) => {
   return (
@@ -62,6 +63,7 @@ const AksReminder = ({navigation}) => {
           fontSize: wp(5),
           fontWeight: '500',
           marginTop: '10%',
+          fontFamily: fonts.medium,
         }}>
         Get reminded to respect along your favorite affirmations{' '}
       </Text>
@@ -97,7 +99,13 @@ const AksReminder = ({navigation}) => {
           end={{x: 0, y: 1}}
           locations={[0, 1]}
           colors={['#D485D1', '#B72658']}>
-          <Text style={{color: 'white', fontSize: wp(5.5), fontWeight: '400'}}>
+          <Text
+            style={{
+              color: 'white',
+              fontSize: wp(5.5),
+              fontWeight: '400',
+              fontFamily: fonts.regular,
+            }}>
             {'Get Started'}
           </Text>
         </LinearGradient>
@@ -119,6 +127,7 @@ const styles = StyleSheet.create({
     color: '#FFF',
     marginLeft: '-21%',
     fontSize: wp(5),
+    fontFamily: fonts.bold,
   },
   nextBtn: {
     alignSelf: 'center',

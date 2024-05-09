@@ -20,6 +20,8 @@ import {
 } from '../../components/atoms/responsive';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
+import {fonts} from '../../Context/Conctants';
+import Background from '../Auth/compoents/Background';
 const data = [
   {
     id: '1',
@@ -74,14 +76,15 @@ const data3 = [
 const Setting = ({}) => {
   const navigation = useNavigation();
   return (
-    <View style={{flex: 1, backgroundColor: '#191919'}}>
+    <Background>
       <View style={{marginHorizontal: 15, marginTop: 10}}>
         <Text
           style={{
-            fontFamily: 'Montserrat',
+            // fontFamily: 'Montserrat',
             fontSize: hp(4),
             color: 'white',
             marginVertical: 10,
+            fontFamily: fonts.medium,
           }}>
           Settings
         </Text>
@@ -90,10 +93,10 @@ const Setting = ({}) => {
         <View style={{marginHorizontal: 15}}>
           <Text
             style={{
-              fontFamily: 'Montserrat',
+              // fontFamily: 'Montserrat',
               fontSize: 20,
               color: 'white',
-              fontWeight: '700',
+              fontFamily: fonts.medium,
               marginVertical: 15,
             }}>
             Follow us
@@ -102,14 +105,34 @@ const Setting = ({}) => {
         <View
           style={{
             flexDirection: 'row',
-            paddingRight: '45%',
-            marginVertical: 10,
+            marginLeft: wp(3),
+            paddingRight: '40%',
+            marginVertical: wp(4),
             justifyContent: 'space-around',
           }}>
-          <Entypo name="instagram" size={30} color="white" />
-          <Feather name="facebook" size={30} color="white" />
-          <FontAwesome6 name="x-twitter" size={30} color="white" />
-          <Feather name="youtube" size={30} color="white" />
+          {/* <Entypo name="instagram" size={30} color="white" /> */}
+          <Image
+            style={{height: 30, width: 30}}
+            source={require('../../assets/social_logo/instagram.png')}
+          />
+          <Image
+            style={{height: 30, width: 30}}
+            tintColor="#1877F2"
+            source={require('../../assets/social_logo/facebook.png')}
+          />
+          <Image
+            style={{height: 30, width: 30}}
+            tintColor="#B72658"
+            source={require('../../assets/social_logo/social-media.png')}
+          />
+          <Image
+            style={{height: 38, width: 38}}
+            // tintColor="#fff"
+            source={require('../../assets/social_logo/youtube.png')}
+          />
+          {/* <Feather name="facebook" size={30} color="white" /> */}
+          {/* <FontAwesome6 name="x-twitter" size={30} color="white" /> */}
+          {/* <Feather name="youtube" size={30} color="white" /> */}
         </View>
         <View>
           <FlatList
@@ -139,6 +162,7 @@ const Setting = ({}) => {
                         color: 'white',
                         fontSize: 17,
                         fontWeight: '400',
+                        fontFamily: fonts.medium,
                       }}>
                       {item.title}
                     </Text>
@@ -156,11 +180,11 @@ const Setting = ({}) => {
         <View style={{marginHorizontal: 20, marginTop: 10}}>
           <Text
             style={{
-              fontFamily: 'Montserrat',
               fontSize: 20,
               color: 'white',
               marginVertical: 10,
-              fontWeight: '700',
+              // fontWeight: '700',
+              fontFamily: fonts.bold,
             }}>
             Partner Program
           </Text>
@@ -188,6 +212,7 @@ const Setting = ({}) => {
                   color: '#fff',
                   fontSize: 17,
                   fontWeight: '400',
+                  fontFamily: fonts.medium,
                 }}>
                 Get premium
               </Text>
@@ -206,11 +231,11 @@ const Setting = ({}) => {
         <View style={{marginHorizontal: 20, marginTop: 10}}>
           <Text
             style={{
-              fontFamily: 'Montserrat',
+              // fontFamily: 'Montserrat',
               fontSize: 20,
               color: 'white',
               marginVertical: 10,
-              fontWeight: '700',
+              fontFamily: fonts.bold,
             }}>
             Suggestion
           </Text>
@@ -236,7 +261,13 @@ const Setting = ({}) => {
                   justifyContent: 'space-between',
                   marginHorizontal: '5%',
                 }}>
-                <Text style={{color: '#fff', fontSize: 17, fontWeight: '400'}}>
+                <Text
+                  style={{
+                    color: '#fff',
+                    fontSize: 17,
+                    fontWeight: '400',
+                    fontFamily: fonts.medium,
+                  }}>
                   {item.title}
                 </Text>
                 <Image
@@ -272,6 +303,7 @@ const Setting = ({}) => {
                   color: 'white',
                   fontSize: 17,
                   fontWeight: '400',
+                  fontFamily: fonts.medium,
                 }}>
                 Manage subscription
               </Text>
@@ -290,11 +322,12 @@ const Setting = ({}) => {
         <View style={{marginHorizontal: 20, marginTop: 10}}>
           <Text
             style={{
-              fontFamily: 'Montserrat',
+              // fontFamily: 'Montserrat',
               fontSize: 20,
               color: 'white',
               marginVertical: 10,
-              fontWeight: '700',
+              // fontWeight: '700',
+              fontFamily: fonts.bold,
             }}>
             Account
           </Text>
@@ -349,7 +382,12 @@ const Setting = ({}) => {
                     marginHorizontal: '5%',
                   }}>
                   <Text
-                    style={{color: '#fff', fontSize: 17, fontWeight: '400'}}>
+                    style={{
+                      color: '#fff',
+                      fontSize: 17,
+                      fontWeight: '400',
+                      fontFamily: fonts.medium,
+                    }}>
                     {item.title}
                   </Text>
                   <Image
@@ -363,7 +401,7 @@ const Setting = ({}) => {
           />
         </View>
       </ScrollView>
-    </View>
+    </Background>
   );
 };
 

@@ -5,6 +5,8 @@ import {
   widthPrecent as wp,
 } from '../../components/atoms/responsive';
 import Entypo from 'react-native-vector-icons/Entypo';
+import {fonts} from '../../Context/Conctants';
+import Buttun from './compoents/Buttun';
 
 const Img = [
   {
@@ -28,14 +30,15 @@ const Img = [
 ];
 const Goal = () => {
   return (
-    <View style={{flex: 1, backgroundColor: '#f0f8ff'}}>
+    <View style={{flex: 1, backgroundColor: '#191919'}}>
       <View style={styles.container}>
         <Text
           style={{
             fontSize: hp(2.5),
-            fontFamily: 'Poppins-Medium',
-            fontWeight: '600',
-            color: 'black',
+            // fontFamily: 'Poppins-Medium',
+            fontFamily: fonts.bold,
+            // fontWeight: '600',,
+            color: '#fff',
           }}>
           {' '}
           What are your Goals
@@ -46,8 +49,8 @@ const Goal = () => {
             style={{
               fontSize: 20,
               fontWeight: '400',
-              fontFamily: 'Poppins-Medium',
-              color: 'grey',
+              fontFamily: fonts.medium,
+              color: '#fff',
             }}>
             {' '}
             You can choose multiple options
@@ -75,13 +78,13 @@ const Goal = () => {
                 height: hp(14),
                 justifyContent: 'center',
                 marginHorizontal: wp(2),
-                width: wp(28),
-                marginVertical: 10,
-                backgroundColor: 'black',
+                width: hp(14),
+                marginVertical: hp(2),
+                backgroundColor: '#4A4949',
                 borderRadius: 20,
               }}>
               <View style={{justifyContent: 'center', marginVertical: 10}}>
-                <Entypo name="baidu" size={40} color="white" />
+                <Entypo name="baidu" size={30} color="white" />
               </View>
               <View style={{justifyContent: 'center', marginHorizontal: '10%'}}>
                 <Text style={styles.text}>divfsidf</Text>
@@ -111,13 +114,13 @@ const Goal = () => {
                 height: hp(14),
                 justifyContent: 'center',
                 marginHorizontal: wp(2),
-                width: wp(28),
-                marginVertical: 10,
-                backgroundColor: 'black',
+                width: hp(14),
+                marginVertical: hp(2),
+                backgroundColor: '#4A4949',
                 borderRadius: 20,
               }}>
               <View style={{justifyContent: 'center', marginVertical: 10}}>
-                <Entypo name="add-user" size={40} color="white" />
+                <Entypo name="baidu" size={30} color="white" />
               </View>
               <View style={{justifyContent: 'center', marginHorizontal: '10%'}}>
                 <Text style={styles.text}>divfsidf</Text>
@@ -147,15 +150,15 @@ const Goal = () => {
                 height: hp(14),
                 justifyContent: 'center',
                 marginHorizontal: wp(2),
-                width: wp(28),
-                marginVertical: 10,
-                backgroundColor: 'black',
+                width: hp(14),
+                marginVertical: hp(2),
+                backgroundColor: '#4A4949',
                 borderRadius: 20,
               }}>
-              <View style={{justifyContent: 'center'}}>
-                <Entypo name="emoji-happy" size={40} color="white" />
-              </View>
               <View style={{justifyContent: 'center', marginVertical: 10}}>
+                <Entypo name="baidu" size={30} color="white" />
+              </View>
+              <View style={{justifyContent: 'center', marginHorizontal: '10%'}}>
                 <Text style={styles.text}>divfsidf</Text>
               </View>
             </View>
@@ -169,23 +172,7 @@ const Goal = () => {
           margin: hp(2),
           top: hp(15),
         }}>
-        <TouchableOpacity
-          style={{
-            height: 45,
-            marginLeft: 20,
-            backgroundColor: '#426e56',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: wp(70),
-            borderRadius: 10,
-            flexDirection: 'row',
-          }}
-          //   onPress={() => {
-          //     navigation.navigate('createaffirmation',{selected:selected});
-          //   }}
-        >
-          <Text style={styles.loginText}>Continue</Text>
-        </TouchableOpacity>
+        <Buttun title={'Continue'} />
       </View>
     </View>
   );
@@ -200,7 +187,8 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-    fontSize: hp(2),
+    fontSize: wp(4),
+    fontFamily: fonts.medium,
   },
   loginText: {
     color: '#FFFFFF',

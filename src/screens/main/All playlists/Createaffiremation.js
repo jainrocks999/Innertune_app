@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {ScrollView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Buttun from '../../Auth/compoents/Buttun';
+import {fonts} from '../../../Context/Conctants';
 const Img = [
   {
     id: '1',
@@ -112,7 +113,7 @@ const Createaffirmation = ({route}) => {
               fontSize: 22,
               fontWeight: '500',
               marginHorizontal: '15%',
-              fontFamily: 'Montserrat',
+              fontFamily: fonts.bold,
               color: 'white',
             }}>
             Edit List of Affirmation
@@ -142,7 +143,7 @@ const Createaffirmation = ({route}) => {
                 paddingHorizontal: wp(4),
               }}>
               <Text style={styles.text}>
-                {item.affirmation_text.substring(0, 30)}
+                {item.affirmation_text.substring(0, 40)}
               </Text>
 
               <View style={{justifyContent: 'center'}}>
@@ -202,7 +203,8 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-    fontSize: wp(5),
+    fontSize: wp(4.5),
+    fontFamily: fonts.regular,
   },
   text2: {
     width: wp(50),

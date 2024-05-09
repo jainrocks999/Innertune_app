@@ -17,6 +17,7 @@ import {
 } from '../../components/atoms/responsive';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
+import {fonts} from '../../Context/Conctants';
 const data = [
   {id: '1', title: 'Daily Practice', time: '09:00', frequency: '1x Every Day'},
   {id: '2', title: 'Daily Practice', time: '09:00', frequency: '1x Every Day'},
@@ -70,8 +71,8 @@ const Reminder = () => {
               fontSize: 22,
               fontWeight: '500',
               marginHorizontal: '17%',
-
               color: 'white',
+              fontFamily: fonts.bold,
             }}>
             Set your reminders
           </Text>
@@ -103,15 +104,25 @@ const Reminder = () => {
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    marginHorizontal: '7%',
+                    marginHorizontal: '8%',
                     marginTop: '3%',
                   }}>
                   <Text
-                    style={{color: '#fff', fontSize: 15, fontWeight: '500'}}>
+                    style={{
+                      color: '#fff',
+                      fontSize: 15,
+                      fontWeight: '500',
+                      fontFamily: fonts.bold,
+                    }}>
                     {item.title}
                   </Text>
                   <Text
-                    style={{color: '#fff', fontSize: 15, fontWeight: '400'}}>
+                    style={{
+                      color: '#fff',
+                      fontSize: 15,
+                      fontWeight: '400',
+                      fontFamily: fonts.medium,
+                    }}>
                     {item.time}
                   </Text>
                 </View>
@@ -124,7 +135,12 @@ const Reminder = () => {
                     marginVertical: 10,
                   }}>
                   <Text
-                    style={{color: '#fff', fontSize: 15, fontWeight: '300'}}>
+                    style={{
+                      color: '#fff',
+                      fontSize: 15,
+                      fontWeight: '300',
+                      fontFamily: fonts.medium,
+                    }}>
                     {item.frequency}
                   </Text>
                   <ToggleSwitch

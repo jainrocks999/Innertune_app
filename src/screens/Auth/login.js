@@ -23,6 +23,8 @@ import Input from './compoents/Input';
 import Buttun from './compoents/Buttun';
 import Line from './compoents/Line';
 import Social from './compoents/Social';
+import {fonts} from '../../Context/Conctants';
+import Toast from 'react-native-simple-toast';
 const Login = () => {
   const loading = useSelector(state => state.auth.loading);
   const navigation = useNavigation();
@@ -30,22 +32,33 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   showAlert = viewId => Alert.alert('Alert', 'Button pressed ' + viewId);
-
+  function validateEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
   const getToken = () => {
-    if (email !== '' && password !== '') {
-      dispatch({
-        type: 'auth/login_request',
-        payload: {
-          email,
-          password,
-          url: 'login',
-        },
-        navigation,
-      });
-    } else {
-      Alert.alert('Please fill all the value');
+    if (email == '') {
+      Toast.show('Please enter email');
+      return;
     }
-    // navigation.reset({index:0,routes:[{name:'Home'}])
+    if (!validateEmail(email)) {
+      Toast.show('Email is invalid');
+      return;
+    }
+    if (password == '') {
+      Toast.show('Please Enter password');
+      return;
+    }
+
+    dispatch({
+      type: 'auth/login_request',
+      payload: {
+        email,
+        password,
+        url: 'login',
+      },
+      navigation,
+    });
   };
 
   return (
@@ -74,6 +87,8 @@ const Login = () => {
             alignSelf: 'flex-end',
             marginRight: '6%',
             marginTop: '3%',
+            fontFamily: 'OpenSans_Condensed-Regular',
+            fontSize: wp(5),
           }}>
           Forgot Your password ?
         </Text>
@@ -88,13 +103,24 @@ const Login = () => {
       <View style={{alignItems: 'center', marginTop: '7%'}}>
         <Social />
       </View>
-      <Text style={{alignSelf: 'center', marginTop: '5%', color: 'white'}}>
+      <Text
+        style={{
+          alignSelf: 'center',
+          marginTop: '5%',
+          color: 'white',
+          fontFamily: fonts.medium,
+        }}>
         Don't have an account ?{' '}
         <Text
           onPress={() => {
             navigation.navigate('signup');
           }}
-          style={{color: '#B72658', fontSize: wp(5), fontWeight: '500'}}>
+          style={{
+            color: '#B72658',
+            fontSize: wp(5),
+            fontWeight: '500',
+            fontFamily: fonts.medium,
+          }}>
           {' Sign Up'}
         </Text>
       </Text>

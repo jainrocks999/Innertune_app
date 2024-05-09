@@ -6,6 +6,7 @@ import {
 } from '../../../components/atoms/responsive';
 import LinearGradient from 'react-native-linear-gradient';
 import Foundation from 'react-native-vector-icons/Foundation';
+import {fonts} from '../../../Context/Conctants';
 
 const Buttun = ({onPress, title, style, playlist}) => {
   let bool = playlist;
@@ -42,6 +43,7 @@ const Buttun = ({onPress, title, style, playlist}) => {
             fontSize: wp(bool ? 5.4 : 5.5),
             fontWeight: '600',
             marginTop: bool ? '-2%' : '0%',
+            fontFamily: fonts.medium,
           }}>
           {title}
         </Text>

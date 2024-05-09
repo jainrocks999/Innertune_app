@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 
-import Entypo from 'react-native-vector-icons/Entypo';
 import {
   heightPercent as hp,
   widthPrecent as wp,
@@ -24,6 +23,8 @@ import {
   launchImageLibrary as _launchImageLibrary,
   launchCamera as _launchCamera,
 } from 'react-native-image-picker';
+import {fonts} from '../../../Context/Conctants';
+import Buttun from '../../Auth/compoents/Buttun';
 let launchImageLibrary = _launchImageLibrary;
 
 const Saveplaylist = ({route}) => {
@@ -117,7 +118,7 @@ const Saveplaylist = ({route}) => {
             style={{
               height: hp(30),
               width: wp(50),
-              backgroundColor: '#426e56',
+              backgroundColor: '#B72658',
               borderRadius: 20,
               alignSelf: 'center',
               alignItems: 'center',
@@ -133,7 +134,10 @@ const Saveplaylist = ({route}) => {
                 tintColor: 'white',
               }}
             />
-            <Text style={{color: 'white', fontSize: 30}}>Upload File</Text>
+            <Text
+              style={{color: 'white', fontSize: 30, fontFamily: fonts.regular}}>
+              Upload File
+            </Text>
           </View>
         </TouchableOpacity>
         <View style={styles.container}>
@@ -142,7 +146,7 @@ const Saveplaylist = ({route}) => {
             <TextInput
               style={styles.input}
               placeholder="Name"
-              placeholderTextColor={'grey'}
+              placeholderTextColor={'#fff'}
               value={playlistName}
               onChangeText={handlePlaylistNameChange}
             />
@@ -155,7 +159,7 @@ const Saveplaylist = ({route}) => {
                 {marginTop: 10, height: hp(15), textAlignVertical: 'top'},
               ]}
               placeholder="Description"
-              placeholderTextColor={'grey'}
+              placeholderTextColor={'#fff'}
               value={description}
               onChangeText={handleDescriptionChange}
               multiline={true}
@@ -163,24 +167,16 @@ const Saveplaylist = ({route}) => {
             />
           </View>
         </View>
+        <View style={{alignSelf: 'center', margin: hp(5)}}>
+          <Buttun
+            title={'Create'}
+            style={{
+              height: hp(6.7),
+              width: wp(75),
+            }}
+          />
+        </View>
       </ScrollView>
-      <View style={{alignSelf: 'center', margin: hp(5)}}>
-        <TouchableOpacity
-          style={{
-            height: 45,
-            marginLeft: 20,
-            backgroundColor: '#426e56',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: wp(60),
-            borderRadius: 10,
-          }}
-          onPress={() => {
-            handleSubmit();
-          }}>
-          <Text style={styles.loginText}>Save Playlist</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -198,19 +194,25 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 20,
     fontWeight: '400',
+    fontFamily: fonts.bold,
   },
   input: {
-    backgroundColor: 'black',
+    backgroundColor: '#4A4949',
+    //backgroundColor: '#',
+    fontFamily: fonts.regular,
     borderRadius: 10,
     color: 'white',
     paddingHorizontal: 10,
     marginVertical: 10,
     borderWidth: 0.4,
+    // elevation: 4,
+    // shadowColor: 'grey',
   },
   label: {
     marginBottom: 5,
     fontSize: 15,
     color: 'white',
-    fontWeight: '500',
+    // fontWeight: '500',
+    fontFamily: fonts.bold,
   },
 });

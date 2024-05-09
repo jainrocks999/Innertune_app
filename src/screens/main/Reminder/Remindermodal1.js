@@ -6,6 +6,7 @@ import {
   widthPrecent as wp,
 } from '../../../components/atoms/responsive';
 import Modal2 from '../../../components/molecules/Modal2';
+import {fonts} from '../../../Context/Conctants';
 const Remindermodal1 = () => {
   const [visible, setVisible] = useState(false);
   const [selectedModal, setSelectedModal] = useState();
@@ -47,6 +48,7 @@ const Remindermodal1 = () => {
                     fontWeight: '600',
                     color: '#ffffff',
                     backgroundColor: 'transparent',
+                    fontFamily: fonts.bold,
                   }}>
                   Affirmations Notifications
                 </Text>
@@ -86,6 +88,7 @@ const Remindermodal1 = () => {
                     fontWeight: '600',
                     color: '#ffffff',
                     backgroundColor: 'transparent',
+                    fontFamily: fonts.bold,
                   }}>
                   Daily Practice Reminders
                 </Text>

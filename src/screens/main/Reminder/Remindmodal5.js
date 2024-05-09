@@ -1,4 +1,11 @@
-import {FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import {
   heightPercent as hp,
@@ -47,9 +54,7 @@ const Remindmodal5 = () => {
   const handleSelectedDay = items => {
     console.log(items.id);
     if (selectedDay.includes(items.id)) {
-      const filter = [...selectedDay].filter(
-        (item, index) => item != items.id,
-      );
+      const filter = [...selectedDay].filter((item, index) => item != items.id);
       console.log(filter);
       setSelectedDay(filter);
     } else {
@@ -221,29 +226,29 @@ const Remindmodal5 = () => {
           keyExtractor={item => item.id}
           renderItem={({item}) => (
             <TouchableOpacity
-            onPress={() => {
-              handleSelectedDay(item);
-            }}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginHorizontal: wp(1),
-              height: hp(5),
-              width: wp(10),
-              backgroundColor: selectedDay.includes(item.id)
-                ? '#426e56'
-                : 'white',
-              borderRadius: 50,
-            }}>
-            <Text
-              style={[
-                styles.text,
-                {color: selectedDay.includes(item.id) ? 'white' : 'black'},
-              ]}>
-              {item.title}
-            </Text>
-          </TouchableOpacity>
+              onPress={() => {
+                handleSelectedDay(item);
+              }}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginHorizontal: wp(1),
+                height: hp(5),
+                width: wp(10),
+                backgroundColor: selectedDay.includes(item.id)
+                  ? '#426e56'
+                  : 'white',
+                borderRadius: 50,
+              }}>
+              <Text
+                style={[
+                  styles.text,
+                  {color: selectedDay.includes(item.id) ? 'white' : 'black'},
+                ]}>
+                {item.title}
+              </Text>
+            </TouchableOpacity>
           )}
         />
       </View>
@@ -261,7 +266,7 @@ const Remindmodal5 = () => {
           // onPress={() => {
           //   navigation.navigate('saveplaylist');
           // }}
-          >
+        >
           <Text style={styles.loginText}>Close</Text>
         </TouchableOpacity>
       </View>

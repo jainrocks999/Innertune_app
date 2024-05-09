@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   SafeAreaView,
   StyleSheet,
@@ -14,6 +15,7 @@ import {
 } from '../../../components/atoms/responsive';
 import Modal2 from '../../../components/molecules/Modal2';
 import Buttun from '../../Auth/compoents/Buttun';
+import {fonts} from '../../../Context/Conctants';
 const Img = [
   {
     id: '1',
@@ -63,6 +65,32 @@ const Remindmodal4 = () => {
       setSelectedDay([...selectedDay, items.id]);
     }
   };
+
+  const [currentTime, setCurrentTime] = useState('9:00');
+  const updateTime = increment => {
+    let [hour, minute] = currentTime.split(':');
+    hour = parseInt(hour);
+    minute = parseInt(minute);
+
+    if (increment) {
+      minute += 30;
+      if (minute >= 60) {
+        minute = 0;
+        hour = (hour + 1) % 24;
+      }
+    } else {
+      minute -= 30;
+      if (minute < 0) {
+        minute = 30;
+        hour = (hour - 1 + 24) % 24;
+      }
+    }
+
+    hour = (hour < 10 ? '0' : '') + hour;
+    minute = (minute < 10 ? '0' : '') + minute;
+
+    setCurrentTime(hour + ':' + minute);
+  };
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
       <View
@@ -71,7 +99,13 @@ const Remindmodal4 = () => {
           justifyContent: 'center',
           marginTop: hp(2),
         }}>
-        <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'white'}}>
+        <Text
+          style={{
+            fontSize: hp(2.5),
+            fontWeight: '500',
+            color: 'white',
+            fontFamily: fonts.bold,
+          }}>
           Daily Practice
         </Text>
       </View>
@@ -94,7 +128,10 @@ const Remindmodal4 = () => {
           paddingHorizontal: '5%',
           alignItems: 'center',
         }}>
-        <Text style={{color: 'white', fontSize: wp(5)}}>When</Text>
+        <Text
+          style={{color: 'white', fontSize: wp(5), fontFamily: fonts.medium}}>
+          When
+        </Text>
         <View
           style={{
             flexDirection: 'row',
@@ -102,13 +139,20 @@ const Remindmodal4 = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <View style={styles.cicrcle}>
+          <TouchableOpacity
+            onPress={() => updateTime(false)}
+            style={styles.cicrcle}>
             <Entypo name="minus" style={styles.icon} />
-          </View>
-          <Text style={{color: 'white', fontSize: wp(6)}}>9:00</Text>
-          <View style={styles.cicrcle}>
+          </TouchableOpacity>
+          <Text
+            style={{color: 'white', fontSize: wp(6), fontFamily: fonts.medium}}>
+            {currentTime}
+          </Text>
+          <TouchableOpacity
+            onPress={() => updateTime(true)}
+            style={styles.cicrcle}>
             <Entypo name="plus" style={styles.icon} />
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
       <View
@@ -128,7 +172,11 @@ const Remindmodal4 = () => {
           marginTop: '6%',
           paddingHorizontal: '4.8%',
         }}>
-        <Text style={{color: 'white', fontSize: wp(5)}}> Repeat </Text>
+        <Text
+          style={{color: 'white', fontSize: wp(5), fontFamily: fonts.medium}}>
+          {' '}
+          Repeat{' '}
+        </Text>
       </View>
       <View
         style={{
@@ -142,7 +190,12 @@ const Remindmodal4 = () => {
           renderItem={({item}) => (
             <View style={styles.listCircle}>
               <Text
-                style={{marginLeft: '5%', color: '#B72658', fontWeight: '500'}}>
+                style={{
+                  marginLeft: '5%',
+                  color: '#B72658',
+                  fontWeight: '500',
+                  fontFamily: fonts.bold,
+                }}>
                 {item.title}
               </Text>
             </View>

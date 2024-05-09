@@ -17,6 +17,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Slider from '@react-native-community/slider';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {TouchableOpacity} from 'react-native';
+import {fonts} from '../../Context/Conctants';
 const Img = [
   {
     id: '1',
@@ -194,6 +195,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     marginBottom: hp(3),
+    fontFamily: fonts.medium,
   },
   listContainer: {
     // borderWidth: 1,

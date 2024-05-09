@@ -18,6 +18,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Buttun from '../../Auth/compoents/Buttun';
+import Loader from '../../../components/Loader';
+import {fonts} from '../../../Context/Conctants';
 const Img = [
   {
     id: '1',
@@ -69,7 +71,7 @@ const Img = [
   },
 ];
 const Createplaylist = () => {
-  const {affirmations} = useSelector(state => state.home);
+  const {affirmations, loading} = useSelector(state => state.home);
   console.log(affirmations);
   const navigation = useNavigation();
   // const [text, setText] = useState('');
@@ -88,6 +90,7 @@ const Createplaylist = () => {
   };
   return (
     <View style={{flex: 1, backgroundColor: '#191919'}}>
+      <Loader loading={loading} />
       <View
         style={{
           flexDirection: 'row',
@@ -111,7 +114,8 @@ const Createplaylist = () => {
               fontSize: hp(2.5),
               fontWeight: '600',
               marginHorizontal: '15%',
-              fontFamily: 'Montserrat-SemiBold',
+              // fontFamily: 'Montserrat-SemiBold',
+              fontFamily: fonts.bold,
               color: 'white',
             }}>
             Create Your Playlist
@@ -158,7 +162,7 @@ const Createplaylist = () => {
                 paddingHorizontal: wp(4),
               }}>
               <Text style={styles.text}>
-                {item.affirmation_text.substring(0, 30)}
+                {item.affirmation_text.substring(0, 40)}
               </Text>
 
               <View style={{justifyContent: 'center'}}>
@@ -214,10 +218,10 @@ const styles = StyleSheet.create({
   },
   text: {
     // width: wp(50),
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: fonts.regular,
     marginLeft: 5,
     color: '#fff',
-    fontSize: wp(5),
+    fontSize: wp(4.5),
   },
   input: {
     marginLeft: 10,

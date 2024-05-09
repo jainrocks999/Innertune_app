@@ -1,14 +1,23 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {
   heightPercent as hp,
   widthPrecent as wp,
 } from '../../components/atoms/responsive';
 import {FlatList} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
+import {fonts} from '../../Context/Conctants';
+import Buttun from '../Auth/compoents/Buttun';
+
 const images = [
   {
     title: 'Get Over Your Fear ',
@@ -45,104 +54,99 @@ const Intrested = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-        <AntDesign
-          onPress={() => {
-            navigation.goBack();
-          }}
-          name="arrowleft"
-          size={25}
-          color="white"
-          style={{margin: '5%'}}
-        />
-        <Text style={styles.headerTitle}>Welecome to STIMUILI</Text>
-        <Image
+      <ScrollView nestedScrollEnabled>
+        <View
           style={{
-            marginTop: '2%',
-            height: 50,
-            width: 50,
-            // alignSelf: 'flex-end',
-            marginRight: '5%',
-          }}
-          source={require('../../assets/logo/stimuili-logos1-.png')}
-          // source={require('../../assets/Intrested')}
-        />
-      </View>
-      <View style={{marginTop: '10%'}}>
-        <Text
-          style={{
-            marginLeft: wp(3),
-            width: '80%',
-            color: 'white',
-            fontSize: wp(5),
-            fontWeight: '500',
-          }}>
-          What are your Intrest
-        </Text>
-        <Text
-          style={{
-            width: '95%',
-            textAlign: 'left',
-            marginLeft: wp(3),
-            marginTop: '1%',
-            color: 'white',
-          }}>
-          You are capable, resilient, and worthy of all the good things life
-          offers. Your unique qualities shine brightly, guiding you towards
-          success and fulfillment.
-        </Text>
-      </View>
-      <View style={{width: '100%', alignItems: 'center', marginTop: '8%'}}>
-        <FlatList
-          data={images}
-          numColumns={3}
-          keyExtractor={item => item.title}
-          renderItem={({item, index}) => (
-            <View
-              style={{
-                alignItems: 'center',
-                width: wp(25),
-                paddingBottom: '1%',
-                marginHorizontal: wp(2.5),
-              }}>
-              <View style={styles.item}>
-                <Image
-                  style={{height: '50%', width: '50%'}}
-                  source={item.path}
-                  resizeMode="contain"
-                />
-              </View>
-              <Text style={styles.itemTitle}>{item.title}</Text>
-            </View>
-          )}
-        />
-      </View>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.reset({index: 0, routes: [{name: 'Home'}]});
-        }}
-        style={[styles.nextBtn]}>
-        <LinearGradient
-          style={{
-            height: '100%',
-            width: '100%',
+            flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          start={{x: 1.4, y: 0}}
-          end={{x: 0, y: 1}}
-          locations={[0, 1]}
-          colors={['#D485D1', '#B72658']}>
-          <Text style={{color: 'white', fontSize: wp(5.5), fontWeight: '400'}}>
-            {'Next'}
+            justifyContent: 'space-between',
+          }}>
+          <AntDesign
+            onPress={() => {
+              navigation.goBack();
+            }}
+            name="arrowleft"
+            size={25}
+            color="white"
+            style={{margin: '5%'}}
+          />
+          <Text style={styles.headerTitle}>Welecome to STIMUILI</Text>
+          <Image
+            style={{
+              marginTop: '2%',
+              height: 50,
+              width: 50,
+              // alignSelf: 'flex-end',
+              marginRight: '5%',
+            }}
+            source={require('../../assets/logo/stimuili-logos1-.png')}
+            // source={require('../../assets/Intrested')}
+          />
+        </View>
+        <View style={{marginTop: '10%'}}>
+          <Text
+            style={{
+              marginLeft: wp(3),
+              width: '80%',
+              color: 'white',
+              fontSize: wp(5),
+              fontWeight: '500',
+              fontFamily: fonts.medium,
+            }}>
+            What are your Intrest
           </Text>
-        </LinearGradient>
-      </TouchableOpacity>
+          <Text
+            style={{
+              width: '95%',
+              textAlign: 'left',
+              marginLeft: wp(3),
+              marginTop: '1%',
+              color: 'white',
+              fontFamily: fonts.medium,
+            }}>
+            You are capable, resilient, and worthy of all the good things life
+            offers. Your unique qualities shine brightly, guiding you towards
+            success and fulfillment.
+          </Text>
+        </View>
+        <View style={{width: '100%', alignItems: 'center', marginTop: '8%'}}>
+          <FlatList
+            data={images}
+            numColumns={3}
+            keyExtractor={item => item.title}
+            renderItem={({item, index}) => (
+              <View
+                style={{
+                  alignItems: 'center',
+                  width: wp(25),
+                  paddingBottom: '-5%',
+                  marginHorizontal: wp(2.5),
+                }}>
+                <View style={styles.item}>
+                  <Image
+                    style={{height: '50%', width: '50%'}}
+                    source={item.path}
+                    resizeMode="contain"
+                  />
+                </View>
+                <Text style={styles.itemTitle}>
+                  {item.title.substring(0, 16)}
+                </Text>
+              </View>
+            )}
+          />
+        </View>
+        <Buttun
+          style={{
+            alignSelf: 'center',
+            width: '60%',
+          }}
+          title={'Next'}
+          onPress={() => {
+            navigation.reset({index: 0, routes: [{name: 'Home'}]});
+          }}
+        />
+      </ScrollView>
     </View>
   );
 };
@@ -158,6 +162,7 @@ const styles = StyleSheet.create({
     color: '#FFF',
     marginLeft: '-21%',
     fontSize: wp(5),
+    fontFamily: fonts.bold,
   },
   item: {
     width: wp(22),
@@ -175,6 +180,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: '80%',
     marginTop: '-15%',
+    fontFamily: fonts.medium,
   },
   nextBtn: {
     alignSelf: 'center',
