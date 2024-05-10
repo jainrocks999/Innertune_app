@@ -56,7 +56,7 @@ const Img = [
   },
 ];
 
-const Remindmodal2 = () => {
+const Remindmodal2 = ({onPress}) => {
   const [selectedDay, setSelectedDay] = useState([]);
   const handleSelectedDay = items => {
     // Alert.alert('i am here')
@@ -341,6 +341,7 @@ const Remindmodal2 = () => {
           borderRadius: wp(2),
           elevation: 4,
         }}
+        onPress={onPress}
         title="Create"
       />
     </View>

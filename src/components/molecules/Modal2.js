@@ -58,11 +58,11 @@ const Modal2 = ({visible, onClose, titles}) => {
           {titles == 'Remindermodal1' ? (
             <Remindermodal1 />
           ) : titles == 'Remindmodal2' ? (
-            <Remindmodal2 />
+            <Remindmodal2 onPress={onClose} />
           ) : titles == 'Remindmodal3' ? (
-            <Remindmodal4 />
+            <Remindmodal4 onPressClose={onClose} />
           ) : titles == 'Remindmodal4' ? (
-            <Remindmodal4 />
+            <Remindmodal4 onPressClose={onClose} />
           ) : (
             <Remindmodal5 />
           )}

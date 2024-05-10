@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {
@@ -54,60 +55,63 @@ const affirmations = [
 const ChooseAfferamtion = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-        <AntDesign
-          onPress={() => {
-            navigation.goBack();
-          }}
-          name="arrowleft"
-          size={25}
-          color="white"
-          style={{margin: '5%'}}
-        />
-        <Image
-          style={{
-            marginTop: '2%',
-            height: 50,
-            width: 50,
-            // alignSelf: 'flex-end',
-            marginRight: '5%',
-          }}
-          source={require('../../assets/logo/stimuili-logos1-.png')}
-        />
-      </View>
-      <Text style={[styles.txt, {marginTop: '2%'}]}>
-        What best describes your positive affirmation practice?
-      </Text>
-      <View style={{marginTop: '6%', alignItems: 'center', width: '100%'}}>
-        <FlatList
-          data={affirmations.slice(0, 7)}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({item, index}) => (
-            <View style={styles.listContainer}>
-              <Text style={styles.txt2}>{item.text}</Text>
-            </View>
-          )}
-        />
-      </View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('AksReminder')}
-        style={[styles.nextBtn]}>
-        <LinearGradient
-          style={{
-            height: '100%',
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          start={{x: 1.4, y: 0}}
-          end={{x: 0, y: 1}}
-          locations={[0, 1]}
-          colors={['#D485D1', '#B72658']}>
-          <Text style={{color: 'white', fontSize: wp(5.5), fontWeight: '400'}}>
-            {'Next'}
-          </Text>
-        </LinearGradient>
-      </TouchableOpacity>
+      <SafeAreaView style={{flex: 1}}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <AntDesign
+            onPress={() => {
+              navigation.goBack();
+            }}
+            name="arrowleft"
+            size={25}
+            color="white"
+            style={{margin: '5%'}}
+          />
+          <Image
+            style={{
+              marginTop: '2%',
+              height: 50,
+              width: 50,
+              // alignSelf: 'flex-end',
+              marginRight: '5%',
+            }}
+            source={require('../../assets/logo/stimuili-logos1-.png')}
+          />
+        </View>
+        <Text style={[styles.txt, {marginTop: '2%'}]}>
+          What best describes your positive affirmation practice?
+        </Text>
+        <View style={{marginTop: '6%', alignItems: 'center', width: '100%'}}>
+          <FlatList
+            data={affirmations.slice(0, 7)}
+            keyExtractor={item => item.id.toString()}
+            renderItem={({item, index}) => (
+              <View style={styles.listContainer}>
+                <Text style={styles.txt2}>{item.text}</Text>
+              </View>
+            )}
+          />
+        </View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('AksReminder')}
+          style={[styles.nextBtn]}>
+          <LinearGradient
+            style={{
+              height: '100%',
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            start={{x: 1.4, y: 0}}
+            end={{x: 0, y: 1}}
+            locations={[0, 1]}
+            colors={['#D485D1', '#B72658']}>
+            <Text
+              style={{color: 'white', fontSize: wp(5.5), fontWeight: '400'}}>
+              {'Next'}
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </SafeAreaView>
     </View>
   );
 };

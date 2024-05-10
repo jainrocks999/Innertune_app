@@ -26,6 +26,7 @@
     "react-native-bottomsheet-reanimated": "^0.3.1",
     "react-native-btr": "^2.2.1",
     "react-native-circular-progress-indicator": "^4.4.2",
+    "react-native-device-info": "^10.13.2",
     "react-native-elements": "^3.4.3",
     "react-native-fast-image": "^8.6.3",
     "react-native-fs": "^2.20.0",
@@ -41,8 +42,9 @@
     "react-native-simple-toast": "^3.3.1",
     "react-native-sound-player": "^0.13.2",
     "react-native-svg": "^15.1.0",
+    "react-native-swift": "^1.2.3",
     "react-native-tab-view": "^3.5.2",
-    "react-native-track-player": "^4.1.1",
+    "react-native-track-player": "^4.0.1",
     "react-native-tts": "^4.1.0",
     "react-native-vector-icons": "^10.0.3",
     "react-redux": "^9.1.0",
@@ -73,5 +75,6 @@
     "assets": [
       "../../assets/fonts/"
     ]
-  }
+  },
+  "isSwift": true
 }

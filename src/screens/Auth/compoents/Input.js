@@ -13,7 +13,13 @@ const Input = ({...props}) => {
       <TextInput
         {...props}
         placeholderTextColor={'#fff'}
-        style={{fontSize: wp(5), fontFamily: fonts.medium, color: '#fff'}}
+        style={{
+          fontSize: wp(5),
+          fontFamily: fonts.medium,
+          color: '#fff',
+          height: '100%',
+          width: '100%',
+        }}
       />
     </View>
   );

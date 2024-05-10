@@ -7,7 +7,7 @@ import {
 } from '../../../components/atoms/responsive';
 import Modal2 from '../../../components/molecules/Modal2';
 import {fonts} from '../../../Context/Conctants';
-const Remindermodal1 = () => {
+const Remindermodal1 = ({onPress}) => {
   const [visible, setVisible] = useState(false);
   const [selectedModal, setSelectedModal] = useState();
 
@@ -62,10 +62,6 @@ const Remindermodal1 = () => {
           }}>
           <View style={styles.card}>
             <LinearGradient
-              // start={{x: 0.0, y: 0.0}}
-              // end={{x: 5, y: 0.0}}
-              // locations={[0, 0.5, 0.3]}
-              // colors={['#191919', '#89FFBF']}
               start={{x: 1.4, y: 0}}
               end={{x: 0, y: 1}}
               locations={[0, 1]}

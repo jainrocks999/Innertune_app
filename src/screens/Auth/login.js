@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Alert,
   ImageBackground,
+  SafeAreaView,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {
@@ -25,6 +26,7 @@ import Line from './compoents/Line';
 import Social from './compoents/Social';
 import {fonts} from '../../Context/Conctants';
 import Toast from 'react-native-simple-toast';
+import {ScrollView} from 'react-native-gesture-handler';
 const Login = () => {
   const loading = useSelector(state => state.auth.loading);
   const navigation = useNavigation();
@@ -64,66 +66,70 @@ const Login = () => {
   return (
     <Background>
       <Loader loading={loading} />
-      <Intro title1="Welcome" title2="Back" title3="Let's Sign In here" />
-      <View style={{alignItems: 'center'}}>
-        <Input
-          placeholder="Email"
-          keyboardType="email-address"
-          underlineColorAndroid="transparent"
-          onChangeText={email => setEmail(email)}
-        />
-        <Input
-          placeholder="Password"
-          secureTextEntry={true}
-          underlineColorAndroid="transparent"
-          onChangeText={password => setPassword(password)}
-        />
-        <Text
-          onPress={() => {
-            navigation.navigate('Forgot');
-          }}
-          style={{
-            color: '#fff',
-            alignSelf: 'flex-end',
-            marginRight: '6%',
-            marginTop: '3%',
-            fontFamily: 'OpenSans_Condensed-Regular',
-            fontSize: wp(5),
-          }}>
-          Forgot Your password ?
-        </Text>
-        <Buttun
-          onPress={() => {
-            getToken();
-          }}
-          title="Sign In"
-        />
-      </View>
-      <Line />
-      <View style={{alignItems: 'center', marginTop: '7%'}}>
-        <Social />
-      </View>
-      <Text
-        style={{
-          alignSelf: 'center',
-          marginTop: '5%',
-          color: 'white',
-          fontFamily: fonts.medium,
-        }}>
-        Don't have an account ?{' '}
-        <Text
-          onPress={() => {
-            navigation.navigate('signup');
-          }}
-          style={{
-            color: '#B72658',
-            fontSize: wp(5),
-            fontWeight: '500',
-            fontFamily: fonts.medium,
-          }}>
-          {' Sign Up'}
-        </Text>
-      </Text>
+      <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
+        <ScrollView>
+          <Intro title1="Welcome" title2="Back" title3="Let's Sign In here" />
+          <View style={{alignItems: 'center'}}>
+            <Input
+              placeholder="Email"
+              keyboardType="email-address"
+              underlineColorAndroid="transparent"
+              onChangeText={email => setEmail(email)}
+            />
+            <Input
+              placeholder="Password"
+              secureTextEntry={true}
+              underlineColorAndroid="transparent"
+              onChangeText={password => setPassword(password)}
+            />
+            <Text
+              onPress={() => {
+                navigation.navigate('Forgot');
+              }}
+              style={{
+                color: '#fff',
+                alignSelf: 'flex-end',
+                marginRight: '6%',
+                marginTop: '3%',
+                fontFamily: 'OpenSans_Condensed-Regular',
+                fontSize: wp(5),
+              }}>
+              Forgot Your password ?
+            </Text>
+            <Buttun
+              onPress={() => {
+                getToken();
+              }}
+              title="Sign In"
+            />
+          </View>
+          <Line />
+          <View style={{alignItems: 'center', marginTop: '7%'}}>
+            <Social />
+          </View>
+          <Text
+            style={{
+              alignSelf: 'center',
+              marginTop: '5%',
+              color: 'white',
+              fontFamily: fonts.medium,
+            }}>
+            Don't have an account ?{' '}
+            <Text
+              onPress={() => {
+                navigation.navigate('signup');
+              }}
+              style={{
+                color: '#B72658',
+                fontSize: wp(5),
+                fontWeight: '500',
+                fontFamily: fonts.medium,
+              }}>
+              {' Sign Up'}
+            </Text>
+          </Text>
+        </ScrollView>
+      </SafeAreaView>
     </Background>
   );
 };

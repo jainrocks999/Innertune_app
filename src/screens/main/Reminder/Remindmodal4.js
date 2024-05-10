@@ -53,7 +53,7 @@ const Img = [
     title: 'S',
   },
 ];
-const Remindmodal4 = () => {
+const Remindmodal4 = ({onPressClose}) => {
   const [selectedDay, setSelectedDay] = useState([]);
   const handleSelectedDay = items => {
     console.log(items.id);
@@ -233,6 +233,7 @@ const Remindmodal4 = () => {
             borderRadius: wp(2),
             elevation: 4,
           }}
+          onPress={onPressClose}
           title="Close"
         />
       </View>

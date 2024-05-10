@@ -121,7 +121,7 @@ const Playlistdetails = () => {
           style={{
             height: '100%',
             width: '100%',
-            backgroundColor: 'black',
+            // backgroundColor: '#fff',
             zIndex: 100,
           }}>
           <View style={{height: '3%'}} />
@@ -133,6 +133,12 @@ const Playlistdetails = () => {
               borderRadius: wp(2),
               elevation: 5,
               overflow: 'hidden',
+              shadowOffset: {
+                height: 4,
+                width: 4,
+              },
+              shadowRadius: 4,
+              shadowOpacity: 4,
               shadowColor: 'rgba(255,255,255,.5)',
             }}>
             <LinearGradient
@@ -166,7 +172,7 @@ const Playlistdetails = () => {
               }}>
               {title}
             </Text>
-            <Image
+            <ImageBackground
               source={
                 image == ''
                   ? require('../../assets/profilepic/plalist.png')
@@ -175,19 +181,19 @@ const Playlistdetails = () => {
               style={{
                 height: '100%',
                 width: '100%',
-              }}
-            />
-            <LinearGradient
-              start={{x: 0.6, y: 0}}
-              end={{x: 0.6, y: 1}}
-              locations={[-3, 0.2, 1]}
-              colors={[
-                'rgba(0, 0, 0, 0)',
-                'rgba(0, 0, 0, 0.5)',
-                'rgba(0, 0, 0, 1)',
-              ]}
-              style={[styles.gradient, {bottom: 0, height: '60%'}]}
-            />
+              }}>
+              <LinearGradient
+                start={{x: 0.6, y: 0}}
+                end={{x: 0.6, y: 1}}
+                locations={[-3, 0.2, 1]}
+                colors={[
+                  'rgba(0, 0, 0, 0)',
+                  'rgba(0, 0, 0, 0.5)',
+                  'rgba(0, 0, 0, 1)',
+                ]}
+                style={[styles.gradient, {bottom: 0, height: '60%'}]}
+              />
+            </ImageBackground>
           </View>
           <View
             style={{
@@ -385,7 +391,7 @@ const styles = StyleSheet.create({
   gradient: {
     position: 'absolute',
     bottom: 0,
-    zIndex: 3,
+    zIndex: 5,
     height: '40%',
     width: '100%',
   },

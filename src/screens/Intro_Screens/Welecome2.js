@@ -8,6 +8,8 @@ import {
   View,
   Animated as Animated2,
   ScrollView,
+  SafeAreaView,
+  Platform,
 } from 'react-native';
 import {
   heightPercent as hp,
@@ -61,7 +63,7 @@ const affirmations = [
       'https://img.freepik.com/free-photo/outdoor-adventurers-hiking-towards-mountain-peak-sunrise-silhouette-generated-by-ai_188544-30928.jpg',
   },
 ];
-
+const height = Platform.OS == 'android' ? 78 : 73;
 const Welecome2 = ({navigation}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollX = useRef(new Animated2.Value(0)).current;
@@ -155,176 +157,186 @@ const Welecome2 = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-        <AntDesign
-          name="arrowleft"
-          size={25}
-          color="white"
-          style={{margin: '5%'}}
-        />
-        <Image
-          style={{
-            marginTop: '2%',
-            height: 50,
-            width: 50,
-            // alignSelf: 'flex-end',
-            marginRight: '5%',
-          }}
-          source={require('../../assets/logo/stimuili-logos1-.png')}
-        />
-      </View>
-      <Text style={[styles.txt, {marginTop: '2%'}]}>
-        Let's Personalize Your experience
-      </Text>
-      {/* <Text style={styles.txt}></Text> */}
-      <View
-        onLayout={even => {
-          console.log('layouttt', even.nativeEvent.layout);
-        }}
-        style={{height: hp(78), marginTop: '8%'}}>
-        <FlatList
-          horizontal
-          scrollEventThrottle={1}
-          data={affirmations}
-          ref={flatListRef}
-          snapToAlignment="start"
-          pagingEnabled
-          onScroll={even => {
-            console.log('thissis', even.nativeEvent.contentOffset);
-          }}
-          renderItem={({item, index}) => {
-            return true == true ? (
-              <Animated.View
-                entering={FadeIn}
-                exiting={FadeOut}
-                style={[
-                  styles.listContianer,
-                  {opacity: opacity[`opacity${index}`]},
-                ]}>
-                <LinearGradient
-                  start={{x: 1, y: 0}}
-                  end={{x: 1, y: 1}}
-                  locations={[0, 0.5, 1]}
-                  colors={[
-                    '#191919',
-                    'rgba(0, 0, 0, 0.5)',
-                    'rgba(0, 0, 0, 00)',
-                  ]}
-                  style={[styles.gradient, {top: 0}]}
-                />
-                <Image
-                  //resizeMode="stretch"
-                  style={{height: '100%', width: '100%'}}
-                  source={{uri: item.image_url}}
-                />
-                <LinearGradient
-                  start={{x: 0, y: 0}}
-                  end={{x: 0, y: 1}}
-                  locations={[-1, 0.2, 0.8]}
-                  colors={[
-                    'rgba(0, 0, 0, 00)',
-                    'rgba(0, 0, 0, 0.7)',
-                    '#191919',
-                  ]} // Adjust alpha for transparency
-                  style={[styles.gradient]}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      marginTop: '14%',
-                      // opacity: opacity[`opacity${index}`],
-                    }}>
-                    <Text
-                      style={[
-                        styles.txt2,
-                        // {opacity: opacity[`opacity${index}`]},
-                      ]}>
-                      {item.title.substring(0, 15)}....
-                    </Text>
-                    <View style={{flexDirection: 'row', marginRight: '0%'}}>
-                      {[1, 2, 3, 4, 5].map(() => {
-                        return (
-                          <AntDesign
-                            name="star"
-                            style={{marginLeft: '2%'}}
-                            color="yellow"
-                            size={22}
-                          />
-                        );
-                      })}
-                    </View>
-                  </View>
-                  <Text
-                    style={[
-                      styles.txt3,
-                      // {opacity: opacity[`opacity${index}`]},
-                    ]}>
-                    {item.description}
-                  </Text>
-                </LinearGradient>
-              </Animated.View>
-            ) : (
-              <View style={{height: hp(78), width: wp(100)}}></View>
-            );
-          }}
-          onViewableItemsChanged={onViewableItemsChanged.current}
-        />
-        <View
-          style={{position: 'absolute', alignSelf: 'center', bottom: hp(8)}}>
-          <FlatList
-            data={affirmations}
-            horizontal
-            renderItem={({item, index}) => {
-              return (
-                <View
-                  style={[
-                    styles.dot,
-                    {
-                      backgroundColor:
-                        index == currentIndex ? '#B72658' : 'lightgrey',
-                    },
-                  ]}></View>
-              );
+      <SafeAreaView style={{flex: 1}}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <AntDesign
+            name="arrowleft"
+            size={25}
+            color="white"
+            style={{margin: '5%'}}
+          />
+          <Image
+            style={{
+              marginTop: '2%',
+              height: 50,
+              width: 50,
+              // alignSelf: 'flex-end',
+              marginRight: '5%',
             }}
+            source={require('../../assets/logo/stimuili-logos1-.png')}
           />
         </View>
-      </View>
-      {currentIndex == affirmations.length - 1 ? (
-        <TouchableOpacity
-          onPress={onNextPress}
-          style={[
-            styles.nextBtn,
-            {
-              height: currentIndex == affirmations.length - 1 ? hp(6) : hp(7),
-              width: currentIndex == affirmations.length - 1 ? '60%' : hp(7),
-              borderRadius:
-                currentIndex !== affirmations.length - 1 ? hp(3.5) : wp(1),
-              overflow: 'hidden',
-            },
-          ]}>
-          <LinearGradient
-            style={{
-              height: '100%',
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'center',
+        <Text style={[styles.txt, {marginTop: '2%'}]}>
+          Let's Personalize Your experience
+        </Text>
+        {/* <Text style={styles.txt}></Text> */}
+        <View
+          onLayout={even => {
+            console.log('layouttt', even.nativeEvent.layout);
+          }}
+          style={{height: hp(height), marginTop: '8%'}}>
+          <FlatList
+            horizontal
+            scrollEventThrottle={1}
+            data={affirmations}
+            ref={flatListRef}
+            snapToAlignment="start"
+            pagingEnabled
+            onScroll={even => {
+              console.log('thissis', even.nativeEvent.contentOffset);
             }}
-            start={{x: 1.4, y: 0}}
-            end={{x: 0, y: 1}}
-            locations={[0, 1]}
-            colors={['#D485D1', '#B72658']}>
-            {currentIndex == affirmations.length - 1 ? (
-              <Text
-                style={{color: 'white', fontSize: wp(5.5), fontWeight: '400'}}>
-                {'Get Started'}
-              </Text>
-            ) : (
-              <Entypo name="chevron-right" size={30} color={'white'} />
-            )}
-          </LinearGradient>
-        </TouchableOpacity>
-      ) : null}
+            renderItem={({item, index}) => {
+              return true == true ? (
+                <Animated.View
+                  entering={FadeIn}
+                  exiting={FadeOut}
+                  style={[
+                    styles.listContianer,
+                    {
+                      opacity: opacity[`opacity${index}`],
+                      // borderWidth: 1,
+                      // borderColor: '#fff',
+                    },
+                  ]}>
+                  <LinearGradient
+                    start={{x: 1, y: 0}}
+                    end={{x: 1, y: 1}}
+                    locations={[0, 0.5, 1]}
+                    colors={[
+                      '#191919',
+                      'rgba(0, 0, 0, 0.5)',
+                      'rgba(0, 0, 0, 00)',
+                    ]}
+                    style={[styles.gradient, {top: 0}]}
+                  />
+                  <Image
+                    //resizeMode="stretch"
+                    style={{height: '100%', width: '100%'}}
+                    source={{uri: item.image_url}}
+                  />
+                  <LinearGradient
+                    start={{x: 1.5, y: 0}} // Gradient starts from the right
+                    end={{x: 1.5, y: 1}} // Gradient ends at the bottom
+                    locations={[0, 0.5, 1]} // Positioning of colors
+                    colors={[
+                      'rgba(0, 0, 0, 0)', // Fully transparent black at the top
+                      'rgba(0, 0, 0, 0.5)', // Semi-transparent black in the middle
+                      '#191919', // Solid color at the bottom
+                    ]}
+                    style={[styles.gradient]}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginTop: '14%',
+                        // opacity: opacity[`opacity${index}`],
+                      }}>
+                      <Text
+                        style={[
+                          styles.txt2,
+                          // {opacity: opacity[`opacity${index}`]},
+                        ]}>
+                        {item.title.substring(0, 15)}....
+                      </Text>
+                      <View style={{flexDirection: 'row', marginRight: '0%'}}>
+                        {[1, 2, 3, 4, 5].map(() => {
+                          return (
+                            <AntDesign
+                              name="star"
+                              style={{marginLeft: '2%'}}
+                              color="yellow"
+                              size={22}
+                            />
+                          );
+                        })}
+                      </View>
+                    </View>
+                    <Text
+                      style={[
+                        styles.txt3,
+                        // {opacity: opacity[`opacity${index}`]},
+                      ]}>
+                      {item.description}
+                    </Text>
+                  </LinearGradient>
+                </Animated.View>
+              ) : (
+                <View style={{height: hp(height), width: wp(100)}}></View>
+              );
+            }}
+            onViewableItemsChanged={onViewableItemsChanged.current}
+          />
+          <View
+            style={{position: 'absolute', alignSelf: 'center', bottom: hp(8)}}>
+            <FlatList
+              data={affirmations}
+              horizontal
+              renderItem={({item, index}) => {
+                return (
+                  <View
+                    style={[
+                      styles.dot,
+                      {
+                        backgroundColor:
+                          index == currentIndex ? '#B72658' : 'lightgrey',
+                      },
+                    ]}></View>
+                );
+              }}
+            />
+          </View>
+        </View>
+        {currentIndex == affirmations.length - 1 ? (
+          <TouchableOpacity
+            onPress={onNextPress}
+            style={[
+              styles.nextBtn,
+              {
+                height: currentIndex == affirmations.length - 1 ? hp(6) : hp(7),
+                width: currentIndex == affirmations.length - 1 ? '60%' : hp(7),
+                borderRadius:
+                  currentIndex !== affirmations.length - 1 ? hp(3.5) : wp(1),
+                overflow: 'hidden',
+              },
+            ]}>
+            <LinearGradient
+              style={{
+                height: '100%',
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              start={{x: 1.8, y: 0}}
+              end={{x: 0, y: 1}}
+              locations={[0, 1]}
+              colors={['#D485D1', '#B72658']}>
+              {currentIndex == affirmations.length - 1 ? (
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: wp(5.5),
+                    fontWeight: '400',
+                  }}>
+                  {'Get Started'}
+                </Text>
+              ) : (
+                <Entypo name="chevron-right" size={30} color={'white'} />
+              )}
+            </LinearGradient>
+          </TouchableOpacity>
+        ) : null}
+      </SafeAreaView>
     </View>
   );
 };
@@ -349,14 +361,12 @@ const styles = StyleSheet.create({
   listContianer: {
     backgroundColor: '#fff',
     width: wp(100),
-    height: hp(78),
+    height: hp(height),
     // borderWidth: 5,
   },
   gradient: {
     position: 'absolute',
-
     bottom: 0,
-    // borderRadius: 10, // if you want to add rounded corners
     zIndex: 3,
     height: '40%',
     width: '100%',

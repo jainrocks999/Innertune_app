@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {
   heightPercent as hp,
@@ -12,7 +12,7 @@ const Background = ({children}) => {
         <View style={styles.round2}></View>
       </View>
       <View style={[styles.round1, styles.roundSecond]}></View>
-      <View style={{flex: 1, zIndex: 1}}>{children}</View>
+      <View style={{flex: 1, zIndex: 5}}>{children}</View>
     </View>
   );
 };
