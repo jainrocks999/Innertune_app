@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/MaterialCommunityIcons';
 import Horizontal from '../../components/Home/Horizontal';
 // import {affirmations} from '../main/affmatin';
@@ -307,7 +307,11 @@ const Playlistdetails = () => {
               justifyContent: 'space-between',
               marginTop: '8%',
             }}>
-            <Feather name="heart" size={25} color="white" />
+            <FontAwesome
+              name={item.is_favorite ? 'heart' : 'heart-o'}
+              size={25}
+              color={item.is_favorite ? '#B72658' : 'white'}
+            />
             <Entypo name="share" size={25} color="white" />
             <Entypo
               onPress={() => {

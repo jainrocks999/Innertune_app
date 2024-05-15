@@ -109,12 +109,15 @@ function* fetchAffirmation(action) {
         type: 'home/affirmation_fetch_success',
         payload: res.data,
       });
-      yield put({
-        type: 'home/playList_item',
-        payload: action.item,
-      });
-      // Alert.alert(JSON.stringify(action.item))
-      action.navigation?.navigate('Playlistdetails2');
+      if (action.item) {
+        yield put({
+          type: 'home/playList_item',
+          payload: action.item,
+        });
+      }
+      if (action.navigation) {
+        action.navigation?.navigate('Playlistdetails2');
+      }
     } else {
       Toast.show('Error with fetching affermations');
       yield put({
@@ -193,7 +196,6 @@ function* getbgcategories(action) {
   }
 }
 function* fetchCreatePlaylist(action) {
-  console.log(action);
   try {
     let formdata = new FormData();
     formdata.append('description', action.description);
@@ -210,7 +212,14 @@ function* fetchCreatePlaylist(action) {
         type: 'home/createPlayList_success',
         payload: res.data,
       });
-      Toast.show('Playlist created successfully');
+      yield put({
+        type: 'home/add_playlistItem_request',
+        playlist_id: res.data.id,
+        affirmation_id: action.selected,
+        url: 'createPlayListItem',
+        navigation: action.navigation,
+        token: action.token,
+      });
     } else {
       Toast.show('Error with fetching createplaylist ');
       yield put({
@@ -295,6 +304,44 @@ function* getfavoriteList(action) {
     console.log('errors with favoriteList', error);
   }
 }
+function* addPlaylistItem(action) {
+  try {
+    const formdata = new FormData();
+    formdata.append('playlist_id', action.playlist_id);
+    formdata.append('category_id[0]', 0);
+    if (Array.isArray(action.affirmation_id)) {
+      action.affirmation_id.map((item, index) => {
+        formdata.append(`affirmation_id[${index}]`, item);
+      });
+      const res = yield call(Api.API_POST, {
+        formdata,
+        token: action.token,
+        url: action.url,
+      });
+      console.log('thjis is res', res);
+      if (res.status) {
+        yield put({
+          type: 'home/add_playlistItem_success',
+          payload: res.data,
+        });
+        Toast.show('Playlist created successfully');
+        action.navigation.navigate('library');
+      } else {
+        yield put({
+          type: 'home/add_playlistItem_error',
+        });
+        console.log(res);
+        Toast.show('Something went wrong');
+      }
+    }
+  } catch (error) {
+    yield put({
+      type: 'home/add_playlistItem_error',
+    });
+    console.log(error);
+    Toast.show('Something went wrong');
+  }
+}
 
 export default function* homeSaga() {
   yield takeEvery('home/playlist_request', getplaylist);
@@ -306,4 +353,5 @@ export default function* homeSaga() {
   yield takeEvery('home/createPlayList_request', fetchCreatePlaylist);
   yield takeEvery('home/Createfavriote_request', fetchCreatefavriote);
   yield takeEvery('home/favoriteList_request', getfavoriteList);
+  yield takeEvery('home/add_playlistItem_request', addPlaylistItem);
 }

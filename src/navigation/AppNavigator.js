@@ -29,7 +29,11 @@ function MyStack() {
       <Stack.Screen
         name="splash"
         component={Splash}
-        options={{headerShown: false}}
+        options={{
+          headerShown: false,
+          animationEnabled: true,
+          animationTypeForReplace: 'pop',
+        }}
       />
       <Stack.Screen
         name="signup"

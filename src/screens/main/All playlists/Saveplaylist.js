@@ -17,7 +17,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ScrollView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   launchImageLibrary as _launchImageLibrary,
@@ -25,28 +25,24 @@ import {
 } from 'react-native-image-picker';
 import {fonts} from '../../../Context/Conctants';
 import Buttun from '../../Auth/compoents/Buttun';
+import Loader from '../../../components/Loader';
 let launchImageLibrary = _launchImageLibrary;
 
 const Saveplaylist = ({route}) => {
   const selectedItems = route.params.selected ?? [];
+  const {loading, groups, category, Createfavriote, addetItems_to_playlist} =
+    useSelector(state => state.home);
   const navigation = useNavigation();
   const [playlistName, setPlaylistName] = useState('');
   const [description, setDescription] = useState('');
-  console.log('this sis seledcte itme', selectedItems);
-
   const handlePlaylistNameChange = text => {
     setPlaylistName(text);
   };
-
   const handleDescriptionChange = text => {
     setDescription(text);
   };
   const dispatch = useDispatch();
-
   const handleSubmit = async () => {
-    // You can perform actions with playlistName and description here
-    // console.log('Playlist Name:', playlistName);
-    // console.log('Description:', description);
     const token = await AsyncStorage.getItem('token');
     dispatch({
       type: 'home/createPlayList_request',
@@ -56,8 +52,8 @@ const Saveplaylist = ({route}) => {
       url: 'createPlayList',
       token,
       navigation,
+      selected: addetItems_to_playlist,
     });
-    navigation.navigate('library');
   };
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -84,6 +80,7 @@ const Saveplaylist = ({route}) => {
   };
   return (
     <View style={{flex: 1, backgroundColor: '#191919'}}>
+      <Loader loading={loading} />
       <View
         style={{
           flexDirection: 'row',
@@ -174,6 +171,7 @@ const Saveplaylist = ({route}) => {
               height: hp(6.7),
               width: wp(75),
             }}
+            onPress={handleSubmit}
           />
         </View>
       </ScrollView>

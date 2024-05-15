@@ -5,7 +5,6 @@ import {
   widthPrecent as wp,
 } from '../../../components/atoms/responsive';
 import {Image} from 'react-native';
-import {Line} from 'react-native-svg';
 import {fonts} from '../../../Context/Conctants';
 
 const Intro = ({title1, title2, title3, style}) => {
@@ -22,7 +21,7 @@ const Intro = ({title1, title2, title3, style}) => {
       />
       <View style={{marginLeft: '6%'}}>
         <Text style={styles.title}>{title1}</Text>
-        <Text style={styles.title}>{title2}</Text>
+        <Text style={[styles.title, {fontSize: wp(8)}]}>{title2}</Text>
         <Text
           style={{
             fontSize: wp(5),

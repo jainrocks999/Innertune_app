@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Text,
   ScrollView,
-  TouchableOpacity,
   View,
   SafeAreaView,
 } from 'react-native';
@@ -14,7 +13,6 @@ import {
   widthPrecent as wp,
 } from '../../components/atoms/responsive';
 import {FlatList} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 import {fonts} from '../../Context/Conctants';
 import Buttun from '../Auth/compoents/Buttun';
@@ -78,11 +76,9 @@ const Intrested = () => {
                 marginTop: '2%',
                 height: 50,
                 width: 50,
-                // alignSelf: 'flex-end',
                 marginRight: '5%',
               }}
               source={require('../../assets/logo/stimuili-logos1-.png')}
-              // source={require('../../assets/Intrested')}
             />
           </View>
           <View style={{marginTop: '10%'}}>

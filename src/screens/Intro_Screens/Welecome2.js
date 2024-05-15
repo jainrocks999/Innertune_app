@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   View,
   Animated as Animated2,
-  ScrollView,
   SafeAreaView,
   Platform,
 } from 'react-native';
@@ -115,9 +114,6 @@ const Welecome2 = ({navigation}) => {
       return;
     }
 
-    // Set opacity of current element to 1
-
-    // Loop through all elements and set opacity to 0 except for the current one
     flatListRef.current.scrollToIndex({index: newIndex, animated: true});
     Object.keys(opacity).forEach(key => {
       if (key !== `opacity${newIndex}`) {
@@ -125,7 +121,6 @@ const Welecome2 = ({navigation}) => {
       }
     });
 
-    // Set opacity of current element to 1 with delay
     setTimeout(() => {
       opacity[`opacity${newIndex}`].value = withDelay(
         0 * DELAY,
@@ -135,7 +130,6 @@ const Welecome2 = ({navigation}) => {
   };
   useEffect(() => {
     intervalId.current = setInterval(scrollToNextItem, 4000);
-    // opacity1.value = withDelay(1 * DELAY, withTiming(0, {duration: 500}));
     return () => clearInterval(intervalId.current);
   }, [currentIndex]);
   useEffect(() => {
@@ -204,8 +198,6 @@ const Welecome2 = ({navigation}) => {
                     styles.listContianer,
                     {
                       opacity: opacity[`opacity${index}`],
-                      // borderWidth: 1,
-                      // borderColor: '#fff',
                     },
                   ]}>
                   <LinearGradient
@@ -220,18 +212,17 @@ const Welecome2 = ({navigation}) => {
                     style={[styles.gradient, {top: 0}]}
                   />
                   <Image
-                    //resizeMode="stretch"
                     style={{height: '100%', width: '100%'}}
                     source={{uri: item.image_url}}
                   />
                   <LinearGradient
-                    start={{x: 1.5, y: 0}} // Gradient starts from the right
-                    end={{x: 1.5, y: 1}} // Gradient ends at the bottom
-                    locations={[0, 0.5, 1]} // Positioning of colors
+                    start={{x: 1.5, y: 0}}
+                    end={{x: 1.5, y: 1}}
+                    locations={[0, 0.5, 1]}
                     colors={[
-                      'rgba(0, 0, 0, 0)', // Fully transparent black at the top
-                      'rgba(0, 0, 0, 0.5)', // Semi-transparent black in the middle
-                      '#191919', // Solid color at the bottom
+                      'rgba(0, 0, 0, 0)',
+                      'rgba(0, 0, 0, 0.5)',
+                      '#191919',
                     ]}
                     style={[styles.gradient]}>
                     <View
@@ -240,13 +231,8 @@ const Welecome2 = ({navigation}) => {
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         marginTop: '14%',
-                        // opacity: opacity[`opacity${index}`],
                       }}>
-                      <Text
-                        style={[
-                          styles.txt2,
-                          // {opacity: opacity[`opacity${index}`]},
-                        ]}>
+                      <Text style={[styles.txt2]}>
                         {item.title.substring(0, 15)}....
                       </Text>
                       <View style={{flexDirection: 'row', marginRight: '0%'}}>
@@ -262,13 +248,7 @@ const Welecome2 = ({navigation}) => {
                         })}
                       </View>
                     </View>
-                    <Text
-                      style={[
-                        styles.txt3,
-                        // {opacity: opacity[`opacity${index}`]},
-                      ]}>
-                      {item.description}
-                    </Text>
+                    <Text style={[styles.txt3]}>{item.description}</Text>
                   </LinearGradient>
                 </Animated.View>
               ) : (

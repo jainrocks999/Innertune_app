@@ -97,8 +97,6 @@ const Toptab = () => {
     });
   };
   const {playlist} = useSelector(state => state.home);
-  console.log('tjhissisi', JSON.stringify(playlist));
-
   const navigation = useNavigation();
   return (
     <View style={{flex: 1, backgroundColor: '#191919', height: '100%'}}>
@@ -113,7 +111,6 @@ const Toptab = () => {
           My Library
         </Text>
       </View>
-
       <TouchableOpacity
         onPress={items => {
           getfavoriteList(items);
@@ -126,10 +123,6 @@ const Toptab = () => {
           }}>
           <View style={styles.imageContainer}>
             <LinearGradient
-              // start={{x: 1.4, y: 0}}
-              // end={{x: 0, y: 1}}
-              // locations={[0, 1]}
-              // colors={['#D485D1', '#B72658']}
               start={{x: 1, y: 0}}
               end={{x: -0.2, y: 0}}
               locations={[0.3, 1]}

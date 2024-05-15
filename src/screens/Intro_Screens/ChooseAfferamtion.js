@@ -122,8 +122,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#191919',
-    // alignItems: 'center',
-    // marginLeft: '2b%',
   },
   txt: {
     color: 'white',
@@ -135,7 +133,6 @@ const styles = StyleSheet.create({
   listContainer: {
     borderWidth: wp(0.5),
     height: hp(6.8),
-    // paddingVertical: '2%',
     width: wp(94),
     borderColor: 'white',
     marginVertical: '2%',
@@ -162,6 +159,5 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     bottom: hp(4),
     borderWidth: 1,
-    // borderColor: 'white',
   },
 });

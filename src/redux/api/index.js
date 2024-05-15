@@ -27,7 +27,6 @@ export default class Api {
     return response;
   };
   static API_POST = async data => {
-    console.log(data);
     var myHeaders = {
       Authorization: `Bearer ${data.token}`,
     };

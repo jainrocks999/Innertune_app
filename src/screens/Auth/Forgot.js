@@ -1,5 +1,5 @@
-import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import Background from './compoents/Background';
 import Intro from './compoents/Intro';
 import Input from './compoents/Input';
@@ -63,5 +63,3 @@ const Forgot = () => {
 };
 
 export default Forgot;
-
-const styles = StyleSheet.create({});

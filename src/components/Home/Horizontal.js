@@ -1,30 +1,40 @@
-import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
-import React from 'react';
-import {FlatList} from 'react-native';
+import React, {useEffect} from 'react';
 import {
-  heightPercent as hp,
-  widthPrecent as wp,
-} from '../../components/atoms/responsive';
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Clipboard,
+} from 'react-native';
+import {FlatList} from 'react-native';
+import {widthPrecent as wp} from '../../components/atoms/responsive';
 
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Octicons';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {fonts} from '../../Context/Conctants';
+import {NavigationContext} from '@react-navigation/native';
+
 const Horizontal = ({data, onPress}) => {
+  const {Createfavriote} = useSelector(state => state.home);
+
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+  const navigation = React.useContext(NavigationContext);
   const getFavriote = async item => {
     const token = await AsyncStorage.getItem('token');
     dispatch({
       type: 'home/Createfavriote_request',
       user_id: '1',
       category_id: item.id,
+      affirmation_id: '',
       url: 'createFavoriteList',
       navigation,
       token,
     });
   };
+
   return (
     <FlatList
       horizontal={true}
@@ -33,8 +43,6 @@ const Horizontal = ({data, onPress}) => {
       keyExtractor={item => item.id}
       renderItem={({item}) => {
         let title = 'Believe in yourself';
-        // let image =
-        //   'https://stimuli.forebearpro.co.in/storage/app/public/3/download-(8).jpg';
 
         let image =
           item?.categories_image[0]?.original_url ??
@@ -44,9 +52,12 @@ const Horizontal = ({data, onPress}) => {
         return (
           <TouchableOpacity onPress={() => onPress(item)} style={styles.main}>
             <Icon
+              onPress={() => {
+                getFavriote(item);
+              }}
               style={{position: 'absolute', zIndex: 1, left: 20, top: 10}}
-              name="heart"
-              color={'white'}
+              name={item.is_favorite ? 'heart-fill' : 'heart'}
+              color={item.is_favorite ? '#B72658' : 'white'}
               size={20}
             />
             <View style={styles.container}>

@@ -21,7 +21,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Playlistdetails from '../Tab/Playlistdetails';
 import Feather from 'react-native-vector-icons/Feather';
 import Tts from 'react-native-tts';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Mymodal from '../../components/molecules/Modal';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
@@ -58,7 +58,21 @@ const Playsong = () => {
   const [visible, setVisible] = useState(false);
   const [selectedTab, setSelectedTab] = useState();
   // const v
-  const {affirmations} = useSelector(state => state.home);
+  const {affirmations, Createfavriote} = useSelector(state => state.home);
+  const getAffirmation = async () => {
+    const token = await AsyncStorage.getItem('token');
+    dispatch({
+      type: 'home/affirmation_fetch_request',
+      token,
+      user_id: '1',
+      navigation: false,
+      url: 'affirmation',
+      item: false,
+    });
+  };
+  useEffect(() => {
+    getAffirmation();
+  }, [Createfavriote]);
   const [isPaused, setIsPaused] = useState(false);
   const [visibleIndex, setVisibleIndex] = useState(0);
   // Clipboard.setString(JSON.stringify(affirmations));
@@ -385,10 +399,18 @@ const Playsong = () => {
               onPress={() => {
                 handleHeartPress(affirmations[visibleIndex]);
               }}>
-              <Feather name="heart" size={30} color="white" />
+              <FontAwesome
+                name={
+                  affirmations[visibleIndex].is_favorite ? 'heart' : 'heart-o'
+                }
+                size={30}
+                color={
+                  affirmations[visibleIndex].is_favorite ? '#B72658' : 'white'
+                }
+              />
             </TouchableOpacity>
 
-            <FontAwesome6
+            <FontAwesome
               name="repeat"
               size={30}
               color="white"

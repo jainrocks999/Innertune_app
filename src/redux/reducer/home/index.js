@@ -3,21 +3,22 @@ const initialState = {
   playlist: [],
   loading: false,
   groups: [],
-  category:[],
+  category: [],
   affirmations: [],
-  bgSound:[],
-  bgcategories:[],
-  createPlayList:[],
-  Createfavriote:[],
-  favoriteList:[],
-  item:{}
+  bgSound: [],
+  bgcategories: [],
+  createPlayList: [],
+  Createfavriote: {},
+  favoriteList: [],
+  item: {},
+  addetItems_to_playlist: [],
 };
 const Home = createSlice({
   name: 'home',
   initialState,
   reducers: {
-    playList_item:(state,action)=>{
-      return{...state,item:action.payload}
+    playList_item: (state, action) => {
+      return {...state, item: action.payload};
     },
     playlist_request: (state, action) => {
       return {...state, loading: true};
@@ -55,50 +56,62 @@ const Home = createSlice({
     affirmation_fetch_error: (state, action) => {
       return {...state, loading: false};
     },
-    bg_categories_request:(state,action)=>{
-      return {...state,loading:true}
+    bg_categories_request: (state, action) => {
+      return {...state, loading: true};
     },
-    bg_categories_success:(state,action)=>{
-      return {...state,bgcategories:action.payload,loading:false}
+    bg_categories_success: (state, action) => {
+      return {...state, bgcategories: action.payload, loading: false};
     },
-    bg_categories_error:(state,action)=>{
-      return {...state,loading:false}
+    bg_categories_error: (state, action) => {
+      return {...state, loading: false};
     },
-    bg_sound_request:(state,action)=>{
-      return {...state,loading:true}
+    bg_sound_request: (state, action) => {
+      return {...state, loading: true};
     },
-    bg_sound_success:(state,action)=>{
-      return {...state,bgSound:action.payload,loading:false}
+    bg_sound_success: (state, action) => {
+      return {...state, bgSound: action.payload, loading: false};
     },
-    bg_sound_error:(state,action)=>{
-      return {...state,loading:false}
+    bg_sound_error: (state, action) => {
+      return {...state, loading: false};
     },
-    createPlayList_request:(state,action)=>{
-      return {...state,loading:true}
+    createPlayList_request: (state, action) => {
+      return {...state, loading: true};
     },
-    createPlayList_success:(state,action)=>{
-      return {...state,createPlayList:action.payload,loading:false}
+    createPlayList_success: (state, action) => {
+      return {...state, createPlayList: action.payload, loading: false};
     },
-    createPlayList_error:(state,action)=>{
-      return {...state,loading:false}
+    createPlayList_error: (state, action) => {
+      return {...state, loading: false};
     },
-    Createfavriote_request:(state,action)=>{
-      return {...state,loading:true}
+    Createfavriote_request: (state, action) => {
+      return {...state, loading: true};
     },
-    Createfavriote_success:(state,action)=>{
-      return {...state,Createfavriote:action.payload,loading:false}
+    Createfavriote_success: (state, action) => {
+      return {...state, Createfavriote: action.payload, loading: false};
     },
-    Createfavriote_error:(state,action)=>{
-      return {...state,loading:false}
+    Createfavriote_error: (state, action) => {
+      return {...state, loading: false};
     },
-    favoriteList_request:(state,action)=>{
-      return {...state,loading:true}
+    favoriteList_request: (state, action) => {
+      return {...state, loading: true};
     },
-    favoriteList_success:(state,action)=>{
-      return {...state,favoriteList:action.payload,loading:false}
+    favoriteList_success: (state, action) => {
+      return {...state, favoriteList: action.payload, loading: false};
     },
-    favoriteList_error:(state,action)=>{
-      return {...state,loading:false}
+    favoriteList_error: (state, action) => {
+      return {...state, loading: false};
+    },
+    Add_item_to_Create_Playlist: (state, action) => {
+      return {...state, addetItems_to_playlist: action.payload};
+    },
+    add_playlistItem_request: (state, action) => {
+      return {...state, loading: true};
+    },
+    add_playlistItem_success: (state, action) => {
+      return {...state, loading: false};
+    },
+    add_playlistItem_error: (state, action) => {
+      return {...state, loading: false};
     },
   },
 });

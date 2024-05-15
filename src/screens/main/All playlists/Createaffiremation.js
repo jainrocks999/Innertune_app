@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {
@@ -71,23 +71,36 @@ const Img = [
   },
 ];
 const Createaffirmation = ({route}) => {
-  const {affirmations} = useSelector(state => state.home);
+  const {affirmations, addetItems_to_playlist} = useSelector(
+    state => state.home,
+  );
   const [selected, setSelected] = useState([]);
-  const selectedItems = route.params.selected;
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    filterSelected();
-  }, []);
+    setSelected(addetItems_to_playlist);
+  }, [addetItems_to_playlist]);
 
   const filterSelected = () => {
-    const filter = affirmations.filter(item => selectedItems.includes(item.id));
-    setSelected(filter);
+    const filter = affirmations.filter(item => selected.includes(item.id));
+    return filter;
+    // setSelected(filter);
   };
 
   const deselectItem = itemId => {
-    const updatedSelected = selected.filter(item => item.id !== itemId);
+    const updatedSelected = selected.filter(item => item != itemId);
     setSelected(updatedSelected);
   };
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      dispatch({
+        type: 'home/Add_item_to_Create_Playlist',
+        payload: selected,
+      });
+    }, 200);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [selected]);
 
   const navigation = useNavigation();
   return (
@@ -127,7 +140,7 @@ const Createaffirmation = ({route}) => {
       </View> */}
       <ScrollView contentContainerStyle={{alignItems: 'center', marginTop: 20}}>
         <FlatList
-          data={selected}
+          data={filterSelected()}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
             <View
@@ -149,7 +162,7 @@ const Createaffirmation = ({route}) => {
               <View style={{justifyContent: 'center'}}>
                 <AntDesign
                   onPress={() => {
-                    hanleSelected(item.id);
+                    deselectItem(item.id);
                   }}
                   name={
                     !selected.includes(item.id) ? 'pluscircleo' : 'minuscircleo'

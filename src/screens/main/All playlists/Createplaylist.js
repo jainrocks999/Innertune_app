@@ -6,7 +6,7 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {
@@ -20,6 +20,7 @@ import {useNavigation} from '@react-navigation/native';
 import Buttun from '../../Auth/compoents/Buttun';
 import Loader from '../../../components/Loader';
 import {fonts} from '../../../Context/Conctants';
+// import {affirmations} from '../affmatin';
 const Img = [
   {
     id: '1',
@@ -71,22 +72,27 @@ const Img = [
   },
 ];
 const Createplaylist = () => {
-  const {affirmations, loading} = useSelector(state => state.home);
-  console.log(affirmations);
+  const {affirmations, loading, addetItems_to_playlist} = useSelector(
+    state => state.home,
+  );
+  useEffect(() => {
+    setSelected(addetItems_to_playlist);
+  }, [addetItems_to_playlist]);
+  const dispatch = useDispatch();
+
   const navigation = useNavigation();
-  // const [text, setText] = useState('');
-  // const handleClear = () => {
-  //   setText;
-  //   onChangeText;
-  // };
+
   const [selected, setSelected] = useState([]);
   const hanleSelected = id => {
+    console.log(id);
+    let newarray = [];
     if (selected.includes(id)) {
       const filter = [...selected].filter(item => item != id);
-      setSelected(filter);
+      newarray = [...filter];
     } else {
-      setSelected([...selected, id]);
+      newarray = [...selected, id];
     }
+    setSelected(newarray);
   };
   return (
     <View style={{flex: 1, backgroundColor: '#191919'}}>
@@ -143,7 +149,12 @@ const Createplaylist = () => {
           />
         )}
       </View> */}
-      <ScrollView contentContainerStyle={{marginTop: 20, alignItems: 'center'}}>
+      <ScrollView
+        contentContainerStyle={{
+          marginTop: 20,
+          alignItems: 'center',
+          paddingBottom: hp(4),
+        }}>
         <FlatList
           data={affirmations}
           keyExtractor={item => item.id}
@@ -185,11 +196,14 @@ const Createplaylist = () => {
         style={{
           height: hp(12),
           alignItems: 'center',
-          // justifyContent: 'center',
         }}>
         <Buttun
           onPress={() => {
-            navigation.navigate('createaffirmation', {selected});
+            dispatch({
+              type: 'home/Add_item_to_Create_Playlist',
+              payload: selected,
+            });
+            navigation.navigate('createaffirmation', {selected: []});
           }}
           title={`${'Added Affirmations '}${selected.length}`}
           style={{

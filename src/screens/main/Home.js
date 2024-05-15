@@ -50,12 +50,13 @@ const Img = [
   },
 ];
 
-const HomeScreen = () => {
+const HomeScreen = props => {
+  const {navigation} = props;
   const dispatch = useDispatch();
   const getFavriote = item => {
     console.log(item);
   };
-  const {loading, playlist, groups, category} = useSelector(
+  const {loading, groups, category, Createfavriote} = useSelector(
     state => state.home,
   );
 
@@ -73,6 +74,17 @@ const HomeScreen = () => {
       url: 'groups',
       user_id: 1,
     });
+  };
+
+  useEffect(() => {
+    getAllCategories();
+  }, []);
+  useEffect(() => {
+    getplaylist();
+  }, [Createfavriote]);
+  const getplaylist = async () => {
+    const token = await AsyncStorage.getItem('token');
+
     dispatch({
       type: 'home/category_fetch_request',
       token,
@@ -80,13 +92,6 @@ const HomeScreen = () => {
       user_id: '1',
     });
   };
-  const test = async () => {
-    const token = await AsyncStorage.getItem('token');
-  };
-
-  useEffect(() => {
-    getAllCategories();
-  }, []);
   const getAffetMations = async item => {
     const token = await AsyncStorage.getItem('token');
     dispatch({
@@ -99,7 +104,6 @@ const HomeScreen = () => {
     });
   };
 
-  const navigation = useNavigation();
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
       <Header
@@ -123,40 +127,6 @@ const HomeScreen = () => {
             scrollEnabled={false}
             keyExtractor={item => item.id}
             renderItem={({item}) => (
-              // <TouchableOpacity>
-              //   <View style={styles.carddd}>
-              //     {/* <LinearGradient
-              // start={{x: 0.0, y: 0.0}}
-              // end={{x: 5, y: 0.0}}
-              // locations={[0, 0.5, 0.3]}
-              // colors={['#191919', '#89FFBF']}
-              // style={styles.linearGradienttt}> */}
-              //     <Image
-              //       source={item.image}
-              //       style={{height: hp(8), width: wp(16), borderRadius: 20}}
-              //     />
-              //     <View
-              //       style={{
-              //         flexDirection: 'column',
-              //         alignSelf: 'center',
-              //         width: wp(45),
-              //         marginHorizontal: '5%',
-              //       }}>
-              //       <Text
-              //         style={{
-              //           fontSize: 13,
-              //           width: wp(26),
-              //           fontWeight: '400',
-              //           fontFamily: 'Poppins-Medium',
-              //           color: '#ffffff',
-              //           backgroundColor: 'transparent',
-              //         }}>
-              //         {'item.title'}
-              //       </Text>
-              //     </View>
-              //     {/* </LinearGradient> */}
-              //   </View>
-              // </TouchableOpacity>
               <View style={styles.lastSestionItem}>
                 <Image
                   source={item.image}
@@ -186,7 +156,6 @@ const HomeScreen = () => {
               <Text
                 style={{
                   fontSize: 15,
-                  // fontWeight: '900',
                   color: 'white',
                   fontFamily: fonts.bold,
                 }}>
@@ -195,48 +164,13 @@ const HomeScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
-        {/* <FlatList
-          horizontal={true}
-          data={Img}
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => {
-            return (
-              <View style={styles.imageContainer}>
-                <TouchableOpacity>
-                  <Image
-                    source={require('../../assets/music.jpg')}
-                    style={styles.image}
-                  />
-                  <Text style={styles.textttt}>Believe in yourself</Text>
-                </TouchableOpacity>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    marginTop: hp(-2.5),
-                  }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      getFavriote(item);
-                    }}>
-                    <Icon name="heart" size={20} color="white" />
-                  </TouchableOpacity>
-                </View>
-                {/* <Text style={styles.text2}>{'90 affirmations'}</Text> 
-              </View>
-            );
-          }}
-        /> */}
+
         <Horizontal
           onPress={items => {
             getAffetMations(items);
           }}
           data={category}
         />
-        {/* Light color  :-  #               
-Dark color   :-  #B72658 */}
 
         <View style={styles.cardd}>
           <LinearGradient
@@ -279,7 +213,6 @@ Dark color   :-  #B72658 */}
               <Text
                 style={{
                   ontSize: 15,
-                  // fontWeight: '900',
                   color: 'white',
                   fontFamily: fonts.bold,
                 }}>
@@ -288,40 +221,6 @@ Dark color   :-  #B72658 */}
             </TouchableOpacity>
           </View>
         </View>
-        {/* <FlatList
-          horizontal={true}
-          data={Img}
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => {
-            return (
-              <View style={styles.imageContainer}>
-                <TouchableOpacity>
-                  <Image
-                    source={require('../../assets/music.jpg')}
-                    style={styles.image}
-                  />
-                  <Text style={styles.textttt}>Believe in yourself</Text>
-                </TouchableOpacity>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    marginTop: hp(-2.5),
-                  }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      getFavriote(item);
-                    }}>
-                    <Icon name="heart" size={20} color="white" />
-                  </TouchableOpacity>
-                </View>
-                {/* <Text style={styles.text2}>{'90 affirmations'}</Text> 
-              </View>
-            );
-          }}
-        /> */}
         <Horizontal
           onPress={items => {
             getAffetMations(items);
@@ -343,7 +242,6 @@ Dark color   :-  #B72658 */}
                     <Text
                       style={{
                         ontSize: 15,
-                        // fontWeight: '900',
                         color: 'white',
                         fontFamily: fonts.bold,
                       }}>
@@ -429,7 +327,6 @@ Dark color   :-  #B72658 */}
                           <Text
                             style={{
                               fontSize: 20,
-                              // fontWeight: '600',
                               color: '#ffffff',
                               backgroundColor: 'transparent',
                               fontFamily: fonts.bold,
@@ -544,7 +441,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     borderRadius: 20,
-    // backgroundColor: '#bb98ed',
     marginBottom: 20,
   },
   carddd: {
@@ -558,7 +454,6 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   lastSestionItem: {
-    // paddingVertical: '1%',
     width: '46%',
     marginHorizontal: '2%',
     marginVertical: '2%',
