@@ -1,10 +1,43 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  PermissionsAndroid,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Background from './compoents/Background';
 const Splash = () => {
   const navigation = useNavigation();
+
+  const requestPermissions = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+        {
+          title: 'Stimuli Notification Permission',
+          message:
+            'Stimuli would like to send you push notifications ' +
+            'to keep you updated on the latest photo trends and app features.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Don’t Allow',
+          buttonPositive: 'Allow',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('You can use the camera');
+      }
+      console.log('this', granted);
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+  useEffect(() => {
+    requestPermissions();
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {

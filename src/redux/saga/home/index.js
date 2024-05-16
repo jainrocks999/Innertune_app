@@ -236,8 +236,6 @@ function* fetchCreatePlaylist(action) {
   }
 }
 function* fetchCreatefavriote(action) {
-  Alert.alert('called');
-
   try {
     console.log(action);
     let formdata = new FormData();

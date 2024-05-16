@@ -120,7 +120,7 @@ const Playsong = () => {
   useEffect(() => {
     player('Sleeping.wav');
   }, []);
-  console.log(affirmations);
+
   useEffect(() => {
     const maxTimeInSeconds = maxTimeInMinutes * 60;
     let currentTime = currentTimeRef.current || 0;
@@ -160,7 +160,7 @@ const Playsong = () => {
 
   const handlePlayPauseClick = () => {
     setIsPaused(prevIsPaused => !prevIsPaused);
-    if (isPaused & (progress == 100)) {
+    if (isPaused & (progress >= 100)) {
       setProgress(0);
       currentTimeRef.current = 0;
       flatListRef.current.scrollToIndex({
@@ -249,7 +249,7 @@ const Playsong = () => {
   const onVoicePress = async voice => {
     try {
       await Tts.setDefaultLanguage(voice.language);
-      if (isPaused & (progress == 100)) {
+      if (isPaused & (progress >= 100)) {
         setIsPaused(false);
         setProgress(0);
         currentTimeRef.current = 0;
@@ -284,7 +284,6 @@ const Playsong = () => {
     Tts.speak(text);
   };
   const player = async sound => {
-    console.log(sound.music);
     const isSetup = await setupPlayer();
     console.log(isSetup);
     if (isSetup) {
@@ -466,7 +465,7 @@ const Playsong = () => {
                 readText(affirmations[newIndex].affirmation_text); // Read text when view changes
                 setVisibleIndex(newIndex);
                 setIsPaused(false);
-                if (isPaused & (progress == 100)) {
+                if (isPaused & (progress >= 100)) {
                   // setIsPaused(false);
                   setProgress(0);
                   currentTimeRef.current = 0;
