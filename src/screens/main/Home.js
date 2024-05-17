@@ -16,6 +16,7 @@ import Horizontal from '../../components/Home/Horizontal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../components/Loader';
 import {fonts} from '../../Context/Conctants';
+import storage from '../../utils/StorageService';
 
 const Img = [
   {
@@ -61,18 +62,23 @@ const HomeScreen = props => {
   );
 
   const getAllCategories = async () => {
-    const token = await AsyncStorage.getItem('token');
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
     dispatch({
       type: 'home/playlist_request',
       token,
       url: 'playList',
-      user_id: '1',
+      user_id: user,
     });
     dispatch({
       type: 'home/group_fetch_request',
       token,
       url: 'groups',
-      user_id: 1,
+      user_id: user,
     });
   };
 
@@ -83,24 +89,36 @@ const HomeScreen = props => {
     getplaylist();
   }, [Createfavriote]);
   const getplaylist = async () => {
-    const token = await AsyncStorage.getItem('token');
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
 
     dispatch({
       type: 'home/category_fetch_request',
       token,
       url: 'categories',
-      user_id: '1',
+      user_id: user,
     });
   };
   const getAffetMations = async item => {
-    const token = await AsyncStorage.getItem('token');
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+
     dispatch({
       type: 'home/affirmation_fetch_request',
       token,
-      user_id: '1',
+      user_id: user,
       navigation,
       url: 'affirmation',
       item,
+      page: 'Playlistdetails2',
     });
   };
 

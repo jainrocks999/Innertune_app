@@ -112,11 +112,11 @@ function* fetchAffirmation(action) {
       if (action.item) {
         yield put({
           type: 'home/playList_item',
-          payload: action.item,
+          payload: {from: false, isFroiut: false, ...action.item},
         });
       }
       if (action.navigation) {
-        action.navigation?.navigate('Playlistdetails2');
+        action.navigation?.navigate(action.page);
       }
     } else {
       Toast.show('Error with fetching affermations');
@@ -340,7 +340,140 @@ function* addPlaylistItem(action) {
     Toast.show('Something went wrong');
   }
 }
-
+function* getPlayListItem(action) {
+  try {
+    const params = {
+      playlist_id: action.playlist_id,
+    };
+    const res = yield call(Api.API_GET, {
+      token: action.token,
+      url: action.url,
+      params,
+    });
+    if (res.status) {
+      yield put({
+        type: 'home/getPlayListItem_success',
+        payload: res.data,
+      });
+      yield put({
+        type: 'home/playList_item',
+        payload: {
+          categories_image: [
+            {
+              original_url:
+                'https://images.unsplash.com/photo-1616356607338-fd87169ecf1a',
+            },
+          ],
+          categories_name: action.item.title,
+          from: true,
+          isFroiut: false,
+        },
+      });
+      if (res.data.length > 0) {
+        action.navigation.navigate('Playlistdetails2');
+      } else {
+        Toast.show('There are no playlist item added');
+      }
+    } else {
+      yield put({
+        type: 'home/getPlayListItem_error',
+      });
+      Toast.show('Error With Fetching Playlist Item');
+    }
+  } catch (error) {
+    console.log(error);
+    yield put({
+      type: 'home/getPlayListItem_error',
+    });
+    Toast.show('Error With Fetching Playlist Item');
+  }
+}
+function* getFavoriout(action) {
+  try {
+    const params = {
+      user_id: action.user_id,
+    };
+    const res = yield call(Api.API_GET, {
+      token: action.token,
+      url: action.url,
+      params,
+    });
+    if (res.status) {
+      yield put({
+        type: action.category
+          ? 'home/getFavriotCategories_success'
+          : 'home/getFavriotAffermation_success',
+        payload: res.data,
+      });
+      if (!action.category) {
+        yield put({
+          type: 'home/playList_item',
+          payload: {
+            categories_image: [
+              {
+                original_url:
+                  'https://images.unsplash.com/photo-1616356607338-fd87169ecf1a',
+              },
+            ],
+            categories_name: 'Liked affirmations',
+            from: false,
+            isFroiut: true,
+          },
+        });
+        action.navigation.navigate('Playlistdetails2');
+      }
+    } else {
+      yield put({
+        type: 'home/getFavriot_error',
+      });
+      Toast.show(
+        action.category
+          ? 'Error with fatching favorite list'
+          : 'Error with fatching favorite affirmation',
+      );
+    }
+  } catch (error) {
+    Toast.show(
+      action.category
+        ? 'Error with fatching favorite list'
+        : 'Error with fatching favorite affirmation',
+    );
+    console.log(error);
+  }
+}
+function* removeFavrioutList(action) {
+  try {
+    const params = {
+      user_id: action.user_id,
+      favorite_id: action.favorite_id,
+      category_id: action.category_id,
+    };
+    const res = yield call(Api.API_GET, {
+      token: action.token,
+      url: action.url,
+      params,
+    });
+    if (res.status) {
+      yield put({
+        type: 'home/removeFavriout_success',
+        payload: res.data,
+      });
+      Toast.show('Removed from favoriut list');
+    } else {
+      yield put({
+        type: 'home/removeFavriout_erorr',
+      });
+      console.log(res);
+      Toast.show('something gone wrong with remove from favorite list');
+    }
+  } catch (err) {
+    console.log(err);
+    yield put({
+      type: 'home/removeFavriout_erorr',
+    });
+    Toast.show('something gone wrong with remove from favorite list');
+  }
+}
 export default function* homeSaga() {
   yield takeEvery('home/playlist_request', getplaylist);
   yield takeEvery('home/group_fetch_request', fetchGroups);
@@ -352,4 +485,8 @@ export default function* homeSaga() {
   yield takeEvery('home/Createfavriote_request', fetchCreatefavriote);
   yield takeEvery('home/favoriteList_request', getfavoriteList);
   yield takeEvery('home/add_playlistItem_request', addPlaylistItem);
+  yield takeEvery('home/getPlayListItem_request', getPlayListItem);
+  yield takeEvery('home/getFavriotCategories_request', getFavoriout);
+  yield takeEvery('home/getFavriotAffermation_request', getFavoriout);
+  yield takeEvery('home/removeFavriout_request', removeFavrioutList);
 }

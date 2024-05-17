@@ -1,7 +1,7 @@
 import {takeEvery, put, call} from 'redux-saga/effects';
 import Toast from 'react-native-simple-toast';
 import Api from '../../api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import storage from '../../../utils/StorageService';
 function* doLogin(action) {
   try {
     const data = action.payload;
@@ -16,7 +16,8 @@ function* doLogin(action) {
         url: data.url,
       });
 
-      yield AsyncStorage.setItem('token', mainRes?.data?.token);
+      yield storage.setItem(storage.TOKEN, mainRes?.data?.token);
+      yield storage.setItem(storage.USER_ID, mainRes?.data?.id);
       yield put({type: 'auth/login_success', payload: mainRes.data});
       Toast.show('Login Success');
       action.navigation.replace('Welecome2');

@@ -26,6 +26,7 @@ import {
 import {fonts} from '../../../Context/Conctants';
 import Buttun from '../../Auth/compoents/Buttun';
 import Loader from '../../../components/Loader';
+import storage from '../../../utils/StorageService';
 let launchImageLibrary = _launchImageLibrary;
 
 const Saveplaylist = ({route}) => {
@@ -43,12 +44,17 @@ const Saveplaylist = ({route}) => {
   };
   const dispatch = useDispatch();
   const handleSubmit = async () => {
-    const token = await AsyncStorage.getItem('token');
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
     dispatch({
       type: 'home/createPlayList_request',
       description: description,
       title: playlistName,
-      user_id: '1',
+      user_id: user,
       url: 'createPlayList',
       token,
       navigation,

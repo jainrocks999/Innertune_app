@@ -45,7 +45,12 @@ const All = () => {
   const {loading, playlist} = useSelector(state => state.home);
   console.log('this issss playlistt', playlist);
   const getAllplaylist = async () => {
-    const token = await AsyncStorage.getItem('token');
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
     dispatch({
       type: 'home/playlist_request',
       token,
@@ -57,7 +62,7 @@ const All = () => {
     getAllplaylist();
   }, []);
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor:'#191919'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
       <ScrollView style={{marginTop: 10}}>
         <FlatList
           data={Img}
@@ -68,7 +73,7 @@ const All = () => {
                 <Image source={item.image} style={styles.image} />
                 <View
                   style={{flexDirection: 'column', marginHorizontal: hp(2.5)}}>
-                    {console.log(item)}
+                  {console.log(item)}
                   <Text style={styles.text}>{item.title}</Text>
                   <Text style={styles.text2}>{item.title2}</Text>
                 </View>
@@ -80,7 +85,7 @@ const All = () => {
                   />
                 </View>
               </View>
-             </View>
+            </View>
           )}
         />
       </ScrollView>

@@ -12,6 +12,8 @@ const initialState = {
   favoriteList: [],
   item: {},
   addetItems_to_playlist: [],
+  favorite_Cat: [],
+  favorite_aff: [],
 };
 const Home = createSlice({
   name: 'home',
@@ -111,6 +113,40 @@ const Home = createSlice({
       return {...state, loading: false};
     },
     add_playlistItem_error: (state, action) => {
+      return {...state, loading: false};
+    },
+    getPlayListItem_request: (state, action) => {
+      return {...state, loading: true};
+    },
+    getPlayListItem_success: (state, action) => {
+      return {...state, affirmations: action.payload, loading: false};
+    },
+    getPlayListItem_error: (state, action) => {
+      return {...state, loading: false};
+    },
+    getFavriotCategories_request: (state, action) => {
+      return {...state, loading: true};
+    },
+    getFavriotCategories_success: (state, action) => {
+      return {...state, favorite_Cat: action.payload, loading: false};
+    },
+
+    getFavriotAffermation_request: (state, action) => {
+      return {...state, loading: true};
+    },
+    getFavriotAffermation_success: (state, action) => {
+      return {...state, affirmations: action.payload, loading: false};
+    },
+    getFavriot_error: (state, action) => {
+      return {...state, loading: false};
+    },
+    removeFavriout_request: (state, action) => {
+      return {...state, loading: true};
+    },
+    removeFavriout_success: (state, action) => {
+      return {...state, Createfavriote: action.payload, loading: false};
+    },
+    removeFavriout_erorr: (state, action) => {
       return {...state, loading: false};
     },
   },

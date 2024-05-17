@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
@@ -19,6 +20,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {fonts} from '../Context/Conctants';
+import storage from '../utils/StorageService';
+import Loader from '../components/Loader';
 
 const Img = [
   {
@@ -72,34 +75,79 @@ const Img = [
 ];
 
 const Toptab = () => {
+  const {playlist, favorite_Cat, loading} = useSelector(state => state.home);
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   useEffect(() => {
     getplaylist();
   }, []);
   const getplaylist = async () => {
-    const token = await AsyncStorage.getItem('token');
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
     dispatch({
       type: 'home/playlist_request',
       token,
       url: 'playList',
-      user_id: '1',
+      user_id: user,
     });
   };
-  const getfavoriteList = async item => {
-    const token = await AsyncStorage.getItem('token');
+
+  const getPlayListItem = async item => {
+    const token = await storage.getItem(storage.TOKEN);
     dispatch({
-      type: 'home/favoriteList_request',
+      type: 'home/getPlayListItem_request',
+      playlist_id: item.id,
       token,
-      user_id: '1',
+      url: 'playListItem',
       navigation,
-      url: 'favoriteList',
-      item,
+      item: item,
     });
   };
-  const {playlist} = useSelector(state => state.home);
-  const navigation = useNavigation();
+  const getFavroitCategories = async bool => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+    dispatch({
+      type: 'home/getFavriotCategories_request',
+      url: bool ? 'likeCategories' : 'likeAffirmations',
+      user_id: user,
+      token,
+      category: bool,
+      navigation,
+    });
+  };
+  useEffect(() => {
+    getFavroitCategories(true);
+  }, []);
+  const getAffetMations = async item => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+
+    dispatch({
+      type: 'home/affirmation_fetch_request',
+      token,
+      user_id: user,
+      navigation,
+      url: 'affirmation',
+      item,
+      page: 'Playlistdetails2',
+    });
+  };
+  //
   return (
     <View style={{flex: 1, backgroundColor: '#191919', height: '100%'}}>
+      <Loader loading={loading} />
       <View style={{marginHorizontal: hp(3), marginTop: 10}}>
         <Text
           style={{
@@ -113,7 +161,7 @@ const Toptab = () => {
       </View>
       <TouchableOpacity
         onPress={items => {
-          getfavoriteList(items);
+          getFavroitCategories(false);
         }}>
         <View
           style={{
@@ -152,7 +200,10 @@ const Toptab = () => {
           </View>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+      {/* <TouchableOpacity
+        onPress={() => {
+          getFavroitCategories(true);
+        }}>
         <View
           style={{
             flexDirection: 'row',
@@ -185,7 +236,7 @@ const Toptab = () => {
             </LinearGradient>
           </View>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <View style={{marginHorizontal: hp(3), marginTop: hp(3)}}>
         <Text
@@ -198,65 +249,131 @@ const Toptab = () => {
           Playlist
         </Text>
       </View>
+      <ScrollView contentContainerStyle={{paddingBottom: hp(4)}}>
+        <View>
+          <FlatList
+            data={favorite_Cat}
+            keyExtractor={item => item?.id}
+            scrollEnabled={false}
+            renderItem={({item}) => {
+              let image =
+                item.categories_image.length > 0
+                  ? item.categories_image[0].original_url
+                  : 'https://images.unsplash.com/photo-1616356607338-fd87169ecf1a';
+              return (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignSelf: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      getAffetMations(item);
+                    }}>
+                    <View style={styles.imageeContainer}>
+                      <View
+                        style={{
+                          justifyContent: 'center',
+                          height: hp(8),
+                          width: wp(16),
+                          alignItems: 'center',
+                          borderRadius: wp(2),
+                          backgroundColor: 'white',
+                          overflow: 'hidden',
+                        }}>
+                        <Image
+                          source={{uri: image}}
+                          style={{height: '100%', width: '100%'}}
+                          resizeMode="contain"
+                        />
+                      </View>
+                      {/* </LinearGradient> */}
+                      <View
+                        style={{
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          marginHorizontal: hp(2.5),
+                        }}>
+                        <Text style={styles.text}>{item.categories_name}</Text>
+                        <Text style={styles.text2}>{'Buy Stimuli '}</Text>
+                      </View>
+                      <View
+                        style={{justifyContent: 'center', paddingRight: 20}}>
+                        <Entypo
+                          name="dots-three-horizontal"
+                          size={20}
+                          color="white"
+                        />
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
+          />
+        </View>
 
-      <FlatList
-        data={playlist[0].playlist}
-        keyExtractor={item => item?.id}
-        renderItem={({item}) => (
-          <View
-            style={{
-              flexDirection: 'row',
-              alignSelf: 'center',
-              justifyContent: 'center',
-            }}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Menu');
+        <FlatList
+          data={playlist[0].playlist}
+          keyExtractor={item => item?.id}
+          scrollEnabled={false}
+          renderItem={({item}) => (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignSelf: 'center',
+                justifyContent: 'center',
               }}>
-              <View style={styles.imageeContainer}>
-                {/* <LinearGradient
+              <TouchableOpacity
+                onPress={() => {
+                  getPlayListItem(item);
+                }}>
+                <View style={styles.imageeContainer}>
+                  {/* <LinearGradient
                   style={{borderRadius: 20}}
                   start={{x: 0.5, y: 0}}
                   end={{x: 0, y: 1}}
                   locations={[0, 1]}
                   colors={['#D485D1', '#fff']}> */}
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    height: hp(8),
-                    width: wp(16),
-                    alignItems: 'center',
-                    borderRadius: wp(2),
-                    backgroundColor: 'white',
-                  }}>
-                  <Image
-                    source={require('../assets/playlist.png')}
-                    style={styles.image}
-                    tintColor={'#B72658'}
-                  />
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      height: hp(8),
+                      width: wp(16),
+                      alignItems: 'center',
+                      borderRadius: wp(2),
+                      backgroundColor: 'white',
+                    }}>
+                    <Image
+                      source={require('../assets/playlist.png')}
+                      style={styles.image}
+                      tintColor={'#B72658'}
+                    />
+                  </View>
+                  {/* </LinearGradient> */}
+                  <View
+                    style={{
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      marginHorizontal: hp(2.5),
+                    }}>
+                    <Text style={styles.text}>{item.title}</Text>
+                    <Text style={styles.text2}>{item.description}</Text>
+                  </View>
+                  <View style={{justifyContent: 'center', paddingRight: 20}}>
+                    <Entypo
+                      name="dots-three-horizontal"
+                      size={20}
+                      color="white"
+                    />
+                  </View>
                 </View>
-                {/* </LinearGradient> */}
-                <View
-                  style={{
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    marginHorizontal: hp(2.5),
-                  }}>
-                  <Text style={styles.text}>{item.title}</Text>
-                  <Text style={styles.text2}>{item.description}</Text>
-                </View>
-                <View style={{justifyContent: 'center', paddingRight: 20}}>
-                  <Entypo
-                    name="dots-three-horizontal"
-                    size={20}
-                    color="white"
-                  />
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
+              </TouchableOpacity>
+            </View>
+          )}
+        />
+      </ScrollView>
     </View>
   );
 };

@@ -59,7 +59,7 @@ export default class Api {
       headers: myHeaders,
       redirect: 'follow',
     };
-    // console.log(`${mainURl}${data.url}?${queryString}`);
+    console.log(`${mainURl}${data.url}?${queryString}`);
 
     return await fetch(`${mainURl}${data.url}?${queryString}`, requestOptions)
       .then(response => response.text())

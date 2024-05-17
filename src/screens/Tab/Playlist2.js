@@ -89,6 +89,7 @@ const Playlistdetails = () => {
   );
   const image = item?.categories_image[0]?.original_url ?? '';
   const title = item?.categories_name ?? 'Believe in yourself';
+  const items = item;
   const navigation = useNavigation();
   const HEADER_HEIGHT = 50;
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -262,7 +263,7 @@ const Playlistdetails = () => {
         <View
           style={{
             borderColor: '#fff',
-            height: '5%',
+            // height: '5%',
             alignItems: 'center',
             justifyContent: 'space-between',
             marginVertical: hp(2),
@@ -274,7 +275,7 @@ const Playlistdetails = () => {
               zIndex: 5,
               color: 'white',
               alignSelf: 'center',
-              height: '75%',
+              height: hp(6.5),
               width: '45%',
               borderRadius: wp(1),
               elevation: 5,
@@ -300,7 +301,6 @@ const Playlistdetails = () => {
               flexDirection: 'row',
               alignItems: 'center',
               width: '45%',
-
               zIndex: 5,
               alignSelf: 'center',
               // bottom: '5%',
@@ -327,7 +327,7 @@ const Playlistdetails = () => {
           data={affirmations}
           keyExtractor={item => item.id}
           contentContainerStyle={{
-            marginTop: '8%',
+            marginTop: '3%',
           }}
           renderItem={({item}) => (
             <View
@@ -340,10 +340,17 @@ const Playlistdetails = () => {
                 backgroundColor: '#4A4949',
                 borderRadius: 8,
               }}>
+              {console.log(item)}
               <View style={{justifyContent: 'center', marginHorizontal: '10%'}}>
-                <Text style={styles.text}>
-                  {item.affirmation_text.substring(0, 40)}
-                </Text>
+                {!items.from ? (
+                  <Text style={styles.text}>
+                    {item.affirmation_text.substring(0, 40)}
+                  </Text>
+                ) : (
+                  <Text style={styles.text}>
+                    {item?.affirmation.affirmation_text.substring(0, 40)}
+                  </Text>
+                )}
               </View>
               <View style={{justifyContent: 'center'}}>
                 <Entypo

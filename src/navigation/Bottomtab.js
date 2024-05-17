@@ -17,6 +17,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {fonts} from '../Context/Conctants';
+import storage from '../utils/StorageService';
 
 const Tab = createBottomTabNavigator();
 const getIconColor = focused => ({
@@ -31,15 +32,22 @@ const MyTabs = () => {
   const {opened, toggleOpened} = useTabMenu();
   const dispatch = useDispatch();
   const getAffetMations = async () => {
-    const token = await AsyncStorage.getItem('token');
+    setBottomSheetVisible(false);
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
     dispatch({
       type: 'home/affirmation_fetch_request',
       token,
-      user_id: '1',
-      // navigation: null,
+      user_id: user,
+      navigation,
       url: 'affirmation',
+      page: 'createplaylist',
     });
-    navigation.navigate('createplaylist');
+    // navigation.navigate('createplaylist');
   };
   return (
     <View style={{flex: 1, backgroundColor: '#191919'}}>

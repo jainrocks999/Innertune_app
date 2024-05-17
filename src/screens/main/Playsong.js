@@ -34,6 +34,7 @@ import {setupPlayer} from '../../utils/Setup';
 import TrackPlayer from 'react-native-track-player';
 import RNFS from 'react-native-fs';
 import {fonts} from '../../Context/Conctants';
+import storage from '../../utils/StorageService';
 // import {affirmations} from './affmatin';
 
 const data = [
@@ -58,20 +59,27 @@ const Playsong = () => {
   const [visible, setVisible] = useState(false);
   const [selectedTab, setSelectedTab] = useState();
   // const v
-  const {affirmations, Createfavriote} = useSelector(state => state.home);
+  const {affirmations, Createfavriote, item} = useSelector(state => state.home);
+  const items = item;
   const getAffirmation = async () => {
-    const token = await AsyncStorage.getItem('token');
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
     dispatch({
       type: 'home/affirmation_fetch_request',
       token,
-      user_id: '1',
+      user_id: user,
       navigation: false,
       url: 'affirmation',
       item: false,
+      page: '',
     });
   };
   useEffect(() => {
-    getAffirmation();
+    !items.from && !items.isFroiut ? getAffirmation() : null;
   }, [Createfavriote]);
   const [isPaused, setIsPaused] = useState(false);
   const [visibleIndex, setVisibleIndex] = useState(0);
@@ -80,40 +88,44 @@ const Playsong = () => {
   const handleTabPress = async title => {
     setSelectedTab(title);
     setVisible(true);
-    const token = await AsyncStorage.getItem('token');
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
     if (title == 'Music') {
       dispatch({
         type: 'home/bg_sound_request',
         token,
         url: 'bgSound',
-        user_id: 1,
+        user_id: user,
       });
       dispatch({
         type: 'home/bg_categories_request',
         token,
         url: 'bgCategories',
-        user_id: 1,
+        user_id: user,
       });
     }
   };
   const handleHeartPress = async item => {
     const pivot = item.group[0].pivot;
-
-    const token = await AsyncStorage.getItem('token');
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
     dispatch({
       type: 'home/Createfavriote_request',
-      user_id: '1',
+      user_id: user,
       category_id: pivot.group_id,
       affirmation_id: pivot.affirmation_id,
       url: 'createFavoriteList',
       navigation,
       token,
     });
-    // dispatch({
-    //   type:'home/Createfavriote_request',
-    //   user_id:'1',
-    //   ca
-    // })
   };
   const currentTimeRef = useRef(0);
 
@@ -148,7 +160,11 @@ const Playsong = () => {
     }, 1000);
 
     if (!isPaused) {
-      readText(affirmations[visibleIndex].affirmation_text);
+      readText(
+        !items.from
+          ? affirmations[visibleIndex].affirmation_text
+          : affirmations[visibleIndex].affirmation.affirmation_text,
+      );
       TrackPlayer.play();
     }
 
@@ -229,7 +245,11 @@ const Playsong = () => {
 
       await Tts.setDefaultVoice('en-au-x-auc-local');
       if (affirmations.length > 0) {
-        readText(affirmations[0].affirmation_text);
+        readText(
+          !items.from
+            ? affirmations[0].affirmation_text
+            : affirmations[0].affirmation.affirmation_text,
+        );
       }
       setVoices(availableVoices);
       setSelectedVoice(selectedVoice);
@@ -262,11 +282,19 @@ const Playsong = () => {
         });
         setVisibleIndex(0);
         await Tts.setDefaultVoice(voice.id);
-        readText(affirmations[visibleIndex].affirmation_text);
+        readText(
+          !items.from
+            ? affirmations[visibleIndex].affirmation_text
+            : affirmations[visibleIndex].affirmation.affirmation_text,
+        );
         setSelectedVoice(voice.id);
       } else {
         await Tts.setDefaultVoice(voice.id);
-        readText(affirmations[visibleIndex].affirmation_text);
+        readText(
+          !items.from
+            ? affirmations[visibleIndex].affirmation_text
+            : affirmations[visibleIndex].affirmation.affirmation_text,
+        );
         setSelectedVoice(voice.id);
       }
     } catch (err) {
@@ -400,11 +428,19 @@ const Playsong = () => {
               }}>
               <FontAwesome
                 name={
-                  affirmations[visibleIndex].is_favorite ? 'heart' : 'heart-o'
+                  !item.from && affirmations[visibleIndex].is_favorite
+                    ? 'heart'
+                    : items.from
+                    ? 'heart'
+                    : 'heart-o'
                 }
                 size={30}
                 color={
-                  affirmations[visibleIndex].is_favorite ? '#B72658' : 'white'
+                  !items.from && affirmations[visibleIndex].is_favorite
+                    ? '#B72658'
+                    : items.from
+                    ? '#B72658'
+                    : 'white'
                 }
               />
             </TouchableOpacity>
@@ -443,16 +479,15 @@ const Playsong = () => {
                         position: 'absolute',
                         top: '10%',
                       }}>
-                      <Text
-                        style={{
-                          fontSize: hp(4.0),
-                          color: '#fff',
-                          width: wp(70),
-                          textAlign: 'center',
-                          fontFamily: fonts.medium,
-                        }}>
-                        {item['affirmation_text']}
-                      </Text>
+                      {!items.from ? (
+                        <Text style={styles.text}>
+                          {item?.affirmation_text}
+                        </Text>
+                      ) : (
+                        <Text style={styles.text}>
+                          {item?.affirmation?.affirmation_text}
+                        </Text>
+                      )}
                     </View>
                   </View>
                 ) : (
@@ -462,7 +497,11 @@ const Playsong = () => {
               keyExtractor={(item, index) => index.toString()}
               onViewableItemsChanged={async ({viewableItems, changed}) => {
                 const newIndex = viewableItems[0].index;
-                readText(affirmations[newIndex].affirmation_text); // Read text when view changes
+                readText(
+                  !items.from
+                    ? affirmations[newIndex].affirmation_text
+                    : affirmations[newIndex].affirmation.affirmation_text,
+                ); // Read text when view changes
                 setVisibleIndex(newIndex);
                 setIsPaused(false);
                 if (isPaused & (progress >= 100)) {
@@ -604,5 +643,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 26,
     backgroundColor: '#000000',
+  },
+  text: {
+    fontSize: hp(4.0),
+    color: '#fff',
+    width: wp(70),
+    textAlign: 'center',
+    fontFamily: fonts.medium,
   },
 });

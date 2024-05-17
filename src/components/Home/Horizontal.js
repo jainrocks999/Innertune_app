@@ -16,6 +16,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {fonts} from '../../Context/Conctants';
 import {NavigationContext} from '@react-navigation/native';
+import storage from '../../utils/StorageService';
 
 const Horizontal = ({data, onPress}) => {
   const {Createfavriote} = useSelector(state => state.home);
@@ -23,14 +24,35 @@ const Horizontal = ({data, onPress}) => {
   const dispatch = useDispatch();
   const navigation = React.useContext(NavigationContext);
   const getFavriote = async item => {
-    const token = await AsyncStorage.getItem('token');
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
     dispatch({
       type: 'home/Createfavriote_request',
-      user_id: '1',
+      user_id: user,
       category_id: item.id,
       affirmation_id: '',
       url: 'createFavoriteList',
       navigation,
+      token,
+    });
+  };
+  const removeFavroit = async item => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+    dispatch({
+      type: 'home/removeFavriout_request',
+      url: 'unlikeCategories',
+      user_id: user,
+      favorite_id: item.favorite_id,
+      category_id: item.id,
       token,
     });
   };
@@ -53,7 +75,7 @@ const Horizontal = ({data, onPress}) => {
           <TouchableOpacity onPress={() => onPress(item)} style={styles.main}>
             <Icon
               onPress={() => {
-                getFavriote(item);
+                !item.is_favorite ? getFavriote(item) : removeFavroit(item);
               }}
               style={{position: 'absolute', zIndex: 1, left: 20, top: 10}}
               name={item.is_favorite ? 'heart-fill' : 'heart'}
