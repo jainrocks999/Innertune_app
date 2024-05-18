@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Image,
@@ -11,43 +11,44 @@ import {heightPercent as hp, widthPrecent as wp} from '../atoms/responsive';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
 import {fonts} from '../../Context/Conctants';
-const Header = ({placeholder, onChangeText, onPressSerach}) => {
-  const navigation = useNavigation();
-  const [text, setText] = useState('');
-  const handleClear = () => {
-    setText;
-    onChangeText;
-  };
+import Entypo from 'react-native-vector-icons/Entypo';
+import {BackHandler} from 'react-native';
+const Header = ({ref, onChangeText, value, onCLose}) => {
+  const inputRef = useRef(null);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 100);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('goal');
-        }}>
-        <Image
-          source={require('../../assets/logo/stimuili-logos1-.png')}
+      <TouchableOpacity onPress={onCLose}>
+        <Entypo
+          name="chevron-left"
+          size={30}
+          color={'white'}
           style={{
-            height: hp(6.5),
-            width: hp(6.5),
-            marginRight: 15,
-            borderRadius: hp(3.25),
-            // tintColor: 'white',
+            zIndex: 1,
+            margin: '4%',
           }}
         />
       </TouchableOpacity>
-      <TouchableOpacity
-        activeOpacity={1}
-        onPress={onPressSerach}
-        style={styles.inputContainer}>
+      <View style={styles.inputContainer}>
         <AntDesign name="search1" size={20} color="black" />
         <TextInput
-          editable={false}
+          ref={inputRef}
           placeholder="Search"
           placeholderTextColor="black"
           style={styles.input}
+          onChangeText={onChangeText}
+          value={value}
         />
-      </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -60,9 +61,9 @@ const styles = StyleSheet.create({
     fontFamily: fonts.medium,
   },
   inputContainer: {
-    height: hp(6.5),
-    borderWidth: wp(0.1),
-    borderColor: 'grey',
+    height: hp(7),
+    borderWidth: wp(0.5),
+    borderColor: 'gold',
     width: '80%',
     borderRadius: wp(7),
     alignItems: 'center',

@@ -5,7 +5,7 @@ import Song from '../../components/Home/component_song';
 
 const Playsong = () => {
   const {affirmations} = useSelector(state => state.home);
-  console.log(affirmations);
+
   return (
     <View style={{flex: 1, backgroundColor: 'black'}}>
       <Song itemss={affirmations} />

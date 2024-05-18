@@ -78,6 +78,24 @@ const Playsong = () => {
       page: '',
     });
   };
+  const removeFavroit = async item => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+    dispatch({
+      type: 'home/removeFavriout_request',
+      url: 'unlikeAffirmations',
+      user_id: user,
+      favorite_id: item.favorite_id,
+      category_id: item.id,
+      token,
+      isCat: false,
+    });
+  };
+
   useEffect(() => {
     !items.from && !items.isFroiut ? getAffirmation() : null;
   }, [Createfavriote]);
@@ -424,7 +442,9 @@ const Playsong = () => {
             <TouchableOpacity
               style={{zIndex: 2}}
               onPress={() => {
-                handleHeartPress(affirmations[visibleIndex]);
+                !affirmations[visibleIndex].is_favorite
+                  ? handleHeartPress(affirmations[visibleIndex])
+                  : removeFavroit(affirmations[visibleIndex]);
               }}>
               <FontAwesome
                 name={
@@ -623,7 +643,7 @@ const Playsong = () => {
           maxTimeInMinutes={maxTimeInMinutes}
           onTimePress={item => {
             setMaxTimeInMinuts(item.title);
-            console.log(item);
+          
           }}
           onMusicPress={player}
         />

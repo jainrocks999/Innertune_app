@@ -6,6 +6,7 @@ import {
   View,
   Animated,
   ImageBackground,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import Header from '../../components/molecules/Header';
@@ -29,6 +30,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Menu from '../../components/Playlist/Menu';
 import Buttun from '../Auth/compoents/Buttun';
 import {fonts} from '../../Context/Conctants';
+import storage from '../../utils/StorageService';
 const Img = [
   {
     id: '1',
@@ -83,6 +85,7 @@ const Img = [
 const Playlistdetails = () => {
   const dispatch = useDispatch();
   const {favoriteList} = useSelector(state => state.home);
+
   console.log('tjhidi', favoriteList.favoritelist);
   const {loading, affirmations, groups, category, item} = useSelector(
     state => state.home,
@@ -107,6 +110,40 @@ const Playlistdetails = () => {
   const [selectedItem, setSelectedItem] = useState(affirmations[0]);
   const onClose = () => {
     setMenuVisible(false);
+  };
+  const getFavriote = async item => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+    dispatch({
+      type: 'home/Createfavriote_request',
+      user_id: user,
+      category_id: item.id,
+      affirmation_id: '',
+      url: 'createFavoriteList',
+      navigation,
+      token,
+    });
+  };
+  const removeFavroit = async item => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+    dispatch({
+      type: 'home/removeFavriout_request',
+      url: 'unlikeCategories',
+      user_id: user,
+      favorite_id: item.favorite_id,
+      category_id: item.id,
+      token,
+      isCat: true,
+    });
   };
   return (
     <View style={styles.container}>
@@ -308,6 +345,10 @@ const Playlistdetails = () => {
               marginTop: '8%',
             }}>
             <FontAwesome
+              onPress={() => {
+                item.is_favorite ? removeFavroit(item) : getFavriote(item);
+                // console.log(item.is_favorite);
+              }}
               name={item.is_favorite ? 'heart' : 'heart-o'}
               size={25}
               color={item.is_favorite ? '#B72658' : 'white'}
@@ -340,7 +381,6 @@ const Playlistdetails = () => {
                 backgroundColor: '#4A4949',
                 borderRadius: 8,
               }}>
-              {console.log(item)}
               <View style={{justifyContent: 'center', marginHorizontal: '10%'}}>
                 {!items.from ? (
                   <Text style={styles.text}>

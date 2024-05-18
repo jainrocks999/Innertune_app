@@ -446,7 +446,7 @@ function* removeFavrioutList(action) {
     const params = {
       user_id: action.user_id,
       favorite_id: action.favorite_id,
-      category_id: action.category_id,
+      [action.isCat ? 'category_id' : 'affirmation_id']: action.category_id,
     };
     const res = yield call(Api.API_GET, {
       token: action.token,

@@ -54,6 +54,7 @@ const Horizontal = ({data, onPress}) => {
       favorite_id: item.favorite_id,
       category_id: item.id,
       token,
+      isCat: true,
     });
   };
 

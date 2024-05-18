@@ -73,7 +73,7 @@ const All = () => {
                 <Image source={item.image} style={styles.image} />
                 <View
                   style={{flexDirection: 'column', marginHorizontal: hp(2.5)}}>
-                  {console.log(item)}
+                
                   <Text style={styles.text}>{item.title}</Text>
                   <Text style={styles.text2}>{item.title2}</Text>
                 </View>

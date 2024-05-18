@@ -29,6 +29,7 @@
     "react-native-btr": "^2.2.1",
     "react-native-circular-progress-indicator": "^4.4.2",
     "react-native-device-info": "^10.13.2",
+    "react-native-draggable-flatlist": "^4.0.1",
     "react-native-elements": "^3.4.3",
     "react-native-fast-image": "^8.6.3",
     "react-native-fs": "^2.20.0",

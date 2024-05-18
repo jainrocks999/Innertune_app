@@ -1,5 +1,14 @@
-import React, {useEffect} from 'react';
-import {View, Text, StyleSheet, ScrollView, Image, Alert} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  Alert,
+  Clipboard,
+  BackHandler,
+} from 'react-native';
 import Header from '../../components/molecules/Header';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -17,7 +26,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../components/Loader';
 import {fonts} from '../../Context/Conctants';
 import storage from '../../utils/StorageService';
-
+import SearchModal from '../../components/serachModal';
+// import {groups} from './groups';
 const Img = [
   {
     id: '1',
@@ -54,12 +64,11 @@ const Img = [
 const HomeScreen = props => {
   const {navigation} = props;
   const dispatch = useDispatch();
-  const getFavriote = item => {
-    console.log(item);
-  };
-  const {loading, groups, category, Createfavriote} = useSelector(
+  const getFavriote = item => {};
+  const {groups, loading, category, Createfavriote} = useSelector(
     state => state.home,
   );
+  const [searchvisble, setSearchvisible] = useState(false);
 
   const getAllCategories = async () => {
     const items = await storage.getMultipleItems([
@@ -72,12 +81,6 @@ const HomeScreen = props => {
       type: 'home/playlist_request',
       token,
       url: 'playList',
-      user_id: user,
-    });
-    dispatch({
-      type: 'home/group_fetch_request',
-      token,
-      url: 'groups',
       user_id: user,
     });
   };
@@ -102,6 +105,12 @@ const HomeScreen = props => {
       url: 'categories',
       user_id: user,
     });
+    dispatch({
+      type: 'home/group_fetch_request',
+      token,
+      url: 'groups',
+      user_id: user,
+    });
   };
   const getAffetMations = async item => {
     const items = await storage.getMultipleItems([
@@ -121,16 +130,38 @@ const HomeScreen = props => {
       page: 'Playlistdetails2',
     });
   };
+  const handleBackPress = () => {};
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     alert('thissi');
+  //     return true;
+  //   };
 
+  //   const backHandler = BackHandler.addEventListener(
+  //     'hardwareBackPress',
+  //     backAction,
+  //   );
+
+  //   return () => backHandler.remove();
+  // }, []);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
       <Header
+        onPressSerach={() => {
+          setSearchvisible(true);
+        }}
         onChangeText={text => {
           console.log(text);
         }}
       />
+      <SearchModal
+        onClose={value => {
+          setSearchvisible(value);
+        }}
+        visible={searchvisble}
+      />
       <Loader loading={loading} />
-      <ScrollView style={styles.scrollView}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.FeatureContainer}>
           <Text style={styles.Featurecategory}>Last sessions</Text>
         </View>
@@ -250,30 +281,38 @@ const HomeScreen = props => {
           data={groups}
           renderItem={({item, index}) => (
             <>
-              <View style={styles.FeatureContainer}>
-                <Text style={styles.Featurecategory}>{item?.group_name}</Text>
-                <View style={{paddingHorizontal: '20%'}}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate('Popular', {name: item?.group_name});
-                    }}>
-                    <Text
-                      style={{
-                        ontSize: 15,
-                        color: 'white',
-                        fontFamily: fonts.bold,
-                      }}>
-                      View All
+              {item.groupByCategory.length > 0 ? (
+                <>
+                  <View style={styles.FeatureContainer}>
+                    <Text style={styles.Featurecategory}>
+                      {item?.group_name}
                     </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <Horizontal
-                onPress={items => {
-                  getAffetMations(items);
-                }}
-                data={category}
-              />
+                    <View style={{paddingHorizontal: '20%'}}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate('Popular', {
+                            name: item?.group_name,
+                          });
+                        }}>
+                        <Text
+                          style={{
+                            ontSize: 15,
+                            color: 'white',
+                            fontFamily: fonts.bold,
+                          }}>
+                          View All
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                  <Horizontal
+                    onPress={items => {
+                      getAffetMations(items);
+                    }}
+                    data={item.groupByCategory}
+                  />
+                </>
+              ) : null}
               {index == 1 ? (
                 <View
                   style={{
@@ -387,7 +426,7 @@ const styles = StyleSheet.create({
     color: 'white',
     paddingHorizontal: 10,
   },
-  scrollView: {},
+  scrollView: {paddingBottom: hp(2)},
   imageContainer: {
     padding: 12,
   },
