@@ -14,20 +14,39 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {widthPrecent as wp, heightPercent as hp} from '../atoms/responsive';
 import {fonts} from '../../Context/Conctants';
 import List from '../CategoriesList';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {BackHandler} from 'react-native';
 import {ScrollView} from 'react-native';
-const SearchModal = ({visible, onClose}) => {
-  const {category, affirmations} = useSelector(state => state.home);
+import storage from '../../utils/StorageService';
+import thisdata from './this';
+import Loader from '../Loader';
+const SearchModal = ({visible, onClose, onCategories}) => {
+  const dispatch = useDispatch();
+  const {searchData, loading} = useSelector(state => state.home);
   const [value, setValue] = useState('');
-  const handleonSearch = input => {
-    console.log('thissisis');
+  const [searchType, setSearchType] = useState('All');
+  const handleonSearch = async (input, stype) => {
+    console.log('thid', input);
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+    dispatch({
+      type: 'home/search_request',
+      url: 'playListSearch',
+      search_text: input,
+      search_type: stype,
+      user_id: user,
+      token,
+    });
   };
   useEffect(() => {
-    const delay = 100;
+    const delay = 500;
     const deBounce = setTimeout(() => {
-      handleonSearch();
+      handleonSearch(value, searchType);
     }, delay);
     return () => {
       clearTimeout(deBounce);
@@ -37,6 +56,7 @@ const SearchModal = ({visible, onClose}) => {
   return (
     <Modal animationType="fade" visible={visible}>
       <View style={{flex: 1, backgroundColor: '#191919'}}>
+        <Loader loading={loading} />
         <Header
           onCLose={() => {
             onClose(false);
@@ -55,77 +75,152 @@ const SearchModal = ({visible, onClose}) => {
             justifyContent: 'space-between',
             paddingHorizontal: '2%',
           }}>
-          <TouchableOpacity style={styles.btn}>
-            <Fontisto color="black" name="star" size={18} />
-            <Text style={styles.text}>All</Text>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => {
+              setSearchType('All');
+              handleonSearch(value, 'All');
+            }}
+            style={[
+              styles.btn,
+              {backgroundColor: searchType == 'All' ? '#D485D1' : 'white'},
+            ]}>
+            <Fontisto
+              color={searchType == 'All' ? 'white' : 'black'}
+              name="star"
+              size={18}
+            />
+            <Text
+              style={[
+                styles.text,
+                {color: searchType == 'All' ? 'white' : 'black'},
+              ]}>
+              All
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btn}>
-            <SimpleLineIcons color="black" name="playlist" size={18} />
-            <Text style={styles.text}>PlayList</Text>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => {
+              setSearchType('playlist');
+              handleonSearch(value, 'playlist');
+            }}
+            style={[
+              styles.btn,
+              {backgroundColor: searchType == 'playlist' ? '#D485D1' : 'white'},
+            ]}>
+            <SimpleLineIcons
+              color={searchType == 'playlist' ? 'white' : 'black'}
+              name="playlist"
+              size={18}
+            />
+            <Text
+              style={[
+                styles.text,
+                {color: searchType == 'playlist' ? 'white' : 'black'},
+              ]}>
+              PlayList
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btn}>
-            <FontAwesome color="black" name="buysellads" size={18} />
-            <Text style={styles.text}>Affirmations</Text>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => {
+              setSearchType('affirmation');
+              handleonSearch(value, 'affirmation');
+            }}
+            style={[
+              styles.btn,
+              {
+                backgroundColor:
+                  searchType == 'affirmation' ? '#D485D1' : 'white',
+              },
+            ]}>
+            <FontAwesome
+              color={searchType == 'affirmation' ? 'white' : 'black'}
+              name="buysellads"
+              size={18}
+            />
+            <Text
+              style={[
+                styles.text,
+                {color: searchType == 'affirmation' ? 'white' : 'black'},
+              ]}>
+              Affirmations
+            </Text>
           </TouchableOpacity>
         </View>
         <ScrollView>
-          <Text
-            style={{
-              fontFamily: fonts.bold, // fontFamily: 'Montserrat',
-              fontSize: hp(2.5),
-              color: 'white',
-              marginVertical: 10,
-              marginLeft: wp(2),
-            }}>
-            Playlist
-          </Text>
-          <List cate={category.slice(0, 3)} />
-          <Text
-            style={{
-              fontFamily: fonts.bold, // fontFamily: 'Montserrat',
-              fontSize: hp(2.5),
-              color: 'white',
-              marginVertical: 10,
-              marginLeft: wp(2),
-            }}>
-            Affirmations
-          </Text>
-          <FlatList
-            data={affirmations}
-            keyExtractor={item => item.id}
-            scrollEnabled={false}
-            contentContainerStyle={{
-              marginTop: '3%',
-            }}
-            renderItem={({item}) => (
-              <View
+          {Array.isArray(searchData?.categories) &&
+          searchData?.categories.length > 0 ? (
+            <>
+              <Text
                 style={{
-                  flexDirection: 'row',
-                  alignSelf: 'center',
-                  height: hp(8),
-                  width: wp(90),
+                  fontFamily: fonts.bold, // fontFamily: 'Montserrat',
+                  fontSize: hp(2.5),
+                  color: 'white',
                   marginVertical: 10,
-                  backgroundColor: '#4A4949',
-                  borderRadius: 8,
+                  marginLeft: wp(2),
                 }}>
-               
-                <View
-                  style={{justifyContent: 'center', marginHorizontal: '10%'}}>
-                  <Text style={styles.text2}>
-                    {item.affirmation_text.substring(0, 40)}
-                  </Text>
-                </View>
-                <View style={{justifyContent: 'center'}}>
-                  <Entypo
-                    onPress={() => {}}
-                    name="dots-three-horizontal"
-                    size={20}
-                    color="white"
-                  />
-                </View>
-              </View>
-            )}
-          />
+                Playlist
+              </Text>
+              <List
+                onPress={item => onCategories(item)}
+                cate={searchData?.categories}
+              />
+            </>
+          ) : null}
+          {Array.isArray(searchData?.affirmations) &&
+          searchData.affirmations.length > 0 ? (
+            <>
+              <Text
+                style={{
+                  fontFamily: fonts.bold, // fontFamily: 'Montserrat',
+                  fontSize: hp(2.5),
+                  color: 'white',
+                  marginVertical: 10,
+                  marginLeft: wp(2),
+                }}>
+                Affirmations
+              </Text>
+              <FlatList
+                data={searchData.affirmations}
+                keyExtractor={item => item.id}
+                scrollEnabled={false}
+                contentContainerStyle={{
+                  marginTop: '3%',
+                }}
+                renderItem={({item}) => (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignSelf: 'center',
+                      height: hp(8),
+                      width: wp(90),
+                      marginVertical: 10,
+                      backgroundColor: '#4A4949',
+                      borderRadius: 8,
+                    }}>
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        marginHorizontal: '10%',
+                      }}>
+                      <Text style={styles.text2}>
+                        {item.affirmation_text.substring(0, 40)}
+                      </Text>
+                    </View>
+                    <View style={{justifyContent: 'center'}}>
+                      <Entypo
+                        onPress={() => {}}
+                        name="dots-three-horizontal"
+                        size={20}
+                        color="white"
+                      />
+                    </View>
+                  </View>
+                )}
+              />
+            </>
+          ) : null}
         </ScrollView>
       </View>
     </Modal>

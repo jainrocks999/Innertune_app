@@ -90,7 +90,7 @@ const HomeScreen = props => {
   }, []);
   useEffect(() => {
     getplaylist();
-  }, [Createfavriote]);
+  }, []);
   const getplaylist = async () => {
     const items = await storage.getMultipleItems([
       storage.TOKEN,
@@ -131,19 +131,83 @@ const HomeScreen = props => {
     });
   };
   const handleBackPress = () => {};
-  // useEffect(() => {
-  //   const backAction = () => {
-  //     alert('thissi');
-  //     return true;
-  //   };
 
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     backAction,
-  //   );
+  const getAffetMationsbyCategories = async item => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
 
-  //   return () => backHandler.remove();
-  // }, []);
+    dispatch({
+      type: 'home/affirmationBYCategory_request',
+      token,
+      user_id: user,
+      navigation,
+      url: 'categoryByAffermation',
+      item,
+      page: 'Playlistdetails2',
+      category_id: item.id,
+    });
+  };
+  const getmodified = (array, cateIndex, groupIndex, bool) => {
+    return array.map((items, index) => {
+      if (index === groupIndex) {
+        return {
+          ...items,
+          groupByCategory: items.groupByCategory.map((item, idx) => {
+            if (idx === cateIndex) {
+              return {...item, is_favorite: bool};
+            }
+            return item;
+          }),
+        };
+      }
+      return items;
+    });
+  };
+
+  const removeFavroit = async (item, index) => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const modified = getmodified(groups, item.index, index, false);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+    dispatch({
+      type: 'home/removeFavriout_request',
+      url: 'unlikeCategories',
+      user_id: user,
+      favorite_id: item.item.favorite_id,
+      category_id: item.item.id,
+      token,
+      isCat: true,
+      data: modified,
+    });
+  };
+  const addFavorit = async (item, index) => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const modified = getmodified(groups, item.index, index, true);
+
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+    dispatch({
+      type: 'home/Createfavriote_request',
+      user_id: user,
+      category_id: item.item.id,
+      affirmation_id: '',
+      url: 'createFavoriteList',
+      navigation,
+      token,
+      data: modified,
+    });
+  };
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
       <Header
@@ -159,10 +223,13 @@ const HomeScreen = props => {
           setSearchvisible(value);
         }}
         visible={searchvisble}
+        onCategories={item => {
+          getAffetMationsbyCategories(item);
+        }}
       />
       <Loader loading={loading} />
       <ScrollView contentContainerStyle={styles.scrollView}>
-        <View style={styles.FeatureContainer}>
+        <View s tyle={styles.FeatureContainer}>
           <Text style={styles.Featurecategory}>Last sessions</Text>
         </View>
         <View
@@ -290,9 +357,9 @@ const HomeScreen = props => {
                     <View style={{paddingHorizontal: '20%'}}>
                       <TouchableOpacity
                         onPress={() => {
-                          navigation.navigate('Popular', {
-                            name: item?.group_name,
-                          });
+                          // navigation.navigate('Popular', {
+                          //   name: item?.group_name,
+                          // });
                         }}>
                         <Text
                           style={{
@@ -306,8 +373,13 @@ const HomeScreen = props => {
                     </View>
                   </View>
                   <Horizontal
+                    onPressHeart={(val, items) => {
+                      val
+                        ? removeFavroit(items, index)
+                        : addFavorit(items, index);
+                    }}
                     onPress={items => {
-                      getAffetMations(items);
+                      getAffetMationsbyCategories(items);
                     }}
                     data={item.groupByCategory}
                   />

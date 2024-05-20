@@ -18,45 +18,11 @@ import {fonts} from '../../Context/Conctants';
 import {NavigationContext} from '@react-navigation/native';
 import storage from '../../utils/StorageService';
 
-const Horizontal = ({data, onPress}) => {
+const Horizontal = ({data, onPress, onPressHeart}) => {
   const {Createfavriote} = useSelector(state => state.home);
 
   const dispatch = useDispatch();
   const navigation = React.useContext(NavigationContext);
-  const getFavriote = async item => {
-    const items = await storage.getMultipleItems([
-      storage.TOKEN,
-      storage.USER_ID,
-    ]);
-    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
-    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
-    dispatch({
-      type: 'home/Createfavriote_request',
-      user_id: user,
-      category_id: item.id,
-      affirmation_id: '',
-      url: 'createFavoriteList',
-      navigation,
-      token,
-    });
-  };
-  const removeFavroit = async item => {
-    const items = await storage.getMultipleItems([
-      storage.TOKEN,
-      storage.USER_ID,
-    ]);
-    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
-    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
-    dispatch({
-      type: 'home/removeFavriout_request',
-      url: 'unlikeCategories',
-      user_id: user,
-      favorite_id: item.favorite_id,
-      category_id: item.id,
-      token,
-      isCat: true,
-    });
-  };
 
   return (
     <FlatList
@@ -64,7 +30,7 @@ const Horizontal = ({data, onPress}) => {
       data={data}
       showsHorizontalScrollIndicator={false}
       keyExtractor={item => item.id}
-      renderItem={({item}) => {
+      renderItem={({item, index}) => {
         let title = 'Believe in yourself';
 
         let image =
@@ -76,7 +42,7 @@ const Horizontal = ({data, onPress}) => {
           <TouchableOpacity onPress={() => onPress(item)} style={styles.main}>
             <Icon
               onPress={() => {
-                !item.is_favorite ? getFavriote(item) : removeFavroit(item);
+                onPressHeart(item.is_favorite, {item, index: index});
               }}
               style={{position: 'absolute', zIndex: 1, left: 20, top: 10}}
               name={item.is_favorite ? 'heart-fill' : 'heart'}

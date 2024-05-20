@@ -7,13 +7,24 @@ import {FlatList} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {fonts} from '../../Context/Conctants';
+import storage from '../../utils/StorageService';
+import {useDispatch} from 'react-redux';
+import Loader from '../Loader';
 
-const Menu = ({visible, selectedItem, onClose}) => {
+const Menu = ({
+  visible,
+  selectedItem,
+  onClose,
+  selectedIndex,
+  affirmations,
+  loading,
+}) => {
+  const dispatch = useDispatch();
   const data = [
     {
       id: '1',
-      text: 'Like Affermaion',
-      icon: 'hearto',
+      text: selectedItem.is_favorite ? 'Unlike Affirmation' : 'Like Affermaion',
+      icon: selectedItem.is_favorite ? 'heart' : 'hearto',
     },
     {
       id: '2',
@@ -31,12 +42,67 @@ const Menu = ({visible, selectedItem, onClose}) => {
       icon: 'minuscircleo',
     },
   ];
+
+  const getmodified = (array, indexs, bool) => {
+    return array.map((item, index) => {
+      if (index == indexs) {
+        return {...item, is_favorite: bool};
+      } else {
+        return item;
+      }
+    });
+  };
+  const handleHeartPress = async (item, index) => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+    const modified = getmodified(affirmations, index, true);
+
+    dispatch({
+      type: 'home/Createfavriote_request',
+      user_id: user,
+      category_id: '',
+      affirmation_id: item.id,
+      url: 'createFavoriteList',
+      navigation: false,
+      token,
+      data: modified,
+    });
+  };
+  const removeFavroit = async (item, index) => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+
+    const modified = getmodified(affirmations, index, false);
+
+    dispatch({
+      type: 'home/removeFavriout_request',
+      url: 'unlikeAffirmations',
+      user_id: user,
+      favorite_id: item.favorite_id,
+      category_id: item.id,
+      token,
+      isCat: false,
+      data: modified,
+    });
+  };
+
   return (
     <Modal animationType="fade" visible={visible} transparent={true}>
+      <Loader loading={loading} />
       <View style={{flex: 1, backgroundColor: '#191919', opacity: 0.99}}>
         <View style={{height: '25%'}} />
         <View style={styles.main}>
-          <Text style={styles.txt}>{selectedItem.affirmation_text}</Text>
+          <Text style={styles.txt}>{selectedItem?.affirmation_text}</Text>
         </View>
         <View style={{height: '5%'}} />
         <FlatList
@@ -52,7 +118,24 @@ const Menu = ({visible, selectedItem, onClose}) => {
                   marginVertical: '5%',
                 }}>
                 {index != 2 ? (
-                  <AntDesign color="white" size={wp(7)} name={item.icon} />
+                  <AntDesign
+                    onPress={() => {
+                      if (item.id == '1') {
+                        if (selectedItem.is_favorite) {
+                          removeFavroit(selectedItem, selectedIndex);
+                        } else {
+                          handleHeartPress(selectedItem, selectedIndex);
+                        }
+                      }
+                    }}
+                    color={
+                      item.id == '1' && selectedItem.is_favorite
+                        ? '#B72658'
+                        : 'white'
+                    }
+                    size={wp(7)}
+                    name={item.icon}
+                  />
                 ) : (
                   <Entypo color="white" size={wp(7)} name={item.icon} />
                 )}

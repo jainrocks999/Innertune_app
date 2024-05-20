@@ -11,7 +11,7 @@ import {widthPrecent as wp, heightPercent as hp} from '../atoms/responsive';
 import {fonts} from '../../Context/Conctants';
 import Entypo from 'react-native-vector-icons/Entypo';
 
-const List = ({cate}) => {
+const List = ({cate, onPress}) => {
   return (
     <View>
       <FlatList
@@ -25,6 +25,7 @@ const List = ({cate}) => {
               : 'https://images.unsplash.com/photo-1616356607338-fd87169ecf1a';
           return (
             <View
+              o
               style={{
                 flexDirection: 'row',
                 alignSelf: 'center',
@@ -32,7 +33,7 @@ const List = ({cate}) => {
               }}>
               <TouchableOpacity
                 onPress={() => {
-                  getAffetMations(item);
+                  onPress(item);
                 }}>
                 <View style={styles.imageeContainer}>
                   <View

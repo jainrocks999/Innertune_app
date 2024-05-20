@@ -61,6 +61,7 @@ const Playsong = () => {
   // const v
   const {affirmations, Createfavriote, item} = useSelector(state => state.home);
   const items = item;
+
   const getAffirmation = async () => {
     const items = await storage.getMultipleItems([
       storage.TOKEN,
@@ -78,27 +79,10 @@ const Playsong = () => {
       page: '',
     });
   };
-  const removeFavroit = async item => {
-    const items = await storage.getMultipleItems([
-      storage.TOKEN,
-      storage.USER_ID,
-    ]);
-    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
-    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
-    dispatch({
-      type: 'home/removeFavriout_request',
-      url: 'unlikeAffirmations',
-      user_id: user,
-      favorite_id: item.favorite_id,
-      category_id: item.id,
-      token,
-      isCat: false,
-    });
-  };
 
-  useEffect(() => {
-    !items.from && !items.isFroiut ? getAffirmation() : null;
-  }, [Createfavriote]);
+  // useEffect(() => {
+  //   !items.from && !items.isFroiut ? getAffirmation() : null;
+  // }, [Createfavriote]);
   const [isPaused, setIsPaused] = useState(false);
   const [visibleIndex, setVisibleIndex] = useState(0);
   // Clipboard.setString(JSON.stringify(affirmations));
@@ -127,24 +111,7 @@ const Playsong = () => {
       });
     }
   };
-  const handleHeartPress = async item => {
-    const pivot = item.group[0].pivot;
-    const items = await storage.getMultipleItems([
-      storage.TOKEN,
-      storage.USER_ID,
-    ]);
-    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
-    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
-    dispatch({
-      type: 'home/Createfavriote_request',
-      user_id: user,
-      category_id: pivot.group_id,
-      affirmation_id: pivot.affirmation_id,
-      url: 'createFavoriteList',
-      navigation,
-      token,
-    });
-  };
+
   const currentTimeRef = useRef(0);
 
   useEffect(() => {
@@ -178,11 +145,7 @@ const Playsong = () => {
     }, 1000);
 
     if (!isPaused) {
-      readText(
-        !items.from
-          ? affirmations[visibleIndex].affirmation_text
-          : affirmations[visibleIndex].affirmation.affirmation_text,
-      );
+      readText(affirmations[visibleIndex].affirmation_text);
       TrackPlayer.play();
     }
 
@@ -234,13 +197,13 @@ const Playsong = () => {
 
   useEffect(() => {
     Tts.getInitStatus().then(initTts);
-    Tts.addEventListener('tts-finish', handleTTSFinish);
+    // Tts.addEventListener('tts-finish', handleTTSFinish);
     Tts.setDefaultRate(speechRate);
     Tts.setDefaultPitch(speechPitch);
     TrackPlayer.setVolume(0.5);
 
     return () => {
-      Tts.removeEventListener('tts-finish', handleTTSFinish);
+      // Tts.removeEventListener('tts-finish', handleTTSFinish);
     };
   }, []);
 
@@ -263,11 +226,7 @@ const Playsong = () => {
 
       await Tts.setDefaultVoice('en-au-x-auc-local');
       if (affirmations.length > 0) {
-        readText(
-          !items.from
-            ? affirmations[0].affirmation_text
-            : affirmations[0].affirmation.affirmation_text,
-        );
+        readText(affirmations[0].affirmation_text);
       }
       setVoices(availableVoices);
       setSelectedVoice(selectedVoice);
@@ -300,24 +259,14 @@ const Playsong = () => {
         });
         setVisibleIndex(0);
         await Tts.setDefaultVoice(voice.id);
-        readText(
-          !items.from
-            ? affirmations[visibleIndex].affirmation_text
-            : affirmations[visibleIndex].affirmation.affirmation_text,
-        );
+        readText(affirmations[visibleIndex].affirmation_text);
         setSelectedVoice(voice.id);
       } else {
         await Tts.setDefaultVoice(voice.id);
-        readText(
-          !items.from
-            ? affirmations[visibleIndex].affirmation_text
-            : affirmations[visibleIndex].affirmation.affirmation_text,
-        );
+        readText(affirmations[visibleIndex].affirmation_text);
         setSelectedVoice(voice.id);
       }
     } catch (err) {
-      // Samsung S9 has always this error:
-      // "Language is not supported"
       console.log(`setDefaultLanguage error `, err);
     }
   };
@@ -349,6 +298,53 @@ const Playsong = () => {
   const setVovluem = async value => {
     await TrackPlayer.setVolume(value);
     setBgVolume(value);
+  };
+  const getmodified = (array, indexs, bool) => {
+    return array.map((item, index) => {
+      if (index == indexs) {
+        return {...item, is_favorite: bool};
+      } else {
+        return item;
+      }
+    });
+  };
+  const handleHeartPress = async (item, index) => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+    const modified = getmodified(affirmations, index, true);
+    dispatch({
+      type: 'home/Createfavriote_request',
+      user_id: user,
+      category_id: '',
+      affirmation_id: item.id,
+      url: 'createFavoriteList',
+      navigation,
+      token,
+      data: modified,
+    });
+  };
+  const removeFavroit = async (item, index) => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+    const modified = getmodified(affirmations, index, false);
+    dispatch({
+      type: 'home/removeFavriout_request',
+      url: 'unlikeAffirmations',
+      user_id: user,
+      favorite_id: item.favorite_id,
+      category_id: item.id,
+      token,
+      isCat: false,
+      data: modified,
+    });
   };
   return (
     <View style={{flex: 1}}>
@@ -443,24 +439,16 @@ const Playsong = () => {
               style={{zIndex: 2}}
               onPress={() => {
                 !affirmations[visibleIndex].is_favorite
-                  ? handleHeartPress(affirmations[visibleIndex])
-                  : removeFavroit(affirmations[visibleIndex]);
+                  ? handleHeartPress(affirmations[visibleIndex], visibleIndex)
+                  : removeFavroit(affirmations[visibleIndex], visibleIndex);
               }}>
               <FontAwesome
                 name={
-                  !item.from && affirmations[visibleIndex].is_favorite
-                    ? 'heart'
-                    : items.from
-                    ? 'heart'
-                    : 'heart-o'
+                  affirmations[visibleIndex].is_favorite ? 'heart' : 'heart-o'
                 }
                 size={30}
                 color={
-                  !items.from && affirmations[visibleIndex].is_favorite
-                    ? '#B72658'
-                    : items.from
-                    ? '#B72658'
-                    : 'white'
+                  affirmations[visibleIndex].is_favorite ? '#B72658' : 'white'
                 }
               />
             </TouchableOpacity>
@@ -499,15 +487,7 @@ const Playsong = () => {
                         position: 'absolute',
                         top: '10%',
                       }}>
-                      {!items.from ? (
-                        <Text style={styles.text}>
-                          {item?.affirmation_text}
-                        </Text>
-                      ) : (
-                        <Text style={styles.text}>
-                          {item?.affirmation?.affirmation_text}
-                        </Text>
-                      )}
+                      <Text style={styles.text}>{item?.affirmation_text}</Text>
                     </View>
                   </View>
                 ) : (
@@ -517,11 +497,7 @@ const Playsong = () => {
               keyExtractor={(item, index) => index.toString()}
               onViewableItemsChanged={async ({viewableItems, changed}) => {
                 const newIndex = viewableItems[0].index;
-                readText(
-                  !items.from
-                    ? affirmations[newIndex].affirmation_text
-                    : affirmations[newIndex].affirmation.affirmation_text,
-                ); // Read text when view changes
+                readText(affirmations[newIndex].affirmation_text); // Read text when view changes
                 setVisibleIndex(newIndex);
                 setIsPaused(false);
                 if (isPaused & (progress >= 100)) {
@@ -643,7 +619,6 @@ const Playsong = () => {
           maxTimeInMinutes={maxTimeInMinutes}
           onTimePress={item => {
             setMaxTimeInMinuts(item.title);
-          
           }}
           onMusicPress={player}
         />

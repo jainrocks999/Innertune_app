@@ -99,11 +99,13 @@ function* fetchAffirmation(action) {
     const params = {
       user_id: action.user_id,
     };
+    action.category_id ? (params.category_id = action.category_id) : null;
     const res = yield call(Api.API_GET, {
       token: action.token,
       url: action.url,
       params,
     });
+
     if (res.status) {
       yield put({
         type: 'home/affirmation_fetch_success',
@@ -248,12 +250,29 @@ function* fetchCreatefavriote(action) {
       token: action.token,
       url: action.url,
     });
-    console.log('thississi rewss', res.data);
+
     if (res.status) {
       yield put({
         type: 'home/Createfavriote_success',
         payload: res.data,
       });
+      if (action.affirmation_id == '') {
+        yield yield put({
+          type: 'home/group_fetch_success',
+          payload: action.data,
+        });
+        if (action.item) {
+          yield put({
+            type: 'home/playList_item',
+            payload: action.item,
+          });
+        }
+      } else {
+        yield put({
+          type: 'home/affirmation_fetch_success',
+          payload: action.data,
+        });
+      }
       Toast.show('Added into Favriote List');
     } else {
       Toast.show('Error with fetching Createfavriote ');
@@ -399,6 +418,7 @@ function* getFavoriout(action) {
       params,
     });
     if (res.status) {
+      console.log(res.data);
       yield put({
         type: action.category
           ? 'home/getFavriotCategories_success'
@@ -416,8 +436,6 @@ function* getFavoriout(action) {
               },
             ],
             categories_name: 'Liked affirmations',
-            from: false,
-            isFroiut: true,
           },
         });
         action.navigation.navigate('Playlistdetails2');
@@ -458,6 +476,23 @@ function* removeFavrioutList(action) {
         type: 'home/removeFavriout_success',
         payload: res.data,
       });
+      if (action.item) {
+        yield put({
+          type: 'home/playList_item',
+          payload: action.item,
+        });
+      }
+      if (action.isCat) {
+        yield yield put({
+          type: 'home/group_fetch_success',
+          payload: action.data,
+        });
+      } else {
+        yield put({
+          type: 'home/affirmation_fetch_success',
+          payload: action.data,
+        });
+      }
       Toast.show('Removed from favoriut list');
     } else {
       yield put({
@@ -472,6 +507,80 @@ function* removeFavrioutList(action) {
       type: 'home/removeFavriout_erorr',
     });
     Toast.show('something gone wrong with remove from favorite list');
+  }
+}
+function* fetchAffirmationByCategory(action) {
+  try {
+    const params = {
+      user_id: action.user_id,
+      category_id: action.category_id,
+    };
+    const res = yield call(Api.API_GET, {
+      token: action.token,
+      url: action.url,
+      params,
+    });
+    // console.log('this', JSON.stringify(res));
+
+    if (res.status) {
+      yield put({
+        type: 'home/affirmationBYCategory_success',
+        payload: res.data.categoryByAffermation,
+      });
+      if (action.item) {
+        yield put({
+          type: 'home/playList_item',
+          payload: {from: false, isFroiut: false, ...action.item},
+        });
+      }
+      if (action.navigation && res.data.categoryByAffermation.length > 0)
+        action.navigation.navigate(action.page);
+      else {
+        Toast.show('No affiramtion is this playlist');
+      }
+    } else {
+      yield put({
+        type: 'home/affirmationBYCategory_error',
+      });
+      Toast.show(res.data.message);
+    }
+  } catch (error) {
+    console.log('this sis errror', error);
+    yield put({
+      type: 'home/affirmationBYCategory_error',
+    });
+    Toast.show('error with fetching affirmations');
+  }
+}
+function* doSearch(action) {
+  try {
+    const params = {
+      search_text: action.search_text,
+      search_type: action.search_type,
+      user_id: action.user_id,
+    };
+    const res = yield call(Api.API_GET, {
+      token: action.token,
+      url: action.url,
+      params,
+    });
+    console.log('this is res', JSON.stringify(res));
+    if (res.status) {
+      yield put({
+        type: 'home/search_success',
+        payload: res.data,
+      });
+    } else {
+      yield put({
+        type: 'home/serach_error',
+      });
+      Toast.show(res.msg);
+    }
+  } catch (error) {
+    yield put({
+      type: 'home/serach_error',
+    });
+    console.log(error);
   }
 }
 export default function* homeSaga() {
@@ -489,4 +598,9 @@ export default function* homeSaga() {
   yield takeEvery('home/getFavriotCategories_request', getFavoriout);
   yield takeEvery('home/getFavriotAffermation_request', getFavoriout);
   yield takeEvery('home/removeFavriout_request', removeFavrioutList);
+  yield takeEvery(
+    'home/affirmationBYCategory_request',
+    fetchAffirmationByCategory,
+  );
+  yield takeEvery('home/search_request', doSearch);
 }

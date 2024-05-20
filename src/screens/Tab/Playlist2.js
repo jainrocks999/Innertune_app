@@ -90,9 +90,9 @@ const Playlistdetails = () => {
   const {loading, affirmations, groups, category, item} = useSelector(
     state => state.home,
   );
+  const playItem = item;
   const image = item?.categories_image[0]?.original_url ?? '';
   const title = item?.categories_name ?? 'Believe in yourself';
-  const items = item;
   const navigation = useNavigation();
   const HEADER_HEIGHT = 50;
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -106,10 +106,9 @@ const Playlistdetails = () => {
     [{nativeEvent: {contentOffset: {y: scrollY}}}],
     {useNativeDriver: true},
   );
-  const [menuvisible, setMenuVisible] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(affirmations[0]);
+  const [modalIndex, setModalIndex] = useState(-1);
   const onClose = () => {
-    setMenuVisible(false);
+    setModalIndex(-1);
   };
   const getFavriote = async item => {
     const items = await storage.getMultipleItems([
@@ -126,6 +125,7 @@ const Playlistdetails = () => {
       url: 'createFavoriteList',
       navigation,
       token,
+      item: {...playItem, is_favorite: true},
     });
   };
   const removeFavroit = async item => {
@@ -143,15 +143,11 @@ const Playlistdetails = () => {
       category_id: item.id,
       token,
       isCat: true,
+      item: {...playItem, is_favorite: false},
     });
   };
   return (
     <View style={styles.container}>
-      <Menu
-        onClose={onClose}
-        selectedItem={selectedItem}
-        visible={menuvisible}
-      />
       <Loader loading={loading} />
       <Animated.View
         style={[styles.header, {transform: [{translateY: translateY}]}]}>
@@ -370,7 +366,7 @@ const Playlistdetails = () => {
           contentContainerStyle={{
             marginTop: '3%',
           }}
-          renderItem={({item}) => (
+          renderItem={({item, index}) => (
             <View
               style={{
                 flexDirection: 'row',
@@ -381,22 +377,23 @@ const Playlistdetails = () => {
                 backgroundColor: '#4A4949',
                 borderRadius: 8,
               }}>
+              <Menu
+                onClose={onClose}
+                selectedItem={item}
+                visible={index == modalIndex}
+                selectedIndex={index}
+                affirmations={affirmations}
+                loading={loading}
+              />
               <View style={{justifyContent: 'center', marginHorizontal: '10%'}}>
-                {!items.from ? (
-                  <Text style={styles.text}>
-                    {item.affirmation_text.substring(0, 40)}
-                  </Text>
-                ) : (
-                  <Text style={styles.text}>
-                    {item?.affirmation.affirmation_text.substring(0, 40)}
-                  </Text>
-                )}
+                <Text style={styles.text}>
+                  {item.affirmation_text.substring(0, 40)}
+                </Text>
               </View>
               <View style={{justifyContent: 'center'}}>
                 <Entypo
                   onPress={() => {
-                    setMenuVisible(true);
-                    setSelectedItem(item);
+                    setModalIndex(index);
                   }}
                   name="dots-three-horizontal"
                   size={20}
