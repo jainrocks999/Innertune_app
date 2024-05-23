@@ -13,10 +13,13 @@ import Buttun from '../../Auth/compoents/Buttun';
 import {FlatList} from 'react-native';
 import AffirmationMenu from './AffirmationMenu';
 import storage from '../../../utils/StorageService';
+import Loader from '../../../components/Loader';
 
 const EditPlayList = ({navigation}) => {
   const dispatch = useDispatch();
-  const {item, affirmations2, affirmations} = useSelector(state => state.home);
+  const {item, affirmations2, affirmations, loading} = useSelector(
+    state => state.home,
+  );
   const data = item.item;
   const [selected, setSelected] = useState([]);
   useEffect(() => {
@@ -83,6 +86,7 @@ const EditPlayList = ({navigation}) => {
 
   return (
     <View style={{flex: 1, backgroundColor: '#191919'}}>
+      <Loader loading={loading} />
       <View
         style={{
           height: '8%',

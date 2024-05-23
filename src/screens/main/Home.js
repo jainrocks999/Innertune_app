@@ -18,16 +18,12 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {FlatList} from 'react-native';
 import {TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/Octicons';
 import LinearGradient from 'react-native-linear-gradient';
-import {useNavigation} from '@react-navigation/native';
 import Horizontal from '../../components/Home/Horizontal';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../components/Loader';
 import {fonts} from '../../Context/Conctants';
 import storage from '../../utils/StorageService';
 import SearchModal from '../../components/serachModal';
-// import {groups} from './groups';
 const Img = [
   {
     id: '1',
@@ -65,9 +61,7 @@ const HomeScreen = props => {
   const {navigation} = props;
   const dispatch = useDispatch();
   const getFavriote = item => {};
-  const {groups, loading, category, Createfavriote} = useSelector(
-    state => state.home,
-  );
+  const {groups, loading, category} = useSelector(state => state.home);
   const [searchvisble, setSearchvisible] = useState(false);
 
   const getAllCategories = async () => {
@@ -207,6 +201,72 @@ const HomeScreen = props => {
       data: modified,
     });
   };
+  const getFilterCategories = (id, array, isFavorite) => {
+    return array.map(item =>
+      item.id == id ? {...item, is_favorite: isFavorite} : item,
+    );
+  };
+
+  const addFavoriteNew = async item => {
+    try {
+      const items = await storage.getMultipleItems([
+        storage.TOKEN,
+        storage.USER_ID,
+      ]);
+
+      const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+      const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+
+      const modifiedCategories = getFilterCategories(
+        item.item.id,
+        category,
+        true,
+      );
+      dispatch({
+        type: 'home/Createfavriote_request',
+        user_id: user,
+        category_id: item.item.id,
+        affirmation_id: '',
+        url: 'createFavoriteList',
+        navigation,
+        token,
+        data: modifiedCategories,
+        categories: true,
+      });
+    } catch (error) {
+      console.error('An error occurred while adding favorite', error);
+    }
+  };
+  const removeFavroitNew = async item => {
+    try {
+      const items = await storage.getMultipleItems([
+        storage.TOKEN,
+        storage.USER_ID,
+      ]);
+
+      const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+      const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+
+      const modifiedCategories = getFilterCategories(
+        item.item.id,
+        category,
+        false,
+      );
+      dispatch({
+        type: 'home/removeFavriout_request',
+        url: 'unlikeCategories',
+        user_id: user,
+        favorite_id: item.item.favorite_id,
+        category_id: item.item.id,
+        token,
+        isCat: true,
+        data: modifiedCategories,
+        categories: true,
+      });
+    } catch (error) {
+      console.log('some error', error);
+    }
+  };
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
@@ -286,6 +346,9 @@ const HomeScreen = props => {
             getAffetMations(items);
           }}
           data={category}
+          onPressHeart={(val, item) => {
+            !val ? addFavoriteNew(item) : removeFavroitNew(item);
+          }}
         />
 
         <View style={styles.cardd}>
@@ -342,6 +405,9 @@ const HomeScreen = props => {
             getAffetMations(items);
           }}
           data={category}
+          onPressHeart={(val, item) => {
+            !val ? addFavoriteNew(item) : removeFavroitNew(item);
+          }}
         />
 
         <FlatList

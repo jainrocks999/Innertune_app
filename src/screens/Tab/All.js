@@ -43,7 +43,7 @@ const Img = [
 const All = () => {
   const dispatch = useDispatch();
   const {loading, playlist} = useSelector(state => state.home);
-  console.log('this issss playlistt', playlist);
+
   const getAllplaylist = async () => {
     const items = await storage.getMultipleItems([
       storage.TOKEN,
@@ -55,7 +55,7 @@ const All = () => {
       type: 'home/playlist_request',
       token,
       url: 'playListItem',
-      playlist_id: 1,
+      playlist_id: user,
     });
   };
   useEffect(() => {
@@ -73,7 +73,6 @@ const All = () => {
                 <Image source={item.image} style={styles.image} />
                 <View
                   style={{flexDirection: 'column', marginHorizontal: hp(2.5)}}>
-                
                   <Text style={styles.text}>{item.title}</Text>
                   <Text style={styles.text2}>{item.title2}</Text>
                 </View>

@@ -272,10 +272,17 @@ function* fetchCreatefavriote(action) {
         payload: res.data,
       });
       if (action.affirmation_id == '') {
-        yield yield put({
-          type: 'home/group_fetch_success',
-          payload: action.data,
-        });
+        if (action.categories == undefined) {
+          yield yield put({
+            type: 'home/group_fetch_success',
+            payload: action.data,
+          });
+        } else {
+          yield yield put({
+            type: 'home/category_fetch_success',
+            payload: action.data,
+          });
+        }
         if (action.item) {
           yield put({
             type: 'home/playList_item',
@@ -509,9 +516,27 @@ function* removeFavrioutList(action) {
       }
       if (action.isCat) {
         yield yield put({
-          type: 'home/group_fetch_success',
+          type: action.removeFromFavrioutList
+            ? 'home/getFavriotCategories_success'
+            : action.categories
+            ? 'home/category_fetch_success'
+            : 'home/group_fetch_success',
           payload: action.data,
         });
+        if (action.removeFromFavrioutList) {
+          yield put({
+            type: 'home/category_fetch_request',
+            token: action.token,
+            url: 'categories',
+            user_id: action.user,
+          });
+          yield put({
+            type: 'home/group_fetch_request',
+            token: action.token,
+            url: 'groups',
+            user_id: action.user,
+          });
+        }
       } else {
         yield put({
           type: 'home/affirmation_fetch_success',

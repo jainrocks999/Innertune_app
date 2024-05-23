@@ -13,25 +13,8 @@ import {FlatList} from 'react-native-gesture-handler';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Loader from '../Loader';
-const data = [
-  {
-    id: '1',
-    text: 'Listen Playlist',
-    icon: 'play',
-  },
-  {
-    id: '2',
-    text: 'Edit',
-    icon: 'pencil',
-  },
-  {
-    id: '3',
-    text: 'Delete Playlist',
-    icon: 'delete',
-  },
-];
 
-const Playlist_Menu = ({
+const Categores_menu = ({
   visible,
   image,
   item,
@@ -42,6 +25,23 @@ const Playlist_Menu = ({
   loading,
 }) => {
   const parentItem = item;
+  const data = [
+    {
+      id: '1',
+      text: 'Listen Playlist',
+      icon: 'play',
+    },
+    {
+      id: '2',
+      text: !item.is_favorite ? 'like playlist' : 'Unlike playlist',
+      icon: item.is_favorite ? 'heart' : 'hearto',
+    },
+    {
+      id: '3',
+      text: 'Share playlist',
+      icon: 'share',
+    },
+  ];
 
   return (
     <Modal animationType="fade" visible={visible} transparent={true}>
@@ -52,29 +52,23 @@ const Playlist_Menu = ({
           <View
             style={{
               height: hp(9),
-              paddingHorizontal: wp(1),
-              paddingVertical: wp(1),
               width: hp(9),
               backgroundColor: '#fff',
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: wp(2),
+              overflow: 'hidden',
             }}>
-            <Image
-              tintColor={'#B72658'}
-              source={image}
-              style={{height: '100%', width: '100%'}}
-              resizeMode="contain"
-            />
+            <Image source={image} style={{height: '100%', width: '100%'}} />
           </View>
           <View style={{paddingBottom: '5%'}}>
-            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.title}>{item.categories_name}</Text>
             <Text
               style={[
                 styles.title,
                 {fontSize: wp(5), fontFamily: fonts.medium},
               ]}>
-              {item?.description.substring(0, 20)}
+              {'by stumili'}
             </Text>
           </View>
         </View>
@@ -101,10 +95,22 @@ const Playlist_Menu = ({
                     alignItems: 'center',
                     marginVertical: '5%',
                   }}>
-                  {index == 0 || index == 2 ? (
-                    <AntDesign color={'white'} size={wp(7)} name={item.icon} />
+                  {index == 0 || index == 1 ? (
+                    <AntDesign
+                      color={
+                        parentItem.is_favorite && index == 1
+                          ? '#B72658'
+                          : 'white'
+                      }
+                      size={wp(7)}
+                      name={item.icon}
+                    />
                   ) : (
-                    <Entypo color="white" size={wp(7)} name={item.icon} />
+                    <Entypo
+                      color={index == 2 ? '#fff' : '#B72658'}
+                      size={wp(7)}
+                      name={item.icon}
+                    />
                   )}
 
                   <Text
@@ -137,7 +143,7 @@ const Playlist_Menu = ({
   );
 };
 
-export default Playlist_Menu;
+export default Categores_menu;
 
 const styles = StyleSheet.create({
   card: {

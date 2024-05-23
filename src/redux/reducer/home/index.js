@@ -189,4 +189,5 @@ const Home = createSlice({
     },
   },
 });
+
 export default Home.reducer;

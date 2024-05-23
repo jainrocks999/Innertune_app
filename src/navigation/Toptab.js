@@ -6,6 +6,7 @@ import {
   Image,
   ScrollView,
   Alert,
+  Clipboard,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
@@ -23,6 +24,7 @@ import {fonts} from '../Context/Conctants';
 import storage from '../utils/StorageService';
 import Loader from '../components/Loader';
 import Playlist_Menu from '../components/Playlist/Playlist_Menu';
+import Categores_menu from '../components/Playlist/Categores_menu';
 
 const Img = [
   {
@@ -76,8 +78,15 @@ const Img = [
 ];
 
 const Toptab = () => {
-  const {playlist, favorite_Cat, affirmations, affirmations2, loading} =
-    useSelector(state => state.home);
+  const {
+    playlist,
+    favorite_Cat,
+    affirmations,
+    category,
+    affirmations2,
+    loading,
+    grops,
+  } = useSelector(state => state.home);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -128,7 +137,7 @@ const Toptab = () => {
   };
   useEffect(() => {
     getFavroitCategories(true);
-  }, []);
+  }, [grops, category]);
   const getAffetMations = async item => {
     const items = await storage.getMultipleItems([
       storage.TOKEN,
@@ -148,9 +157,11 @@ const Toptab = () => {
     });
   };
   const [visibleIndex, setVisibleIndex] = useState(-1);
+  const [categoriesIndex, setCategoryIndex] = useState(-1);
   useEffect(() => {
     setVisibleIndex(-1);
-  }, [affirmations, affirmations2]);
+    setCategoryIndex(-1);
+  }, [affirmations, affirmations2, playlist, favorite_Cat]);
 
   const onPressDelete = async item => {
     const items = await storage.getMultipleItems([
@@ -169,9 +180,51 @@ const Toptab = () => {
       url: 'playListDelete',
     });
   };
-  useEffect(() => {
-    setVisibleIndex(-1);
-  }, [playlist]);
+
+  const getAffetMationsbyCategories = async item => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+
+    dispatch({
+      type: 'home/affirmationBYCategory_request',
+      token,
+      user_id: user,
+      navigation,
+      url: 'categoryByAffermation',
+      item,
+      page: 'Playlistdetails2',
+      category_id: item.id,
+    });
+  };
+  const getFilter = (array, id) => {
+    return array.filter(item => item.id != id);
+  };
+  const removeFavroit = async (item, index) => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    // const modified = getmodified(groups, item.index, index, false);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+    const filter = getFilter([...favorite_Cat], item.id);
+
+    dispatch({
+      type: 'home/removeFavriout_request',
+      url: 'unlikeCategories',
+      user_id: user,
+      favorite_id: item.favorite_id,
+      category_id: item.id,
+      token,
+      isCat: true,
+      data: filter,
+      removeFromFavrioutList: true,
+    });
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: '#191919', height: '100%'}}>
@@ -246,11 +299,12 @@ const Toptab = () => {
             data={favorite_Cat}
             keyExtractor={item => item?.id}
             scrollEnabled={false}
-            renderItem={({item}) => {
+            renderItem={({item, index}) => {
               let image =
                 item.categories_image.length > 0
                   ? item.categories_image[0].original_url
                   : 'https://images.unsplash.com/photo-1616356607338-fd87169ecf1a';
+              // console.log(image, item.categories_name);
               return (
                 <View
                   style={{
@@ -258,6 +312,17 @@ const Toptab = () => {
                     alignSelf: 'center',
                     justifyContent: 'center',
                   }}>
+                  <Categores_menu
+                    visible={categoriesIndex == index}
+                    image={{uri: image}}
+                    item={item}
+                    onClose={() => {
+                      setCategoryIndex(-1);
+                    }}
+                    onPressListen={getAffetMationsbyCategories}
+                    onPressEdit={removeFavroit}
+                    loading={loading}
+                  />
                   <TouchableOpacity
                     onPress={() => {
                       getAffetMations(item);
@@ -276,7 +341,7 @@ const Toptab = () => {
                         <Image
                           source={{uri: image}}
                           style={{height: '100%', width: '100%'}}
-                          resizeMode="contain"
+                          resizeMode="stretch"
                         />
                       </View>
                       <View
@@ -291,6 +356,9 @@ const Toptab = () => {
                       <View
                         style={{justifyContent: 'center', paddingRight: 20}}>
                         <Entypo
+                          onPress={() => {
+                            setCategoryIndex(index);
+                          }}
                           name="dots-three-horizontal"
                           size={20}
                           color="white"
@@ -329,6 +397,7 @@ const Toptab = () => {
                 onPressDelete={item => {
                   onPressDelete(item);
                 }}
+                loading={loading}
               />
               <TouchableOpacity
                 onPress={() => {

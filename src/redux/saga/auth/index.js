@@ -25,7 +25,8 @@ function* doLogin(action) {
       yield put({
         type: 'auth/login_error',
       });
-      Toast.show('Invalid email or password2');
+      Toast.show('Invalid email or password');
+      console.log(res);
     }
   } catch (err) {
     yield put({

@@ -31,6 +31,7 @@ import Menu from '../../components/Playlist/Menu';
 import Buttun from '../Auth/compoents/Buttun';
 import {fonts} from '../../Context/Conctants';
 import storage from '../../utils/StorageService';
+import Categores_menu from '../../components/Playlist/Categores_menu';
 const Img = [
   {
     id: '1',
@@ -94,6 +95,7 @@ const Playlistdetails = () => {
   const image = item?.categories_image[0]?.original_url ?? '';
   const title = item?.categories_name ?? 'Believe in yourself';
   const navigation = useNavigation();
+  const [visible, setVisible] = useState(false);
   const HEADER_HEIGHT = 50;
   const scrollY = useRef(new Animated.Value(0)).current;
   const diffClamp = Animated.diffClamp(scrollY, 0, hp(55));
@@ -146,16 +148,30 @@ const Playlistdetails = () => {
       item: {...playItem, is_favorite: false},
     });
   };
+  // useEffect(() => {
+  //   setVisible(false);
+  // }, [item]);
   return (
     <View style={styles.container}>
       <Loader loading={loading} />
+      <Categores_menu
+        onPressListen={() => navigation.navigate('playsong')}
+        item={item}
+        onClose={() => {
+          setVisible(false);
+        }}
+        visible={visible}
+        onPressEdit={items => {
+          items.is_favorite ? removeFavroit(items) : getFavriote(items);
+        }}
+        loading={loading}
+      />
       <Animated.View
         style={[styles.header, {transform: [{translateY: translateY}]}]}>
         <View
           style={{
             height: '100%',
             width: '100%',
-            // backgroundColor: '#fff',
             zIndex: 100,
           }}>
           <View style={{height: '3%'}} />
@@ -343,7 +359,6 @@ const Playlistdetails = () => {
             <FontAwesome
               onPress={() => {
                 item.is_favorite ? removeFavroit(item) : getFavriote(item);
-                // console.log(item.is_favorite);
               }}
               name={item.is_favorite ? 'heart' : 'heart-o'}
               size={25}
@@ -352,7 +367,7 @@ const Playlistdetails = () => {
             <Entypo name="share" size={25} color="white" />
             <Entypo
               onPress={() => {
-                navigation.navigate('Menu');
+                setVisible(true);
               }}
               name="dots-three-vertical"
               size={25}
@@ -385,11 +400,15 @@ const Playlistdetails = () => {
                 affirmations={affirmations}
                 loading={loading}
               />
-              <View style={{justifyContent: 'center', marginHorizontal: '10%'}}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('playsong', {index: index});
+                }}
+                style={{justifyContent: 'center', marginHorizontal: '10%'}}>
                 <Text style={styles.text}>
                   {item.affirmation_text.substring(0, 40)}
                 </Text>
-              </View>
+              </TouchableOpacity>
               <View style={{justifyContent: 'center'}}>
                 <Entypo
                   onPress={() => {

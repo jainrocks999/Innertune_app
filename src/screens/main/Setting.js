@@ -22,6 +22,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {fonts} from '../../Context/Conctants';
 import Background from '../Auth/compoents/Background';
+import storage from '../../utils/StorageService';
 const data = [
   {
     id: '1',
@@ -362,7 +363,7 @@ const Setting = ({}) => {
                           {
                             text: 'Logout',
                             onPress: async () => {
-                              await AsyncStorage.clear();
+                              await storage.clear();
                               navigation.reset({
                                 index: 0,
                                 routes: [{name: 'login'}],
