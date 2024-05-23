@@ -15,6 +15,7 @@ const initialState = {
   favorite_Cat: [],
   favorite_aff: [],
   searchData: {},
+  affirmations2: [],
 };
 const Home = createSlice({
   name: 'home',
@@ -122,6 +123,9 @@ const Home = createSlice({
     getPlayListItem_success: (state, action) => {
       return {...state, affirmations: action.payload, loading: false};
     },
+    getPlayListItem_success2: (state, action) => {
+      return {...state, affirmations2: action.payload, loading: false};
+    },
     getPlayListItem_error: (state, action) => {
       return {...state, loading: false};
     },
@@ -166,6 +170,21 @@ const Home = createSlice({
       return {...state, searchData: action.payload, loading: false};
     },
     search_error: (state, action) => {
+      return {...state, loading: false};
+    },
+    delete_playlist_request: (state, action) => {
+      return {...state, loading: true};
+    },
+    delete_playlist_error: (state, action) => {
+      return {...state, loading: false};
+    },
+    update_playlistitem_request: (state, action) => {
+      return {...state, loading: true};
+    },
+    update_playlistitem_success: (state, action) => {
+      return {...state, loading: false};
+    },
+    update_playlistitem_error: (state, action) => {
       return {...state, loading: false};
     },
   },

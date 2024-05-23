@@ -22,6 +22,7 @@ import {useNavigation} from '@react-navigation/native';
 import {fonts} from '../Context/Conctants';
 import storage from '../utils/StorageService';
 import Loader from '../components/Loader';
+import Playlist_Menu from '../components/Playlist/Playlist_Menu';
 
 const Img = [
   {
@@ -75,7 +76,8 @@ const Img = [
 ];
 
 const Toptab = () => {
-  const {playlist, favorite_Cat, loading} = useSelector(state => state.home);
+  const {playlist, favorite_Cat, affirmations, affirmations2, loading} =
+    useSelector(state => state.home);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -96,7 +98,7 @@ const Toptab = () => {
     });
   };
 
-  const getPlayListItem = async item => {
+  const getPlayListItem = async (item, bool) => {
     const token = await storage.getItem(storage.TOKEN);
     dispatch({
       type: 'home/getPlayListItem_request',
@@ -105,6 +107,7 @@ const Toptab = () => {
       url: 'playListItem',
       navigation,
       item: item,
+      isEdit: bool ?? false,
     });
   };
   const getFavroitCategories = async bool => {
@@ -144,7 +147,32 @@ const Toptab = () => {
       page: 'Playlistdetails2',
     });
   };
-  //
+  const [visibleIndex, setVisibleIndex] = useState(-1);
+  useEffect(() => {
+    setVisibleIndex(-1);
+  }, [affirmations, affirmations2]);
+
+  const onPressDelete = async item => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+
+    dispatch({
+      type: 'home/delete_playlist_request',
+      user_id: user,
+      token,
+      playlist_id: item.id,
+      url: 'playListDelete',
+    });
+  };
+  useEffect(() => {
+    setVisibleIndex(-1);
+  }, [playlist]);
+
   return (
     <View style={{flex: 1, backgroundColor: '#191919', height: '100%'}}>
       <Loader loading={loading} />
@@ -200,43 +228,6 @@ const Toptab = () => {
           </View>
         </View>
       </TouchableOpacity>
-      {/* <TouchableOpacity
-        onPress={() => {
-          getFavroitCategories(true);
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            top: hp(3),
-          }}>
-          <View style={styles.imageContainer}>
-            <LinearGradient
-              start={{x: 1, y: 0}}
-              end={{x: -0.2, y: 0}}
-              locations={[0.3, 1]}
-              colors={['#D485D1', '#B72658']}
-              style={styles.linearGradient}>
-              <View style={{justifyContent: 'center', marginLeft: '5%'}}>
-                <Entypo name="heart" size={30} color="white" />
-              </View>
-              <View style={{flexDirection: 'column', justifyContent: 'center'}}>
-                <Text
-                  style={{
-                    width: wp(50),
-                    color: '#fff',
-                    fontSize: wp(5),
-                    fontWeight: '500',
-                    fontFamily: fonts.bold,
-                  }}>
-                  Liked Playlist
-                </Text>
-                <Text style={styles.text2}>90 affirmations</Text>
-              </View>
-            </LinearGradient>
-          </View>
-        </View>
-      </TouchableOpacity> */}
 
       <View style={{marginHorizontal: hp(3), marginTop: hp(3)}}>
         <Text
@@ -288,7 +279,6 @@ const Toptab = () => {
                           resizeMode="contain"
                         />
                       </View>
-                      {/* </LinearGradient> */}
                       <View
                         style={{
                           flexDirection: 'column',
@@ -318,24 +308,33 @@ const Toptab = () => {
           data={playlist[0].playlist}
           keyExtractor={item => item?.id}
           scrollEnabled={false}
-          renderItem={({item}) => (
+          renderItem={({item, index}) => (
             <View
               style={{
                 flexDirection: 'row',
                 alignSelf: 'center',
                 justifyContent: 'center',
               }}>
+              <Playlist_Menu
+                image={require('../assets/playlist.png')}
+                item={item}
+                visible={index == visibleIndex}
+                onClose={() => setVisibleIndex(-1)}
+                onPressListen={items => {
+                  getPlayListItem(items);
+                }}
+                onPressEdit={data => {
+                  getPlayListItem(item, true);
+                }}
+                onPressDelete={item => {
+                  onPressDelete(item);
+                }}
+              />
               <TouchableOpacity
                 onPress={() => {
                   getPlayListItem(item);
                 }}>
                 <View style={styles.imageeContainer}>
-                  {/* <LinearGradient
-                  style={{borderRadius: 20}}
-                  start={{x: 0.5, y: 0}}
-                  end={{x: 0, y: 1}}
-                  locations={[0, 1]}
-                  colors={['#D485D1', '#fff']}> */}
                   <View
                     style={{
                       justifyContent: 'center',
@@ -363,6 +362,9 @@ const Toptab = () => {
                   </View>
                   <View style={{justifyContent: 'center', paddingRight: 20}}>
                     <Entypo
+                      onPress={() => {
+                        setVisibleIndex(index);
+                      }}
                       name="dots-three-horizontal"
                       size={20}
                       color="white"

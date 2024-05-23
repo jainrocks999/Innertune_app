@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, Vibration} from 'react-native';
 import React from 'react';
 import {
   heightPercent as hp,
@@ -8,7 +8,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Foundation from 'react-native-vector-icons/Foundation';
 import {fonts} from '../../../Context/Conctants';
 
-const Buttun = ({onPress, title, style, playlist}) => {
+const Buttun = ({onPress, title, child, style, playlist, children}) => {
   let bool = playlist;
   return (
     <TouchableOpacity onPress={onPress} style={[styles.btn, style]}>
@@ -20,7 +20,9 @@ const Buttun = ({onPress, title, style, playlist}) => {
             alignItems: 'center',
             justifyContent: 'center',
           },
-          bool ? {flexDirection: 'row', alignItems: 'center'} : undefined,
+          bool || child
+            ? {flexDirection: 'row', alignItems: 'center'}
+            : undefined,
         ]}
         // start={{x: 0.0, y: 0.0}}
         // end={{x: 5, y: 0.0}}
@@ -30,23 +32,29 @@ const Buttun = ({onPress, title, style, playlist}) => {
         end={{x: 0, y: 1}}
         locations={[0, 1]}
         colors={['#D485D1', '#B72658']}>
-        {bool ? (
-          <Foundation
-            style={{marginRight: '5%', color: 'white'}}
-            name="play"
-            size={25}
-          />
-        ) : null}
-        <Text
-          style={{
-            color: 'white',
-            fontSize: wp(bool ? 5.4 : 5.5),
-            fontWeight: '600',
-            marginTop: bool ? '-2%' : '0%',
-            fontFamily: fonts.medium,
-          }}>
-          {title}
-        </Text>
+        {!child ? (
+          <>
+            {bool ? (
+              <Foundation
+                style={{marginRight: '5%', color: 'white'}}
+                name="play"
+                size={25}
+              />
+            ) : null}
+            <Text
+              style={{
+                color: 'white',
+                fontSize: wp(bool ? 5.4 : 5.5),
+                fontWeight: '600',
+                marginTop: bool ? '-2%' : '0%',
+                fontFamily: fonts.medium,
+              }}>
+              {title}
+            </Text>
+          </>
+        ) : (
+          children
+        )}
       </LinearGradient>
     </TouchableOpacity>
   );

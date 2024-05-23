@@ -183,7 +183,7 @@ const Createaffirmation = ({route}) => {
         }}>
         <Buttun
           onPress={() => {
-            navigation.navigate('saveplaylist', {selected});
+            navigation.navigate('saveplaylist', {isEdit: false});
           }}
           title={`${'Next'}`}
           style={{

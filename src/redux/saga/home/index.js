@@ -203,6 +203,9 @@ function* fetchCreatePlaylist(action) {
     formdata.append('description', action.description);
     formdata.append('title', action.title);
     formdata.append('user_id', action.user_id);
+    if (action.playlist_id) {
+      formdata.append('playlist_id', action.playlist_id);
+    }
     const res = yield call(Api.API_POST, {
       formdata,
       token: action.token,
@@ -215,13 +218,25 @@ function* fetchCreatePlaylist(action) {
         payload: res.data,
       });
       yield put({
-        type: 'home/add_playlistItem_request',
-        playlist_id: res.data.id,
-        affirmation_id: action.selected,
-        url: 'createPlayListItem',
-        navigation: action.navigation,
+        type: 'home/playlist_request',
         token: action.token,
+        url: 'playList',
+        user_id: action.user_id,
       });
+      if (action.playlist_id == undefined) {
+        yield put({
+          type: 'home/add_playlistItem_request',
+          playlist_id: res.data.id,
+          affirmation_id: action.selected,
+          url: 'createPlayListItem',
+          navigation: action.navigation,
+          token: action.token,
+        });
+        Toast.show('Play list created');
+      } else {
+        Toast.show('Play list updated');
+        action.navigation.navigate('library');
+      }
     } else {
       Toast.show('Error with fetching createplaylist ');
       yield put({
@@ -371,10 +386,6 @@ function* getPlayListItem(action) {
     });
     if (res.status) {
       yield put({
-        type: 'home/getPlayListItem_success',
-        payload: res.data,
-      });
-      yield put({
         type: 'home/playList_item',
         payload: {
           categories_image: [
@@ -386,10 +397,24 @@ function* getPlayListItem(action) {
           categories_name: action.item.title,
           from: true,
           isFroiut: false,
+          item: action.item,
         },
       });
+      if (!action.isEdit) {
+        yield put({
+          type: 'home/getPlayListItem_success',
+          payload: res.data,
+        });
+      } else {
+        yield put({
+          type: 'home/getPlayListItem_success2',
+          payload: res.data,
+        });
+      }
       if (res.data.length > 0) {
-        action.navigation.navigate('Playlistdetails2');
+        action.navigation.navigate(
+          !action.isEdit ? 'Playlistdetails2' : 'EditPlayList',
+        );
       } else {
         Toast.show('There are no playlist item added');
       }
@@ -564,7 +589,7 @@ function* doSearch(action) {
       url: action.url,
       params,
     });
-    console.log('this is res', JSON.stringify(res));
+
     if (res.status) {
       yield put({
         type: 'home/search_success',
@@ -583,6 +608,75 @@ function* doSearch(action) {
     console.log(error);
   }
 }
+function* deletePlaylist(action) {
+  try {
+    const params = {
+      user_id: action.user_id,
+      playlist_id: action.playlist_id,
+    };
+    const res = yield call(Api.API_GET, {
+      token: action.token,
+      url: action.url,
+      params,
+    });
+    if (res.status) {
+      yield put({
+        type: 'home/playlist_request',
+        token: action.token,
+        url: 'playList',
+        user_id: action.user_id,
+      });
+      Toast.show('Play list deleted Success fully');
+    } else {
+      console.log(res);
+      yield put({
+        type: 'home/delete_playlist_error',
+      });
+      Toast.show('Playlist deletion error');
+    }
+  } catch (error) {
+    console.log(error);
+    yield put({
+      type: 'home/delete_playlist_error',
+    });
+    Toast.show('something went wrong');
+  }
+}
+function* deletePlaylistItme(action) {
+  try {
+    const formdata = new FormData();
+    formdata.append('playlist_id', action.playlist_id);
+    if (Array.isArray(action.affirmation_id)) {
+      action.affirmation_id.map((item, index) => {
+        formdata.append(`affirmation_id[${index}]`, item);
+      });
+    }
+
+    const res = yield call(Api.API_POST, {
+      formdata,
+      token: action.token,
+      url: action.url,
+    });
+    if (res.status) {
+      yield put({
+        type: 'home/update_playlistitem_success',
+      });
+      Toast.show('Play list item updated successfully');
+      action.navigation.navigate('library');
+    } else {
+      yield put({
+        type: 'home/update_playlistitem_error',
+      });
+      Toast.show('Error with update playlist item');
+    }
+  } catch (error) {
+    yield put({
+      type: 'home/update_playlistitem_error',
+    });
+    Toast.show('Error with update playlist item');
+    console.log(error);
+  }
+}
 export default function* homeSaga() {
   yield takeEvery('home/playlist_request', getplaylist);
   yield takeEvery('home/group_fetch_request', fetchGroups);
@@ -598,9 +692,11 @@ export default function* homeSaga() {
   yield takeEvery('home/getFavriotCategories_request', getFavoriout);
   yield takeEvery('home/getFavriotAffermation_request', getFavoriout);
   yield takeEvery('home/removeFavriout_request', removeFavrioutList);
+  yield takeEvery('home/delete_playlist_request', deletePlaylist);
   yield takeEvery(
     'home/affirmationBYCategory_request',
     fetchAffirmationByCategory,
   );
   yield takeEvery('home/search_request', doSearch);
+  yield takeEvery('home/update_playlistitem_request', deletePlaylistItme);
 }

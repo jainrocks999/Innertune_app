@@ -8,7 +8,7 @@ import {
   Image,
   Button,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {
   heightPercent as hp,
@@ -30,12 +30,23 @@ import storage from '../../../utils/StorageService';
 let launchImageLibrary = _launchImageLibrary;
 
 const Saveplaylist = ({route}) => {
-  const selectedItems = route.params.selected ?? [];
-  const {loading, groups, category, Createfavriote, addetItems_to_playlist} =
-    useSelector(state => state.home);
+  const {isEdit} = route.params;
+  const {loading, item, addetItems_to_playlist} = useSelector(
+    state => state.home,
+  );
+  const editedItem = item.item ?? false;
   const navigation = useNavigation();
   const [playlistName, setPlaylistName] = useState('');
   const [description, setDescription] = useState('');
+  useEffect(() => {
+    if (isEdit) {
+      setPlaylistName(editedItem.title);
+      setDescription(editedItem.description);
+    } else {
+      setPlaylistName('');
+      setDescription('');
+    }
+  }, []);
   const handlePlaylistNameChange = text => {
     setPlaylistName(text);
   };
@@ -50,16 +61,30 @@ const Saveplaylist = ({route}) => {
     ]);
     const token = items.find(([key]) => key === storage.TOKEN)?.[1];
     const user = items.find(([key]) => key === storage.USER_ID)?.[1];
-    dispatch({
-      type: 'home/createPlayList_request',
-      description: description,
-      title: playlistName,
-      user_id: user,
-      url: 'createPlayList',
-      token,
-      navigation,
-      selected: addetItems_to_playlist,
-    });
+    if (!isEdit) {
+      dispatch({
+        type: 'home/createPlayList_request',
+        description: description,
+        title: playlistName,
+        user_id: user,
+        url: 'createPlayList',
+        token,
+        navigation,
+        selected: addetItems_to_playlist,
+      });
+    } else {
+      dispatch({
+        type: 'home/createPlayList_request',
+        description: description,
+        title: playlistName,
+        user_id: user,
+        playlist_id: item.item.id,
+        url: 'updatePlayList',
+        token,
+        navigation,
+        selected: [],
+      });
+    }
   };
   const [selectedImage, setSelectedImage] = useState(null);
 

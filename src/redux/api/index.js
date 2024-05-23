@@ -23,7 +23,7 @@ export default class Api {
     )
       .then(response => response.text())
       .then(result => JSON.parse(result))
-      .catch(error => console.log('error', error));
+      .catch(error => error);
     return response;
   };
   static API_POST = async data => {

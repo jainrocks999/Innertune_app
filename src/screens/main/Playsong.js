@@ -50,7 +50,6 @@ const data = [
 const Playsong = () => {
   const dispatch = useDispatch();
   const [maxTimeInMinutes, setMaxTimeInMinuts] = useState(1);
-  const [currentTimeInSeconds, setCurrentTimeInSeconds] = useState(0);
 
   const [bgVolume, setBgVolume] = useState(0.1);
   const [progress, setProgress] = useState(0);
@@ -59,8 +58,7 @@ const Playsong = () => {
   const [visible, setVisible] = useState(false);
   const [selectedTab, setSelectedTab] = useState();
   // const v
-  const {affirmations, Createfavriote, item} = useSelector(state => state.home);
-  const items = item;
+  const {affirmations} = useSelector(state => state.home);
 
   const getAffirmation = async () => {
     const items = await storage.getMultipleItems([
@@ -79,14 +77,8 @@ const Playsong = () => {
       page: '',
     });
   };
-
-  // useEffect(() => {
-  //   !items.from && !items.isFroiut ? getAffirmation() : null;
-  // }, [Createfavriote]);
   const [isPaused, setIsPaused] = useState(false);
   const [visibleIndex, setVisibleIndex] = useState(0);
-  // Clipboard.setString(JSON.stringify(affirmations));
-
   const handleTabPress = async title => {
     setSelectedTab(title);
     setVisible(true);

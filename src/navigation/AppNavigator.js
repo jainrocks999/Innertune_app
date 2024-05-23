@@ -22,6 +22,7 @@ import AksReminder from '../screens/Intro_Screens/AksReminder';
 import Intrested from '../screens/Intro_Screens/Intrested';
 import Forgot from '../screens/Auth/Forgot';
 import Playlistdetails2 from '../screens/Tab/Playlist2';
+import EditPlayList from '../screens/main/All playlists/EditPlayList';
 const Stack = createStackNavigator();
 function MyStack() {
   return (
@@ -133,6 +134,11 @@ function MyStack() {
       <Stack.Screen
         name="Intrested"
         component={Intrested}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditPlayList"
+        component={EditPlayList}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
