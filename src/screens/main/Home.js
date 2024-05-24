@@ -243,10 +243,8 @@ const HomeScreen = props => {
         storage.TOKEN,
         storage.USER_ID,
       ]);
-
       const token = items.find(([key]) => key === storage.TOKEN)?.[1];
       const user = items.find(([key]) => key === storage.USER_ID)?.[1];
-
       const modifiedCategories = getFilterCategories(
         item.item.id,
         category,
@@ -306,7 +304,7 @@ const HomeScreen = props => {
               <View style={styles.lastSestionItem}>
                 <Image
                   source={item.image}
-                  style={{height: hp(8), width: hp(8), borderRadius: hp(4)}}
+                  style={{height: hp(8), width: hp(8), borderRadius: hp(1.5)}}
                 />
                 <Text
                   style={{
@@ -653,7 +651,7 @@ const styles = StyleSheet.create({
     marginHorizontal: '2%',
     marginVertical: '2%',
     backgroundColor: '#4A4949',
-    borderRadius: wp(6),
+    borderRadius: wp(2),
     flexDirection: 'row',
     alignItems: 'center',
     paddingRight: '2%',

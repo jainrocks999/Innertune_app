@@ -42,6 +42,7 @@ const Categores_menu = ({
       icon: 'share',
     },
   ];
+  console.log('this is item', item.is_favorite, item.categories_name);
 
   return (
     <Modal animationType="fade" visible={visible} transparent={true}>
@@ -62,7 +63,9 @@ const Categores_menu = ({
             <Image source={image} style={{height: '100%', width: '100%'}} />
           </View>
           <View style={{paddingBottom: '5%'}}>
-            <Text style={styles.title}>{item.categories_name}</Text>
+            <Text style={styles.title}>
+              {item.categories_name.substring(0, 15)}...
+            </Text>
             <Text
               style={[
                 styles.title,

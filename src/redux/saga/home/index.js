@@ -283,6 +283,20 @@ function* fetchCreatefavriote(action) {
             payload: action.data,
           });
         }
+        if (action.isSearch) {
+          yield put({
+            type: 'home/category_fetch_request',
+            token: action.token,
+            url: 'categories',
+            user_id: action.user,
+          });
+          yield put({
+            type: 'home/group_fetch_request',
+            token: action.token,
+            url: 'groups',
+            user_id: action.user,
+          });
+        }
         if (action.item) {
           yield put({
             type: 'home/playList_item',
@@ -523,7 +537,7 @@ function* removeFavrioutList(action) {
             : 'home/group_fetch_success',
           payload: action.data,
         });
-        if (action.removeFromFavrioutList) {
+        if (action.removeFromFavrioutList || action.isSearch) {
           yield put({
             type: 'home/category_fetch_request',
             token: action.token,

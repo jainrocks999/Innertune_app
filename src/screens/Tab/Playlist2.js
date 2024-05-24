@@ -155,7 +155,7 @@ const Playlistdetails = () => {
     <View style={styles.container}>
       <Loader loading={loading} />
       <Categores_menu
-        onPressListen={() => navigation.navigate('playsong')}
+        onPressListen={() => navigation.navigate('playsong', {index: -1})}
         item={item}
         onClose={() => {
           setVisible(false);
@@ -166,8 +166,7 @@ const Playlistdetails = () => {
         }}
         loading={loading}
       />
-      <Animated.View
-        style={[styles.header, {transform: [{translateY: translateY}]}]}>
+      <Animated.View style={[styles.header]}>
         <View
           style={{
             height: '100%',
@@ -262,12 +261,11 @@ const Playlistdetails = () => {
           </View>
         </View>
       </Animated.View>
-      <View
+      {/* <View
         style={{
           height: '8%',
           flexDirection: 'row',
-          // borderWidth: 1,
-          // borderColor: '#fff',
+         
           paddingHorizontal: wp(5),
           alignItems: 'center',
         }}>
@@ -285,22 +283,73 @@ const Playlistdetails = () => {
           style={{color: '#fff', fontSize: wp(5.5), fontFamily: fonts.medium}}>
           {title}
         </Text>
-        {/* <Buttun
+      
+      </View> */}
+      <View
+        style={{
+          borderColor: '#fff',
+          // height: '5%',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginVertical: hp(2),
+          paddingHorizontal: wp(7),
+          marginTop: '3%',
+        }}>
+        <View
           style={{
-            height: '60%',
-            width: '40%',
+            zIndex: 5,
+            color: 'white',
+            alignSelf: 'center',
+            height: hp(6.5),
+            width: '45%',
+            borderRadius: wp(1),
+            elevation: 5,
+            alignItems: 'center',
+            justifyContent: 'center',
             flexDirection: 'row',
-            elevation: 3,
-            shadowColor: '#fff',
-            position: 'absolute',
-            right: wp(1),
-            bottom: -40,
-            zIndex: 2,
-          }}
-          onPress={() => navigation.navigate('playsong')}
-          title={'Play'}
-          playlist
-        /> */}
+          }}>
+          <Buttun
+            style={{
+              height: '100%',
+              width: '100%',
+              flexDirection: 'row',
+              elevation: 3,
+              shadowColor: '#fff',
+            }}
+            onPress={() => navigation.navigate('playsong', {index: -1})}
+            title={'Play'}
+            playlist
+          />
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '45%',
+            zIndex: 5,
+            alignSelf: 'center',
+            // bottom: '5%',
+            justifyContent: 'space-between',
+            marginTop: '8%',
+          }}>
+          <FontAwesome
+            onPress={() => {
+              item.is_favorite ? removeFavroit(item) : getFavriote(item);
+            }}
+            name={item.is_favorite ? 'heart' : 'heart-o'}
+            size={25}
+            color={item.is_favorite ? '#B72658' : 'white'}
+          />
+          <Entypo name="share" size={25} color="white" />
+          <Entypo
+            onPress={() => {
+              setVisible(true);
+            }}
+            name="dots-three-vertical"
+            size={25}
+            color="white"
+          />
+        </View>
       </View>
       <ScrollView
         style={styles.scrollView}
@@ -309,72 +358,6 @@ const Playlistdetails = () => {
         onScroll={e => {
           scrollY.setValue(e.nativeEvent.contentOffset.y);
         }}>
-        <View
-          style={{
-            borderColor: '#fff',
-            // height: '5%',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginVertical: hp(2),
-            paddingHorizontal: wp(7),
-            marginTop: '3%',
-          }}>
-          <View
-            style={{
-              zIndex: 5,
-              color: 'white',
-              alignSelf: 'center',
-              height: hp(6.5),
-              width: '45%',
-              borderRadius: wp(1),
-              elevation: 5,
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-            }}>
-            <Buttun
-              style={{
-                height: '100%',
-                width: '100%',
-                flexDirection: 'row',
-                elevation: 3,
-                shadowColor: '#fff',
-              }}
-              onPress={() => navigation.navigate('playsong')}
-              title={'Play'}
-              playlist
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: '45%',
-              zIndex: 5,
-              alignSelf: 'center',
-              // bottom: '5%',
-              justifyContent: 'space-between',
-              marginTop: '8%',
-            }}>
-            <FontAwesome
-              onPress={() => {
-                item.is_favorite ? removeFavroit(item) : getFavriote(item);
-              }}
-              name={item.is_favorite ? 'heart' : 'heart-o'}
-              size={25}
-              color={item.is_favorite ? '#B72658' : 'white'}
-            />
-            <Entypo name="share" size={25} color="white" />
-            <Entypo
-              onPress={() => {
-                setVisible(true);
-              }}
-              name="dots-three-vertical"
-              size={25}
-              color="white"
-            />
-          </View>
-        </View>
         <FlatList
           data={affirmations}
           keyExtractor={item => item.id}
@@ -433,13 +416,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#191919',
   },
   header: {
-    height: hp(50),
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    left: 0,
-    elevation: 4,
-    zIndex: 8,
+    height: hp(40),
+    // position: 'absolute',
+    // top: 0,
+    // right: 0,
+    // left: 0,
+    // elevation: 4,
+    // zIndex: 8,
     backgroundColor: '#191919',
 
     borderColor: '#fff',
@@ -447,7 +430,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
-  scrollViewContent: {paddingTop: hp(43)},
+  scrollViewContent: {paddingTop: hp(0)},
   text: {
     width: wp(60),
     marginLeft: 5,

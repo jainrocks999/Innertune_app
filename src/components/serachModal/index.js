@@ -23,7 +23,9 @@ import thisdata from './this';
 import Loader from '../Loader';
 const SearchModal = ({visible, onClose, onCategories}) => {
   const dispatch = useDispatch();
-  const {searchData, loading} = useSelector(state => state.home);
+  const {searchData, Createfavriote, loading} = useSelector(
+    state => state.home,
+  );
   const [value, setValue] = useState('');
   const [searchType, setSearchType] = useState('All');
   const handleonSearch = async (input, stype) => {
@@ -51,7 +53,7 @@ const SearchModal = ({visible, onClose, onCategories}) => {
     return () => {
       clearTimeout(deBounce);
     };
-  }, [value]);
+  }, [value, Createfavriote]);
 
   return (
     <Modal animationType="fade" visible={visible}>
@@ -165,6 +167,7 @@ const SearchModal = ({visible, onClose, onCategories}) => {
               <List
                 onPress={item => onCategories(item)}
                 cate={searchData?.categories}
+                onPressPlay={onCategories}
               />
             </>
           ) : null}

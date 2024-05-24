@@ -47,7 +47,8 @@ const data = [
   {id: '3', title: 'Music', image: require('../../assets/music1.jpg')},
 ];
 
-const Playsong = () => {
+const Playsong = ({route}) => {
+  const indexxxx = route.params.index;
   const dispatch = useDispatch();
   const [maxTimeInMinutes, setMaxTimeInMinuts] = useState(1);
 
@@ -78,7 +79,9 @@ const Playsong = () => {
     });
   };
   const [isPaused, setIsPaused] = useState(false);
-  const [visibleIndex, setVisibleIndex] = useState(0);
+  const [visibleIndex, setVisibleIndex] = useState(
+    indexxxx == -1 ? 0 : indexxxx,
+  );
   const handleTabPress = async title => {
     setSelectedTab(title);
     setVisible(true);
@@ -187,6 +190,15 @@ const Playsong = () => {
     });
   };
 
+  useEffect(() => {
+    flatListRef.current.scrollToIndex({
+      animated: true,
+      index: indexxxx != -1 ? indexxxx : 0,
+      viewPosition: 0.5,
+      viewOffset: 0,
+      duration: 500,
+    });
+  }, [indexxxx]);
   useEffect(() => {
     Tts.getInitStatus().then(initTts);
     // Tts.addEventListener('tts-finish', handleTTSFinish);
