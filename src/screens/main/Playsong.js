@@ -28,15 +28,11 @@ import {useSelector} from 'react-redux';
 import {} from 'react-native-gesture-handler';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import {useDispatch} from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Clipboard} from 'react-native';
 import {setupPlayer} from '../../utils/Setup';
 import TrackPlayer from 'react-native-track-player';
 import RNFS from 'react-native-fs';
 import {fonts} from '../../Context/Conctants';
 import storage from '../../utils/StorageService';
-// import {affirmations} from './affmatin';
-
 const data = [
   {
     id: '1',
