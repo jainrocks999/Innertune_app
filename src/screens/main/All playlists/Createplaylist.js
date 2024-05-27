@@ -6,7 +6,8 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {
   heightPercent as hp,
@@ -16,6 +17,10 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import Buttun from '../../Auth/compoents/Buttun';
+import Loader from '../../../components/Loader';
+import {fonts} from '../../../Context/Conctants';
+// import {affirmations} from '../affmatin';
 const Img = [
   {
     id: '1',
@@ -67,14 +72,31 @@ const Img = [
   },
 ];
 const Createplaylist = () => {
+  const {affirmations, loading, addetItems_to_playlist} = useSelector(
+    state => state.home,
+  );
+  useEffect(() => {
+    setSelected(addetItems_to_playlist);
+  }, [addetItems_to_playlist]);
+  const dispatch = useDispatch();
+
   const navigation = useNavigation();
-  const [text, setText] = useState('');
-  const handleClear = () => {
-    setText;
-    onChangeText;
+
+  const [selected, setSelected] = useState([]);
+  const hanleSelected = id => {
+    console.log(id);
+    let newarray = [];
+    if (selected.includes(id)) {
+      const filter = [...selected].filter(item => item != id);
+      newarray = [...filter];
+    } else {
+      newarray = [...selected, id];
+    }
+    setSelected(newarray);
   };
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: '#191919'}}>
+      <Loader loading={loading} />
       <View
         style={{
           flexDirection: 'row',
@@ -89,7 +111,7 @@ const Createplaylist = () => {
             }
             name="arrow-back"
             size={30}
-            color="black"
+            color="white"
           />
         </View>
         <View style={{height: hp(5), width: wp(100)}}>
@@ -98,14 +120,15 @@ const Createplaylist = () => {
               fontSize: hp(2.5),
               fontWeight: '600',
               marginHorizontal: '15%',
-              fontFamily: 'Montserrat-SemiBold',
-              color: 'black',
+              // fontFamily: 'Montserrat-SemiBold',
+              fontFamily: fonts.bold,
+              color: 'white',
             }}>
             Create Your Playlist
           </Text>
         </View>
       </View>
-      <View style={styles.searchContainer}>
+      {/* <View style={styles.searchContainer}>
         <AntDesign name="search1" size={20} color="gray" />
         <TextInput
           style={styles.input}
@@ -125,63 +148,68 @@ const Createplaylist = () => {
             onPress={handleClear}
           />
         )}
-      </View>
-      <ScrollView style={{marginTop: 20}}>
+      </View> */}
+      <ScrollView
+        contentContainerStyle={{
+          marginTop: 20,
+          alignItems: 'center',
+          paddingBottom: hp(4),
+        }}>
         <FlatList
-          data={Img}
+          data={affirmations}
           keyExtractor={item => item.id}
+          scrollEnabled={false}
           renderItem={({item}) => (
-            <TouchableOpacity>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignSelf: 'center',
-                  height: hp(8),
-                  width: wp(90),
-                  marginVertical: 10,
-                  backgroundColor: '#F8F8F8',
-                  borderRadius: 20,
-                }}>
-                <View
-                  style={{justifyContent: 'center', marginHorizontal: '10%'}}>
-                  <Text style={styles.text}>{item.title}</Text>
-                </View>
-                <View
-                  style={{justifyContent: 'center', marginHorizontal: '10%'}}>
-                  <Entypo
-                    name="dots-three-horizontal"
-                    size={20}
-                    color="black"
-                  />
-                </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                height: hp(8),
+                width: wp(90),
+                marginVertical: hp(1),
+                backgroundColor: '#4A4949',
+                borderRadius: 8,
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingHorizontal: wp(4),
+              }}>
+              <Text style={styles.text}>
+                {item.affirmation_text.substring(0, 40)}
+              </Text>
+
+              <View style={{justifyContent: 'center'}}>
+                <AntDesign
+                  onPress={() => {
+                    hanleSelected(item.id);
+                  }}
+                  name={
+                    !selected.includes(item.id) ? 'pluscircleo' : 'minuscircleo'
+                  }
+                  size={25}
+                  color={!selected.includes(item.id) ? '#fff' : 'red'}
+                />
               </View>
-            </TouchableOpacity>
+            </View>
           )}
         />
       </ScrollView>
       <View
         style={{
-          alignSelf: 'center',
-          flexDirection: 'row',
-          margin: hp(2),
+          height: hp(12),
+          alignItems: 'center',
         }}>
-        <TouchableOpacity
-          style={{
-            height: 45,
-            marginLeft: 20,
-            backgroundColor: '#7254CD',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: wp(70),
-            borderRadius: 10,
-            flexDirection: 'row',
-          }}
+        <Buttun
           onPress={() => {
-            navigation.navigate('createaffirmation');
-          }}>
-          <Text style={styles.loginText}>Added affirmations</Text>
-          <Text style={styles.loginText}>1</Text>
-        </TouchableOpacity>
+            dispatch({
+              type: 'home/Add_item_to_Create_Playlist',
+              payload: selected,
+            });
+            navigation.navigate('createaffirmation', {selected: []});
+          }}
+          title={`${'Added Affirmations '}${selected.length}`}
+          style={{
+            width: '68%',
+          }}
+        />
       </View>
     </View>
   );
@@ -203,11 +231,11 @@ const styles = StyleSheet.create({
     height: hp(5),
   },
   text: {
-    width: wp(50),
-    fontFamily: 'Montserrat-Regular',
+    // width: wp(50),
+    fontFamily: fonts.regular,
     marginLeft: 5,
-    color: 'black',
-    fontSize: hp(1.8),
+    color: '#fff',
+    fontSize: wp(4.5),
   },
   input: {
     marginLeft: 10,

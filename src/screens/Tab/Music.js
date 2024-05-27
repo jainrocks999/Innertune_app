@@ -20,6 +20,9 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Slider from '@react-native-community/slider';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {TouchableOpacity} from 'react-native';
+import {useSelector} from 'react-redux';
+import Loader from '../../components/Loader';
+import {fonts} from '../../Context/Conctants';
 
 const data = [
   {id: '1', title: 'Focus'},
@@ -27,21 +30,30 @@ const data = [
   {id: '3', title: 'Sleep'},
 ];
 
-const Music = () => {
+const Music = ({onPress, bgVolume, onVolumeChange}) => {
   const [selectedTab, setSelectedTab] = useState('Focus');
+  const {loading, bgSound, bgcategories} = useSelector(state => state.home);
+  // console.log('thisis', JSON.stringify(bgSound));
 
   const handleTabPress = title => {
     setSelectedTab(title);
   };
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
+      <Loader loading={loading} />
       <View
         style={{
           flexDirection: 'row',
           justifyContent: 'center',
           marginTop: hp(2),
         }}>
-        <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'black'}}>
+        <Text
+          style={{
+            fontSize: hp(2.5),
+            fontWeight: '500',
+            color: 'white',
+            fontFamily: fonts.bold,
+          }}>
           Background Music
         </Text>
       </View>
@@ -55,19 +67,19 @@ const Music = () => {
           borderBottomWidth: 1,
         }}>
         <FlatList
-          data={data}
+          data={bgcategories}
           horizontal={true}
           scrollEnabled={false}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
-            <TouchableOpacity onPress={() => handleTabPress(item.title)}>
+            <TouchableOpacity onPress={() => handleTabPress(item.bg_name)}>
               <View
                 style={{
                   height: hp(6),
                   justifyContent: 'center',
                   alignItems: 'center',
                   backgroundColor:
-                    selectedTab === item.title ? 'black' : '#DEDEDE',
+                    selectedTab === item.bg_name ? '#D485D1' : '#DEDEDE',
                   borderRadius: 10,
                   marginHorizontal: hp(1),
                   marginVertical: 20,
@@ -75,24 +87,26 @@ const Music = () => {
                 }}>
                 <Text
                   style={{
-                    color: selectedTab === item.title ? 'white' : 'black',
+                    color: selectedTab === item.bg_name ? 'white' : 'black',
                     fontSize: 18,
                     fontWeight: '400',
+                    fontFamily: fonts.bold,
                   }}>
-                  {item.title}
+                  {item.bg_name}
                 </Text>
               </View>
             </TouchableOpacity>
           )}
         />
       </View>
-      {selectedTab == 'Focus' ? <Focus /> : ''}
-      {selectedTab == 'Relax' ? <Relax /> : ''}
-      {selectedTab == 'Sleep' ? <Sleep /> : ''}
+      {/* {selectedTab == 'Focus' ? <Focus onPress={onPress} data={bgSound} /> : ''} */}
+      {<Relax onPress={onPress} data={bgSound} />}
+      {/* {selectedTab == 'Sleep' ? <Sleep onPress={onPress} data={bgSound} /> : ''} */}
+      {/* {selectedTab == 'Focus' ? <Sleep onPress={onPress} data={bgSound} /> : ''} */}
       <View
         style={{
           height: hp(12),
-          backgroundColor: 'black',
+          backgroundColor: '#4A4949',
           // borderTopWidth: 1.5,
           // borderTopColor: 'grey',
           borderTopEndRadius: 30,
@@ -107,7 +121,13 @@ const Music = () => {
             marginLeft: wp(5.5),
             marginTop: hp(2),
           }}>
-          <Text style={{fontSize: hp(2), fontWeight: '500', color: 'white'}}>
+          <Text
+            style={{
+              fontSize: hp(2),
+              fontWeight: '500',
+              color: 'white',
+              fontFamily: fonts.medium,
+            }}>
             Background Volume
           </Text>
         </View>
@@ -115,10 +135,14 @@ const Music = () => {
           <Slider
             style={{width: '90%', height: 20}}
             minimumValue={0}
-            maximumValue={2}
+            maximumValue={1}
+            value={bgVolume}
             minimumTrackTintColor="white"
             maximumTrackTintColor="white"
             thumbTintColor="white"
+            onValueChange={value => {
+              onVolumeChange(value);
+            }}
           />
         </View>
       </View>

@@ -12,15 +12,29 @@ import Createaffirmation from '../screens/main/All playlists/Createaffiremation'
 import Saveplaylist from '../screens/main/All playlists/Saveplaylist';
 import Playsong from '../screens/main/Playsong';
 import Mymodal from '../components/molecules/Modal';
-
+import Playlistdetails from '../screens/Tab/Playlistdetails';
+import Goal from '../screens/Auth/Goal';
+import AudioRecorder from '../components/molecules/Audiorecord';
+import Welecome from '../screens/Intro_Screens/Welecome';
+import Welecome2 from '../screens/Intro_Screens/Welecome2';
+import ChooseAfferamtion from '../screens/Intro_Screens/ChooseAfferamtion';
+import AksReminder from '../screens/Intro_Screens/AksReminder';
+import Intrested from '../screens/Intro_Screens/Intrested';
+import Forgot from '../screens/Auth/Forgot';
+import Playlistdetails2 from '../screens/Tab/Playlist2';
+import EditPlayList from '../screens/main/All playlists/EditPlayList';
 const Stack = createStackNavigator();
 function MyStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="splash">
       <Stack.Screen
         name="splash"
         component={Splash}
-        options={{headerShown: false}}
+        options={{
+          headerShown: false,
+          animationEnabled: true,
+          animationTypeForReplace: 'pop',
+        }}
       />
       <Stack.Screen
         name="signup"
@@ -30,6 +44,11 @@ function MyStack() {
       <Stack.Screen
         name="login"
         component={Login}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Forgot"
+        component={Forgot}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -61,10 +80,66 @@ function MyStack() {
         name="playsong"
         component={Playsong}
         options={{headerShown: false}}
+        initialParams={{index: -1}}
       />
       <Stack.Screen
         name="modal"
         component={Mymodal}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Playlistdetails"
+        component={Playlistdetails}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Playlistdetails2"
+        component={Playlistdetails2}
+        options={{headerShown: false}}
+      />
+      {/* <Stack.Screen
+        name="Menu"
+        component={Menu}
+        options={{headerShown: false}}
+      /> */}
+      <Stack.Screen
+        name="goal"
+        component={Goal}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="audiorecorder"
+        component={AudioRecorder}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Welecome"
+        component={Welecome}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ChooseAfferamtion"
+        component={ChooseAfferamtion}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="AksReminder"
+        component={AksReminder}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Welecome2"
+        component={Welecome2}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Intrested"
+        component={Intrested}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditPlayList"
+        component={EditPlayList}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

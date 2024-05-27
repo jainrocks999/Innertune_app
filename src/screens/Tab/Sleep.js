@@ -80,12 +80,12 @@ const Img = [
   },
 ];
 
-const Sleep = () => {
+const Sleep = ({data, onPress}) => {
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-      <ScrollView contentContainerStyle={{alignSelf: 'center', marginTop: 5}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
+      <ScrollView contentContainerStyle={{alignSelf: 'center'}}>
         <FlatList
-          data={Img}
+          data={data}
           numColumns={2}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
@@ -96,28 +96,49 @@ const Sleep = () => {
                 alignItems: 'center',
               }}>
               <View style={styles.imageContainerrr}>
-                <TouchableOpacity>
-                  <Image source={item.image} style={styles.imageee} />
+                <TouchableOpacity
+                  onPress={() => {
+                    const obj = {
+                      ...item,
+                      music: {
+                        url: item.media[1]?.original_url,
+                        title: 'Titel',
+                        artist: 'Innertune',
+                        artwork: item.media[0]?.original_url,
+                        duration: null,
+                      },
+                    };
+                    onPress(obj);
+                  }}>
+                  <Image
+                    source={{uri: item?.bgsound_image[0]?.original_url}}
+                    style={styles.imageee}
+                  />
                 </TouchableOpacity>
                 <TouchableOpacity>
-                  <View style={{flexDirection: 'column', alignSelf: 'center'}}>
-                    <Text style={styles.texttt}>{item.title}</Text>
+                  <View
+                    style={{
+                      flexDirection: 'column',
+                      alignSelf: 'center',
+                      marginTop: 10,
+                    }}>
+                    <Text style={styles.texttt}>{item?.bgsound_name}</Text>
                   </View>
                 </TouchableOpacity>
-                <View
+                {/* <View
                   style={{
-                    position: 'absolute',
-                    right: 10,
-                    top: 10,
+                    // position: 'absolute',
+                    // right: 10,
+                    // top: 10,
                     height: hp(4),
                     width: wp(8),
                     justifyContent: 'center',
                     alignItems: 'center',
                     borderRadius: 20,
-                    backgroundColor: 'white',
+                    backgroundColor: null,
                   }}>
-                  <Fontisto name="locked" size={20} color="black" />
-                </View>
+                  {/* <Fontisto name="locked" size={20} color="black" /> 
+                </View> */}
               </View>
             </View>
           )}
@@ -134,7 +155,7 @@ const styles = StyleSheet.create({
     width: hp(20),
     height: hp(15),
     borderRadius: 20,
-    marginVertical: hp(3),
+    marginVertical: hp(3.5),
     // borderWidth: 1,
     // borderColor: 'black',
     // backgroundColor: 'black',
@@ -145,7 +166,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   texttt: {
-    color: 'black',
+    color: 'white',
     fontSize: 18,
     fontWeight: '500',
   },

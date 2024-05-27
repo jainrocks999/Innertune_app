@@ -16,50 +16,62 @@ import {
 } from '../../components/atoms/responsive';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Slider from '@react-native-community/slider';
+import {fonts} from '../../Context/Conctants';
 const Img2 = [
   {
     id: '1',
-    image: require('../../assets/music.jpg'),
-    title: '1 min',
+    title: '1',
+    title2: 'min',
   },
   {
     id: '2',
-    image: require('../../assets/music.jpg'),
-    title: '3 min',
+    title: '5',
+    title2: 'min',
   },
   {
     id: '3',
-    image: require('../../assets/music.jpg'),
-    title: '5 min',
+    title: '10',
+    title2: 'min',
   },
   {
     id: '4',
-    image: require('../../assets/music.jpg'),
-    title: '8 min',
+    title: '20',
+    title2: 'min',
   },
   {
     id: '5',
-    image: require('../../assets/music.jpg'),
-    title: '10 min',
+    title: '30',
+    title2: 'min',
   },
 ];
 
-const Time = () => {
+const Time = ({maxTimeInMinutes, onPress}) => {
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white',}}>
-     
-        <View
+    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          marginTop: hp(2),
+        }}>
+        <Text
           style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            marginTop:hp(2)
+            fontSize: hp(2.5),
+            fontWeight: '500',
+            color: 'white',
+            fontFamily: fonts.bold,
           }}>
-          <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'black'}}>
-            Session Length
-          </Text>
-        </View>
-      
-        <View style={{height:hp(20),width:wp(100),marginHorizontal:hp(1),marginVertical:hp(6)}}>
+          Session Length
+        </Text>
+      </View>
+
+      <View
+        style={{
+          height: hp(20),
+          width: wp(100),
+          marginHorizontal: hp(1),
+          marginVertical: hp(6),
+        }}>
         <FlatList
           horizontal={true}
           scrollEnabled={true}
@@ -67,16 +79,22 @@ const Time = () => {
           data={Img2}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
-            <TouchableOpacity style={styles.imageContainerr}>
-              <View>
-                <Image source={item.image} style={styles.imagee} />
+            <TouchableOpacity
+              onPress={() => onPress(item)}
+              style={styles.imageContainerr}>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignSelf: 'center',
+                  alignItems: 'center',
+                }}>
                 <Text style={styles.textt}>{item.title}</Text>
+                <Text style={styles.textt}>{item.title2}</Text>
               </View>
             </TouchableOpacity>
           )}
         />
-     </View>
-
+      </View>
     </SafeAreaView>
   );
 };
@@ -93,7 +111,7 @@ const styles = StyleSheet.create({
     marginHorizontal: hp(0.5),
     borderWidth: 1,
     borderColor: 'black',
-    backgroundColor: 'black',
+    backgroundColor: '#4A4949',
   },
   imagee: {
     width: hp(6),
@@ -103,7 +121,8 @@ const styles = StyleSheet.create({
   },
   textt: {
     color: 'white',
-    fontSize: 18,
+    fontSize: hp(3),
+    fontFamily: fonts.medium,
     fontWeight: '500',
   },
 });

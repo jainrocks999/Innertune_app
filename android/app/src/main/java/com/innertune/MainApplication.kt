@@ -1,4 +1,4 @@
-package com.innertune
+package com.stimuli
 
 import android.app.Application
 import com.facebook.react.PackageList

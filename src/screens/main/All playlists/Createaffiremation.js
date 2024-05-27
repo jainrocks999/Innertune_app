@@ -6,16 +6,20 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
-
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {
   heightPercent as hp,
   widthPrecent as wp,
 } from '../../../components/atoms/responsive';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ScrollView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import Buttun from '../../Auth/compoents/Buttun';
+import {fonts} from '../../../Context/Conctants';
 const Img = [
   {
     id: '1',
@@ -66,10 +70,41 @@ const Img = [
     title2: '90 affirmations',
   },
 ];
-const Createaffirmation = () => {
+const Createaffirmation = ({route}) => {
+  const {affirmations, addetItems_to_playlist} = useSelector(
+    state => state.home,
+  );
+  const [selected, setSelected] = useState([]);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    setSelected(addetItems_to_playlist);
+  }, [addetItems_to_playlist]);
+
+  const filterSelected = () => {
+    const filter = affirmations.filter(item => selected.includes(item.id));
+    return filter;
+    // setSelected(filter);
+  };
+
+  const deselectItem = itemId => {
+    const updatedSelected = selected.filter(item => item != itemId);
+    setSelected(updatedSelected);
+  };
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      dispatch({
+        type: 'home/Add_item_to_Create_Playlist',
+        payload: selected,
+      });
+    }, 200);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [selected]);
+
   const navigation = useNavigation();
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: '#191919'}}>
       <View
         style={{
           flexDirection: 'row',
@@ -82,7 +117,7 @@ const Createaffirmation = () => {
             onPress={() => navigation.goBack()}
             name="arrow-back"
             size={30}
-            color="black"
+            color="white"
           />
         </View>
         <View style={{height: hp(5), width: wp(100)}}>
@@ -91,60 +126,70 @@ const Createaffirmation = () => {
               fontSize: 22,
               fontWeight: '500',
               marginHorizontal: '15%',
-              fontFamily:'Montserrat',
-              color: 'black',
+              fontFamily: fonts.bold,
+              color: 'white',
             }}>
-            Added affirmations
+            Edit List of Affirmation
           </Text>
         </View>
       </View>
-      <View style={styles.searchContainer}>
-        <Text style={{color: 'black', fontSize: 17}}>
+      {/* <View style={styles.searchContainer}>
+        <Text style={{color: 'white', fontSize: 17}}>
           Edit List of Affirmation
         </Text>
-      </View>
-      <ScrollView style={{marginTop: 20}}>
+      </View> */}
+      <ScrollView contentContainerStyle={{alignItems: 'center', marginTop: 20}}>
         <FlatList
-          data={Img}
+          data={filterSelected()}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
             <View
               style={{
                 flexDirection: 'row',
-                alignSelf: 'center',
-
                 height: hp(8),
                 width: wp(90),
-                marginVertical: 10,
-                backgroundColor: '#F8F8F8',
-                borderRadius: 20,
+                marginVertical: hp(1),
+                backgroundColor: '#4A4949',
+                borderRadius: 8,
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingHorizontal: wp(4),
               }}>
-              <View style={{justifyContent: 'center', marginHorizontal: '10%'}}>
-                <Text style={styles.text}>{item.title}</Text>
-              </View>
-              <View style={{justifyContent: 'center', marginHorizontal: '10%'}}>
-                <Entypo name="dots-three-horizontal" size={20} color="black" />
+              <Text style={styles.text}>
+                {item.affirmation_text.substring(0, 40)}
+              </Text>
+
+              <View style={{justifyContent: 'center'}}>
+                <AntDesign
+                  onPress={() => {
+                    deselectItem(item.id);
+                  }}
+                  name={
+                    !selected.includes(item.id) ? 'pluscircleo' : 'minuscircleo'
+                  }
+                  size={25}
+                  color={!selected.includes(item.id) ? '#fff' : 'red'}
+                />
               </View>
             </View>
           )}
         />
       </ScrollView>
-      <View style={{alignSelf: 'center', margin: hp(2)}}>
-        <TouchableOpacity
-          style={{
-            height: 45,
-            marginLeft: 20,
-            backgroundColor: '#7254CD',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: wp(60),
-            borderRadius: 10,
-          }}
+      <View
+        style={{
+          height: hp(12),
+          alignItems: 'center',
+          width: '100%',
+        }}>
+        <Buttun
           onPress={() => {
-            navigation.navigate('saveplaylist');
-          }}>
-          <Text style={styles.loginText}>Next</Text>
-        </TouchableOpacity>
+            navigation.navigate('saveplaylist', {isEdit: false});
+          }}
+          title={`${'Next'}`}
+          style={{
+            width: '58%',
+          }}
+        />
       </View>
     </View>
   );
@@ -155,8 +200,6 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignSelf: 'center',
-
-    backgroundColor: 'white',
 
     marginTop: 30,
     paddingHorizontal: 10,
@@ -172,11 +215,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   text: {
-    width: wp(50),
-
-    marginLeft: 5,
-    color: 'black',
-    fontSize: 15,
+    color: 'white',
+    fontSize: wp(4.5),
+    fontFamily: fonts.regular,
   },
   text2: {
     width: wp(50),
