@@ -1,5 +1,12 @@
-import {Modal, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {
+  Alert,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacityBase,
+  View,
+} from 'react-native';
+import React, {useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {widthPrecent as wp, heightPercent as hp} from '../atoms/responsive';
 import {TouchableOpacity} from 'react-native';
@@ -10,6 +17,7 @@ import {fonts} from '../../Context/Conctants';
 import storage from '../../utils/StorageService';
 import {useDispatch} from 'react-redux';
 import Loader from '../Loader';
+import FullScreenModal from './AddAffirmationPlaylist';
 
 const Menu = ({
   visible,
@@ -95,10 +103,17 @@ const Menu = ({
       data: modified,
     });
   };
+  const [visibles, setVisible] = useState(false);
 
   return (
     <Modal animationType="fade" visible={visible} transparent={true}>
       <Loader loading={loading} />
+      <FullScreenModal
+        loading={loading}
+        id={selectedItem.id}
+        onClose={() => setVisible(false)}
+        visible={visibles}
+      />
       <View style={{flex: 1, backgroundColor: '#191919', opacity: 0.99}}>
         <View style={{height: '25%'}} />
         <View style={styles.main}>
@@ -111,7 +126,22 @@ const Menu = ({
           contentContainerStyle={{alignSelf: 'right', marginLeft: wp(8)}}
           renderItem={({item, index}) => {
             return (
-              <View
+              <TouchableOpacity
+                onPress={() => {
+                  switch (item.id) {
+                    case '1': {
+                      if (selectedItem.is_favorite) {
+                        removeFavroit(selectedItem, selectedIndex);
+                      } else {
+                        handleHeartPress(selectedItem, selectedIndex);
+                      }
+                      break;
+                    }
+                    case '2': {
+                      setVisible(true);
+                    }
+                  }
+                }}
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -119,15 +149,6 @@ const Menu = ({
                 }}>
                 {index != 2 ? (
                   <AntDesign
-                    onPress={() => {
-                      if (item.id == '1') {
-                        if (selectedItem.is_favorite) {
-                          removeFavroit(selectedItem, selectedIndex);
-                        } else {
-                          handleHeartPress(selectedItem, selectedIndex);
-                        }
-                      }
-                    }}
                     color={
                       item.id == '1' && selectedItem.is_favorite
                         ? '#B72658'
@@ -149,7 +170,7 @@ const Menu = ({
                   }}>
                   {item.text}
                 </Text>
-              </View>
+              </TouchableOpacity>
             );
           }}
         />

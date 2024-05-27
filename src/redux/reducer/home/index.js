@@ -16,6 +16,7 @@ const initialState = {
   favorite_aff: [],
   searchData: {},
   affirmations2: [],
+  paly: {},
 };
 const Home = createSlice({
   name: 'home',
@@ -112,7 +113,7 @@ const Home = createSlice({
       return {...state, loading: true};
     },
     add_playlistItem_success: (state, action) => {
-      return {...state, loading: false};
+      return {...state, paly: action.payload, loading: false};
     },
     add_playlistItem_error: (state, action) => {
       return {...state, loading: false};

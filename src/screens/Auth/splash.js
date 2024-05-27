@@ -35,7 +35,22 @@ const Splash = () => {
       console.warn(err);
     }
   };
+  const version = async () => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+
+    const res = fetch(
+      'https://stimuli.forebearpro.co.in/api/v1/version-update',
+      requestOptions,
+    )
+      .then(response => response.text())
+      .then(result => JSON.parse(result))
+      .catch(error => console.error(error));
+  };
   useEffect(() => {
+    version();
     requestPermissions();
   }, []);
 

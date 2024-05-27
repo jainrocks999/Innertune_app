@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
   BackHandler,
 } from 'react-native';
 import Header from '../../components/molecules/Header';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, useStore} from 'react-redux';
 import {
   heightPercent as hp,
   widthPrecent as wp,
@@ -24,6 +24,8 @@ import Loader from '../../components/Loader';
 import {fonts} from '../../Context/Conctants';
 import storage from '../../utils/StorageService';
 import SearchModal from '../../components/serachModal';
+import CateGoriesModal from '../../components/Categories';
+import {MusicPlayerContext} from '../../Context/MusicPlayerConstaxt';
 const Img = [
   {
     id: '1',
@@ -59,6 +61,8 @@ const Img = [
 
 const HomeScreen = props => {
   const {navigation} = props;
+  // const {progress} = useContext(MusicPlayerContext);
+  // console.log(progress);
   const dispatch = useDispatch();
   const getFavriote = item => {};
   const {groups, loading, category} = useSelector(state => state.home);
@@ -124,8 +128,6 @@ const HomeScreen = props => {
       page: 'Playlistdetails2',
     });
   };
-  const handleBackPress = () => {};
-
   const getAffetMationsbyCategories = async item => {
     const items = await storage.getMultipleItems([
       storage.TOKEN,
@@ -161,7 +163,7 @@ const HomeScreen = props => {
       return items;
     });
   };
-
+  const [currentVisbleIndex, setCurrentVisibleIndex] = useState(-1);
   const removeFavroit = async (item, index) => {
     const items = await storage.getMultipleItems([
       storage.TOKEN,
@@ -320,12 +322,22 @@ const HomeScreen = props => {
             )}
           />
         </View>
+        <CateGoriesModal
+          data={category}
+          loading={loading}
+          visible={currentVisbleIndex == -10}
+          onCLose={() => setCurrentVisibleIndex(-1)}
+          title={'Just For You'}
+          onCategories={items => {
+            getAffetMationsbyCategories(items);
+          }}
+        />
         <View style={styles.FeatureContainer}>
           <Text style={styles.Featurecategory}>Just For You</Text>
           <View style={{paddingHorizontal: '20%'}}>
             <TouchableOpacity
               onPress={() => {
-                getFavriote(item);
+                setCurrentVisibleIndex(-10);
               }}>
               <Text
                 style={{
@@ -379,13 +391,23 @@ const HomeScreen = props => {
             </View>
           </LinearGradient>
         </View>
+        <CateGoriesModal
+          data={category}
+          loading={loading}
+          visible={currentVisbleIndex == -11}
+          onCLose={() => setCurrentVisibleIndex(-1)}
+          title={'Populer Playlist'}
+          onCategories={items => {
+            getAffetMationsbyCategories(items);
+          }}
+        />
 
         <View style={styles.FeatureContainer}>
           <Text style={styles.Featurecategory}>Populer Playlist</Text>
           <View style={{paddingHorizontal: '20%'}}>
             <TouchableOpacity
               onPress={() => {
-                getFavriote(item);
+                setCurrentVisibleIndex(-11);
               }}>
               <Text
                 style={{
@@ -415,15 +437,24 @@ const HomeScreen = props => {
               {item.groupByCategory.length > 0 ? (
                 <>
                   <View style={styles.FeatureContainer}>
+                    <CateGoriesModal
+                      data={item.groupByCategory}
+                      loading={loading}
+                      visible={currentVisbleIndex == index}
+                      onCLose={() => setCurrentVisibleIndex(-1)}
+                      title={item.group_name}
+                      onCategories={items => {
+                        getAffetMationsbyCategories(items);
+                      }}
+                    />
+
                     <Text style={styles.Featurecategory}>
                       {item?.group_name}
                     </Text>
                     <View style={{paddingHorizontal: '20%'}}>
                       <TouchableOpacity
                         onPress={() => {
-                          // navigation.navigate('Popular', {
-                          //   name: item?.group_name,
-                          // });
+                          setCurrentVisibleIndex(index);
                         }}>
                         <Text
                           style={{

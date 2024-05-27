@@ -377,8 +377,12 @@ function* addPlaylistItem(action) {
           type: 'home/add_playlistItem_success',
           payload: res.data,
         });
-        Toast.show('Playlist created successfully');
-        action.navigation.navigate('library');
+        if (action.navigation) {
+          Toast.show('Playlist created successfully');
+          action.navigation.navigate('library');
+        } else {
+          Toast.show('Affirmation added to playlist');
+        }
       } else {
         yield put({
           type: 'home/add_playlistItem_error',

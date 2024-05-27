@@ -80,6 +80,7 @@ function MyStack() {
         name="playsong"
         component={Playsong}
         options={{headerShown: false}}
+        initialParams={{index: -1}}
       />
       <Stack.Screen
         name="modal"

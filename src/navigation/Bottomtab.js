@@ -253,6 +253,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     borderTopWidth: 0,
     paddingTop: '2%',
+    zIndex: 4,
   },
   tabIconContainer: {
     width: wp(17),

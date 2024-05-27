@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Clipboard} from 'react-native';
+import {Clipboard, Vibration} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import AppNavigator from './src/navigation/AppNavigator';
 import {LogBox, PermissionsAndroid} from 'react-native';
@@ -8,6 +8,14 @@ import store from './src/redux/store';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import PushNotification from 'react-native-push-notification';
 import crashlytics from '@react-native-firebase/crashlytics';
+import SoundPlayer from 'react-native-sound-player';
+import {MusicPlayerProvider} from './src/Context/MusicPlayerConstaxt';
+import {
+  heightPercent as hp,
+  widthPrecent as wp,
+} from './src/components/atoms/responsive';
+import {View} from 'react-native';
+import Root from './src';
 const App = () => {
   LogBox.ignoreAllLogs();
 
@@ -66,9 +74,7 @@ const App = () => {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <Provider store={store}>
-        <NavigationContainer>
-          <AppNavigator />
-        </NavigationContainer>
+        <Root />
       </Provider>
     </GestureHandlerRootView>
   );
