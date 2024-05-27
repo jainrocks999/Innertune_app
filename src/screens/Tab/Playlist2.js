@@ -8,7 +8,7 @@ import {
   ImageBackground,
   Alert,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import Header from '../../components/molecules/Header';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -32,6 +32,9 @@ import Buttun from '../Auth/compoents/Buttun';
 import {fonts} from '../../Context/Conctants';
 import storage from '../../utils/StorageService';
 import Categores_menu from '../../components/Playlist/Categores_menu';
+import {MusicPlayerContext} from '../../Context/MusicPlayerConstaxt';
+import CircularProgress from 'react-native-circular-progress-indicator';
+import PlayPopup from '../../components/PlayPopup';
 const Img = [
   {
     id: '1',
@@ -85,6 +88,7 @@ const Img = [
 
 const Playlistdetails = () => {
   const dispatch = useDispatch();
+  const {getNameImage} = useContext(MusicPlayerContext);
   const {favoriteList} = useSelector(state => state.home);
 
   console.log('tjhidi', favoriteList.favoritelist);
@@ -316,7 +320,13 @@ const Playlistdetails = () => {
               elevation: 3,
               shadowColor: '#fff',
             }}
-            onPress={() => navigation.navigate('playsong', {index: -1})}
+            onPress={() => {
+              navigation.navigate('playsong', {index: -1});
+              dispatch({
+                type: 'home/currentPLaylist',
+                payload: item,
+              });
+            }}
             title={'Play'}
             playlist
           />
@@ -406,6 +416,9 @@ const Playlistdetails = () => {
           )}
         />
       </ScrollView>
+      {affirmations.length > 0 && getNameImage().name != '' ? (
+        <PlayPopup />
+      ) : null}
     </View>
   );
 };

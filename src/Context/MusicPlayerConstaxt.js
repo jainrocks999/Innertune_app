@@ -4,10 +4,11 @@ import Tts from 'react-native-tts';
 import TrackPlayer from 'react-native-track-player';
 import {Alert} from 'react-native';
 // import affirmations from './affirmation';
+
 export const MusicPlayerContext = createContext();
 
 export const MusicPlayerProvider = ({children}) => {
-  const {affirmations} = useSelector(state => state.home);
+  const {affirmations, playItem} = useSelector(state => state.home);
   const dispatch = useDispatch();
   const [currentTrack, setCurrentTrack] = useState(null);
   const [maxTimeInMinutes, setMaxTimeInMinutes] = useState(1);
@@ -21,6 +22,24 @@ export const MusicPlayerProvider = ({children}) => {
   const [speechPitch, setSpeechPitch] = useState(1);
   const flatListRef = useRef(null);
   const [visibleIndex, setVisibleIndex] = useState(0);
+  const visibleIndexRef = useRef(visibleIndex);
+  visibleIndexRef.current = visibleIndex;
+
+  const readText = async text => {
+    if (!isPaused && text) {
+      Tts.stop();
+      Tts.speak(text);
+    }
+  };
+
+  const handleTTSFinish = () => {
+    // if (affirmations.length === 0) return;
+    setVisibleIndex(prevIndex => {
+      const newIndex = (prevIndex + 1) % affirmations.length;
+      readText(affirmations[newIndex]?.affirmation_text);
+      return newIndex;
+    });
+  };
 
   useEffect(() => {
     if (affirmations.length === 0) return; // Early return if affirmations array is empty
@@ -49,6 +68,7 @@ export const MusicPlayerProvider = ({children}) => {
         await TrackPlayer.pause();
       }
     }, 1000);
+
     if (!isPaused) {
       readText(affirmations[visibleIndex].affirmation_text);
       TrackPlayer.play();
@@ -58,9 +78,39 @@ export const MusicPlayerProvider = ({children}) => {
       clearInterval(intervalForProgress);
       Tts.stop();
     };
-  }, [maxTimeInMinutes, isPaused, affirmations.length]);
+  }, [maxTimeInMinutes, isPaused, affirmations.length, visibleIndex]);
 
   useEffect(() => {
+    const initTts = async () => {
+      const voices = await Tts.voices();
+      const availableVoices = voices
+        .filter(v => !v.networkConnectionRequired && !v.notInstalled)
+        .map(v => {
+          return {id: v.id, name: v.name, language: v.language};
+        });
+
+      let selectedVoice = null;
+      if (voices && voices.length > 0) {
+        selectedVoice = 'en-au-x-auc-local';
+        try {
+          await Tts.setDefaultLanguage('en-AU');
+        } catch (err) {
+          console.log(`setDefaultLanguage error `, err);
+        }
+
+        await Tts.setDefaultVoice('en-au-x-auc-local');
+        if (affirmations.length > 0) {
+          readText(affirmations[0].affirmation_text);
+          player('sleeping.waw');
+        }
+        setVoices(availableVoices);
+        setSelectedVoice(selectedVoice);
+        setTtsStatus('initialized');
+      } else {
+        setTtsStatus('initialized');
+      }
+    };
+
     Tts.getInitStatus().then(initTts);
     Tts.addEventListener('tts-finish', handleTTSFinish);
     Tts.setDefaultRate(speechRate);
@@ -69,9 +119,25 @@ export const MusicPlayerProvider = ({children}) => {
 
     return () => {
       Tts.removeEventListener('tts-finish', handleTTSFinish);
-      Tts.stop();
     };
   }, []);
+
+  useEffect(() => {
+    // Ensure the useEffect hook for automatic scrolling is triggered when visibleIndex changes
+    if (
+      flatListRef.current &&
+      visibleIndex >= 0 &&
+      visibleIndex < affirmations.length
+    ) {
+      flatListRef.current.scrollToIndex({
+        animated: true,
+        index: visibleIndex,
+        viewPosition: 0.5,
+        viewOffset: 0,
+        duration: 500,
+      });
+    }
+  }, [visibleIndex, affirmations.length]);
 
   const handlePlayPauseClick = () => {
     if (affirmations.length === 0) return; // Early return if affirmations array is empty
@@ -79,24 +145,8 @@ export const MusicPlayerProvider = ({children}) => {
     setIsPaused(prevIsPaused => !prevIsPaused);
     if (isPaused && progress >= 100) {
       setProgress(0);
-      if (flatListRef.current != null) {
-        currentTimeRef.current = 0;
-        flatListRef.current.scrollToIndex({
-          animated: true,
-          index: 0,
-          viewPosition: 0.5,
-          viewOffset: 0,
-          duration: 500,
-        });
-      }
+      currentTimeRef.current = 0;
       setVisibleIndex(0);
-    }
-  };
-
-  const readText = async text => {
-    if (!isPaused && text) {
-      Tts.stop();
-      Tts.speak(text);
     }
   };
 
@@ -163,44 +213,21 @@ export const MusicPlayerProvider = ({children}) => {
     }
   };
 
-  const initTts = async () => {
-    const voices = await Tts.voices();
-    const availableVoices = voices
-      .filter(v => !v.networkConnectionRequired && !v.notInstalled)
-      .map(v => {
-        return {id: v.id, name: v.name, language: v.language};
-      });
-
-    let selectedVoice = null;
-    if (voices && voices.length > 0) {
-      selectedVoice = 'en-au-x-auc-local';
-      try {
-        await Tts.setDefaultLanguage('en-AU');
-      } catch (err) {
-        console.log(`setDefaultLanguage error `, err);
-      }
-
-      await Tts.setDefaultVoice('en-au-x-auc-local');
-      if (affirmations.length > 0) {
-        readText(affirmations[0].affirmation_text);
-        player('sleeping.waw');
-      }
-      setVoices(availableVoices);
-      setSelectedVoice(selectedVoice);
-      setTtsStatus('initialized');
-    } else {
-      setTtsStatus('initialized');
-    }
+  const getNameImage = () => {
+    return {
+      image:
+        playItem?.categories_image[0]?.original_url ??
+        'https://images.unsplash.com/photo-1616356607338-fd87169ecf1a',
+      name: playItem?.categories_name ?? 'raju',
+      title: 'By Stimuili',
+    };
   };
 
-  const handleTTSFinish = () => {
-    if (affirmations.length === 0) return;
-
-    setVisibleIndex(prevIndex => {
-      const newIndex = (prevIndex + 1) % affirmations.length;
-      readText(affirmations[newIndex]?.affirmation_text);
-      return newIndex;
-    });
+  const reset = () => {
+    setProgress(0);
+    currentTimeRef.current = 0;
+    setIsPaused(false);
+    setVisibleIndex(0);
   };
 
   return (
@@ -233,6 +260,8 @@ export const MusicPlayerProvider = ({children}) => {
         flatListRef,
         visibleIndex,
         setVisibleIndex,
+        getNameImage,
+        reset,
       }}>
       {children}
     </MusicPlayerContext.Provider>

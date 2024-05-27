@@ -274,6 +274,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#B72658',
     borderRadius: 50,
     elevation: 5,
+    zIndex: 5,
   },
   addIcon: {
     width: 25,

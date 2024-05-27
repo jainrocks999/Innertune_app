@@ -8,7 +8,7 @@ import {
   Alert,
   Clipboard,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import Entypo from 'react-native-vector-icons/Entypo';
 
@@ -25,6 +25,8 @@ import storage from '../utils/StorageService';
 import Loader from '../components/Loader';
 import Playlist_Menu from '../components/Playlist/Playlist_Menu';
 import Categores_menu from '../components/Playlist/Categores_menu';
+import PlayPopup from '../components/PlayPopup';
+import {MusicPlayerContext} from '../Context/MusicPlayerConstaxt';
 
 const Img = [
   {
@@ -87,6 +89,7 @@ const Toptab = () => {
     loading,
     grops,
   } = useSelector(state => state.home);
+  const {getNameImage} = useContext(MusicPlayerContext);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -445,6 +448,9 @@ const Toptab = () => {
           )}
         />
       </ScrollView>
+      {affirmations.length > 0 && getNameImage().name != '' ? (
+        <PlayPopup />
+      ) : null}
     </View>
   );
 };

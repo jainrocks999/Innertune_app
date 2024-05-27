@@ -26,6 +26,8 @@ import storage from '../../utils/StorageService';
 import SearchModal from '../../components/serachModal';
 import CateGoriesModal from '../../components/Categories';
 import {MusicPlayerContext} from '../../Context/MusicPlayerConstaxt';
+import CircularProgress from 'react-native-circular-progress-indicator';
+import PlayPopup from '../../components/PlayPopup';
 const Img = [
   {
     id: '1',
@@ -61,11 +63,13 @@ const Img = [
 
 const HomeScreen = props => {
   const {navigation} = props;
-  // const {progress} = useContext(MusicPlayerContext);
+  const {getNameImage, affirmations} = useContext(MusicPlayerContext);
   // console.log(progress);
   const dispatch = useDispatch();
   const getFavriote = item => {};
-  const {groups, loading, category} = useSelector(state => state.home);
+  const {groups, loading, category, playItem} = useSelector(
+    state => state.home,
+  );
   const [searchvisble, setSearchvisible] = useState(false);
 
   const getAllCategories = async () => {
@@ -567,6 +571,87 @@ const HomeScreen = props => {
           )}
         />
       </ScrollView>
+      {affirmations.length > 0 && getNameImage().name != '' ? (
+        // <View
+        //   style={{
+        //     height: hp(10.5),
+        //     backgroundColor: '#191919 ',
+        //     borderTopStartRadius: wp(6),
+        //     borderTopEndRadius: wp(6),
+        //     alignItems: 'center',
+        //     flexDirection: 'row',
+        //     justifyContent: 'space-between',
+        //     elevation: 3,
+        //     shadowColor: '#fff',
+        //     // borderWidth: 1,
+        //     borderColor: 'lightgrey',
+        //   }}>
+        //   <View style={{marginLeft: '5%', flexDirection: 'row'}}>
+        //     <View style={{elevation: 2, shadowColor: '#fff'}}>
+        //       <Image
+        //         style={{
+        //           justifyContent: 'center',
+        //           // alignSelf: 'flex-end',
+        //           // alignItems: 'center',
+        //           height: wp(10),
+        //           width: wp(10),
+        //           marginBottom: '2%',
+        //           borderRadius: wp(10),
+        //         }}
+        //         source={{uri: getNameImage().image}}
+        //       />
+        //     </View>
+        //     <View style={{marginLeft: '10%'}}>
+        //       <Text
+        //         style={{
+        //           color: '#fff',
+        //           fontSize: wp(5),
+        //           fontWeight: fonts.bold,
+        //         }}>
+        //         {getNameImage().name}
+        //       </Text>
+        //       <Text style={{color: '#fff'}}>{getNameImage().title}</Text>
+        //     </View>
+        //   </View>
+        //   <TouchableOpacity
+        //     onPress={() => handlePlayPauseClick()}
+        //     style={{
+        //       justifyContent: 'center',
+        //       alignSelf: 'flex-end',
+        //       alignItems: 'center',
+        //       marginBottom: '2%',
+        //       marginRight: '5%',
+        //     }}>
+        //     <Image
+        //       source={
+        //         isPaused
+        //           ? require('../../assets/flaticon/play.png')
+        //           : require('../../assets/flaticon/pause.png')
+        //       }
+        //       style={{
+        //         height: hp(2.5),
+        //         width: hp(2.5),
+        //         tintColor: !isPaused ? '#ccc' : '#ccc',
+        //         position: 'absolute',
+        //         zIndex: 0,
+        //       }}
+        //     />
+        //     <CircularProgress
+        //       value={progress}
+        //       radius={hp(3.5)}
+        //       duration={200}
+        //       progressValueColor={'#ecf0f1'}
+        //       maxValue={100}
+        //       inActiveStrokeColor="#ccc"
+        //       showProgressValue={false}
+        //       activeStrokeWidth={wp(0.8)}
+        //       inActiveStrokeWidth={wp(0.8)}
+        //       activeStrokeColor="#B72658"
+        //     />
+        //   </TouchableOpacity>
+        // </View>
+        <PlayPopup />
+      ) : null}
     </SafeAreaView>
   );
 };

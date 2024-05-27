@@ -17,11 +17,30 @@ const initialState = {
   searchData: {},
   affirmations2: [],
   paly: {},
+  screens: {
+    prev: '',
+    current: '',
+  },
+  playItem: {
+    categories_image: [
+      {
+        original_url: '',
+      },
+    ],
+    categories_name: '',
+  },
 };
 const Home = createSlice({
   name: 'home',
   initialState,
   reducers: {
+    currentPLaylist: (state, action) => {
+      return {...state, playItem: action.payload};
+    },
+
+    setPageChange: (state, action) => {
+      return {...state, screens: action.payload};
+    },
     playList_item: (state, action) => {
       return {...state, item: action.payload};
     },
