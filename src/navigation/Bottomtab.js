@@ -2,9 +2,12 @@ import React, {useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/main/Home';
+import Mylibrary from '../screens/main/Mylibrary';
 import Reminder from '../screens/main/Reminder';
 import Setting from '../screens/main/Setting';
 import LinearGradient from 'react-native-linear-gradient';
+import Colors from '../themes/Colors';
+import Mymodal from '../components/molecules/Modal';
 import {BottomSheet} from 'react-native-btr';
 import {
   heightPercent as hp,
@@ -14,43 +17,20 @@ import {useTabMenu} from '../Context/context';
 import Addbutton from '../screens/main/Addbutton';
 import TopTabs from './Toptab';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {fonts} from '../Context/Conctants';
-import storage from '../utils/StorageService';
-
+import Popularplaylist from '../screens/main/PopularPlaylist';
 const Tab = createBottomTabNavigator();
 const getIconColor = focused => ({
-  tintColor: focused ? '#D485D1' : '#fff',
+  tintColor: focused ? '#bb98ed' : 'black',
 });
 const getTextColor = focused => ({
-  color: focused ? '#D485D1' : '#ffff',
+  color: focused ? '#bb98ed' : 'black',
 });
 const MyTabs = () => {
   const navigation = useNavigation();
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const {opened, toggleOpened} = useTabMenu();
-  const dispatch = useDispatch();
-  const getAffetMations = async () => {
-    setBottomSheetVisible(false);
-    const items = await storage.getMultipleItems([
-      storage.TOKEN,
-      storage.USER_ID,
-    ]);
-    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
-    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
-    dispatch({
-      type: 'home/affirmation_fetch_request',
-      token,
-      user_id: user,
-      navigation,
-      url: 'affirmation',
-      page: 'createplaylist',
-    });
-    // navigation.navigate('createplaylist');
-  };
   return (
-    <View style={{flex: 1, backgroundColor: '#191919'}}>
+    <View style={{flex: 1}}>
       <Tab.Navigator
         initialRouteName="Home"
         screenOptions={{
@@ -114,7 +94,6 @@ const MyTabs = () => {
                 <Image
                   source={require('../assets/plus.png')}
                   resizeMode="contain"
-                  vfffff34w3e
                   style={styles.addIcon}
                 />
               </TouchableOpacity>
@@ -177,7 +156,7 @@ const MyTabs = () => {
         <View style={styles.bottomSheetContent}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('audiorecorder');
+              navigation.navigate('createaffirmation');
             }}>
             <View style={styles.card}>
               <Image
@@ -205,14 +184,14 @@ const MyTabs = () => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              getAffetMations();
+              navigation.navigate('createplaylist');
             }}>
             <View style={styles.card}>
               <LinearGradient
                 start={{x: 0.0, y: 0.0}}
                 end={{x: 5, y: 0.0}}
-                locations={[0, 0.5, 0.3]}
-                colors={['#D485D1', '#B72658']}
+                locations={[0, 0.15, 0.36]}
+                colors={['#A89AD5', '#7153CD']}
                 style={styles.linearGradient}>
                 <Image
                   source={require('../assets/music.jpg')}
@@ -246,23 +225,24 @@ const MyTabs = () => {
 
 const styles = StyleSheet.create({
   tabBar: {
+    shadowColor: 'black',
+    shadowOffset: {
+      height: 100,
+      width: 0,
+    },
+    shadowOpacity: 100,
+    shadowRadius: 100,
+    elevation: 5,
     width: wp(100),
     height: hp(10),
-    backgroundColor: 'black',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    borderTopWidth: 0,
-    paddingTop: '2%',
-    zIndex: 4,
   },
   tabIconContainer: {
-    width: wp(17),
+    width: wp(20),
     height: hp(8),
     top: 1,
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 5,
   },
   addIconContainer: {
     height: 50,
@@ -270,11 +250,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    // backgroundColor: '#426e56',
-    backgroundColor: '#B72658',
+    backgroundColor: '#6947D2',
     borderRadius: 50,
-    elevation: 5,
-    zIndex: 5,
   },
   addIcon: {
     width: 25,
@@ -282,26 +259,23 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   tabIcon: {
-    width: 24,
-    height: 32,
-    elevation: 5,
+    width: 28,
+    height: 35,
   },
   textIcon: {
-    color: '#89FFBF',
-    elevation: 5,
-    fontFamily: fonts.regular,
+    color: '#6947D2',
   },
   bottomSheetContainer: {
-    backgroundColor: '#191919',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Background color of the bottom sheet
     height: hp(50),
   },
   bottomSheetContent: {
-    backgroundColor: '#191919',
+    backgroundColor: 'white', // Background color of the content within the bottom sheet
     padding: 20,
     height: '40%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderTopLeftRadius: 20,
+    borderTopLeftRadius: 20, // Add border radius to style the shape of the bottom sheet
     borderTopRightRadius: 20,
   },
   bottomSheetText: {
@@ -316,7 +290,7 @@ const styles = StyleSheet.create({
     margin: '2%',
     flexDirection: 'row',
     borderRadius: 20,
-    backgroundColor: '#D485D1',
+    backgroundColor: 'orange',
   },
   linearGradient: {
     width: '100%',

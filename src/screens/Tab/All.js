@@ -7,13 +7,12 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   heightPercent as hp,
   widthPrecent as wp,
 } from '../../components/atoms/responsive';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {useDispatch, useSelector} from 'react-redux';
 const Img = [
   {
     id: '1',
@@ -41,29 +40,9 @@ const Img = [
   },
 ];
 const All = () => {
-  const dispatch = useDispatch();
-  const {loading, playlist} = useSelector(state => state.home);
-
-  const getAllplaylist = async () => {
-    const items = await storage.getMultipleItems([
-      storage.TOKEN,
-      storage.USER_ID,
-    ]);
-    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
-    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
-    dispatch({
-      type: 'home/playlist_request',
-      token,
-      url: 'playListItem',
-      playlist_id: user,
-    });
-  };
-  useEffect(() => {
-    getAllplaylist();
-  }, []);
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
-      <ScrollView style={{marginTop: 10}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+      <ScrollView style={{marginTop:10,}}>
         <FlatList
           data={Img}
           keyExtractor={item => item.id}
@@ -80,7 +59,7 @@ const All = () => {
                   <Entypo
                     name="dots-three-horizontal"
                     size={20}
-                    color="white"
+                    color="black"
                   />
                 </View>
               </View>
@@ -106,7 +85,7 @@ const styles = StyleSheet.create({
     width: wp(50),
     marginTop: 10,
     marginLeft: wp(1),
-    color: 'white',
+    color: 'black',
     fontSize: hp(2),
     fontWeight: '500',
   },
@@ -114,7 +93,7 @@ const styles = StyleSheet.create({
     width: wp(50),
     marginTop: 4,
     marginLeft: 5,
-    color: 'white',
+    color: 'black',
     fontSize: hp(1.8),
     fontWeight: '300',
   },

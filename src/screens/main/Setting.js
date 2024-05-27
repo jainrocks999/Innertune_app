@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   View,
   Image,
-  Alert,
 } from 'react-native';
 import React from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -18,11 +17,6 @@ import {
   heightPercent as hp,
   widthPrecent as wp,
 } from '../../components/atoms/responsive';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
-import {fonts} from '../../Context/Conctants';
-import Background from '../Auth/compoents/Background';
-import storage from '../../utils/StorageService';
 const data = [
   {
     id: '1',
@@ -74,18 +68,16 @@ const data3 = [
     image: require('../../assets/flaticon/switch.png'),
   },
 ];
-const Setting = ({}) => {
-  const navigation = useNavigation();
+const Setting = () => {
   return (
-    <Background>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <View style={{marginHorizontal: 15, marginTop: 10}}>
         <Text
           style={{
-            // fontFamily: 'Montserrat',
+            fontFamily: 'Montserrat',
             fontSize: hp(4),
-            color: 'white',
+            color: 'black',
             marginVertical: 10,
-            fontFamily: fonts.medium,
           }}>
           Settings
         </Text>
@@ -94,10 +86,10 @@ const Setting = ({}) => {
         <View style={{marginHorizontal: 15}}>
           <Text
             style={{
-              // fontFamily: 'Montserrat',
+              fontFamily: 'Montserrat',
               fontSize: 20,
-              color: 'white',
-              fontFamily: fonts.medium,
+              color: '#434343',
+              fontWeight: '700',
               marginVertical: 15,
             }}>
             Follow us
@@ -106,34 +98,14 @@ const Setting = ({}) => {
         <View
           style={{
             flexDirection: 'row',
-            marginLeft: wp(3),
-            paddingRight: '40%',
-            marginVertical: wp(4),
+            paddingRight: '45%',
+            marginVertical: 10,
             justifyContent: 'space-around',
           }}>
-          {/* <Entypo name="instagram" size={30} color="white" /> */}
-          <Image
-            style={{height: 30, width: 30}}
-            source={require('../../assets/social_logo/instagram.png')}
-          />
-          <Image
-            style={{height: 30, width: 30}}
-            tintColor="#1877F2"
-            source={require('../../assets/social_logo/facebook.png')}
-          />
-          <Image
-            style={{height: 30, width: 30}}
-            tintColor="#B72658"
-            source={require('../../assets/social_logo/social-media.png')}
-          />
-          <Image
-            style={{height: 38, width: 38}}
-            // tintColor="#fff"
-            source={require('../../assets/social_logo/youtube.png')}
-          />
-          {/* <Feather name="facebook" size={30} color="white" /> */}
-          {/* <FontAwesome6 name="x-twitter" size={30} color="white" /> */}
-          {/* <Feather name="youtube" size={30} color="white" /> */}
+          <Entypo name="instagram" size={30} color="black" />
+          <Feather name="facebook" size={30} color="black" />
+          <FontAwesome6 name="x-twitter" size={30} color="black" />
+          <Feather name="youtube" size={30} color="black" />
         </View>
         <View>
           <FlatList
@@ -147,7 +119,7 @@ const Setting = ({}) => {
                     width: wp(94),
                     justifyContent: 'center',
                     alignSelf: 'center',
-                    backgroundColor: '#4A4949',
+                    backgroundColor: '#F8F8F8',
                     borderRadius: 10,
                     marginTop: 20,
                   }}>
@@ -160,18 +132,13 @@ const Setting = ({}) => {
                     }}>
                     <Text
                       style={{
-                        color: 'white',
+                        color: '#434343',
                         fontSize: 17,
                         fontWeight: '400',
-                        fontFamily: fonts.medium,
                       }}>
                       {item.title}
                     </Text>
-                    <Image
-                      tintColor="#D1CECE"
-                      source={item.image}
-                      style={styles.image}
-                    />
+                    <Image source={item.image} style={styles.image} />
                   </View>
                 </View>
               </TouchableOpacity>
@@ -181,11 +148,11 @@ const Setting = ({}) => {
         <View style={{marginHorizontal: 20, marginTop: 10}}>
           <Text
             style={{
+              fontFamily: 'Montserrat',
               fontSize: 20,
-              color: 'white',
+              color: '#434343',
               marginVertical: 10,
-              // fontWeight: '700',
-              fontFamily: fonts.bold,
+              fontWeight: '700',
             }}>
             Partner Program
           </Text>
@@ -197,7 +164,7 @@ const Setting = ({}) => {
               width: wp(94),
               justifyContent: 'center',
               alignSelf: 'center',
-              backgroundColor: '#4A4949',
+              backgroundColor: '#F8F8F8',
               borderRadius: 10,
               marginTop: 20,
             }}>
@@ -210,21 +177,15 @@ const Setting = ({}) => {
               }}>
               <Text
                 style={{
-                  color: '#fff',
+                  color: '#434343',
                   fontSize: 17,
                   fontWeight: '400',
-                  fontFamily: fonts.medium,
                 }}>
                 Get premium
               </Text>
               <Image
                 source={require('../../assets/flaticon/handshake.png')}
-                style={{
-                  height: hp(5),
-                  width: wp(8),
-                  borderRadius: 20,
-                  tintColor: '#D1CECE',
-                }}
+                style={{height: hp(5), width: wp(8), borderRadius: 20}}
               />
             </View>
           </View>
@@ -232,11 +193,11 @@ const Setting = ({}) => {
         <View style={{marginHorizontal: 20, marginTop: 10}}>
           <Text
             style={{
-              // fontFamily: 'Montserrat',
+              fontFamily: 'Montserrat',
               fontSize: 20,
-              color: 'white',
+              color: '#434343',
               marginVertical: 10,
-              fontFamily: fonts.bold,
+              fontWeight: '700',
             }}>
             Suggestion
           </Text>
@@ -251,7 +212,7 @@ const Setting = ({}) => {
                 width: wp(94),
                 justifyContent: 'center',
                 alignSelf: 'center',
-                backgroundColor: '#4A4949',
+                backgroundColor: '#F8F8F8',
                 borderRadius: 10,
                 marginTop: 20,
               }}>
@@ -263,19 +224,10 @@ const Setting = ({}) => {
                   marginHorizontal: '5%',
                 }}>
                 <Text
-                  style={{
-                    color: '#fff',
-                    fontSize: 17,
-                    fontWeight: '400',
-                    fontFamily: fonts.medium,
-                  }}>
+                  style={{color: '#434343', fontSize: 17, fontWeight: '400'}}>
                   {item.title}
                 </Text>
-                <Image
-                  tintColor="#D1CECE"
-                  source={item.image}
-                  style={styles.image}
-                />
+                <Image source={item.image} style={styles.image} />
               </View>
             </View>
           )}
@@ -288,7 +240,7 @@ const Setting = ({}) => {
               width: wp(94),
               justifyContent: 'center',
               alignSelf: 'center',
-              backgroundColor: '#4A4949',
+              backgroundColor: '#F8F8F8',
               borderRadius: 10,
               marginTop: 20,
             }}>
@@ -301,21 +253,15 @@ const Setting = ({}) => {
               }}>
               <Text
                 style={{
-                  color: 'white',
+                  color: '#434343',
                   fontSize: 17,
                   fontWeight: '400',
-                  fontFamily: fonts.medium,
                 }}>
                 Manage subscription
               </Text>
               <Image
                 source={require('../../assets/flaticon/star.png')}
-                style={{
-                  height: hp(5),
-                  width: wp(9),
-                  borderRadius: 20,
-                  tintColor: '#D1CECE',
-                }}
+                style={{height: hp(5), width: wp(9), borderRadius: 20}}
               />
             </View>
           </View>
@@ -323,12 +269,11 @@ const Setting = ({}) => {
         <View style={{marginHorizontal: 20, marginTop: 10}}>
           <Text
             style={{
-              // fontFamily: 'Montserrat',
+              fontFamily: 'Montserrat',
               fontSize: 20,
-              color: 'white',
+              color: '#434343',
               marginVertical: 10,
-              // fontWeight: '700',
-              fontFamily: fonts.bold,
+              fontWeight: '700',
             }}>
             Account
           </Text>
@@ -344,38 +289,11 @@ const Setting = ({}) => {
                   width: wp(94),
                   justifyContent: 'center',
                   alignSelf: 'center',
-                  backgroundColor: '#4A4949',
+                  backgroundColor: '#F8F8F8',
                   borderRadius: 10,
                   marginTop: 20,
                 }}>
-                <TouchableOpacity
-                  onPress={async () => {
-                    if (item.title === 'Sign out') {
-                      Alert.alert(
-                        'Logout',
-                        'Are you sure you want to logout?',
-                        [
-                          {
-                            text: 'Cancel',
-                            onPress: () => console.log('Cancel Pressed'),
-                            style: 'cancel',
-                          },
-                          {
-                            text: 'Logout',
-                            onPress: async () => {
-                              await storage.clear();
-                              navigation.reset({
-                                index: 0,
-                                routes: [{name: 'login'}],
-                              });
-                            },
-                            style: 'destructive',
-                          },
-                        ],
-                        {cancelable: true},
-                      );
-                    }
-                  }}
+                <View
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -383,26 +301,17 @@ const Setting = ({}) => {
                     marginHorizontal: '5%',
                   }}>
                   <Text
-                    style={{
-                      color: '#fff',
-                      fontSize: 17,
-                      fontWeight: '400',
-                      fontFamily: fonts.medium,
-                    }}>
+                    style={{color: '#434343', fontSize: 17, fontWeight: '400'}}>
                     {item.title}
                   </Text>
-                  <Image
-                    tintColor="#D1CECE"
-                    source={item.image}
-                    style={styles.image}
-                  />
-                </TouchableOpacity>
+                  <Image source={item.image} style={styles.image} />
+                </View>
               </View>
             )}
           />
         </View>
       </ScrollView>
-    </Background>
+    </View>
   );
 };
 

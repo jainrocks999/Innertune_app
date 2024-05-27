@@ -1,16 +1,21 @@
-import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
-import React, {useState} from 'react';
-import LinearGradient from 'react-native-linear-gradient';
+import { StyleSheet, Text, View,TouchableOpacity , Image} from 'react-native'
+import React from 'react'
+import LinearGradient from 'react-native-linear-gradient'
 import {
   heightPercent as hp,
   widthPrecent as wp,
 } from '../../../components/atoms/responsive';
-import Modal2 from '../../../components/molecules/Modal2';
-import {fonts} from '../../../Context/Conctants';
-const Remindermodal1 = ({onPress}) => {
+import Modal2 from '../../components/molecules/Modal2';
+const Remindermodal1 = () => {
   const [visible, setVisible] = useState(false);
   const [selectedModal, setSelectedModal] = useState();
-
+  const data2 = [
+    {id: '1', titles: 'Remindermodal1'},
+    {id: '2', titles: 'Remindmodal2'},
+    {id: '3', titles: 'Remindmodal3'},
+    {id: '4', titles: 'Remindmodal4'},
+    {id: '5', titles: 'Remindmodal5'},
+  ];
   const handleModalPress = titles => {
     // Alert.alert('thisis')
     setSelectedModal(titles);
@@ -18,22 +23,17 @@ const Remindermodal1 = ({onPress}) => {
   };
   console.log('thiss vidzxc', visible);
   return (
-    <View style={{flex: 1, backgroundColor: '#111'}}>
+    <View style={{flex:1}}>
       <View style={styles.bottomSheetContent}>
-        <TouchableOpacity
-          onPress={() => {
-            handleModalPress('Remindmodal2');
-          }}>
-          <View style={styles.card}>
-            <LinearGradient
-              start={{x: 1.4, y: 0}}
-              end={{x: 0, y: 1}}
-              locations={[0, 1]}
-              colors={['#D485D1', '#B72658']}
-              style={styles.linearGradient}>
+          <TouchableOpacity
+            onPress={() => {
+              handleModalPress('Remindermodal1');
+            }}
+            >
+            <View style={styles.card}>
               <Image
                 source={require('../../../assets/music.jpg')}
-                style={{height: hp(15), width: wp(30), borderRadius: 20}}
+                style={{height: hp(20), width: wp(30), borderRadius: 20}}
               />
               <View
                 style={{
@@ -48,78 +48,77 @@ const Remindermodal1 = ({onPress}) => {
                     fontWeight: '600',
                     color: '#ffffff',
                     backgroundColor: 'transparent',
-                    fontFamily: fonts.bold,
                   }}>
-                  Affirmations Notifications
+                Affirmations Notifications
                 </Text>
               </View>
-            </LinearGradient>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            handleModalPress('Remindmodal3');
-          }}>
-          <View style={styles.card}>
-            <LinearGradient
-              start={{x: 1.4, y: 0}}
-              end={{x: 0, y: 1}}
-              locations={[0, 1]}
-              colors={['#D485D1', '#B72658']}
-              style={styles.linearGradient}>
-              <Image
-                source={require('../../../assets/music.jpg')}
-                style={{height: hp(15), width: wp(30), borderRadius: 20}}
-              />
-              <View
-                style={{
-                  flexDirection: 'column',
-                  alignSelf: 'center',
-                  width: wp(50),
-                  marginHorizontal: '10%',
-                }}>
-                <Text
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            // onPress={() => {
+            //   navigation.navigate('createplaylist');
+            // }}
+            >
+            <View style={styles.card}>
+              <LinearGradient
+                start={{x: 0.0, y: 0.0}}
+                end={{x: 5, y: 0.0}}
+                locations={[0, 0.15, 0.36]}
+                colors={['#A89AD5', '#7153CD']}
+                style={styles.linearGradient}>
+                <Image
+                     source={require('../../../assets/music.jpg')}
+                  style={{height: hp(20), width: wp(30), borderRadius: 20}}
+                />
+                <View
                   style={{
-                    fontSize: 20,
-                    fontWeight: '600',
-                    color: '#ffffff',
-                    backgroundColor: 'transparent',
-                    fontFamily: fonts.bold,
+                    flexDirection: 'column',
+                    alignSelf: 'center',
+                    width: wp(50),
+                    marginHorizontal: '10%',
                   }}>
-                  Daily Practice Reminders
-                </Text>
-              </View>
-            </LinearGradient>
-          </View>
-        </TouchableOpacity>
-      </View>
-      <Modal2
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontWeight: '600',
+                      color: '#ffffff',
+                      backgroundColor: 'transparent',
+                    }}>
+               Daily Practice Reminders
+                  </Text>
+                </View>
+              </LinearGradient>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <Modal2
         title={selectedModal}
         onClose={() => setVisible(false)}
         visible={visible}
-        titles={selectedModal}
       />
     </View>
-  );
-};
+  )
+}
 
-export default Remindermodal1;
+export default Remindermodal1
 
 const styles = StyleSheet.create({
+
   bottomSheetContent: {
+    // Background color of the content within the bottom sheet
     padding: 20,
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderTopLeftRadius: 20,
+    borderTopLeftRadius: 20, // Add border radius to style the shape of the bottom sheet
     borderTopRightRadius: 20,
   },
   card: {
-    height: hp(15),
+    height: hp(20),
     width: wp(80),
     borderColor: 'black',
     alignSelf: 'center',
-    margin: '5%',
+    margin: '2%',
     flexDirection: 'row',
     borderRadius: 20,
     backgroundColor: 'orange',
@@ -129,4 +128,4 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 20,
   },
-});
+})

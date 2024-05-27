@@ -1,5 +1,4 @@
 import {
-  Alert,
   FlatList,
   Image,
   SafeAreaView,
@@ -81,14 +80,12 @@ const Img = [
   },
 ];
 
-const Focus = ({data, onPress}) => {
-  // Alert.alert(JSON.stringify(data))
-
+const Focus = () => {
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView contentContainerStyle={{alignSelf: 'center'}}>
         <FlatList
-          data={data}
+          data={Img}
           numColumns={2}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
@@ -99,17 +96,16 @@ const Focus = ({data, onPress}) => {
                 alignItems: 'center',
               }}>
               <View style={styles.imageContainerrr}>
-                <TouchableOpacity onPress={() => onPress(item)}>
-                  <Image source={{uri: item.image}} style={styles.imageee} />
+                <TouchableOpacity>
+                  <Image source={item.image} style={styles.imageee} />
                 </TouchableOpacity>
                 <TouchableOpacity>
                   <View
                     style={{
                       flexDirection: 'column',
                       alignSelf: 'center',
-                      marginTop: 10,
                     }}>
-                    <Text style={styles.texttt}>{item?.name}</Text>
+                    <Text style={styles.texttt}>{item.title}</Text>
                   </View>
                 </TouchableOpacity>
                 <View
@@ -122,9 +118,9 @@ const Focus = ({data, onPress}) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     borderRadius: 20,
-                    backgroundColor: null,
+                    backgroundColor: 'white',
                   }}>
-                  {/* <Fontisto name="locked" size={20} color="black" /> */}
+                  <Fontisto name="locked" size={20} color="black" />
                 </View>
               </View>
             </View>
@@ -142,7 +138,7 @@ const styles = StyleSheet.create({
     width: hp(20),
     height: hp(15),
     borderRadius: 20,
-    marginVertical: hp(3.5),
+    marginVertical: hp(3),
     // borderWidth: 1,
     // borderColor: 'black',
     // backgroundColor: 'black',
@@ -153,7 +149,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   texttt: {
-    color: 'white',
+    color: 'black',
     fontSize: 18,
     fontWeight: '500',
   },

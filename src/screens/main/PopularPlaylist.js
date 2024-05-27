@@ -5,7 +5,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import React from 'react';
@@ -13,14 +12,10 @@ import {
   heightPercent as hp,
   widthPrecent as wp,
 } from '../../components/atoms/responsive';
-import {useDispatch, useSelector} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
-import {useNavigation} from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import Header2 from '../../components/molecules/Header2';
 import MyTabs from '../../navigation/Bottomtab';
-import Loader from '../../components/Loader';
 const Img = [
   {
     id: '1',
@@ -71,82 +66,48 @@ const Img = [
     title2: '90 affirmations',
   },
 ];
-const Popularplaylist = ({route}) => {
-  route.params.name;
-  const dispatch = useDispatch();
-  const {loading, category} = useSelector(state => state.home);
-
-  const navigation = useNavigation();
+const Popularplaylist = () => {
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
-      <Loader />
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+      <Header2 />
       <View
         style={{
-          flexDirection: 'row',
-          marginTop: 25,
+          height: hp(10),
+          width: wp(100),
+
+          justifyContent: 'center',
+          alignItems: 'center',
         }}>
-        <View style={{height: hp(5), width: wp(10), left: wp(5)}}>
-          <Icon
-            onPress={() => navigation.goBack()}
-            name="arrow-back"
-            size={30}
-            color="white"
-          />
-        </View>
-        <View
-          style={{
-            height: hp(5),
-            width: wp(100),
-            alignItems: 'center',
-            right: wp(7),
-          }}>
-          <Text style={{fontSize: 25, color: 'white'}}>
-            {route.params.name}
-          </Text>
-        </View>
+        <Text style={{fontSize: 25, color: 'black'}}>Popular playlist</Text>
       </View>
-      <ScrollView style={{top: hp(2)}}>
+      <ScrollView style={{marginTop: 20}}>
         <FlatList
-          data={category}
+          data={Img}
           keyExtractor={item => item.id}
-          renderItem={({item}) => {
-            let image =
-              item.categories_image[0]?.original_url ??
-              'https://stimuli.forebearpro.co.in/storage/app/public/3/download-(8).jpg';
-            return (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignSelf: 'center',
-                  width: '100%',
-                  justifyContent: 'center',
-                }}>
-                {console.log(JSON.stringify(item))}
-                <View style={styles.imageContainer}>
-                  <Image source={{uri: image}} style={styles.image} />
-                  <View style={{flexDirection: 'column'}}>
-                    <Text style={styles.text}>{item.categories_name}</Text>
-                    <Text style={styles.text2}>{item.title2}</Text>
-                  </View>
-                  {/* <View style={{justifyContent: 'center'}}>
-                    <Feather name="heart" size={25} color="white" />
-                  </View> */}
-                  <View style={{justifyContent: 'center', marginLeft: 30}}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate('Menu');
-                      }}>
-                      <Entypo
-                        name="dots-three-vertical"
-                        size={20}
-                        color="white"
-                      />
-                    </TouchableOpacity>
-                  </View>
+          renderItem={({item}) => (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignSelf: 'center',
+                width: '100%',
+                justifyContent: 'center',
+              }}>
+              <View style={styles.imageContainer}>
+                <Image source={item.image} style={styles.image} />
+                <View style={{flexDirection: 'column'}}>
+                  <Text style={styles.text}>{item.title}</Text>
+
+                  <Text style={styles.text2}>{item.title2}</Text>
+                </View>
+                <View style={{justifyContent: 'center'}}>
+                  <Feather name="heart" size={25} color="black" />
+                </View>
+                <View style={{justifyContent: 'center', marginLeft: 30}}>
+                  <Entypo name="dots-three-vertical" size={20} color="black" />
                 </View>
               </View>
-            );
-          }}
+            </View>
+          )}
         />
       </ScrollView>
     </SafeAreaView>
@@ -168,7 +129,7 @@ const styles = StyleSheet.create({
     width: wp(50),
     marginTop: 10,
     marginLeft: 5,
-    color: 'white',
+    color: 'black',
     fontSize: 18,
     fontWeight: '500',
   },
@@ -176,7 +137,7 @@ const styles = StyleSheet.create({
     width: wp(50),
     marginTop: 4,
     marginLeft: 5,
-    color: 'white',
+    color: 'black',
     fontSize: 15,
     fontWeight: '300',
   },

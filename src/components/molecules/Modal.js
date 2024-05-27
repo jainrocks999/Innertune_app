@@ -24,20 +24,7 @@ const data = [
   {id: '3', title: 'Music'},
   {id: '4', title: 'Playlistdetails'},
 ];
-const Mymodal = ({
-  visible,
-  onClose,
-  title,
-  voices,
-  onVoicePress,
-  selectedVoice,
-  maxTimeInMinutes,
-  onTimePress,
-  ttsVolume,
-  onMusicPress,
-  onVolumeChange,
-  bgVolume,
-}) => {
+const Mymodal = ({visible, onClose, title}) => {
   console.log(title);
   const [selectedTab, setSelectedTab] = useState('Voice');
   const handleTabPress = title => {
@@ -70,22 +57,11 @@ const Mymodal = ({
             borderTopStartRadius: 30,
           }}>
           {title == 'Voice' ? (
-            <Voice
-              selectedVoice={selectedVoice}
-              voice={voices}
-              onPress={item => onVoicePress(item)}
-            />
+            <Voice />
           ) : title == 'Music' ? (
-            <Music
-              bgVolume={bgVolume}
-              onVolumeChange={onVolumeChange}
-              onPress={onMusicPress}
-            />
+            <Music />
           ) : title == 'Time' ? (
-            <Time
-              onPress={item => onTimePress(item)}
-              maxTimeInMinutes={maxTimeInMinutes}
-            />
+            <Time />
           ) : (
             <Playlistdetails />
           )}

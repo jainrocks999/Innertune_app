@@ -8,7 +8,7 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {heightPercent as hp, widthPrecent as wp} from '../atoms/responsive';
 import Remindermodal1 from '../../screens/main/Reminder/Remindermodal1';
 import Remindmodal5 from '../../screens/main/Reminder/Remindmodal5';
@@ -23,6 +23,7 @@ const data = [
   {id: '5', titles: 'Remindmodal5'},
 ];
 const Modal2 = ({visible, onClose, titles}) => {
+  console.log('this is visible', visible);
   return (
     <Modal
       animationType="slide"
@@ -41,31 +42,32 @@ const Modal2 = ({visible, onClose, titles}) => {
           style={{
             backgroundColor: 'white',
             height: hp(
-              titles == 'Remindermodal1'
+              titles == 'Remindmodal2'
                 ? 50
                 : titles == 'Remindmodal2'
-                ? 95
+                ? 50
                 : titles == 'Remindmodal3'
-                ? 90
+                ? 50
                 : titles == 'Remindmodal4'
-                ? 90
+                ? 50
                 : 90,
             ),
             borderTopEndRadius: 30,
             overflow: 'hidden',
             borderTopStartRadius: 30,
           }}>
-          {titles == 'Remindermodal1' ? (
+          {/* {titles == 'Remindermodal1' ? (
             <Remindermodal1 />
           ) : titles == 'Remindmodal2' ? (
-            <Remindmodal2 onPress={onClose} />
+            <Remindmodal2 />
           ) : titles == 'Remindmodal3' ? (
-            <Remindmodal4 onPressClose={onClose} />
+            <Remindmodal3 />
           ) : titles == 'Remindmodal4' ? (
-            <Remindmodal4 onPressClose={onClose} />
+            <Remindmodal4 />
           ) : (
             <Remindmodal5 />
-          )}
+          )} */}
+          <Remindmodal2 />
         </View>
       </TouchableOpacity>
     </Modal>
