@@ -12,9 +12,17 @@ import Buttun from './compoents/Buttun';
 import Line from './compoents/Line';
 import Social from './compoents/Social';
 import {fonts} from '../../Context/Conctants';
+import {Dropdown} from 'react-native-element-dropdown';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const Signup = () => {
+const Signup = ({route}) => {
   const navigation = useNavigation();
+  const [value, setValue] = useState(null);
+  const [isFocus, setIsFocus] = useState(false);
+  const {country} = route.params;
+  function transformArray(data) {
+    return data.map(country => ({value: country.id, label: country.name}));
+  }
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
@@ -40,6 +48,45 @@ const Signup = () => {
           underlineColorAndroid="transparent"
           onChangeText={password => setPassword({password})}
         />
+        <View style={styles.input}>
+          <Dropdown
+            style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={country}
+            search
+            maxHeight={300}
+            labelField="name"
+            valueField="id"
+            itemContainerStyle={{
+              borderBottomWidth: 0.5,
+              // paddingVertical: -5,
+            }}
+            itemTextStyle={{
+              color: 'black',
+              fontSize: wp(4),
+            }}
+            placeholder={!isFocus ? 'Select Country' : '...'}
+            searchPlaceholder="Search..."
+            value={value}
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
+            onChange={item => {
+              setValue(item.id);
+              setIsFocus(false);
+            }}
+            // renderLeftIcon={() => (
+            //   <AntDesign
+            //     style={styles.icon}
+            //     color={isFocus ? 'blue' : 'black'}
+            //     name="Safety"
+            //     size={20}
+            //   />
+            // )}
+          />
+        </View>
         <Input
           placeholder="Password"
           secureTextEntry={true}
@@ -78,3 +125,56 @@ const Signup = () => {
 };
 
 export default Signup;
+const styles = StyleSheet.create({
+  input: {
+    borderWidth: 1,
+    width: '88%',
+    height: hp(6.5),
+    borderColor: '#fff',
+    borderRadius: wp(1),
+    // paddingLeft: '5%',
+    marginTop: '8%',
+  },
+  container: {
+    backgroundColor: 'white',
+  },
+  dropdown: {
+    height: '100%',
+    // borderColor: 'gray',
+    // borderWidth: 0.5,
+    // borderRadius: 8,
+    paddingHorizontal: '5%',
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: '5%',
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: wp(2),
+  },
+  placeholderStyle: {
+    fontSize: wp(5),
+    fontFamily: fonts.medium,
+    color: '#fff',
+  },
+  selectedTextStyle: {
+    fontSize: wp(5),
+    fontFamily: fonts.medium,
+    color: '#fff',
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+    color: '#fff',
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+    color: 'black',
+  },
+});

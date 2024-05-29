@@ -89,7 +89,7 @@ const Toptab = () => {
     loading,
     grops,
   } = useSelector(state => state.home);
-  const {getNameImage} = useContext(MusicPlayerContext);
+  const {getNameImage, playPlalist} = useContext(MusicPlayerContext);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -448,7 +448,7 @@ const Toptab = () => {
           )}
         />
       </ScrollView>
-      {affirmations.length > 0 && getNameImage().name != '' ? (
+      {playPlalist.length > 0 && getNameImage().name != '' ? (
         <PlayPopup />
       ) : null}
     </View>

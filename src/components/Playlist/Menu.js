@@ -26,6 +26,8 @@ const Menu = ({
   selectedIndex,
   affirmations,
   loading,
+  playsong,
+  onPressHeart,
 }) => {
   const dispatch = useDispatch();
   const data = [
@@ -130,10 +132,14 @@ const Menu = ({
                 onPress={() => {
                   switch (item.id) {
                     case '1': {
-                      if (selectedItem.is_favorite) {
-                        removeFavroit(selectedItem, selectedIndex);
+                      if (playsong) {
+                        if (selectedItem.is_favorite) {
+                          removeFavroit(selectedItem, selectedIndex);
+                        } else {
+                          handleHeartPress(selectedItem, selectedIndex);
+                        }
                       } else {
-                        handleHeartPress(selectedItem, selectedIndex);
+                        onPressHeart();
                       }
                       break;
                     }

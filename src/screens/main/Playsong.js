@@ -34,6 +34,7 @@ import RNFS from 'react-native-fs';
 import {fonts} from '../../Context/Conctants';
 import storage from '../../utils/StorageService';
 import {MusicPlayerContext} from '../../Context/MusicPlayerConstaxt';
+import Menu from '../../components/Playlist/Menu';
 const data = [
   {
     id: '1',
@@ -46,7 +47,7 @@ const data = [
 
 const Playsong = ({route}) => {
   const indexxxx = route.params.index;
-  const {screens} = useSelector(state => state.home);
+  const {screens, loading} = useSelector(state => state.home);
   console.log(screens);
   const {
     currentTrack,
@@ -65,7 +66,7 @@ const Playsong = ({route}) => {
     setSpeechRate,
     speechPitch,
     setSpeechPitch,
-    affirmations,
+    playPlalist,
     readText,
     player,
     setVolume,
@@ -77,13 +78,21 @@ const Playsong = ({route}) => {
     setVisibleIndex,
     flatListRef,
     reset,
+    setOnmainPage,
+    onMainPage,
   } = useContext(MusicPlayerContext);
   useEffect(() => {
-    reset();
-  }, []);
+    if (onMainPage) {
+      console.log('resetcelladtrue');
+      reset();
+    } else {
+      console.log('resetcelladfalse');
+    }
+  }, [onMainPage]);
   const dispatch = useDispatch();
   // const flatListRef = useRef(null);
-  const [bgVolume, setBgVolume] = useState(0.1);
+  const [bgVolume, setBgVolume] = useState(0.5);
+  console.log('this is visible index', visibleIndex);
 
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
@@ -132,11 +141,13 @@ const Playsong = ({route}) => {
     }
   };
 
-  const currentTimeRef = useRef(0);
+  console.log('thissisis++++++++', onMainPage);
 
   useEffect(() => {
-    player('Sleeping.wav');
-    setIsPaused(false);
+    if (progress < 100) {
+      player('Sleeping.wav');
+      setIsPaused(false);
+    }
   }, []);
 
   const path = Platform.select({
@@ -164,7 +175,7 @@ const Playsong = ({route}) => {
     ]);
     const token = items.find(([key]) => key === storage.TOKEN)?.[1];
     const user = items.find(([key]) => key === storage.USER_ID)?.[1];
-    const modified = getmodified(affirmations, index, true);
+    const modified = getmodified(playPlalist, index, true);
     dispatch({
       type: 'home/Createfavriote_request',
       user_id: user,
@@ -176,6 +187,7 @@ const Playsong = ({route}) => {
       data: modified,
     });
   };
+  const [isUserScrolling, setIsUserScrolling] = useState(false);
   const removeFavroit = async (item, index) => {
     const items = await storage.getMultipleItems([
       storage.TOKEN,
@@ -183,7 +195,8 @@ const Playsong = ({route}) => {
     ]);
     const token = items.find(([key]) => key === storage.TOKEN)?.[1];
     const user = items.find(([key]) => key === storage.USER_ID)?.[1];
-    const modified = getmodified(affirmations, index, false);
+    const modified = getmodified(playPlalist, index, false);
+
     dispatch({
       type: 'home/removeFavriout_request',
       url: 'unlikeAffirmations',
@@ -194,6 +207,36 @@ const Playsong = ({route}) => {
       isCat: false,
       data: modified,
     });
+  };
+  const handleScrollBeginDrag = () => {
+    console.log('calledd+++++');
+    setIsUserScrolling(true);
+  };
+
+  const handleScrollEndDrag = () => {
+    console.log('calledd+++++');
+    // setIsUserScrolling(false);
+  };
+  const handleViewableItemsChanged = ({viewableItems, changed}) => {
+    console.log('this sis userscrolling', isUserScrolling);
+    if (isUserScrolling) {
+      console.log('this sis userscrolling', isUserScrolling);
+      setIsUserScrolling(false);
+      const newIndex = viewableItems[0].index;
+      setVisibleIndex(newIndex);
+      setIsPaused(false);
+      if (isPaused & (progress >= 100)) {
+        // setProgress(0);
+        // currentTimeRef.current = 0;
+        reset();
+      }
+    }
+  };
+  const [visibleMenu, setVisibleMenu] = useState(false);
+  const [visibleMenuIndex, setVisibleMenuIndex] = useState(0);
+  const onClose = () => {
+    setVisibleMenu(false);
+    setVisibleMenuIndex(visibleIndex);
   };
 
   return (
@@ -288,17 +331,17 @@ const Playsong = ({route}) => {
             <TouchableOpacity
               style={{zIndex: 2}}
               onPress={() => {
-                !affirmations[visibleIndex].is_favorite
-                  ? handleHeartPress(affirmations[visibleIndex], visibleIndex)
-                  : removeFavroit(affirmations[visibleIndex], visibleIndex);
+                !playPlalist[visibleIndex].is_favorite
+                  ? handleHeartPress(playPlalist[visibleIndex], visibleIndex)
+                  : removeFavroit(playPlalist[visibleIndex], visibleIndex);
               }}>
               <FontAwesome
                 name={
-                  affirmations[visibleIndex]?.is_favorite ? 'heart' : 'heart-o'
+                  playPlalist[visibleIndex]?.is_favorite ? 'heart' : 'heart-o'
                 }
                 size={30}
                 color={
-                  affirmations[visibleIndex]?.is_favorite ? '#B72658' : 'white'
+                  playPlalist[visibleIndex]?.is_favorite ? '#B72658' : 'white'
                 }
               />
             </TouchableOpacity>
@@ -311,19 +354,39 @@ const Playsong = ({route}) => {
             />
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Menu');
+                setVisibleMenuIndex(visibleIndex);
+                setVisibleMenu(true);
               }}>
-              <Entypo name="dots-three-horizontal" size={30} color="white" />
+              <Entypo name="dots-three-horizontal" size={30} color="#fff" />
             </TouchableOpacity>
           </View>
-
+          <Menu
+            onClose={onClose}
+            selectedItem={playPlalist[visibleMenuIndex]}
+            visible={visibleMenu}
+            selectedIndex={visibleMenuIndex}
+            affirmations={playPlalist}
+            loading={loading}
+            onPressHeart={() => {
+              !playPlalist[visibleMenuIndex].is_favorite
+                ? handleHeartPress(
+                    playPlalist[visibleMenuIndex],
+                    visibleMenuIndex,
+                  )
+                : removeFavroit(
+                    playPlalist[visibleMenuIndex],
+                    visibleMenuIndex,
+                  );
+            }}
+            playsong
+          />
           <View style={{height: hp(100)}}>
             <FlatList
               ref={flatListRef}
               pagingEnabled
               initialScrollIndex={0}
               showsVerticalScrollIndicator={false}
-              data={affirmations}
+              data={playPlalist}
               renderItem={({item, index}) =>
                 true ? (
                   <View style={{height: hp(100)}}>
@@ -345,17 +408,9 @@ const Playsong = ({route}) => {
                 )
               }
               keyExtractor={(item, index) => index.toString()}
-              onViewableItemsChanged={async ({viewableItems, changed}) => {
-                const newIndex = viewableItems[0].index;
-                readText(affirmations[newIndex].affirmation_text); // Read text when view changes
-                setVisibleIndex(newIndex);
-                setIsPaused(false);
-                if (isPaused & (progress >= 100)) {
-                  console.log('here');
-                  setProgress(0);
-                  currentTimeRef.current = 0;
-                }
-              }}
+              onViewableItemsChanged={handleViewableItemsChanged}
+              onScrollBeginDrag={handleScrollBeginDrag}
+              onScrollEndDrag={handleScrollEndDrag}
               onScrollToIndexFailed={info => {
                 const wait = new Promise(resolve => setTimeout(resolve, 500));
                 wait.then(() => {
@@ -423,7 +478,7 @@ const Playsong = ({route}) => {
                   <View
                     style={{
                       width: wp(30),
-                      height: hp(6),
+                      height: hp(5),
                       alignItems: 'center',
                       justifyContent: 'flex-end',
                       flexDirection: 'row',
@@ -431,24 +486,29 @@ const Playsong = ({route}) => {
                         selectedTab === item.title ? '#000000' : '#DEDEDE',
                       borderRadius: hp(5),
                       marginHorizontal: wp(1),
+                      // paddingLeft: item.id == '2' ? '2%' : '0%',
                     }}>
                     <Text
                       style={{
                         color: selectedTab === item.title ? 'white' : 'black',
                         fontSize: hp(2.1),
                         fontWeight: '400',
-                        right: wp(3),
+                        right: wp(item.id == '2' ? 1 : 3),
                         fontFamily: fonts.medium,
                       }}>
-                      {item.title}
+                      {item.id == '2'
+                        ? maxTimeInMinutes > 1
+                          ? maxTimeInMinutes + ' Minuts'
+                          : maxTimeInMinutes + ' Minut'
+                        : item.title}
                     </Text>
                     <Image
                       source={item.image}
                       style={{
-                        width: hp(6),
+                        width: hp(5),
                         color: selectedTab === item.image ? 'white' : 'black',
-                        height: hp(6),
-                        borderRadius: hp(7),
+                        height: hp(5),
+                        borderRadius: hp(2.5),
                       }}
                     />
                   </View>

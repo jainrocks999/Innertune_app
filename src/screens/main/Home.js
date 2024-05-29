@@ -63,7 +63,7 @@ const Img = [
 
 const HomeScreen = props => {
   const {navigation} = props;
-  const {getNameImage, affirmations} = useContext(MusicPlayerContext);
+  const {getNameImage, playPlalist} = useContext(MusicPlayerContext);
   // console.log(progress);
   const dispatch = useDispatch();
   const getFavriote = item => {};
@@ -571,7 +571,7 @@ const HomeScreen = props => {
           )}
         />
       </ScrollView>
-      {affirmations.length > 0 && getNameImage().name != '' ? (
+      {playPlalist.length > 0 && getNameImage().name != '' ? (
         // <View
         //   style={{
         //     height: hp(10.5),

@@ -1,4 +1,4 @@
-import {React, useContext} from 'react';
+import {React, useContext, useEffect} from 'react';
 import {View, TouchableOpacity, Image, Text} from 'react-native';
 import {heightPercent as hp, widthPrecent as wp} from '../atoms/responsive';
 import CircularProgress from 'react-native-circular-progress-indicator';
@@ -13,7 +13,11 @@ const PlayPopup = () => {
     isPaused,
     setProgress,
     getNameImage,
+    setOnmainPage,
   } = useContext(MusicPlayerContext);
+  useEffect(() => {
+    setOnmainPage(false);
+  }, []);
   const navigation = useNavigation();
   return (
     <View
@@ -32,14 +36,15 @@ const PlayPopup = () => {
       }}>
       <TouchableOpacity
         activeOpacity={0.7}
-        onPress={() => navigation.navigate('playsong')}
+        onPress={() => {
+          setOnmainPage(false);
+          navigation.navigate('playsong');
+        }}
         style={{marginLeft: '5%', flexDirection: 'row'}}>
         <View style={{elevation: 2, shadowColor: '#fff'}}>
           <Image
             style={{
               justifyContent: 'center',
-              // alignSelf: 'flex-end',
-              // alignItems: 'center',
               height: wp(10),
               width: wp(10),
               marginBottom: '2%',

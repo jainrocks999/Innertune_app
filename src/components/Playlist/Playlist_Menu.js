@@ -48,36 +48,38 @@ const Playlist_Menu = ({
       <View style={{flex: 1, backgroundColor: '#191919', opacity: 0.99}}>
         <Loader loading={loading} />
         <View style={{height: '20%'}} />
-        <View style={styles.card}>
-          <View
-            style={{
-              height: hp(9),
-              paddingHorizontal: wp(1),
-              paddingVertical: wp(1),
-              width: hp(9),
-              backgroundColor: '#fff',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: wp(2),
-            }}>
-            <Image
-              tintColor={'#B72658'}
-              source={image}
-              style={{height: '100%', width: '100%'}}
-              resizeMode="contain"
-            />
+        {item && item != 'fav' ? (
+          <View style={styles.card}>
+            <View
+              style={{
+                height: hp(9),
+                paddingHorizontal: wp(1),
+                paddingVertical: wp(1),
+                width: hp(9),
+                backgroundColor: '#fff',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: wp(2),
+              }}>
+              <Image
+                tintColor={'#B72658'}
+                source={image}
+                style={{height: '100%', width: '100%'}}
+                resizeMode="contain"
+              />
+            </View>
+            <View style={{paddingBottom: '5%'}}>
+              <Text style={styles.title}>{item.title}</Text>
+              <Text
+                style={[
+                  styles.title,
+                  {fontSize: wp(5), fontFamily: fonts.medium},
+                ]}>
+                {item?.description?.substring(0, 20)}
+              </Text>
+            </View>
           </View>
-          <View style={{paddingBottom: '5%'}}>
-            <Text style={styles.title}>{item.title}</Text>
-            <Text
-              style={[
-                styles.title,
-                {fontSize: wp(5), fontFamily: fonts.medium},
-              ]}>
-              {item?.description.substring(0, 20)}
-            </Text>
-          </View>
-        </View>
+        ) : null}
         <View style={{paddingLeft: wp(5), paddingTop: hp(4)}}>
           <FlatList
             data={data}

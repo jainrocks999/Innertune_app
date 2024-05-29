@@ -69,7 +69,7 @@ const Img = [
   {
     id: '6',
     image: require('../../assets/music.jpg'),
-    title: 'Lorem Ipsum is simply dummy text of the  ',
+    title: 'Lorem Ipsum is simply dummy tex   t of the  ',
     title2: '90 affirmations',
   },
   {
@@ -88,7 +88,8 @@ const Img = [
 
 const Playlistdetails = () => {
   const dispatch = useDispatch();
-  const {getNameImage} = useContext(MusicPlayerContext);
+  const {getNameImage, playPlalist, setOnmainPage} =
+    useContext(MusicPlayerContext);
   const {favoriteList} = useSelector(state => state.home);
 
   console.log('tjhidi', favoriteList.favoritelist);
@@ -155,11 +156,37 @@ const Playlistdetails = () => {
   // useEffect(() => {
   //   setVisible(false);
   // }, [item]);
+  const getSong = async index => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+
+    dispatch({
+      type: 'home/play_playlist_request',
+      payload: affirmations,
+      navigation,
+      index: index,
+      user_id: user,
+      token,
+      category_id: item.id,
+    });
+  };
   return (
     <View style={styles.container}>
       <Loader loading={loading} />
       <Categores_menu
-        onPressListen={() => navigation.navigate('playsong', {index: -1})}
+        onPressListen={() => {
+          // navigation.navigate('playsong', {index: -1})
+          setOnmainPage(true);
+          getSong(-1);
+          dispatch({
+            type: 'home/currentPLaylist',
+            payload: item,
+          });
+        }}
         item={item}
         onClose={() => {
           setVisible(false);
@@ -321,7 +348,8 @@ const Playlistdetails = () => {
               shadowColor: '#fff',
             }}
             onPress={() => {
-              navigation.navigate('playsong', {index: -1});
+              setOnmainPage(true);
+              getSong(-1);
               dispatch({
                 type: 'home/currentPLaylist',
                 payload: item,
@@ -395,7 +423,12 @@ const Playlistdetails = () => {
               />
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('playsong', {index: index});
+                  setOnmainPage(true);
+                  getSong(index);
+                  dispatch({
+                    type: 'home/currentPLaylist',
+                    payload: playItem,
+                  });
                 }}
                 style={{justifyContent: 'center', marginHorizontal: '10%'}}>
                 <Text style={styles.text}>
@@ -416,7 +449,7 @@ const Playlistdetails = () => {
           )}
         />
       </ScrollView>
-      {affirmations.length > 0 && getNameImage().name != '' ? (
+      {playPlalist.length > 0 && getNameImage().name != '' ? (
         <PlayPopup />
       ) : null}
     </View>

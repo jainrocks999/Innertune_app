@@ -51,7 +51,23 @@ const Login = () => {
       navigation,
     });
   };
+  const getSigup = async () => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
 
+    const res = await fetch(
+      'https://stimuli.forebearpro.co.in/api/v1/country',
+      requestOptions,
+    )
+      .then(response => response.text())
+      .then(result => JSON.parse(result))
+      .catch(error => console.error(error));
+    if (res.status) {
+      navigation.navigate('signup', {country: res.data});
+    }
+  };
   return (
     <Background>
       <Loader loading={loading} />
@@ -110,7 +126,8 @@ const Login = () => {
             Don't have an account ?{' '}
             <Text
               onPress={() => {
-                navigation.navigate('signup');
+                // navigation.navigate('signup');
+                getSigup();
               }}
               style={{
                 color: '#B72658',

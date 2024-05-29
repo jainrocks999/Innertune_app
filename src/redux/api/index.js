@@ -40,7 +40,10 @@ export default class Api {
     console.log(`${mainURl}${data.url}`);
     return await fetch(`${mainURl}${data.url}`, requestOptions)
       .then(response => response.text())
-      .then(result => JSON.parse(result))
+      .then(result => {
+        console.log(result);
+        return JSON.parse(result);
+      })
       .catch(error => console.log('error', error));
   };
   static API_GET = async data => {

@@ -114,7 +114,7 @@ function* fetchAffirmation(action) {
       if (action.item) {
         yield put({
           type: 'home/playList_item',
-          payload: {from: false, isFroiut: false, ...action.item},
+          payload: {from: false, isFroiut: false, ...action.item, item: false},
         });
       }
       if (action.navigation) {
@@ -300,12 +300,12 @@ function* fetchCreatefavriote(action) {
         if (action.item) {
           yield put({
             type: 'home/playList_item',
-            payload: action.item,
+            payload: {...action.item, item: false},
           });
         }
       } else {
         yield put({
-          type: 'home/affirmation_fetch_success',
+          type: 'home/play_playlist_success',
           payload: action.data,
         });
       }
@@ -486,6 +486,7 @@ function* getFavoriout(action) {
               },
             ],
             categories_name: 'Liked affirmations',
+            item: 'fav',
           },
         });
         action.navigation.navigate('Playlistdetails2');
@@ -557,7 +558,7 @@ function* removeFavrioutList(action) {
         }
       } else {
         yield put({
-          type: 'home/affirmation_fetch_success',
+          type: 'home/play_playlist_success',
           payload: action.data,
         });
       }
@@ -720,6 +721,33 @@ function* deletePlaylistItme(action) {
     console.log(error);
   }
 }
+function* playaffiramations(action) {
+  let formdata = new FormData();
+  let formdata2 = new FormData();
+  formdata.append('last_session_id', 0);
+  formdata2.append('last_session_id', 0);
+  formdata.append('user_id', action.user_id);
+  formdata2.append('user_id', action.user_id);
+  formdata.append('playlist_id', action.category_id);
+  formdata2.append('category_id', action.category_id);
+  const res = yield call(Api.API_POST, {
+    formdata,
+    token: action.token,
+    url: 'playList/populerPlayListUpdate',
+  });
+  const res2 = yield call(Api.API_POST, {
+    formdata: formdata2,
+    token: action.token,
+    url: 'playList/LastSessionUpdate',
+  });
+  console.log('populerPlayListUpdate', res);
+  console.log('playList/LastSessionUpdate', res2);
+  yield put({
+    type: 'home/play_playlist_success',
+    payload: action.payload,
+  });
+  action.navigation.navigate('playsong', {index: action.index});
+}
 export default function* homeSaga() {
   yield takeEvery('home/playlist_request', getplaylist);
   yield takeEvery('home/group_fetch_request', fetchGroups);
@@ -742,4 +770,5 @@ export default function* homeSaga() {
   );
   yield takeEvery('home/search_request', doSearch);
   yield takeEvery('home/update_playlistitem_request', deletePlaylistItme);
+  yield takeEvery('home/play_playlist_request', playaffiramations);
 }

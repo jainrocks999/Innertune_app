@@ -29,6 +29,7 @@ const initialState = {
     ],
     categories_name: '',
   },
+  playPlalist: [],
 };
 const Home = createSlice({
   name: 'home',
@@ -206,6 +207,12 @@ const Home = createSlice({
     },
     update_playlistitem_error: (state, action) => {
       return {...state, loading: false};
+    },
+    play_playlist_request: (state, action) => {
+      return {...state, loading: true};
+    },
+    play_playlist_success: (state, action) => {
+      return {...state, playPlalist: action.payload, loading: false};
     },
   },
 });

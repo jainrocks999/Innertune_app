@@ -3,12 +3,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import Tts from 'react-native-tts';
 import TrackPlayer from 'react-native-track-player';
 import {Alert} from 'react-native';
+import {setupPlayer} from '../utils/Setup';
 // import affirmations from './affirmation';
 
 export const MusicPlayerContext = createContext();
 
 export const MusicPlayerProvider = ({children}) => {
-  const {affirmations, playItem} = useSelector(state => state.home);
+  const {playPlalist, playItem} = useSelector(state => state.home);
   const dispatch = useDispatch();
   const [currentTrack, setCurrentTrack] = useState(null);
   const [maxTimeInMinutes, setMaxTimeInMinutes] = useState(1);
@@ -22,8 +23,10 @@ export const MusicPlayerProvider = ({children}) => {
   const [speechPitch, setSpeechPitch] = useState(1);
   const flatListRef = useRef(null);
   const [visibleIndex, setVisibleIndex] = useState(0);
+  const [onMainPage, setOnmainPage] = useState(true);
   const visibleIndexRef = useRef(visibleIndex);
   visibleIndexRef.current = visibleIndex;
+  const playPlalistRef = useRef(playPlalist);
 
   const readText = async text => {
     if (!isPaused && text) {
@@ -31,18 +34,27 @@ export const MusicPlayerProvider = ({children}) => {
       Tts.speak(text);
     }
   };
-
+  useEffect(() => {
+    playPlalistRef.current = playPlalist;
+  }, [playPlalist]);
   const handleTTSFinish = () => {
-    // if (affirmations.length === 0) return;
     setVisibleIndex(prevIndex => {
-      const newIndex = (prevIndex + 1) % affirmations.length;
-      readText(affirmations[newIndex]?.affirmation_text);
+      const currentplayPlalist = playPlalistRef.current;
+      const newIndex = (prevIndex + 1) % currentplayPlalist.length;
+      console.log(
+        'this is new index',
+        newIndex,
+        prevIndex,
+        currentplayPlalist.length,
+      );
+      readText(currentplayPlalist[newIndex]?.affirmation_text);
       return newIndex;
     });
   };
+  console.log(visibleIndex);
 
   useEffect(() => {
-    if (affirmations.length === 0) return; // Early return if affirmations array is empty
+    if (playPlalist.length === 0) return; // Early return if playPlalist array is empty
 
     const maxTimeInSeconds = maxTimeInMinutes * 60;
     let currentTime = currentTimeRef.current || 0;
@@ -70,7 +82,7 @@ export const MusicPlayerProvider = ({children}) => {
     }, 1000);
 
     if (!isPaused) {
-      readText(affirmations[visibleIndex].affirmation_text);
+      readText(playPlalist[visibleIndex]?.affirmation_text);
       TrackPlayer.play();
     }
 
@@ -78,7 +90,7 @@ export const MusicPlayerProvider = ({children}) => {
       clearInterval(intervalForProgress);
       Tts.stop();
     };
-  }, [maxTimeInMinutes, isPaused, affirmations.length, visibleIndex]);
+  }, [maxTimeInMinutes, isPaused, playPlalist.length, visibleIndex]);
 
   useEffect(() => {
     const initTts = async () => {
@@ -99,8 +111,8 @@ export const MusicPlayerProvider = ({children}) => {
         }
 
         await Tts.setDefaultVoice('en-au-x-auc-local');
-        if (affirmations.length > 0) {
-          readText(affirmations[0].affirmation_text);
+        if (playPlalist.length > 0) {
+          readText(playPlalist[0].affirmation_text);
           player('sleeping.waw');
         }
         setVoices(availableVoices);
@@ -120,14 +132,14 @@ export const MusicPlayerProvider = ({children}) => {
     return () => {
       Tts.removeEventListener('tts-finish', handleTTSFinish);
     };
-  }, []);
+  }, [speechPitch, speechRate]);
 
   useEffect(() => {
     // Ensure the useEffect hook for automatic scrolling is triggered when visibleIndex changes
     if (
       flatListRef.current &&
       visibleIndex >= 0 &&
-      visibleIndex < affirmations.length
+      visibleIndex < playPlalist.length
     ) {
       flatListRef.current.scrollToIndex({
         animated: true,
@@ -137,10 +149,10 @@ export const MusicPlayerProvider = ({children}) => {
         duration: 500,
       });
     }
-  }, [visibleIndex, affirmations.length]);
+  }, [visibleIndex, playPlalist.length]);
 
   const handlePlayPauseClick = () => {
-    if (affirmations.length === 0) return; // Early return if affirmations array is empty
+    if (playPlalist.length === 0) return;
 
     setIsPaused(prevIsPaused => !prevIsPaused);
     if (isPaused && progress >= 100) {
@@ -151,9 +163,10 @@ export const MusicPlayerProvider = ({children}) => {
   };
 
   const player = async sound => {
-    if (affirmations.length === 0) return; // Early return if affirmations array is empty
+    if (playPlalist.length === 0) return;
 
     const isSetup = await setupPlayer();
+    console.log('thiiddi++++==========>>>>>>>>>', isSetup);
     if (isSetup) {
       const track = {
         url: 'https://stimuli.forebearpro.co.in/storage/app/public/98/BGFOUR.mp3',
@@ -201,11 +214,11 @@ export const MusicPlayerProvider = ({children}) => {
         }
         setVisibleIndex(0);
         await Tts.setDefaultVoice(voice.id);
-        readText(affirmations[visibleIndex]?.affirmation_text);
+        readText(playPlalist[visibleIndex]?.affirmation_text);
         setSelectedVoice(voice.id);
       } else {
         await Tts.setDefaultVoice(voice.id);
-        readText(affirmations[visibleIndex]?.affirmation_text);
+        readText(playPlalist[visibleIndex]?.affirmation_text);
         setSelectedVoice(voice.id);
       }
     } catch (err) {
@@ -249,7 +262,7 @@ export const MusicPlayerProvider = ({children}) => {
         setSpeechRate,
         speechPitch,
         setSpeechPitch,
-        affirmations,
+        playPlalist,
         readText,
         player,
         setVolume,
@@ -262,6 +275,7 @@ export const MusicPlayerProvider = ({children}) => {
         setVisibleIndex,
         getNameImage,
         reset,
+        setOnmainPage,
       }}>
       {children}
     </MusicPlayerContext.Provider>
