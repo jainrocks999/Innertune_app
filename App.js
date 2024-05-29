@@ -16,6 +16,7 @@ import {
 } from './src/components/atoms/responsive';
 import {View} from 'react-native';
 import Root from './src';
+import storage from './src/utils/StorageService';
 const App = () => {
   LogBox.ignoreAllLogs();
 
@@ -42,9 +43,8 @@ const App = () => {
       created => console.log(`Notification channel created '${created}'`),
     );
     PushNotification.configure({
-      onRegister: token => {
-        console.log(token.token);
-        // Clipboard.setString(token.token);
+      onRegister: async token => {
+        await storage.setItem(storage.FCM_TOKEN, token.token);
       },
       onNotification: notification => {
         PushNotification.localNotification({

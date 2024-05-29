@@ -3,6 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 class StorageService {
   TOKEN = 'token';
   USER_ID = 'user';
+  FCM_TOKEN = 'fcm_token';
+  USER_EMAIL = 'user_email';
 
   setItem = async (action, data) => {
     const value = JSON.stringify({data});

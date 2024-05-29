@@ -17,6 +17,7 @@ import Social from './compoents/Social';
 import {fonts} from '../../Context/Conctants';
 import Toast from 'react-native-simple-toast';
 import {ScrollView} from 'react-native-gesture-handler';
+import storage from '../../utils/StorageService';
 const Login = () => {
   const loading = useSelector(state => state.auth.loading);
   const navigation = useNavigation();
@@ -27,7 +28,13 @@ const Login = () => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   }
-  const getToken = () => {
+  const getToken = async () => {
+    const token = await storage.getItem(storage.FCM_TOKEN);
+
+    if (!token) {
+      Toast.show('Something went wrong');
+      return;
+    }
     if (email == '') {
       Toast.show('Please enter email');
       return;
@@ -46,6 +53,7 @@ const Login = () => {
       payload: {
         email,
         password,
+        fcm_token: token,
         url: 'login',
       },
       navigation,
@@ -81,6 +89,7 @@ const Login = () => {
           <View style={{alignItems: 'center'}}>
             <Input
               placeholder="Email"
+              value={email}
               keyboardType="email-address"
               underlineColorAndroid="transparent"
               onChangeText={email => setEmail(email)}
@@ -88,6 +97,7 @@ const Login = () => {
             <Input
               placeholder="Password"
               secureTextEntry={true}
+              value={password}
               underlineColorAndroid="transparent"
               onChangeText={password => setPassword(password)}
             />

@@ -376,7 +376,7 @@ const Toptab = () => {
         </View>
 
         <FlatList
-          data={playlist[0].playlist}
+          data={playlist[0]?.playlist ?? []}
           keyExtractor={item => item?.id}
           scrollEnabled={false}
           renderItem={({item, index}) => (

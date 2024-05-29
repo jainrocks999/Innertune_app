@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, ToastAndroid, View} from 'react-native';
 import {
   heightPercent as hp,
   widthPrecent as wp,
@@ -14,17 +14,50 @@ import Social from './compoents/Social';
 import {fonts} from '../../Context/Conctants';
 import {Dropdown} from 'react-native-element-dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const Signup = ({route}) => {
   const navigation = useNavigation();
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const {country} = route.params;
-  function transformArray(data) {
-    return data.map(country => ({value: country.id, label: country.name}));
-  }
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [inputs, setInputs] = useState({
+    name: '',
+    email: '',
+    password: '',
+    country_id: '',
+  });
+
+  const validate = () => {
+    if (!inputs.name) {
+      return 'Name is required';
+    }
+    if (!inputs.email) {
+      return 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(inputs.email)) {
+      return 'Email is invalid';
+    }
+    if (!inputs.country_id) {
+      return 'Please select country';
+    }
+    if (!inputs.password) {
+      return 'Password is required';
+    } else if (inputs.password.length < 6) {
+      return 'Password must be at least 6 characters';
+    }
+
+    return true;
+  };
+  const hanndleOnSubmit = () => {
+    if (typeof validate() == 'string') {
+      ToastAndroid.show(validate(), ToastAndroid.SHORT);
+    } else {
+      console.log(inputs);
+    }
+  };
+  const handleOnchange = (key, value) => {
+    setInputs(prev => ({...prev, [key]: value}));
+  };
 
   return (
     <Background>
@@ -36,90 +69,95 @@ const Signup = ({route}) => {
           height: hp(30),
         }}
       />
-      <View style={{alignItems: 'center'}}>
-        <Input
-          placeholder="Enter your name "
-          keyboardType="email-address"
-          underlineColorAndroid="transparent"
-          onChangeText={email => setEmail({email})}
-        />
-        <Input
-          placeholder="Your Email"
-          underlineColorAndroid="transparent"
-          onChangeText={password => setPassword({password})}
-        />
-        <View style={styles.input}>
-          <Dropdown
-            style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            data={country}
-            search
-            maxHeight={300}
-            labelField="name"
-            valueField="id"
-            itemContainerStyle={{
-              borderBottomWidth: 0.5,
-              // paddingVertical: -5,
-            }}
-            itemTextStyle={{
-              color: 'black',
-              fontSize: wp(4),
-            }}
-            placeholder={!isFocus ? 'Select Country' : '...'}
-            searchPlaceholder="Search..."
-            value={value}
-            onFocus={() => setIsFocus(true)}
-            onBlur={() => setIsFocus(false)}
-            onChange={item => {
-              setValue(item.id);
-              setIsFocus(false);
-            }}
-            // renderLeftIcon={() => (
-            //   <AntDesign
-            //     style={styles.icon}
-            //     color={isFocus ? 'blue' : 'black'}
-            //     name="Safety"
-            //     size={20}
-            //   />
-            // )}
+      <ScrollView contentContainerStyle={{paddingBottom: hp(4)}}>
+        <View style={{alignItems: 'center'}}>
+          <Input
+            placeholder="Enter your name "
+            keyboardType="email-address"
+            value={inputs.name}
+            onChangeText={email => handleOnchange('name', email)}
+            underlineColorAndroid="transparent"
           />
+          <Input
+            placeholder="Your Email"
+            underlineColorAndroid="transparent"
+            value={inputs.email}
+            onChangeText={email => handleOnchange('email', email)}
+          />
+          <View style={styles.input}>
+            <Dropdown
+              style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={country}
+              search
+              maxHeight={300}
+              labelField="name"
+              valueField="id"
+              itemContainerStyle={{
+                borderBottomWidth: 0.5,
+                // paddingVertical: -5,
+              }}
+              itemTextStyle={{
+                color: 'black',
+                fontSize: wp(4),
+              }}
+              placeholder={!isFocus ? 'Select Country' : '...'}
+              searchPlaceholder="Search..."
+              value={inputs.country_id}
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
+              onChange={item => {
+                handleOnchange('country_id', item.id);
+                setIsFocus(false);
+              }}
+              // renderLeftIcon={() => (
+              //   <AntDesign
+              //     style={styles.icon}
+              //     color={isFocus ? 'blue' : 'black'}
+              //     name="Safety"
+              //     size={20}
+              //   />
+              // )}
+            />
+          </View>
+          <Input
+            placeholder="Password"
+            secureTextEntry={true}
+            underlineColorAndroid="transparent"
+            value={inputs.password}
+            onChangeText={text => handleOnchange('password', text)}
+          />
+          <Buttun onPress={hanndleOnSubmit} title="Sing Up" />
         </View>
-        <Input
-          placeholder="Password"
-          secureTextEntry={true}
-          underlineColorAndroid="transparent"
-          onChangeText={password => setPassword({password})}
-        />
-        <Buttun title="Sing Up" />
-      </View>
-      <Line />
-      <View style={{alignItems: 'center', marginTop: '7%'}}>
-        <Social />
-      </View>
-      <Text
-        style={{
-          alignSelf: 'center',
-          marginTop: '5%',
-          color: 'white',
-          fontFamily: fonts.medium,
-        }}>
-        Already have an account ?{' '}
+        <Line />
+        <View style={{alignItems: 'center', marginTop: '7%'}}>
+          <Social />
+        </View>
         <Text
-          onPress={() => {
-            navigation.navigate('login');
-          }}
           style={{
+            alignSelf: 'center',
+            marginTop: '5%',
+            color: 'white',
             fontFamily: fonts.medium,
-            color: '#B72658',
-            fontSize: wp(5),
-            fontWeight: '500',
           }}>
-          {' Sign In'}
+          Already have an account ?{' '}
+          <Text
+            onPress={() => {
+              navigation.navigate('login');
+            }}
+            style={{
+              fontFamily: fonts.medium,
+              color: '#B72658',
+              fontSize: wp(5),
+              fontWeight: '500',
+            }}>
+            {' Sign In'}
+          </Text>
         </Text>
-      </Text>
+      </ScrollView>
     </Background>
   );
 };
@@ -163,7 +201,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   selectedTextStyle: {
-    fontSize: wp(5),
+    fontSize: wp(4.5),
     fontFamily: fonts.medium,
     color: '#fff',
   },

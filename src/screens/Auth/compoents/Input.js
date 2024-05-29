@@ -7,12 +7,13 @@ import {
 } from '../../../components/atoms/responsive';
 import {fonts} from '../../../Context/Conctants';
 
-const Input = ({...props}) => {
+const Input = ({value, ...props}) => {
   return (
     <View style={styles.input}>
       <TextInput
         {...props}
         placeholderTextColor={'#fff'}
+        value={value}
         style={{
           fontSize: wp(5),
           fontFamily: fonts.medium,

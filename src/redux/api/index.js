@@ -41,7 +41,6 @@ export default class Api {
     return await fetch(`${mainURl}${data.url}`, requestOptions)
       .then(response => response.text())
       .then(result => {
-        console.log(result);
         return JSON.parse(result);
       })
       .catch(error => console.log('error', error));
