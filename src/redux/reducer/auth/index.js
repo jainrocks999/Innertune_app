@@ -19,6 +19,15 @@ const Auth = createSlice({
     login_error: (state, action) => {
       return {...state, loading: false};
     },
+    registration_request: (state, action) => {
+      return {...state, loading: true};
+    },
+    registration_success: (state, action) => {
+      return {...state, loading: false};
+    },
+    registration_error: (state, action) => {
+      return {...state, loading: false};
+    },
   },
 });
 export default Auth.reducer;

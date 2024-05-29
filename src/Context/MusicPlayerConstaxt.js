@@ -1,229 +1,191 @@
 import React, {createContext, useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import Tts from 'react-native-tts';
-import TrackPlayer from 'react-native-track-player';
-import {Alert} from 'react-native';
+import TrackPlayer, {
+  Event,
+  useTrackPlayerEvents,
+  TrackPlayerEvents,
+} from 'react-native-track-player';
 import {setupPlayer} from '../utils/Setup';
-// import affirmations from './affirmation';
+import playPlalist from './affirmation';
 
 export const MusicPlayerContext = createContext();
 
 export const MusicPlayerProvider = ({children}) => {
-  const {playPlalist, playItem} = useSelector(state => state.home);
+  const {playItem} = useSelector(state => state.home);
   const dispatch = useDispatch();
   const [currentTrack, setCurrentTrack] = useState(null);
   const [maxTimeInMinutes, setMaxTimeInMinutes] = useState(1);
   const [progress, setProgress] = useState(0);
   const currentTimeRef = useRef(0);
   const [isPaused, setIsPaused] = useState(true);
-  const [voices, setVoices] = useState([]);
-  const [ttsStatus, setTtsStatus] = useState('initializing');
-  const [selectedVoice, setSelectedVoice] = useState(null);
-  const [speechRate, setSpeechRate] = useState(0.4);
-  const [speechPitch, setSpeechPitch] = useState(1);
   const flatListRef = useRef(null);
   const [visibleIndex, setVisibleIndex] = useState(0);
   const [onMainPage, setOnmainPage] = useState(true);
-  const visibleIndexRef = useRef(visibleIndex);
-  visibleIndexRef.current = visibleIndex;
   const playPlalistRef = useRef(playPlalist);
 
-  const readText = async text => {
-    if (!isPaused && text) {
-      Tts.stop();
-      Tts.speak(text);
-    }
+  const getSounds = () => {
+    return new Promise((resolve, reject) => {
+      try {
+        const sounds = playPlalist.map(item => ({
+          url: item.voice_one[0].original_url,
+          title: item.affirmation_text,
+          artist: 'Innertune',
+          artwork: `asset:/files/backOne.wav`,
+          duration: 5000,
+        }));
+        resolve(sounds);
+      } catch (error) {
+        reject(error);
+      }
+    });
   };
+
   useEffect(() => {
     playPlalistRef.current = playPlalist;
   }, [playPlalist]);
-  const handleTTSFinish = () => {
-    setVisibleIndex(prevIndex => {
-      const currentplayPlalist = playPlalistRef.current;
-      const newIndex = (prevIndex + 1) % currentplayPlalist.length;
-      console.log(
-        'this is new index',
-        newIndex,
-        prevIndex,
-        currentplayPlalist.length,
-      );
-      readText(currentplayPlalist[newIndex]?.affirmation_text);
-      return newIndex;
-    });
-  };
-  console.log(visibleIndex);
 
   useEffect(() => {
-    if (playPlalist.length === 0) return; // Early return if playPlalist array is empty
+    if (playPlalist.length === 0) return;
 
     const maxTimeInSeconds = maxTimeInMinutes * 60;
     let currentTime = currentTimeRef.current || 0;
-    const initialProgress = (currentTime / maxTimeInSeconds) * 100;
-    setProgress(initialProgress);
+    setProgress((currentTime / maxTimeInSeconds) * 100);
 
     const intervalForProgress = setInterval(async () => {
       if (!isPaused) {
         if (currentTime < maxTimeInSeconds) {
           currentTime++;
-          const newProgress = (currentTime / maxTimeInSeconds) * 100;
-          setProgress(newProgress);
+          setProgress((currentTime / maxTimeInSeconds) * 100);
           currentTimeRef.current = currentTime;
-        } else if (progress < 100) {
+        } else {
           clearInterval(intervalForProgress);
           setProgress(100);
           setIsPaused(true);
-          Tts.stop();
           await TrackPlayer.pause();
         }
       } else {
-        Tts.pause();
         await TrackPlayer.pause();
       }
     }, 1000);
 
     if (!isPaused) {
-      readText(playPlalist[visibleIndex]?.affirmation_text);
       TrackPlayer.play();
     }
 
     return () => {
       clearInterval(intervalForProgress);
-      Tts.stop();
     };
   }, [maxTimeInMinutes, isPaused, playPlalist.length, visibleIndex]);
 
   useEffect(() => {
-    const initTts = async () => {
-      const voices = await Tts.voices();
-      const availableVoices = voices
-        .filter(v => !v.networkConnectionRequired && !v.notInstalled)
-        .map(v => {
-          return {id: v.id, name: v.name, language: v.language};
-        });
-
-      let selectedVoice = null;
-      if (voices && voices.length > 0) {
-        selectedVoice = 'en-au-x-auc-local';
-        try {
-          await Tts.setDefaultLanguage('en-AU');
-        } catch (err) {
-          console.log(`setDefaultLanguage error `, err);
-        }
-
-        await Tts.setDefaultVoice('en-au-x-auc-local');
-        if (playPlalist.length > 0) {
-          readText(playPlalist[0].affirmation_text);
-          player('sleeping.waw');
-        }
-        setVoices(availableVoices);
-        setSelectedVoice(selectedVoice);
-        setTtsStatus('initialized');
-      } else {
-        setTtsStatus('initialized');
+    const initializeTrackPlayer = async () => {
+      await setupPlayer();
+      const tracks = await getSounds();
+      await TrackPlayer.reset();
+      await TrackPlayer.add(tracks);
+      if (playPlalist.length > 0) {
+        TrackPlayer.play();
       }
     };
 
-    Tts.getInitStatus().then(initTts);
-    Tts.addEventListener('tts-finish', handleTTSFinish);
-    Tts.setDefaultRate(speechRate);
-    Tts.setDefaultPitch(speechPitch);
-    TrackPlayer.setVolume(0.5);
+    initializeTrackPlayer();
 
     return () => {
-      Tts.removeEventListener('tts-finish', handleTTSFinish);
+      TrackPlayer.remove(); // Uncomment if needed
     };
-  }, [speechPitch, speechRate]);
+  }, [playPlalist]);
+
+  useEffect(() => {}, [playPlalist.length]);
 
   useEffect(() => {
-    // Ensure the useEffect hook for automatic scrolling is triggered when visibleIndex changes
-    if (
-      flatListRef.current &&
-      visibleIndex >= 0 &&
-      visibleIndex < playPlalist.length
-    ) {
-      flatListRef.current.scrollToIndex({
-        animated: true,
-        index: visibleIndex,
-        viewPosition: 0.5,
-        viewOffset: 0,
-        duration: 500,
-      });
-    }
-  }, [visibleIndex, playPlalist.length]);
+    const trackChangeListener = TrackPlayer.addEventListener(
+      Event.PlaybackTrackChanged,
+      async data => {
+        if (data.nextTrack != null) {
+          // TrackPlayer.pause();
+          setTimeout(() => {
+            setVisibleIndex(data.nextTrack);
+            if (
+              flatListRef.current &&
+              visibleIndex >= 0 &&
+              visibleIndex < playPlalist.length
+            ) {
+              flatListRef.current.scrollToIndex({
+                animated: true,
+                index: data.nextTrack,
+                viewPosition: 0.5,
+                viewOffset: 0,
+              });
+              TrackPlayer.play();
+            }
+          }, 2000);
+        }
+      },
+    );
+    const tackplayeEvent = TrackPlayer.addEventListener(
+      Event.PlaybackPlayWhenReadyChanged,
+      dat => {
+        // setTimeout(() => {
+        //   TrackPlayer.pause();
+        // }, 100);
+        console.log('thisissi', dat);
+      },
+    );
 
-  const handlePlayPauseClick = () => {
+    const queueEndedListener = TrackPlayer.addEventListener(
+      Event.PlaybackQueueEnded,
+      async data => {
+        if (data.position !== null && data.track !== null) {
+          await TrackPlayer.reset();
+          const tracks = await getSounds();
+          await TrackPlayer.add(tracks);
+          await TrackPlayer.play();
+          setVisibleIndex(0);
+        }
+      },
+    );
+
+    return () => {
+      trackChangeListener.remove();
+      queueEndedListener.remove();
+      tackplayeEvent.remove();
+    };
+  }, []);
+
+  const handlePlayPauseClick = async () => {
     if (playPlalist.length === 0) return;
 
-    setIsPaused(prevIsPaused => !prevIsPaused);
+    if (isPaused) {
+      await TrackPlayer.play();
+    } else {
+      await TrackPlayer.pause();
+    }
+    setIsPaused(!isPaused);
+
     if (isPaused && progress >= 100) {
-      setProgress(0);
-      currentTimeRef.current = 0;
-      setVisibleIndex(0);
+      reset();
     }
   };
 
-  const player = async sound => {
-    if (playPlalist.length === 0) return;
+  const skipToNext = async () => {
+    try {
+      await TrackPlayer.skipToNext();
+      // setVisibleIndex(prevIndex => (prevIndex + 1) % playPlalist.length);
+    } catch (error) {
+      console.error('No more next tracks available', error);
+    }
+  };
 
-    const isSetup = await setupPlayer();
-    console.log('thiiddi++++==========>>>>>>>>>', isSetup);
-    if (isSetup) {
-      const track = {
-        url: 'https://stimuli.forebearpro.co.in/storage/app/public/98/BGFOUR.mp3',
-        title: 'Titel',
-        artist: 'Innertune',
-        artwork: `asset:/files/backOne.wav`,
-        duration: null,
-      };
-      await TrackPlayer.reset();
-      await TrackPlayer.add(sound?.music ?? track);
-      await TrackPlayer.setRepeatMode(1);
-      await TrackPlayer.play();
+  const skipToPrevious = async index => {
+    try {
+      TrackPlayer.skip(index);
+    } catch (error) {
+      console.error('No more previous tracks available', error);
     }
   };
 
   const setVolume = async value => {
     await TrackPlayer.setVolume(value);
-  };
-
-  const updateSpeechRate = async rate => {
-    await Tts.setDefaultRate(rate);
-    setSpeechRate(rate);
-  };
-
-  const updateSpeechPitch = async rate => {
-    await Tts.setDefaultPitch(rate);
-    setSpeechPitch(rate);
-  };
-
-  const onVoicePress = async voice => {
-    try {
-      await Tts.setDefaultLanguage(voice.language);
-      if (isPaused && progress >= 100) {
-        setIsPaused(false);
-        setProgress(0);
-        currentTimeRef.current = 0;
-        if (flatListRef.current != null) {
-          flatListRef.current.scrollToIndex({
-            animated: true,
-            index: 0,
-            viewPosition: 0.5,
-            viewOffset: 0,
-            duration: 500,
-          });
-        }
-        setVisibleIndex(0);
-        await Tts.setDefaultVoice(voice.id);
-        readText(playPlalist[visibleIndex]?.affirmation_text);
-        setSelectedVoice(voice.id);
-      } else {
-        await Tts.setDefaultVoice(voice.id);
-        readText(playPlalist[visibleIndex]?.affirmation_text);
-        setSelectedVoice(voice.id);
-      }
-    } catch (err) {
-      console.log(`setDefaultLanguage error `, err);
-    }
   };
 
   const getNameImage = () => {
@@ -254,28 +216,18 @@ export const MusicPlayerProvider = ({children}) => {
         setProgress,
         isPaused,
         setIsPaused,
-        voices,
-        ttsStatus,
-        selectedVoice,
-        setSelectedVoice,
-        speechRate,
-        setSpeechRate,
-        speechPitch,
-        setSpeechPitch,
         playPlalist,
-        readText,
-        player,
+        player: handlePlayPauseClick,
         setVolume,
-        updateSpeechRate,
-        updateSpeechPitch,
-        onVoicePress,
-        handlePlayPauseClick,
         flatListRef,
         visibleIndex,
         setVisibleIndex,
         getNameImage,
         reset,
         setOnmainPage,
+        skipToNext,
+        skipToPrevious,
+        handlePlayPauseClick,
       }}>
       {children}
     </MusicPlayerContext.Provider>

@@ -20,43 +20,43 @@ const Img = [
   {
     id: '1',
 
-    title: 'M  ',
+    title: 'mon  ',
   },
   {
     id: '2',
 
-    title: 'T ',
+    title: 'tues',
   },
   {
     id: '3',
 
-    title: 'W ',
+    title: 'wed',
   },
   {
     id: '4',
 
-    title: 'T ',
+    title: 'thurs',
   },
   {
     id: '5',
 
-    title: 'F  ',
+    title: 'fri',
   },
   {
     id: '6',
 
-    title: 'S ',
+    title: 'sat',
   },
   {
-    id: '7',
+    id: 'sun',
 
     title: 'S',
   },
 ];
+
 const Remindmodal4 = ({onPressClose}) => {
   const [selectedDay, setSelectedDay] = useState([]);
   const handleSelectedDay = items => {
-
     if (selectedDay.includes(items.id)) {
       const filter = [...selectedDay].filter((item, index) => item != items.id);
       console.log(filter);
@@ -71,6 +71,15 @@ const Remindmodal4 = ({onPressClose}) => {
     let [hour, minute] = currentTime.split(':');
     hour = parseInt(hour);
     minute = parseInt(minute);
+    const [selectedDay, setSelectedDay] = useState({
+      mon: 1,
+      tues: 1,
+      wed: 1,
+      thurs: 1,
+      fri: 1,
+      sat: 0,
+      sun: 0,
+    });
 
     if (increment) {
       minute += 30;
@@ -196,7 +205,7 @@ const Remindmodal4 = ({onPressClose}) => {
                   fontWeight: '500',
                   fontFamily: fonts.bold,
                 }}>
-                {item.title}
+                {item.title[0].toLocaleUpperCase()}
               </Text>
             </View>
           )}

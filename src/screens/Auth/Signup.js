@@ -15,11 +15,14 @@ import {fonts} from '../../Context/Conctants';
 import {Dropdown} from 'react-native-element-dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {ScrollView} from 'react-native-gesture-handler';
-
+import {useDispatch, useSelector} from 'react-redux';
+import Loader from '../../components/Loader';
 const Signup = ({route}) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
+  const loading = useSelector(state => state.auth.loading);
   const {country} = route.params;
   const [inputs, setInputs] = useState({
     name: '',
@@ -52,7 +55,18 @@ const Signup = ({route}) => {
     if (typeof validate() == 'string') {
       ToastAndroid.show(validate(), ToastAndroid.SHORT);
     } else {
-      console.log(inputs);
+      console.log('iergdfiogdfiogb', inputs);
+
+      dispatch({
+        type: 'auth/registration_request',
+        name: inputs.name,
+        email: inputs.email,
+        password: inputs.password,
+        password_confirmation: inputs.password,
+        country_id: inputs.country_id,
+        url: 'registration',
+        navigation,
+      });
     }
   };
   const handleOnchange = (key, value) => {
@@ -69,6 +83,7 @@ const Signup = ({route}) => {
           height: hp(30),
         }}
       />
+      <Loader loading={loading} />
       <ScrollView contentContainerStyle={{paddingBottom: hp(4)}}>
         <View style={{alignItems: 'center'}}>
           <Input

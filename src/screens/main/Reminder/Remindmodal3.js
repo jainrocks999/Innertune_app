@@ -52,7 +52,6 @@ const Img = [
 const Remindmodal3 = () => {
   const [selectedDay, setSelectedDay] = useState([]);
   const handleSelectedDay = items => {
-   
     if (selectedDay.includes(items.id)) {
       const filter = [...selectedDay].filter((item, index) => item != items.id);
       console.log(filter);

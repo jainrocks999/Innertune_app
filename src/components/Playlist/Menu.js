@@ -33,8 +33,10 @@ const Menu = ({
   const data = [
     {
       id: '1',
-      text: selectedItem.is_favorite ? 'Unlike Affirmation' : 'Like Affermaion',
-      icon: selectedItem.is_favorite ? 'heart' : 'hearto',
+      text: selectedItem?.is_favorite
+        ? 'Unlike Affirmation'
+        : 'Like Affermaion',
+      icon: selectedItem?.is_favorite ? 'heart' : 'hearto',
     },
     {
       id: '2',
@@ -112,7 +114,7 @@ const Menu = ({
       <Loader loading={loading} />
       <FullScreenModal
         loading={loading}
-        id={selectedItem.id}
+        id={selectedItem?.id}
         onClose={() => setVisible(false)}
         visible={visibles}
       />

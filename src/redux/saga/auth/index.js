@@ -20,7 +20,7 @@ function* doLogin(action) {
       if (mainRes?.data) {
         yield storage.setItem(storage.TOKEN, mainRes?.data?.token);
         yield storage.setItem(storage.USER_ID, mainRes?.data?.id);
-        yield storage.setItem(storage.USER_EMAIL, mainRes?.email);
+        yield storage.setItem(storage.USER_EMAIL, mainRes?.data?.email);
         yield put({type: 'auth/login_success', payload: mainRes.data});
         Toast.show('Login Success');
         action.navigation.replace('Welecome2');
@@ -42,37 +42,38 @@ function* doLogin(action) {
     Toast.show('Something went wrong');
   }
 }
+
 function* register(action) {
+  console.log('registration,,,,request', action.url);
   try {
-    const inputs = action.inputs;
     const formdata = new FormData();
-    formdata.append('name', inputs.name);
-    formdata.append('email', inputs.email);
-    formdata.append('password', inputs.password);
-    formdata.append('password_confirmation', inputs.password);
-    formdata.append('country_id', inputs.country_id);
-    const res = yield call(Api.API_POST, {
-      formdata,
-      token: '',
-      url: data.url,
-    });
+    formdata.append('name', action.name);
+    formdata.append('email', action.email);
+    formdata.append('password', action.password);
+    formdata.append('password_confirmation', action.password);
+    formdata.append('country_id', action.country_id);
+    const res = yield call(Api.API_POST1, formdata, action.url);
+    console.log('response register', res.data);
     if (res.status) {
       yield put({
-        type: 'registration_success',
+        type: 'auth/registration_success',
         payload: res.data,
       });
+      Toast.show('Registration Success');
+      action.navigation.replace('login');
     } else {
       yield put({
-        type: 'registration_error',
-        payload: res,
+        type: 'auth/registration_error',
+        // payload: res,
       });
+      Toast.show(res.errors[0]);
     }
   } catch (error) {
     yield put({
-      type: 'registration_error',
+      type: 'auth/registration_error',
       payload: error,
     });
-    ToastAndroid.show('Something went wrong');
+    Toast.show('Something went wrong');
   }
 }
 export default function* authSaga() {

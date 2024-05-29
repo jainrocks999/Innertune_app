@@ -1,3 +1,4 @@
+import {Clipboard} from 'react-native';
 import {mainURl} from '../constanst';
 export default class Api {
   static getToken = async data => {
@@ -69,5 +70,24 @@ export default class Api {
         return JSON.parse(result);
       })
       .catch(error => error);
+  };
+
+  static API_POST1 = async (formdata, url) => {
+    var myHeaders = {};
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: formdata,
+      redirect: 'follow',
+    };
+    // console.log('bhfbfuwebfuywefbuiwf'`${mainURl}${url}`);
+    return await fetch(`${mainURl}${url}`, requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        console.log('responsenkdsnkldsfnfddgdgdfgdfgdf', result);
+        return JSON.parse(result);
+      })
+      .catch(error => console.log('error', error));
   };
 }

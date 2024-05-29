@@ -7,7 +7,7 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
@@ -26,6 +26,7 @@ import Background from '../Auth/compoents/Background';
 import storage from '../../utils/StorageService';
 import Api from '../../redux/api';
 import Loader from '../../components/Loader';
+import {useDispatch, useSelector} from 'react-redux';
 const data = [
   {
     id: '1',
@@ -80,7 +81,29 @@ const data3 = [
 ];
 const Setting = ({}) => {
   const navigation = useNavigation();
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const {screens, loading} = useSelector(state => state.home);
+  const Logout = async () => {
+    console.log('caleed');
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_EMAIL,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const email = items.find(([key]) => key === storage.USER_EMAIL)?.[1];
+    // console.log('sfjoisois', email, token);
+    console.log('caled');
+    dispatch({
+      type: 'home/logout_request',
+      url: 'logout',
+      email: email,
+      token: token,
+      navigation,
+    });
+  };
+
+  console.log('thid is', loading);
+
   return (
     <Background>
       <Loader loading={loading} />
@@ -368,37 +391,8 @@ const Setting = ({}) => {
                           },
                           {
                             text: 'Logout',
-                            onPress: async () => {
-                              setLoading(true);
-                              const items = await storage.getMultipleItems([
-                                storage.TOKEN,
-                                storage.USER_EMAIL,
-                              ]);
-                              const token = items.find(
-                                ([key]) => key === storage.TOKEN,
-                              )?.[1];
-                              const email = items.find(
-                                ([key]) => key === storage.USER_EMAIL,
-                              )?.[1];
-
-                              const formdata = new FormData();
-                              formdata.append('email', email);
-                              const res = await Api.API_POST({
-                                formdata,
-                                token,
-                                url: 'logout',
-                              });
-
-                              if (res.status == 200) {
-                                setLoading(false);
-                                Toast.show(res.message);
-                                await storage.clear();
-                                navigation.reset({
-                                  index: 0,
-                                  routes: [{name: 'login'}],
-                                });
-                                setLoading(false);
-                              }
+                            onPress: () => {
+                              Logout();
                             },
                             style: 'destructive',
                           },

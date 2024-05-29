@@ -48,18 +48,14 @@ const data = [
 const Playsong = ({route}) => {
   const indexxxx = route.params.index;
   const {screens, loading} = useSelector(state => state.home);
-  console.log(screens);
+
   const {
-    currentTrack,
-    setCurrentTrack,
     maxTimeInMinutes,
     setMaxTimeInMinutes,
     progress,
-    setProgress,
     isPaused,
     setIsPaused,
     voices,
-    ttsStatus,
     selectedVoice,
     setSelectedVoice,
     speechRate,
@@ -80,19 +76,18 @@ const Playsong = ({route}) => {
     reset,
     setOnmainPage,
     onMainPage,
+    skipToNext,
+    skipToPrevious,
   } = useContext(MusicPlayerContext);
   useEffect(() => {
     if (onMainPage) {
-      console.log('resetcelladtrue');
       reset();
     } else {
-      console.log('resetcelladfalse');
     }
   }, [onMainPage]);
   const dispatch = useDispatch();
   // const flatListRef = useRef(null);
   const [bgVolume, setBgVolume] = useState(0.5);
-  console.log('this is visible index', visibleIndex);
 
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
@@ -140,8 +135,6 @@ const Playsong = ({route}) => {
       });
     }
   };
-
-  console.log('thissisis++++++++', onMainPage);
 
   useEffect(() => {
     if (progress < 100) {
@@ -208,13 +201,12 @@ const Playsong = ({route}) => {
       data: modified,
     });
   };
+  const [contentOffset, setContentofset] = useState(0);
   const handleScrollBeginDrag = () => {
-    console.log('calledd+++++');
     setIsUserScrolling(true);
   };
 
   const handleScrollEndDrag = () => {
-    console.log('calledd+++++');
     // setIsUserScrolling(false);
   };
   const handleViewableItemsChanged = ({viewableItems, changed}) => {
@@ -224,6 +216,7 @@ const Playsong = ({route}) => {
       setIsUserScrolling(false);
       const newIndex = viewableItems[0].index;
       setVisibleIndex(newIndex);
+      skipToPrevious(newIndex);
       setIsPaused(false);
       if (isPaused & (progress >= 100)) {
         // setProgress(0);
@@ -238,7 +231,6 @@ const Playsong = ({route}) => {
     setVisibleMenu(false);
     setVisibleMenuIndex(visibleIndex);
   };
-
   return (
     <View style={{flex: 1}}>
       <ImageBackground

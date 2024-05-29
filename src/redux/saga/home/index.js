@@ -2,6 +2,7 @@ import {takeEvery, put, call} from 'redux-saga/effects';
 import Toast from 'react-native-simple-toast';
 import Api from '../../api';
 import {Alert} from 'react-native';
+import storage from '../../../utils/StorageService';
 function* getplaylist(action) {
   try {
     let params = {
@@ -748,6 +749,42 @@ function* playaffiramations(action) {
   });
   action.navigation.navigate('playsong', {index: action.index});
 }
+function* Logoutapi(action) {
+  console.log('logout action ', action);
+  try {
+    let formdata = new FormData();
+
+    formdata.append('email', action.email);
+
+    const res = yield call(Api.API_POST, {
+      formdata,
+      token: action.token,
+      url: action.url,
+    });
+    console.log('response check the logout api ', res);
+    if (res.status) {
+      yield put({
+        type: 'home/logout_success',
+        payload: res.data,
+      });
+      Toast.show('Logout successfully ');
+      yield storage.clear();
+      action.navigation.reset({index: 0, routes: [{name: 'login'}]});
+    } else {
+      yield put({
+        type: 'home/logout_error',
+      });
+      console.log(res);
+    }
+  } catch (error) {
+    Toast.show('Error with fetching ');
+    yield put({
+      type: 'home/logout_error',
+    });
+    console.log('errors with createplaylist', error);
+  }
+}
+
 export default function* homeSaga() {
   yield takeEvery('home/playlist_request', getplaylist);
   yield takeEvery('home/group_fetch_request', fetchGroups);
@@ -771,4 +808,5 @@ export default function* homeSaga() {
   yield takeEvery('home/search_request', doSearch);
   yield takeEvery('home/update_playlistitem_request', deletePlaylistItme);
   yield takeEvery('home/play_playlist_request', playaffiramations);
+  yield takeEvery('home/logout_request', Logoutapi);
 }

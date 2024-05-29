@@ -29,7 +29,7 @@ export async function setupPlayer() {
         Capability.Pause,
         Capability.SkipToNext,
       ],
-      progressUpdateEventInterval: 2,
+      progressUpdateEventInterval: 5,
     });
 
     isSetup = true;

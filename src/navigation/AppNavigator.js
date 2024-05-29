@@ -26,7 +26,7 @@ import EditPlayList from '../screens/main/All playlists/EditPlayList';
 const Stack = createStackNavigator();
 function MyStack() {
   return (
-    <Stack.Navigator initialRouteName="splash">
+    <Stack.Navigator initialRouteName="playsong">
       <Stack.Screen
         name="splash"
         component={Splash}

@@ -214,6 +214,15 @@ const Home = createSlice({
     play_playlist_success: (state, action) => {
       return {...state, playPlalist: action.payload, loading: false};
     },
+    logout_request: (state, action) => {
+      return {...state, loading: true};
+    },
+    logout_success: (state, action) => {
+      return {...state, playlist: action.payload, loading: false};
+    },
+    logout_error: (state, action) => {
+      return {...state, loading: false};
+    },
   },
 });
 
