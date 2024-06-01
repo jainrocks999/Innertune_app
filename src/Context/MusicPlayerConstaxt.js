@@ -4,11 +4,11 @@ import TrackPlayer, {Event} from 'react-native-track-player';
 import {setupPlayer} from '../utils/Setup';
 import {Alert} from 'react-native';
 import SoundPlayer from 'react-native-sound-player';
-import playPlalist from '../Context/affirmation';
+// import playPlalist from '../Context/affirmation';
 export const MusicPlayerContext = createContext();
 
 export const MusicPlayerProvider = ({children}) => {
-  const {/*playPlalist*/ bgSound, playItem} = useSelector(state => state.home);
+  const {playPlalist, bgSound, playItem} = useSelector(state => state.home);
   const dispatch = useDispatch();
   const [currentTrack, setCurrentTrack] = useState(null);
   const [maxTimeInMinutes, setMaxTimeInMinutes] = useState(1);
@@ -21,6 +21,7 @@ export const MusicPlayerProvider = ({children}) => {
   const playPlalistRef = useRef(playPlalist);
   const timeOutRef = useRef(null);
   const [voiceVolume, setVoiceVolume] = useState(0.5);
+  const [scrollDirection, setScrollDirection] = useState(null);
   const [ended, setEnded] = useState(false);
   const [backgroundSoundVolume, setBackgroundSoundsVolume] = useState(0.3);
 
@@ -214,13 +215,25 @@ export const MusicPlayerProvider = ({children}) => {
   };
 
   const skipToNext = async () => {
-    // TrackPlayer.skipToNext();
-    alert('times');
+    alert('called');
+    TrackPlayer.skipToNext();
   };
 
   const skipToPrevious = async => {
-    TrackPlayer.skipToPrevious();
+    TrackPlayer.skipToNext();
   };
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (scrollDirection == 'up') {
+        skipToNext();
+      } else {
+        skipToPrevious();
+      }
+    }, 60);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [scrollDirection]);
 
   const setVolume = async value => {
     setVoiceVolume(value);
@@ -278,6 +291,8 @@ export const MusicPlayerProvider = ({children}) => {
         backgroundSoundVolume,
         handleOnBackgroundSoundVolume,
         backgroundSound,
+        scrollDirection,
+        setScrollDirection,
       }}>
       {children}
     </MusicPlayerContext.Provider>

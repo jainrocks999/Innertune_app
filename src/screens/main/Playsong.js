@@ -84,6 +84,8 @@ const Playsong = ({route}) => {
     backgroundSoundVolume,
     handleOnBackgroundSoundVolume,
     backgroundSound,
+    scrollDirection,
+    setScrollDirection,
   } = useContext(MusicPlayerContext);
   useEffect(() => {
     if (onMainPage) {
@@ -92,7 +94,6 @@ const Playsong = ({route}) => {
     }
   }, [onMainPage]);
   const dispatch = useDispatch();
-  // const flatListRef = useRef(null);
   const [bgVolume, setBgVolume] = useState(0.5);
   console.log('this is bgsound', bgSound);
 
@@ -195,7 +196,7 @@ const Playsong = ({route}) => {
       data: modified,
     });
   };
-  const [scrollDirection, setScrollDirection] = useState(null);
+
   const handleScrollBeginDrag = () => {
     setIsUserScrolling(true);
   };
@@ -203,12 +204,12 @@ const Playsong = ({route}) => {
   const handleScroll = event => {
     const currentScrollPosition = event.nativeEvent.contentOffset.y;
     if (currentScrollPosition > previousScrollPosition && isUserScrolling) {
-      skipToNext();
+      setScrollDirection('up');
     } else if (
       currentScrollPosition < previousScrollPosition &&
       isUserScrolling
     ) {
-      skipToPrevious();
+      setScrollDirection('down');
     }
     setPreviousScrollPosition(currentScrollPosition);
   };
