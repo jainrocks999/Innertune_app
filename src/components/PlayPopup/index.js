@@ -13,11 +13,17 @@ const PlayPopup = () => {
     isPaused,
     setProgress,
     getNameImage,
-    setOnmainPage,
+    setOnMainPage,
   } = useContext(MusicPlayerContext);
   useEffect(() => {
-    setOnmainPage(false);
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      setOnMainPage(false);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [navigation]);
   const navigation = useNavigation();
   return (
     <View
@@ -37,7 +43,7 @@ const PlayPopup = () => {
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={() => {
-          setOnmainPage(false);
+          setOnMainPage(false);
           navigation.navigate('playsong');
         }}
         style={{marginLeft: '5%', flexDirection: 'row'}}>

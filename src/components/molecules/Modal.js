@@ -30,13 +30,17 @@ const Mymodal = ({
   title,
   voices,
   onVoicePress,
+  voiceVolume,
   selectedVoice,
   maxTimeInMinutes,
   onTimePress,
   ttsVolume,
-  onMusicPress,
+  playBackondSound,
   onVolumeChange,
   bgVolume,
+  handleOnBackgroundSoundVolume,
+  backgroundSoundVolume,
+  backgroundSound,
 }) => {
   console.log(title);
   const [selectedTab, setSelectedTab] = useState('Voice');
@@ -74,12 +78,15 @@ const Mymodal = ({
               selectedVoice={selectedVoice}
               voice={voices}
               onPress={item => onVoicePress(item)}
+              voiceVolume={voiceVolume}
+              onVolumeChange={onVolumeChange}
             />
           ) : title == 'Music' ? (
             <Music
-              bgVolume={bgVolume}
-              onVolumeChange={onVolumeChange}
-              onPress={onMusicPress}
+              bgVolume={backgroundSoundVolume}
+              backgroundSound={backgroundSound}
+              handleOnBackgroundSoundVolume={handleOnBackgroundSoundVolume}
+              playBackondSound={playBackondSound}
             />
           ) : title == 'Time' ? (
             <Time

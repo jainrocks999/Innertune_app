@@ -41,7 +41,13 @@ const Img = [
     title: 'Max',
   },
 ];
-const Voice = ({voice, onPress, selectedVoice}) => {
+const Voice = ({
+  voice,
+  onPress,
+  selectedVoice,
+  voiceVolume,
+  onVolumeChange,
+}) => {
   function filterByLanguage(array, languages) {
     return array.filter(item => languages.includes(item.language));
   }
@@ -170,10 +176,14 @@ const Voice = ({voice, onPress, selectedVoice}) => {
         <Slider
           style={{width: '90%', height: 30}}
           minimumValue={0}
-          maximumValue={2}
+          maximumValue={1}
           minimumTrackTintColor="white"
           maximumTrackTintColor="white"
           thumbTintColor="white"
+          value={voiceVolume}
+          onValueChange={value => {
+            onVolumeChange(value);
+          }}
         />
       </View>
       <View

@@ -88,7 +88,7 @@ const Img = [
 
 const Playlistdetails = () => {
   const dispatch = useDispatch();
-  const {getNameImage, playPlalist, setOnmainPage} =
+  const {getNameImage, playPlalist, setOnMainPage} =
     useContext(MusicPlayerContext);
   const {favoriteList} = useSelector(state => state.home);
 
@@ -180,7 +180,7 @@ const Playlistdetails = () => {
       <Categores_menu
         onPressListen={() => {
           // navigation.navigate('playsong', {index: -1})
-          setOnmainPage(true);
+          setOnMainPage(true);
           getSong(-1);
           dispatch({
             type: 'home/currentPLaylist',
@@ -348,7 +348,7 @@ const Playlistdetails = () => {
               shadowColor: '#fff',
             }}
             onPress={() => {
-              setOnmainPage(true);
+              setOnMainPage(true);
               getSong(-1);
               dispatch({
                 type: 'home/currentPLaylist',
@@ -423,7 +423,7 @@ const Playlistdetails = () => {
               />
               <TouchableOpacity
                 onPress={() => {
-                  setOnmainPage(true);
+                  setOnMainPage(true);
                   getSong(index);
                   dispatch({
                     type: 'home/currentPLaylist',

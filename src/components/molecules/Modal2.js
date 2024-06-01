@@ -22,7 +22,7 @@ const data = [
   {id: '4', titles: 'Remindmodal4'},
   {id: '5', titles: 'Remindmodal5'},
 ];
-const Modal2 = ({visible, onClose, titles}) => {
+const Modal2 = ({visible, value, onClose, titles}) => {
   return (
     <Modal
       animationType="slide"
@@ -62,7 +62,7 @@ const Modal2 = ({visible, onClose, titles}) => {
           ) : titles == 'Remindmodal3' ? (
             <Remindmodal4 onPressClose={onClose} />
           ) : titles == 'Remindmodal4' ? (
-            <Remindmodal4 onPressClose={onClose} />
+            <Remindmodal4 value={value} onPressClose={onClose} />
           ) : (
             <Remindmodal5 />
           )}

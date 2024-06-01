@@ -30,7 +30,12 @@ const data = [
   {id: '3', title: 'Sleep'},
 ];
 
-const Music = ({onPress, bgVolume, onVolumeChange}) => {
+const Music = ({
+  playBackondSound,
+  backgroundSound,
+  bgVolume,
+  handleOnBackgroundSoundVolume,
+}) => {
   const [selectedTab, setSelectedTab] = useState('Focus');
   const {loading, bgSound, bgcategories} = useSelector(state => state.home);
   // console.log('thisis', JSON.stringify(bgSound));
@@ -100,7 +105,13 @@ const Music = ({onPress, bgVolume, onVolumeChange}) => {
         />
       </View>
       {/* {selectedTab == 'Focus' ? <Focus onPress={onPress} data={bgSound} /> : ''} */}
-      {<Relax onPress={onPress} data={bgSound} />}
+      {
+        <Relax
+          onPress={playBackondSound}
+          backgroundSound={backgroundSound}
+          data={bgSound}
+        />
+      }
       {/* {selectedTab == 'Sleep' ? <Sleep onPress={onPress} data={bgSound} /> : ''} */}
       {/* {selectedTab == 'Focus' ? <Sleep onPress={onPress} data={bgSound} /> : ''} */}
       <View
@@ -141,7 +152,7 @@ const Music = ({onPress, bgVolume, onVolumeChange}) => {
             maximumTrackTintColor="white"
             thumbTintColor="white"
             onValueChange={value => {
-              onVolumeChange(value);
+              handleOnBackgroundSoundVolume(value);
             }}
           />
         </View>

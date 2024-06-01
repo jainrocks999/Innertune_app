@@ -785,6 +785,182 @@ function* Logoutapi(action) {
   }
 }
 
+function* CreateRember(action) {
+  console.log('create rember  action ', action);
+  try {
+    let formdata = new FormData();
+    const days = action.days;
+    formdata.append('user_id', action.user_id);
+    formdata.append('start_at', action.start_at);
+    for (const keys in days) {
+      formdata.append(keys, days[keys].toString());
+    }
+
+    const res = yield call(Api.API_POST, {
+      formdata,
+      token: action.token,
+      url: action.url,
+    });
+    console.log('response check the create remember api ', res);
+    if (res.status) {
+      yield put({
+        type: 'home/createReminder_success',
+        payload: res.data,
+      });
+      yield put({
+        type: 'home/reminderList_request',
+        url: 'reminderList',
+        user_id: action.user_id,
+        token: action.token,
+      });
+      yield put({
+        type: 'home/Modelclose_success',
+        payload: action.Modelclose,
+      });
+      Toast.show(res.message);
+    } else {
+      yield put({
+        type: 'home/createReminder_error',
+      });
+      console.log(res);
+    }
+  } catch (error) {
+    Toast.show('Error with fetching ');
+    yield put({
+      type: 'home/createReminder_error',
+    });
+    console.log('errors with createplaylist', error);
+  }
+}
+
+function* updateReminder(action) {
+  console.log('update data  rember  action ', action);
+  try {
+    let formdata = new FormData();
+    const days = action.days;
+    formdata.append('user_id', action.user_id);
+    formdata.append('start_at', action.start_at);
+    formdata.append('reminder_id', action.reminder_id);
+    formdata.append('r_status', action.r_status);
+    for (const keys in days) {
+      formdata.append(keys, days[keys].toString());
+    }
+
+    const res = yield call(Api.API_POST, {
+      formdata,
+      token: action.token,
+      url: action.url,
+    });
+    console.log('response check the create remember api ', res);
+    if (res.status) {
+      yield put({
+        type: 'home/createReminder_success',
+        payload: res.data,
+      });
+      yield put({
+        type: 'home/reminderList_request',
+        url: 'reminderList',
+        user_id: action.user_id,
+        token: action.token,
+      });
+      yield put({
+        type: 'home/Modelclose_success',
+        payload: action.Modelclose,
+      });
+      Toast.show(res.message);
+    } else {
+      yield put({
+        type: 'home/createReminder_error',
+      });
+      console.log(res);
+    }
+  } catch (error) {
+    Toast.show('Error with fetching ');
+    yield put({
+      type: 'home/createReminder_error',
+    });
+    console.log('errors with createplaylist', error);
+  }
+}
+function* RememberList(action) {
+  console.log('remember list action ...', action);
+  try {
+    const params = {
+      user_id: action.user_id,
+    };
+    const res = yield call(Api.API_GET, {
+      token: action.token,
+      url: action.url,
+      params,
+    });
+    console.log('response data ,,remember list', res.data);
+    if (res.status) {
+      yield put({
+        type: 'home/reminderList_success',
+        payload: res.data,
+      });
+    } else {
+      Toast.show('Error with fetching  remember list');
+      yield put({
+        type: 'home/reminderList_error',
+      });
+      console.log(res);
+    }
+  } catch (error) {
+    Toast.show('Error with remember list');
+    yield put({
+      type: 'home/reminderList_error',
+    });
+    console.log('errors with bgcategories', error);
+  }
+}
+
+function* DeleteRemember(action) {
+  console.log('remember delete data  ...', action);
+  try {
+    const params = {
+      user_id: action.user_id,
+      reminder_id: action.reminder_id,
+    };
+    const res = yield call(Api.API_GET, {
+      token: action.token,
+      url: action.url,
+      params,
+    });
+    console.log('response data ,,remember delete...', res);
+    if (res.status) {
+      yield put({
+        type: 'home/reminderDelete_success',
+        payload: res.data,
+      });
+
+      yield put({
+        type: 'home/reminderList_request',
+        url: 'reminderList',
+        user_id: action.user_id,
+        token: action.token,
+      });
+      yield put({
+        type: 'home/Modelclose_success',
+        payload: action.Modelclose,
+      });
+      Toast.show(res.message);
+    } else {
+      Toast.show('Not Remove the data ');
+      yield put({
+        type: 'home/reminderDelete_error',
+      });
+      console.log(res);
+    }
+  } catch (error) {
+    Toast.show('Error with remember delete lsit');
+    yield put({
+      type: 'home/reminderDelete_error',
+    });
+    console.log('errors with bgcategories', error);
+  }
+}
+
 export default function* homeSaga() {
   yield takeEvery('home/playlist_request', getplaylist);
   yield takeEvery('home/group_fetch_request', fetchGroups);
@@ -809,4 +985,8 @@ export default function* homeSaga() {
   yield takeEvery('home/update_playlistitem_request', deletePlaylistItme);
   yield takeEvery('home/play_playlist_request', playaffiramations);
   yield takeEvery('home/logout_request', Logoutapi);
+  yield takeEvery('home/createReminder_request', CreateRember);
+  yield takeEvery('home/createReminder1_request', updateReminder);
+  yield takeEvery('home/reminderDelete_request', DeleteRemember);
+  yield takeEvery('home/reminderList_request', RememberList);
 }

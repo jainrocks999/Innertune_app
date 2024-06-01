@@ -47,7 +47,7 @@ const data = [
 
 const Playsong = ({route}) => {
   const indexxxx = route.params.index;
-  const {screens, loading} = useSelector(state => state.home);
+  const {screens, bgSound, loading} = useSelector(state => state.home);
 
   const {
     maxTimeInMinutes,
@@ -73,11 +73,17 @@ const Playsong = ({route}) => {
     visibleIndex,
     setVisibleIndex,
     flatListRef,
+    skipToNext,
     reset,
     setOnmainPage,
     onMainPage,
-    skipToNext,
     skipToPrevious,
+    voiceVolume,
+    setVoiceVolume,
+    playBackondSound,
+    backgroundSoundVolume,
+    handleOnBackgroundSoundVolume,
+    backgroundSound,
   } = useContext(MusicPlayerContext);
   useEffect(() => {
     if (onMainPage) {
@@ -88,6 +94,7 @@ const Playsong = ({route}) => {
   const dispatch = useDispatch();
   // const flatListRef = useRef(null);
   const [bgVolume, setBgVolume] = useState(0.5);
+  console.log('this is bgsound', bgSound);
 
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
@@ -110,6 +117,7 @@ const Playsong = ({route}) => {
       page: '',
     });
   };
+  const [previousScrollPosition, setPreviousScrollPosition] = useState(0);
 
   const handleTabPress = async title => {
     setSelectedTab(title);
@@ -118,21 +126,10 @@ const Playsong = ({route}) => {
       storage.TOKEN,
       storage.USER_ID,
     ]);
+
     const token = items.find(([key]) => key === storage.TOKEN)?.[1];
     const user = items.find(([key]) => key === storage.USER_ID)?.[1];
     if (title == 'Music') {
-      dispatch({
-        type: 'home/bg_sound_request',
-        token,
-        url: 'bgSound',
-        user_id: user,
-      });
-      dispatch({
-        type: 'home/bg_categories_request',
-        token,
-        url: 'bgCategories',
-        user_id: user,
-      });
     }
   };
 
@@ -148,10 +145,6 @@ const Playsong = ({route}) => {
     ios: RNFS.MainBundlePath + '/files/',
   });
 
-  const setVovluem = async value => {
-    await TrackPlayer.setVolume(value);
-    setBgVolume(value);
-  };
   const getmodified = (array, indexs, bool) => {
     return array.map((item, index) => {
       if (index == indexs) {
@@ -180,6 +173,7 @@ const Playsong = ({route}) => {
       data: modified,
     });
   };
+
   const [isUserScrolling, setIsUserScrolling] = useState(false);
   const removeFavroit = async (item, index) => {
     const items = await storage.getMultipleItems([
@@ -201,26 +195,32 @@ const Playsong = ({route}) => {
       data: modified,
     });
   };
-  const [contentOffset, setContentofset] = useState(0);
+  const [scrollDirection, setScrollDirection] = useState(null);
   const handleScrollBeginDrag = () => {
     setIsUserScrolling(true);
   };
 
-  const handleScrollEndDrag = () => {
-    // setIsUserScrolling(false);
+  const handleScroll = event => {
+    const currentScrollPosition = event.nativeEvent.contentOffset.y;
+    if (currentScrollPosition > previousScrollPosition && isUserScrolling) {
+      skipToNext();
+    } else if (
+      currentScrollPosition < previousScrollPosition &&
+      isUserScrolling
+    ) {
+      skipToPrevious();
+    }
+    setPreviousScrollPosition(currentScrollPosition);
   };
+
+  const handleScrollEndDrag = () => {};
   const handleViewableItemsChanged = ({viewableItems, changed}) => {
-    console.log('this sis userscrolling', isUserScrolling);
     if (isUserScrolling) {
-      console.log('this sis userscrolling', isUserScrolling);
       setIsUserScrolling(false);
       const newIndex = viewableItems[0].index;
-      setVisibleIndex(newIndex);
-      skipToPrevious(newIndex);
+      // setVisibleIndex(newIndex);
       setIsPaused(false);
       if (isPaused & (progress >= 100)) {
-        // setProgress(0);
-        // currentTimeRef.current = 0;
         reset();
       }
     }
@@ -231,6 +231,12 @@ const Playsong = ({route}) => {
     setVisibleMenu(false);
     setVisibleMenuIndex(visibleIndex);
   };
+  useEffect(() => {
+    // SoundPlayer.setVolume(0.2);
+    if (!isPaused) {
+      // playBackondSound(bgSound[0].media[1]?.original_url);
+    }
+  }, []);
   return (
     <View style={{flex: 1}}>
       <ImageBackground
@@ -376,7 +382,9 @@ const Playsong = ({route}) => {
             <FlatList
               ref={flatListRef}
               pagingEnabled
+              onScroll={handleScroll}
               initialScrollIndex={0}
+              scrollEventThrottle={16}
               showsVerticalScrollIndicator={false}
               data={playPlalist}
               renderItem={({item, index}) =>
@@ -512,10 +520,15 @@ const Playsong = ({route}) => {
         <Mymodal
           title={selectedTab}
           onClose={() => setVisible(false)}
-          onVolumeChange={setVovluem}
+          onVolumeChange={setVolume}
+          voiceVolume={voiceVolume}
           bgVolume={bgVolume}
           visible={visible}
           voices={voices}
+          playBackondSound={playBackondSound}
+          backgroundSoundVolume={backgroundSoundVolume}
+          handleOnBackgroundSoundVolume={handleOnBackgroundSoundVolume}
+          backgroundSound={backgroundSound}
           onVoicePress={onVoicePress}
           selectedVoice={selectedVoice}
           maxTimeInMinutes={maxTimeInMinutes}

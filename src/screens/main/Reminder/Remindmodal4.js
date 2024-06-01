@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {
   heightPercent as hp,
@@ -16,46 +16,124 @@ import {
 import Modal2 from '../../../components/molecules/Modal2';
 import Buttun from '../../Auth/compoents/Buttun';
 import {fonts} from '../../../Context/Conctants';
+import {useDispatch, useSelector} from 'react-redux';
+import storage from '../../../utils/StorageService';
+import Loader from '../../../components/Loader';
 const Img = [
   {
     id: '1',
 
-    title: 'mon  ',
+    title: 'M  ',
   },
   {
     id: '2',
 
-    title: 'tues',
+    title: 'T ',
   },
   {
     id: '3',
 
-    title: 'wed',
+    title: 'W ',
   },
   {
     id: '4',
 
-    title: 'thurs',
+    title: 'T ',
   },
   {
     id: '5',
 
-    title: 'fri',
+    title: 'F  ',
   },
   {
     id: '6',
 
-    title: 'sat',
+    title: 'S ',
   },
   {
-    id: 'sun',
+    id: '7',
 
     title: 'S',
   },
 ];
 
-const Remindmodal4 = ({onPressClose}) => {
+const days = {
+  mon: 'M',
+  tues: 'T',
+  wed: 'W',
+  thurs: 'T',
+  fri: 'F',
+  sat: 'S',
+  sun: 'S',
+};
+
+const Remindmodal4 = ({onPressClose, value}) => {
   const [selectedDay, setSelectedDay] = useState([]);
+  const Modelclose = useSelector(state => state.home.Modelclose);
+  const loading = useSelector(state => state.home.loading);
+  console.log('update value get by selector .....', Modelclose);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (value) {
+      const newSelectedDay = Object.keys(value).filter(key => value[key] === 1);
+      setSelectedDay(newSelectedDay);
+      console.log('Selected days:', newSelectedDay);
+    }
+  }, [value]);
+
+  console.log('this is value', value, selectedDay);
+
+  const createReminder1 = async () => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+    let days = {
+      mon: '0',
+      tues: '0',
+      wed: '0',
+      thurs: '0',
+      fri: '0',
+      sat: '0',
+      sun: '0',
+    };
+    if (selectedDay.length > 0) {
+      selectedDay.map(item => {
+        days[item] = '1';
+      });
+    } else {
+      for (const day in days) {
+        days[day] = '1';
+      }
+    }
+
+    if (value == undefined) {
+      dispatch({
+        type: 'home/createReminder_request',
+        url: 'createReminder',
+        user_id: user,
+        days,
+        start_at: currentTime,
+        token,
+        Modelclose: !Modelclose,
+      });
+      console.log(days);
+    } else {
+      dispatch({
+        type: 'home/createReminder1_request',
+        url: 'createReminder',
+        user_id: user,
+        days,
+        start_at: currentTime,
+        token,
+        reminder_id: value.id,
+        r_status: value.r_status,
+        Modelclose: !Modelclose,
+      });
+    }
+  };
   const handleSelectedDay = items => {
     if (selectedDay.includes(items.id)) {
       const filter = [...selectedDay].filter((item, index) => item != items.id);
@@ -66,20 +144,27 @@ const Remindmodal4 = ({onPressClose}) => {
     }
   };
 
-  const [currentTime, setCurrentTime] = useState('9:00');
+  const [currentTime, setCurrentTime] = useState(
+    value == undefined ? '9:00' : value.start_at?.substring(0, 5),
+  );
+  const [selected, setSelected] = useState([]);
+
+  const onclick = items => {
+    // console.log('item,,,,,,,,,,,', items);
+    console.log(items);
+    if (selectedDay.includes(items)) {
+      const newarray = selectedDay.filter(id => id !== items);
+      console.log(newarray);
+      setSelectedDay(newarray);
+    } else {
+      setSelectedDay([...selectedDay, items]);
+    }
+  };
+
   const updateTime = increment => {
     let [hour, minute] = currentTime.split(':');
     hour = parseInt(hour);
     minute = parseInt(minute);
-    const [selectedDay, setSelectedDay] = useState({
-      mon: 1,
-      tues: 1,
-      wed: 1,
-      thurs: 1,
-      fri: 1,
-      sat: 0,
-      sun: 0,
-    });
 
     if (increment) {
       minute += 30;
@@ -100,8 +185,28 @@ const Remindmodal4 = ({onPressClose}) => {
 
     setCurrentTime(hour + ':' + minute);
   };
+
+  const Deletereminder = async item => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+    console.log('logsjsjsnsnfs', item);
+    dispatch({
+      type: 'home/reminderDelete_request',
+      url: 'reminderDelete',
+      user_id: user,
+      reminder_id: item.id,
+      token: token,
+      Modelclose: !Modelclose,
+    });
+  };
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
+      <Loader loading={loading} />
       <View
         style={{
           flexDirection: 'row',
@@ -193,21 +298,30 @@ const Remindmodal4 = ({onPressClose}) => {
           marginTop: hp(2),
         }}>
         <FlatList
-          data={Img}
+          data={Object.keys(days)}
           horizontal
-          keyExtractor={item => item.id}
+          keyExtractor={item => item}
           renderItem={({item}) => (
-            <View style={styles.listCircle}>
+            <TouchableOpacity
+              onPress={() => onclick(item)}
+              style={[
+                styles.listCircle,
+                {
+                  backgroundColor: selectedDay.includes(item)
+                    ? '#ff78ac'
+                    : '#fff',
+                },
+              ]}>
               <Text
                 style={{
                   marginLeft: '5%',
-                  color: '#B72658',
+                  color: selectedDay.includes(item) ? '#fff' : '#B72658',
                   fontWeight: '500',
                   fontFamily: fonts.bold,
                 }}>
-                {item.title[0].toLocaleUpperCase()}
+                {item.substring(0, 1).toLocaleUpperCase()}
               </Text>
-            </View>
+            </TouchableOpacity>
           )}
         />
       </View>
@@ -242,9 +356,42 @@ const Remindmodal4 = ({onPressClose}) => {
             borderRadius: wp(2),
             elevation: 4,
           }}
-          onPress={onPressClose}
-          title="Close"
+          onPress={() => createReminder1()}
+          title={value == undefined ? 'Add' : 'Update'}
         />
+        {value == undefined ? null : (
+          <Buttun
+            style={{
+              alignSelf: 'center',
+              height: hp(7),
+              width: '60%',
+              borderRadius: wp(2),
+              elevation: 4,
+            }}
+            onPress={() =>
+              Alert.alert(
+                'Logout',
+                'Are you sure you want to delete?',
+                [
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'Delete',
+                    onPress: async () => {
+                      Deletereminder(value);
+                    },
+                    style: 'destructive',
+                  },
+                ],
+                {cancelable: true},
+              )
+            }
+            title={'Delete'}
+          />
+        )}
       </View>
     </SafeAreaView>
   );

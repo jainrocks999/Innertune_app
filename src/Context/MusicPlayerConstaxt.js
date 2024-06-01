@@ -1,17 +1,14 @@
 import React, {createContext, useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import TrackPlayer, {
-  Event,
-  useTrackPlayerEvents,
-  TrackPlayerEvents,
-} from 'react-native-track-player';
+import TrackPlayer, {Event} from 'react-native-track-player';
 import {setupPlayer} from '../utils/Setup';
-import playPlalist from './affirmation';
-
+import {Alert} from 'react-native';
+import SoundPlayer from 'react-native-sound-player';
+import playPlalist from '../Context/affirmation';
 export const MusicPlayerContext = createContext();
 
 export const MusicPlayerProvider = ({children}) => {
-  const {playItem} = useSelector(state => state.home);
+  const {/*playPlalist*/ bgSound, playItem} = useSelector(state => state.home);
   const dispatch = useDispatch();
   const [currentTrack, setCurrentTrack] = useState(null);
   const [maxTimeInMinutes, setMaxTimeInMinutes] = useState(1);
@@ -20,8 +17,16 @@ export const MusicPlayerProvider = ({children}) => {
   const [isPaused, setIsPaused] = useState(true);
   const flatListRef = useRef(null);
   const [visibleIndex, setVisibleIndex] = useState(0);
-  const [onMainPage, setOnmainPage] = useState(true);
+  const [onMainPage, setOnMainPage] = useState(true);
   const playPlalistRef = useRef(playPlalist);
+  const timeOutRef = useRef(null);
+  const [voiceVolume, setVoiceVolume] = useState(0.5);
+  const [ended, setEnded] = useState(false);
+  const [backgroundSoundVolume, setBackgroundSoundsVolume] = useState(0.3);
+
+  useEffect(() => {
+    playPlalistRef.current = playPlalist;
+  }, [playPlalist]);
 
   const getSounds = () => {
     return new Promise((resolve, reject) => {
@@ -41,27 +46,47 @@ export const MusicPlayerProvider = ({children}) => {
   };
 
   useEffect(() => {
-    playPlalistRef.current = playPlalist;
+    if (playPlalist.length > 0) {
+      reset();
+      initializeTrackPlayer();
+    }
   }, [playPlalist]);
+  useEffect(() => {});
 
+  const initializeTrackPlayer = async () => {
+    setEnded(false);
+    await setupPlayer();
+    const tracks = await getSounds();
+    await TrackPlayer.reset();
+    await TrackPlayer.add(tracks);
+    // TrackPlayer.setRepeatMode(1);
+    if (playPlalist.length > 0) {
+      TrackPlayer.play();
+    }
+  };
   useEffect(() => {
-    if (playPlalist.length === 0) return;
-
-    const maxTimeInSeconds = maxTimeInMinutes * 60;
-    let currentTime = currentTimeRef.current || 0;
-    setProgress((currentTime / maxTimeInSeconds) * 100);
-
+    TrackPlayer.setVolume(0.5);
+    SoundPlayer.setVolume(0.4);
+  }, []);
+  const handleOnBackgroundSoundVolume = value => {
+    SoundPlayer.setVolume(value);
+    setBackgroundSoundsVolume(value);
+  };
+  useEffect(() => {
     const intervalForProgress = setInterval(async () => {
       if (!isPaused) {
+        const maxTimeInSeconds = maxTimeInMinutes * 60;
+        let currentTime = currentTimeRef.current || 0;
+        setProgress((currentTime / maxTimeInSeconds) * 100);
+
         if (currentTime < maxTimeInSeconds) {
           currentTime++;
-          setProgress((currentTime / maxTimeInSeconds) * 100);
           currentTimeRef.current = currentTime;
         } else {
           clearInterval(intervalForProgress);
           setProgress(100);
           setIsPaused(true);
-          await TrackPlayer.pause();
+          await TrackPlayer.reset();
         }
       } else {
         await TrackPlayer.pause();
@@ -70,121 +95,135 @@ export const MusicPlayerProvider = ({children}) => {
 
     if (!isPaused) {
       TrackPlayer.play();
+      SoundPlayer.play();
     }
 
     return () => {
       clearInterval(intervalForProgress);
     };
-  }, [maxTimeInMinutes, isPaused, playPlalist.length, visibleIndex]);
+  }, [maxTimeInMinutes, isPaused]);
 
+  // useEffect(() => {
+  //   const trackChangeListener = TrackPlayer.addEventListener(
+  //     Event.PlaybackTrackChanged,
+  //     async data => {
+  //       if (data.nextTrack != null) {
+  //         setVisibleIndex(prev => {
+  //           const nexIndx = prev % playPlalist.length;
+  //           if (
+  //             flatListRef.current &&
+  //             nexIndx >= 0 &&
+  //             nexIndx < playPlalist.length
+  //           ) {
+  //             flatListRef.current.scrollToIndex({
+  //               animated: true,
+  //               index: nexIndx,
+  //               viewPosition: 0.5,
+  //               viewOffset: 0,
+  //             });
+  //           }
+  //           return nexIndx;
+  //         });
+  //       }
+  //     },
+  //   );
+
+  //   const trackPlayerEvent = TrackPlayer.addEventListener(
+  //     Event.PlaybackPlayWhenReadyChanged,
+  //     dat => {},
+  //   );
+  //   return () => {
+  //     trackChangeListener.remove();
+  //     trackPlayerEvent.remove();
+  //   };
+  // }, [playPlalist, visibleIndex]);
   useEffect(() => {
-    const initializeTrackPlayer = async () => {
-      await setupPlayer();
-      const tracks = await getSounds();
-      await TrackPlayer.reset();
-      await TrackPlayer.add(tracks);
-      if (playPlalist.length > 0) {
-        TrackPlayer.play();
+    TrackPlayer.addEventListener(Event.PlaybackTrackChanged, even => {
+      if (even.nextTrack != null) {
+        setVisibleIndex(prev => {
+          const nexIndx = even.nextTrack % playPlalist.length;
+          if (
+            flatListRef.current &&
+            nexIndx >= 0 &&
+            nexIndx < playPlalist.length
+          ) {
+            flatListRef.current.scrollToIndex({
+              animated: true,
+              index: nexIndx,
+              viewPosition: 0.5,
+              viewOffset: 0,
+            });
+          }
+          return nexIndx;
+        });
       }
-    };
+    });
+  }, [visibleIndex, playPlalist.length]);
 
-    initializeTrackPlayer();
-
-    return () => {
-      TrackPlayer.remove(); // Uncomment if needed
-    };
-  }, [playPlalist]);
-
-  useEffect(() => {}, [playPlalist.length]);
-
-  useEffect(() => {
-    const trackChangeListener = TrackPlayer.addEventListener(
-      Event.PlaybackTrackChanged,
-      async data => {
-        if (data.nextTrack != null) {
-          // TrackPlayer.pause();
-          setTimeout(() => {
-            setVisibleIndex(data.nextTrack);
-            if (
-              flatListRef.current &&
-              visibleIndex >= 0 &&
-              visibleIndex < playPlalist.length
-            ) {
-              flatListRef.current.scrollToIndex({
-                animated: true,
-                index: data.nextTrack,
-                viewPosition: 0.5,
-                viewOffset: 0,
-              });
-              TrackPlayer.play();
-            }
-          }, 2000);
-        }
-      },
-    );
-    const tackplayeEvent = TrackPlayer.addEventListener(
-      Event.PlaybackPlayWhenReadyChanged,
-      dat => {
-        // setTimeout(() => {
-        //   TrackPlayer.pause();
-        // }, 100);
-        console.log('thisissi', dat);
-      },
-    );
-
-    const queueEndedListener = TrackPlayer.addEventListener(
-      Event.PlaybackQueueEnded,
-      async data => {
-        if (data.position !== null && data.track !== null) {
-          await TrackPlayer.reset();
-          const tracks = await getSounds();
-          await TrackPlayer.add(tracks);
-          await TrackPlayer.play();
-          setVisibleIndex(0);
-        }
-      },
-    );
-
-    return () => {
-      trackChangeListener.remove();
-      queueEndedListener.remove();
-      tackplayeEvent.remove();
-    };
-  }, []);
+  const queueEndedListener = TrackPlayer.addEventListener(
+    Event.PlaybackQueueEnded,
+    async data => {
+      return () => {
+        queueEndedListener.remove();
+        trackChangeListener.remove();
+      };
+    },
+    [playPlalist, visibleIndex],
+  );
 
   const handlePlayPauseClick = async () => {
     if (playPlalist.length === 0) return;
+    if (!ended) {
+      if (isPaused) {
+        SoundPlayer.play();
+        await TrackPlayer.play();
+      } else {
+        SoundPlayer.pause();
+        await TrackPlayer.pause();
+        if (timeOutRef.current != null) {
+          clearTimeout(timeOutRef.current);
+          timeOutRef.current = null;
+        }
+      }
+      setIsPaused(!isPaused);
 
-    if (isPaused) {
-      await TrackPlayer.play();
+      if (isPaused && progress >= 100) {
+        reset();
+      }
     } else {
-      await TrackPlayer.pause();
-    }
-    setIsPaused(!isPaused);
-
-    if (isPaused && progress >= 100) {
-      reset();
+      if (isPaused) {
+        if (isPaused && progress >= 100) {
+          reset();
+        }
+        initializeTrackPlayer();
+        if (timeOutRef.current != null) {
+          clearTimeout(timeOutRef.current);
+          timeOutRef.current = null;
+        }
+        SoundPlayer.play();
+        setIsPaused(false);
+      } else {
+        if (isPaused && progress >= 100) {
+          reset();
+        }
+        setIsPaused(true);
+        await TrackPlayer.pause();
+        SoundPlayer.pause();
+      }
     }
   };
 
   const skipToNext = async () => {
-    try {
-      await TrackPlayer.skipToNext();
-      // setVisibleIndex(prevIndex => (prevIndex + 1) % playPlalist.length);
-    } catch (error) {
-      console.error('No more next tracks available', error);
-    }
+    // TrackPlayer.skipToNext();
+    alert('times');
   };
 
-  const skipToPrevious = async index => {
-    try {
-      TrackPlayer.skip(index);
-    } catch (error) {
-      console.error('No more previous tracks available', error);
-    }
+  const skipToPrevious = async => {
+    TrackPlayer.skipToPrevious();
   };
 
   const setVolume = async value => {
+    setVoiceVolume(value);
     await TrackPlayer.setVolume(value);
   };
 
@@ -203,6 +242,11 @@ export const MusicPlayerProvider = ({children}) => {
     currentTimeRef.current = 0;
     setIsPaused(false);
     setVisibleIndex(0);
+  };
+  const [backgroundSound, setBackgroundSound] = useState('');
+  const playBackondSound = sound => {
+    SoundPlayer.playUrl(sound);
+    setBackgroundSound(sound);
   };
 
   return (
@@ -224,10 +268,16 @@ export const MusicPlayerProvider = ({children}) => {
         setVisibleIndex,
         getNameImage,
         reset,
-        setOnmainPage,
+        setOnMainPage,
         skipToNext,
         skipToPrevious,
         handlePlayPauseClick,
+        voiceVolume,
+        setVoiceVolume,
+        playBackondSound,
+        backgroundSoundVolume,
+        handleOnBackgroundSoundVolume,
+        backgroundSound,
       }}>
       {children}
     </MusicPlayerContext.Provider>

@@ -30,6 +30,11 @@ const initialState = {
     categories_name: '',
   },
   playPlalist: [],
+  createRem: [],
+  createRem1: [],
+  deleteRem: [],
+  RememberList: [],
+  Modelclose: false,
 };
 const Home = createSlice({
   name: 'home',
@@ -222,6 +227,47 @@ const Home = createSlice({
     },
     logout_error: (state, action) => {
       return {...state, loading: false};
+    },
+    createReminder1_request: (state, action) => {
+      return {...state, loading: true};
+    },
+    createReminder1_success: (state, action) => {
+      return {...state, createRem1: action.payload, loading: false};
+    },
+    createReminder1_error: (state, action) => {
+      return {...state, loading: false};
+    },
+
+    createReminder_request: (state, action) => {
+      return {...state, loading: true};
+    },
+    createReminder_success: (state, action) => {
+      return {...state, createRem: action.payload, loading: false};
+    },
+    createReminder_error: (state, action) => {
+      return {...state, loading: false};
+    },
+    reminderList_request: (state, action) => {
+      return {...state, loading: true};
+    },
+    reminderList_success: (state, action) => {
+      return {...state, RememberList: action.payload, loading: false};
+    },
+    reminderList_error: (state, action) => {
+      return {...state, loading: false};
+    },
+
+    reminderDelete_request: (state, action) => {
+      return {...state, loading: true};
+    },
+    reminderDelete_success: (state, action) => {
+      return {...state, deleteRem: action.payload, loading: false};
+    },
+    reminderDelete_error: (state, action) => {
+      return {...state, loading: false};
+    },
+    Modelclose_success: (state, action) => {
+      return {...state, Modelclose: action.payload};
     },
   },
 });

@@ -67,7 +67,7 @@ const HomeScreen = props => {
   // console.log(progress);
   const dispatch = useDispatch();
   const getFavriote = item => {};
-  const {groups, loading, category, playItem} = useSelector(
+  const {groups, loading, bgSound, category, playItem} = useSelector(
     state => state.home,
   );
   const [searchvisble, setSearchvisible] = useState(false);
@@ -111,6 +111,18 @@ const HomeScreen = props => {
       type: 'home/group_fetch_request',
       token,
       url: 'groups',
+      user_id: user,
+    });
+    dispatch({
+      type: 'home/bg_sound_request',
+      token,
+      url: 'bgSound',
+      user_id: user,
+    });
+    dispatch({
+      type: 'home/bg_categories_request',
+      token,
+      url: 'bgCategories',
       user_id: user,
     });
   };

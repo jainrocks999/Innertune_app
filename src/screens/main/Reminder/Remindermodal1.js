@@ -20,7 +20,7 @@ const Remindermodal1 = ({onPress}) => {
   return (
     <View style={{flex: 1, backgroundColor: '#111'}}>
       <View style={styles.bottomSheetContent}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             handleModalPress('Remindmodal2');
           }}>
@@ -55,7 +55,7 @@ const Remindermodal1 = ({onPress}) => {
               </View>
             </LinearGradient>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => {
             handleModalPress('Remindmodal3');
