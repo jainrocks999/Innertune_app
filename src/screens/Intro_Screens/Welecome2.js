@@ -145,7 +145,7 @@ const Welecome2 = ({navigation}) => {
       // flatListRef.current.scrollToIndex({Animated2: true, index: nextIndex});
       // setCurrentIndex(nextIndex);
     } else {
-      navigation.navigate('ChooseAfferamtion');
+      navigation.navigate('AksReminder');
     }
   };
 
@@ -308,7 +308,7 @@ const Welecome2 = ({navigation}) => {
                     fontSize: wp(5.5),
                     fontWeight: '400',
                   }}>
-                  {'Get Started'}
+                  {'Next'}
                 </Text>
               ) : (
                 <Entypo name="chevron-right" size={30} color={'white'} />

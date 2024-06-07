@@ -215,6 +215,10 @@ function* fetchCreatePlaylist(action) {
 
     if (res.status) {
       yield put({
+        type: 'home/Add_item_to_Create_Playlist',
+        payload: [],
+      });
+      yield put({
         type: 'home/createPlayList_success',
         payload: res.data,
       });
@@ -233,7 +237,6 @@ function* fetchCreatePlaylist(action) {
           navigation: action.navigation,
           token: action.token,
         });
-        Toast.show('Play list created');
       } else {
         Toast.show('Play list updated');
         action.navigation.navigate('library');
@@ -747,6 +750,14 @@ function* playaffiramations(action) {
     type: 'home/play_playlist_success',
     payload: action.payload,
   });
+  yield put({
+    type: 'home/setTogglePlay',
+    payload: action.togglePlay,
+  });
+  yield put({
+    type: 'home/currentPLaylist',
+    payload: action.item,
+  });
   action.navigation.navigate('playsong', {index: action.index});
 }
 function* Logoutapi(action) {
@@ -960,7 +971,43 @@ function* DeleteRemember(action) {
     console.log('errors with bgcategories', error);
   }
 }
-
+function* getLastPopular(action) {
+  try {
+    const params = {
+      user_id: action.user_id,
+    };
+    const res = yield call(Api.API_GET, {
+      token: action.token,
+      url: 'playList/LastSession',
+      params,
+    });
+    const res2 = yield call(Api.API_GET, {
+      token: action.token,
+      url: 'playList/popularPlayList',
+      params,
+    });
+    if (res.status && res2.status) {
+      yield put({
+        type: 'home/lastSessctionAndPopular_success',
+        payload: {
+          lastSesstion: res.data,
+          Popular: res2.data,
+        },
+      });
+    } else {
+      yield put({
+        type: 'home/lastSessctionAndPopular_error',
+      });
+      Toast.show('Error on fetchinhg some item');
+    }
+  } catch (err) {
+    console.log(err);
+    yield put({
+      type: 'home/lastSessctionAndPopular_error',
+    });
+    Toast.show('something went wrong');
+  }
+}
 export default function* homeSaga() {
   yield takeEvery('home/playlist_request', getplaylist);
   yield takeEvery('home/group_fetch_request', fetchGroups);
@@ -989,4 +1036,5 @@ export default function* homeSaga() {
   yield takeEvery('home/createReminder1_request', updateReminder);
   yield takeEvery('home/reminderDelete_request', DeleteRemember);
   yield takeEvery('home/reminderList_request', RememberList);
+  yield takeEvery('home/lastSessctionAndPopular_request', getLastPopular);
 }

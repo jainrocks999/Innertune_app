@@ -19,7 +19,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Playlistdetails from '../Tab/Playlistdetails';
-import Feather from 'react-native-vector-icons/Feather';
+import AntDesign from 'react-native-vector-icons/FontAwesome6';
 import Tts from 'react-native-tts';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Mymodal from '../../components/molecules/Modal';
@@ -29,12 +29,13 @@ import {} from 'react-native-gesture-handler';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import {useDispatch} from 'react-redux';
 import {setupPlayer} from '../../utils/Setup';
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, {RepeatMode} from 'react-native-track-player';
 import RNFS from 'react-native-fs';
 import {fonts} from '../../Context/Conctants';
 import storage from '../../utils/StorageService';
 import {MusicPlayerContext} from '../../Context/MusicPlayerConstaxt';
 import Menu from '../../components/Playlist/Menu';
+import SoundPlayer from 'react-native-sound-player';
 const data = [
   {
     id: '1',
@@ -57,45 +58,32 @@ const Playsong = ({route}) => {
     setIsPaused,
     voices,
     selectedVoice,
-    setSelectedVoice,
-    speechRate,
-    setSpeechRate,
-    speechPitch,
-    setSpeechPitch,
     playPlalist,
-    readText,
     player,
     setVolume,
     updateSpeechRate,
     updateSpeechPitch,
-    onVoicePress,
     handlePlayPauseClick,
     visibleIndex,
-    setVisibleIndex,
     flatListRef,
     skipToNext,
     reset,
-    setOnmainPage,
-    onMainPage,
     skipToPrevious,
     voiceVolume,
-    setVoiceVolume,
     playBackondSound,
     backgroundSoundVolume,
     handleOnBackgroundSoundVolume,
     backgroundSound,
-    scrollDirection,
     setScrollDirection,
+    repeatMode,
+    setRepeatMode,
   } = useContext(MusicPlayerContext);
-  useEffect(() => {
-    if (onMainPage) {
-      reset();
-    } else {
-    }
-  }, [onMainPage]);
+
   const dispatch = useDispatch();
   const [bgVolume, setBgVolume] = useState(0.5);
-  console.log('this is bgsound', bgSound);
+  const onVoicePress = () => {
+    Alert.alert('Voices not available');
+  };
 
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
@@ -136,7 +124,7 @@ const Playsong = ({route}) => {
 
   useEffect(() => {
     if (progress < 100) {
-      player('Sleeping.wav');
+      // player('Sleeping.wav');
       setIsPaused(false);
     }
   }, []);
@@ -213,18 +201,24 @@ const Playsong = ({route}) => {
     }
     setPreviousScrollPosition(currentScrollPosition);
   };
-
+  const [currntTrackIndex, setCurrentTrackIndex] = useState(0);
   const handleScrollEndDrag = () => {};
   const handleViewableItemsChanged = ({viewableItems, changed}) => {
+    const newIndex = viewableItems[0].index;
     if (isUserScrolling) {
       setIsUserScrolling(false);
-      const newIndex = viewableItems[0].index;
+      if (newIndex < currntTrackIndex) {
+        skipToPrevious();
+      } else {
+        skipToNext();
+      }
       // setVisibleIndex(newIndex);
       setIsPaused(false);
       if (isPaused & (progress >= 100)) {
         reset();
       }
     }
+    setCurrentTrackIndex(newIndex);
   };
   const [visibleMenu, setVisibleMenu] = useState(false);
   const [visibleMenuIndex, setVisibleMenuIndex] = useState(0);
@@ -232,12 +226,20 @@ const Playsong = ({route}) => {
     setVisibleMenu(false);
     setVisibleMenuIndex(visibleIndex);
   };
-  useEffect(() => {
-    // SoundPlayer.setVolume(0.2);
-    if (!isPaused) {
-      // playBackondSound(bgSound[0].media[1]?.original_url);
+
+  const setMode = async () => {
+    try {
+      const mode = await TrackPlayer.getRepeatMode();
+
+      const newMode =
+        mode === RepeatMode.Off ? RepeatMode.Track : RepeatMode.Off;
+
+      await TrackPlayer.setRepeatMode(newMode);
+      setRepeatMode(newMode);
+    } catch (error) {
+      console.error('Error setting repeat mode:', error);
     }
-  }, []);
+  };
   return (
     <View style={{flex: 1}}>
       <ImageBackground
@@ -245,10 +247,9 @@ const Playsong = ({route}) => {
         style={{width: '100%', height: '100%'}}>
         <View
           style={{
-            backgroundColor: '#191919',
+            backgroundColor: 'rgba(25,25,25,0.8)',
             height: hp(100),
             zIndex: 1,
-            opacity: 0.93,
           }}>
           <View
             style={{
@@ -323,9 +324,11 @@ const Playsong = ({route}) => {
               marginTop: hp(15),
               alignSelf: 'center',
               marginTop: hp(60),
-              right: wp(10),
               position: 'absolute',
               zIndex: 1,
+              justifyContent: 'space-between',
+
+              width: '60%',
             }}>
             <TouchableOpacity
               style={{zIndex: 2}}
@@ -338,7 +341,7 @@ const Playsong = ({route}) => {
                 name={
                   playPlalist[visibleIndex]?.is_favorite ? 'heart' : 'heart-o'
                 }
-                size={30}
+                size={28}
                 color={
                   playPlalist[visibleIndex]?.is_favorite ? '#B72658' : 'white'
                 }
@@ -347,16 +350,23 @@ const Playsong = ({route}) => {
 
             <FontAwesome
               name="repeat"
-              size={30}
+              size={28}
               color="white"
-              marginHorizontal="22%"
+              onPress={() => reset()}
             />
+            <AntDesign
+              name="repeat"
+              size={28}
+              color={repeatMode == 1 ? '#B72658' : '#ffff'}
+              onPress={() => setMode()}
+            />
+
             <TouchableOpacity
               onPress={() => {
                 setVisibleMenuIndex(visibleIndex);
                 setVisibleMenu(true);
               }}>
-              <Entypo name="dots-three-horizontal" size={30} color="#fff" />
+              <Entypo name="dots-three-horizontal" size={28} color="#fff" />
             </TouchableOpacity>
           </View>
           <Menu
@@ -492,7 +502,7 @@ const Playsong = ({route}) => {
                     <Text
                       style={{
                         color: selectedTab === item.title ? 'white' : 'black',
-                        fontSize: hp(2.1),
+                        fontSize: hp(1.8),
                         fontWeight: '400',
                         right: wp(item.id == '2' ? 1 : 3),
                         fontFamily: fonts.medium,

@@ -28,7 +28,7 @@ const Splash = () => {
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the camera');
+        console.log('You can use the app sould get notication');
       }
       console.log('this', granted);
     } catch (err) {

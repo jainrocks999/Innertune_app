@@ -103,7 +103,7 @@ const AksReminder = ({navigation}) => {
                 fontWeight: '400',
                 fontFamily: fonts.regular,
               }}>
-              {'Get Started'}
+              {'Next'}
             </Text>
           </LinearGradient>
         </TouchableOpacity>

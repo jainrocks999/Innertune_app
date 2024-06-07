@@ -175,7 +175,7 @@ const MyTabs = () => {
         onBackdropPress={() => setBottomSheetVisible(false)}
         style={styles.bottomSheetContainer}>
         <View style={styles.bottomSheetContent}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               navigation.navigate('audiorecorder');
             }}>
@@ -202,7 +202,7 @@ const MyTabs = () => {
                 </Text>
               </View>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             onPress={() => {
               getAffetMations();
@@ -232,7 +232,7 @@ const MyTabs = () => {
                       color: '#ffffff',
                       backgroundColor: 'transparent',
                     }}>
-                    Create your playlist
+                    Create your Playlist
                   </Text>
                 </View>
               </LinearGradient>

@@ -93,9 +93,8 @@ const Playlistdetails = () => {
   const {favoriteList} = useSelector(state => state.home);
 
   console.log('tjhidi', favoriteList.favoritelist);
-  const {loading, affirmations, groups, category, item} = useSelector(
-    state => state.home,
-  );
+  const {loading, affirmations, groups, togglePlay, category, item} =
+    useSelector(state => state.home);
   const playItem = item;
   const image = item?.categories_image[0]?.original_url ?? '';
   const title = item?.categories_name ?? 'Believe in yourself';
@@ -172,6 +171,8 @@ const Playlistdetails = () => {
       user_id: user,
       token,
       category_id: item.id,
+      togglePlay: !togglePlay,
+      item: item,
     });
   };
   return (
@@ -182,10 +183,6 @@ const Playlistdetails = () => {
           // navigation.navigate('playsong', {index: -1})
           setOnMainPage(true);
           getSong(-1);
-          dispatch({
-            type: 'home/currentPLaylist',
-            payload: item,
-          });
         }}
         item={item}
         onClose={() => {
@@ -350,10 +347,10 @@ const Playlistdetails = () => {
             onPress={() => {
               setOnMainPage(true);
               getSong(-1);
-              dispatch({
-                type: 'home/currentPLaylist',
-                payload: item,
-              });
+              // dispatch({
+              //   type: 'home/currentPLaylist',
+              //   payload: item,
+              // });
             }}
             title={'Play'}
             playlist
@@ -425,10 +422,10 @@ const Playlistdetails = () => {
                 onPress={() => {
                   setOnMainPage(true);
                   getSong(index);
-                  dispatch({
-                    type: 'home/currentPLaylist',
-                    payload: playItem,
-                  });
+                  // dispatch({
+                  //   type: 'home/currentPLaylist',
+                  //   payload: playItem,
+                  // });
                 }}
                 style={{justifyContent: 'center', marginHorizontal: '10%'}}>
                 <Text style={styles.text}>

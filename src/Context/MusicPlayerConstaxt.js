@@ -1,14 +1,16 @@
 import React, {createContext, useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import TrackPlayer, {Event} from 'react-native-track-player';
+import TrackPlayer, {Event, RepeatMode} from 'react-native-track-player';
 import {setupPlayer} from '../utils/Setup';
 import {Alert} from 'react-native';
 import SoundPlayer from 'react-native-sound-player';
-// import playPlalist from '../Context/affirmation';
+
 export const MusicPlayerContext = createContext();
 
 export const MusicPlayerProvider = ({children}) => {
-  const {playPlalist, bgSound, playItem} = useSelector(state => state.home);
+  const {playPlalist, bgSound, togglePlay, playItem} = useSelector(
+    state => state.home,
+  );
   const dispatch = useDispatch();
   const [currentTrack, setCurrentTrack] = useState(null);
   const [maxTimeInMinutes, setMaxTimeInMinutes] = useState(1);
@@ -24,7 +26,8 @@ export const MusicPlayerProvider = ({children}) => {
   const [scrollDirection, setScrollDirection] = useState(null);
   const [ended, setEnded] = useState(false);
   const [backgroundSoundVolume, setBackgroundSoundsVolume] = useState(0.3);
-
+  const [queended, setQueended] = useState(false);
+  const [repeatMode, setRepeatMode] = useState(0);
   useEffect(() => {
     playPlalistRef.current = playPlalist;
   }, [playPlalist]);
@@ -51,8 +54,7 @@ export const MusicPlayerProvider = ({children}) => {
       reset();
       initializeTrackPlayer();
     }
-  }, [playPlalist]);
-  useEffect(() => {});
+  }, [togglePlay]);
 
   const initializeTrackPlayer = async () => {
     setEnded(false);
@@ -60,19 +62,22 @@ export const MusicPlayerProvider = ({children}) => {
     const tracks = await getSounds();
     await TrackPlayer.reset();
     await TrackPlayer.add(tracks);
-    // TrackPlayer.setRepeatMode(1);
+    TrackPlayer.setRepeatMode(RepeatMode.Queue);
     if (playPlalist.length > 0) {
       TrackPlayer.play();
     }
   };
+
   useEffect(() => {
     TrackPlayer.setVolume(0.5);
     SoundPlayer.setVolume(0.4);
   }, []);
+
   const handleOnBackgroundSoundVolume = value => {
     SoundPlayer.setVolume(value);
     setBackgroundSoundsVolume(value);
   };
+
   useEffect(() => {
     const intervalForProgress = setInterval(async () => {
       if (!isPaused) {
@@ -87,7 +92,7 @@ export const MusicPlayerProvider = ({children}) => {
           clearInterval(intervalForProgress);
           setProgress(100);
           setIsPaused(true);
-          await TrackPlayer.reset();
+          await TrackPlayer.pause();
         }
       } else {
         await TrackPlayer.pause();
@@ -104,73 +109,51 @@ export const MusicPlayerProvider = ({children}) => {
     };
   }, [maxTimeInMinutes, isPaused]);
 
-  // useEffect(() => {
-  //   const trackChangeListener = TrackPlayer.addEventListener(
-  //     Event.PlaybackTrackChanged,
-  //     async data => {
-  //       if (data.nextTrack != null) {
-  //         setVisibleIndex(prev => {
-  //           const nexIndx = prev % playPlalist.length;
-  //           if (
-  //             flatListRef.current &&
-  //             nexIndx >= 0 &&
-  //             nexIndx < playPlalist.length
-  //           ) {
-  //             flatListRef.current.scrollToIndex({
-  //               animated: true,
-  //               index: nexIndx,
-  //               viewPosition: 0.5,
-  //               viewOffset: 0,
-  //             });
-  //           }
-  //           return nexIndx;
-  //         });
-  //       }
-  //     },
-  //   );
-
-  //   const trackPlayerEvent = TrackPlayer.addEventListener(
-  //     Event.PlaybackPlayWhenReadyChanged,
-  //     dat => {},
-  //   );
-  //   return () => {
-  //     trackChangeListener.remove();
-  //     trackPlayerEvent.remove();
-  //   };
-  // }, [playPlalist, visibleIndex]);
   useEffect(() => {
-    TrackPlayer.addEventListener(Event.PlaybackTrackChanged, even => {
-      if (even.nextTrack != null) {
-        setVisibleIndex(prev => {
-          const nexIndx = even.nextTrack % playPlalist.length;
-          if (
-            flatListRef.current &&
-            nexIndx >= 0 &&
-            nexIndx < playPlalist.length
-          ) {
-            flatListRef.current.scrollToIndex({
-              animated: true,
-              index: nexIndx,
-              viewPosition: 0.5,
-              viewOffset: 0,
-            });
-          }
-          return nexIndx;
-        });
-      }
-    });
-  }, [visibleIndex, playPlalist.length]);
+    const trackChangeListener = TrackPlayer.addEventListener(
+      Event.PlaybackTrackChanged,
+      event => {
+        if (event.nextTrack != null) {
+          setVisibleIndex(prev => {
+            const nextIndex = event.nextTrack % playPlalist.length;
+            if (
+              flatListRef.current &&
+              nextIndex >= 0 &&
+              nextIndex < playPlalist.length
+            ) {
+              flatListRef.current.scrollToIndex({
+                animated: true,
+                index: nextIndex,
+                viewPosition: 0.5,
+                viewOffset: 0,
+              });
+            }
+            return nextIndex;
+          });
+        }
+      },
+    );
 
-  const queueEndedListener = TrackPlayer.addEventListener(
-    Event.PlaybackQueueEnded,
-    async data => {
-      return () => {
-        queueEndedListener.remove();
-        trackChangeListener.remove();
-      };
-    },
-    [playPlalist, visibleIndex],
-  );
+    return () => {
+      trackChangeListener.remove();
+    };
+  }, [playPlalist.length]);
+
+  useEffect(() => {
+    const queueEndedListener = TrackPlayer.addEventListener(
+      Event.PlaybackQueueEnded,
+      async data => {
+        setQueended(true);
+        if (playPlalist.length > 0) {
+          initializeTrackPlayer();
+        }
+      },
+    );
+
+    return () => {
+      queueEndedListener.remove();
+    };
+  }, [playPlalist]);
 
   const handlePlayPauseClick = async () => {
     if (playPlalist.length === 0) return;
@@ -215,25 +198,12 @@ export const MusicPlayerProvider = ({children}) => {
   };
 
   const skipToNext = async () => {
-    alert('called');
     TrackPlayer.skipToNext();
   };
 
-  const skipToPrevious = async => {
-    TrackPlayer.skipToNext();
+  const skipToPrevious = async () => {
+    TrackPlayer.skipToPrevious();
   };
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (scrollDirection == 'up') {
-        skipToNext();
-      } else {
-        skipToPrevious();
-      }
-    }, 60);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [scrollDirection]);
 
   const setVolume = async value => {
     setVoiceVolume(value);
@@ -253,15 +223,41 @@ export const MusicPlayerProvider = ({children}) => {
   const reset = () => {
     setProgress(0);
     currentTimeRef.current = 0;
+    setRepeatMode(RepeatMode.Off);
     setIsPaused(false);
     setVisibleIndex(0);
-  };
-  const [backgroundSound, setBackgroundSound] = useState('');
-  const playBackondSound = sound => {
-    SoundPlayer.playUrl(sound);
-    setBackgroundSound(sound);
+    initializeTrackPlayer();
   };
 
+  const [backgroundSound, setBackgroundSound] = useState(
+    'https://stimuli.forebearpro.co.in/storage/app/public/95/BGTWO.mp3',
+  );
+  const playBackondSound = sound => {
+    setBackgroundSound(sound);
+  };
+  useEffect(() => {
+    if (backgroundSound) {
+      SoundPlayer.loadUrl(backgroundSound);
+    }
+  }, [backgroundSound, isPaused]);
+  useEffect(() => {
+    const handleFinishedLoading = data => {
+      if (isPaused) {
+        SoundPlayer.pause();
+      } else {
+        SoundPlayer.play();
+      }
+    };
+
+    const soundEvent = SoundPlayer.addEventListener(
+      'FinishedLoadingURL',
+      handleFinishedLoading,
+    );
+
+    return () => {
+      soundEvent.remove();
+    };
+  }, [isPaused, backgroundSound]);
   return (
     <MusicPlayerContext.Provider
       value={{
@@ -293,6 +289,8 @@ export const MusicPlayerProvider = ({children}) => {
         backgroundSound,
         scrollDirection,
         setScrollDirection,
+        repeatMode,
+        setRepeatMode,
       }}>
       {children}
     </MusicPlayerContext.Provider>

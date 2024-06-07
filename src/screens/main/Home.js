@@ -67,9 +67,8 @@ const HomeScreen = props => {
   // console.log(progress);
   const dispatch = useDispatch();
   const getFavriote = item => {};
-  const {groups, loading, bgSound, category, playItem} = useSelector(
-    state => state.home,
-  );
+  const {groups, last_popular, loading, bgSound, category, playItem} =
+    useSelector(state => state.home);
   const [searchvisble, setSearchvisible] = useState(false);
 
   const getAllCategories = async () => {
@@ -125,6 +124,11 @@ const HomeScreen = props => {
       url: 'bgCategories',
       user_id: user,
     });
+    dispatch({
+      type: 'home/lastSessctionAndPopular_request',
+      user_id: user,
+      token,
+    });
   };
   const getAffetMations = async item => {
     const items = await storage.getMultipleItems([
@@ -151,6 +155,7 @@ const HomeScreen = props => {
     ]);
     const token = items.find(([key]) => key === storage.TOKEN)?.[1];
     const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+    console.log(item);
 
     dispatch({
       type: 'home/affirmationBYCategory_request',
@@ -305,37 +310,50 @@ const HomeScreen = props => {
       />
       <Loader loading={loading} />
       <ScrollView contentContainerStyle={styles.scrollView}>
-        <View s tyle={styles.FeatureContainer}>
-          <Text style={styles.Featurecategory}>Last sessions</Text>
-        </View>
+        {last_popular.lastSesstion.length > 0 ? (
+          <View s tyle={styles.FeatureContainer}>
+            <Text style={styles.Featurecategory}>Last sessions</Text>
+          </View>
+        ) : null}
         <View
           style={{
             alignItems: 'center',
           }}>
           <FlatList
-            data={Img}
+            data={last_popular.lastSesstion}
             numColumns={2}
             showsHorizontalScrollIndicator={false}
             scrollEnabled={false}
             keyExtractor={item => item.id}
-            renderItem={({item}) => (
-              <View style={styles.lastSestionItem}>
-                <Image
-                  source={item.image}
-                  style={{height: hp(8), width: hp(8), borderRadius: hp(1.5)}}
-                />
-                <Text
-                  style={{
-                    marginLeft: '5%',
-                    fontWeight: '400',
-                    fontFamily: 'Poppins-Medium',
-                    color: '#ffffff',
-                    width: '50%',
-                  }}>
-                  {item.title.substring(0, 17)}
-                </Text>
-              </View>
-            )}
+            renderItem={({item}) => {
+              let image =
+                item?.categories?.[0]?.categories_image?.[0]?.original_url ??
+                'https://img.freepik.com/free-photo/outdoor-adventurers-hiking-towards-mountain-peak-sunrise-silhouette-generated-by-ai_188544-30928.jpg';
+
+              return (
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() =>
+                    getAffetMationsbyCategories(item.categories?.[0])
+                  }
+                  style={styles.lastSestionItem}>
+                  <Image
+                    source={{uri: image}}
+                    style={{height: hp(8), width: hp(8), borderRadius: hp(1.5)}}
+                  />
+                  <Text
+                    style={{
+                      marginLeft: '5%',
+                      fontWeight: '400',
+                      fontFamily: 'Poppins-Medium',
+                      color: '#ffffff',
+                      width: '50%',
+                    }}>
+                    {item.categories[0]?.categories_name?.substring(0, 17)}
+                  </Text>
+                </TouchableOpacity>
+              );
+            }}
           />
         </View>
         <CateGoriesModal

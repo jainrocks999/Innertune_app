@@ -35,11 +35,19 @@ const initialState = {
   deleteRem: [],
   RememberList: [],
   Modelclose: false,
+  togglePlay: false,
+  last_popular: {
+    lastSesstion: [],
+    Popular: [],
+  },
 };
 const Home = createSlice({
   name: 'home',
   initialState,
   reducers: {
+    setTogglePlay: (state, action) => {
+      return {...state, togglePlay: action.payload};
+    },
     currentPLaylist: (state, action) => {
       return {...state, playItem: action.payload};
     },
@@ -268,6 +276,16 @@ const Home = createSlice({
     },
     Modelclose_success: (state, action) => {
       return {...state, Modelclose: action.payload};
+    },
+    lastSessctionAndPopular_request: (state, action) => {
+      state.loading = true;
+    },
+    lastSessctionAndPopular_success: (state, action) => {
+      state.loading = false;
+      state.last_popular = action.payload;
+    },
+    lastSessctionAndPopular_error: state => {
+      state.loading = false;
     },
   },
 });
