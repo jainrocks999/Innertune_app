@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacityBase,
   View,
+  Share,
 } from 'react-native';
 import React, {useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
@@ -148,6 +149,12 @@ const Menu = ({
                     case '2': {
                       setVisible(true);
                     }
+                    case '3': {
+                      Share.share({
+                        title: 'affimataion',
+                        message: selectedItem.affirmation_text,
+                      });
+                    }
                   }
                 }}
                 style={{
@@ -162,17 +169,17 @@ const Menu = ({
                         ? '#B72658'
                         : 'white'
                     }
-                    size={wp(7)}
+                    size={wp(6)}
                     name={item.icon}
                   />
                 ) : (
-                  <Entypo color="white" size={wp(7)} name={item.icon} />
+                  <Entypo color="white" size={wp(6)} name={item.icon} />
                 )}
 
                 <Text
                   style={{
                     color: 'white',
-                    fontSize: wp(5),
+                    fontSize: wp(4),
                     marginLeft: '5%',
                     fontFamily: fonts.medium,
                   }}>
@@ -186,7 +193,7 @@ const Menu = ({
           <Text
             style={{
               color: '#fff',
-              fontSize: wp(6.5),
+              fontSize: wp(6),
               fontFamily: fonts.medium,
               // fontWeight: 'bol000d',
             }}>
@@ -213,10 +220,10 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   txt: {
-    fontSize: wp(4.5),
+    fontSize: wp(5),
     fontWeight: '600',
     color: '#fff',
-    textAlign: 'left',
+    textAlign: 'center',
     fontFamily: fonts.medium,
   },
   close: {

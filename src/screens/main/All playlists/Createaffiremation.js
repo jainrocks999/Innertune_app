@@ -156,7 +156,7 @@ const Createaffirmation = ({route}) => {
                 paddingHorizontal: wp(4),
               }}>
               <Text style={styles.text}>
-                {item.affirmation_text.substring(0, 40)}
+                {item.affirmation_text.substring(0, 32)}..
               </Text>
 
               <View style={{justifyContent: 'center'}}>

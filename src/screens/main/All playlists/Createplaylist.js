@@ -20,6 +20,7 @@ import {useNavigation} from '@react-navigation/native';
 import Buttun from '../../Auth/compoents/Buttun';
 import Loader from '../../../components/Loader';
 import {fonts} from '../../../Context/Conctants';
+import Toast from 'react-native-simple-toast';
 // import {affirmations} from '../affmatin';
 const Img = [
   {
@@ -173,7 +174,7 @@ const Createplaylist = () => {
                 paddingHorizontal: wp(4),
               }}>
               <Text style={styles.text}>
-                {item.affirmation_text.substring(0, 40)}
+                {item.affirmation_text.substring(0, 32)}..
               </Text>
 
               <View style={{justifyContent: 'center'}}>
@@ -199,11 +200,15 @@ const Createplaylist = () => {
         }}>
         <Buttun
           onPress={() => {
-            dispatch({
-              type: 'home/Add_item_to_Create_Playlist',
-              payload: selected,
-            });
-            navigation.navigate('createaffirmation', {selected: []});
+            if (selected.length > 0) {
+              dispatch({
+                type: 'home/Add_item_to_Create_Playlist',
+                payload: selected,
+              });
+              navigation.navigate('createaffirmation', {selected: []});
+            } else {
+              Toast.show('Please select affimations');
+            }
           }}
           title={`${'Added Affirmations '}${selected.length}`}
           style={{

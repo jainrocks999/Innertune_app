@@ -186,9 +186,7 @@ const Welecome2 = ({navigation}) => {
             ref={flatListRef}
             snapToAlignment="start"
             pagingEnabled
-            onScroll={even => {
-              console.log('thissis', even.nativeEvent.contentOffset);
-            }}
+            onScroll={even => {}}
             renderItem={({item, index}) => {
               return true == true ? (
                 <Animated.View
@@ -301,7 +299,7 @@ const Welecome2 = ({navigation}) => {
               end={{x: 0, y: 1}}
               locations={[0, 1]}
               colors={['#D485D1', '#B72658']}>
-              {currentIndex == affirmations.length - 1 ? (
+              {true ? (
                 <Text
                   style={{
                     color: 'white',

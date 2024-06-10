@@ -109,6 +109,15 @@ const Toptab = () => {
       user_id: user,
     });
   };
+  useEffect(() => {
+    dispatch({
+      type: 'home/setFromLibrary',
+      payload: {
+        playlist: false,
+        liked: false,
+      },
+    });
+  }, []);
 
   const getPlayListItem = async (item, bool) => {
     const token = await storage.getItem(storage.TOKEN);
@@ -120,6 +129,7 @@ const Toptab = () => {
       navigation,
       item: item,
       isEdit: bool ?? false,
+      fromLibrary: true,
     });
   };
   const getFavroitCategories = async bool => {
@@ -181,6 +191,7 @@ const Toptab = () => {
       token,
       playlist_id: item.id,
       url: 'playListDelete',
+      navigation: false,
     });
   };
 

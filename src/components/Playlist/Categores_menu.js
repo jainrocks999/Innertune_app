@@ -67,10 +67,7 @@ const Categores_menu = ({
               {item.categories_name.substring(0, 15)}...
             </Text>
             <Text
-              style={[
-                styles.title,
-                {fontSize: wp(5), fontFamily: fonts.medium},
-              ]}>
+              style={[styles.title, {fontSize: wp(3.5), fontWeight: '400'}]}>
               {'by stumili'}
             </Text>
           </View>
@@ -105,13 +102,13 @@ const Categores_menu = ({
                           ? '#B72658'
                           : 'white'
                       }
-                      size={wp(7)}
+                      size={wp(6)}
                       name={item.icon}
                     />
                   ) : (
                     <Entypo
                       color={index == 2 ? '#fff' : '#B72658'}
-                      size={wp(7)}
+                      size={wp(6)}
                       name={item.icon}
                     />
                   )}
@@ -119,7 +116,7 @@ const Categores_menu = ({
                   <Text
                     style={{
                       color: 'white',
-                      fontSize: wp(5),
+                      fontSize: wp(4),
                       marginLeft: '5%',
                       fontFamily: fonts.medium,
                     }}>
@@ -134,7 +131,7 @@ const Categores_menu = ({
           <Text
             style={{
               color: '#fff',
-              fontSize: wp(6.5),
+              fontSize: wp(6),
               fontFamily: fonts.medium,
               // fontWeight: 'bol000d',
             }}>
@@ -162,9 +159,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: wp(6),
+    fontSize: wp(4.5),
     marginLeft: wp(3),
-    fontFamily: fonts.bold,
+    fontWeight: 'bold',
     color: '#fff',
   },
   close: {

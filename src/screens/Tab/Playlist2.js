@@ -18,7 +18,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/MaterialCommunityIcons';
 import Horizontal from '../../components/Home/Horizontal';
-// import {affirmations} from '../main/affmatin';
+//import {affirmations} from '../main/affmatin';
 import {Image} from 'react-native';
 import {
   heightPercent as hp,
@@ -35,6 +35,11 @@ import Categores_menu from '../../components/Playlist/Categores_menu';
 import {MusicPlayerContext} from '../../Context/MusicPlayerConstaxt';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import PlayPopup from '../../components/PlayPopup';
+import DraggableFlatList, {
+  ScaleDecorator,
+  NestableScrollContainer,
+} from 'react-native-draggable-flatlist';
+import Playlist_Menu from '../../components/Playlist/Playlist_Menu';
 const Img = [
   {
     id: '1',
@@ -93,8 +98,15 @@ const Playlistdetails = () => {
   const {favoriteList} = useSelector(state => state.home);
 
   console.log('tjhidi', favoriteList.favoritelist);
-  const {loading, affirmations, groups, togglePlay, category, item} =
-    useSelector(state => state.home);
+  const {
+    loading,
+    groups,
+    fromLibrary,
+    affirmations,
+    togglePlay,
+    category,
+    item,
+  } = useSelector(state => state.home);
   const playItem = item;
   const image = item?.categories_image[0]?.original_url ?? '';
   const title = item?.categories_name ?? 'Believe in yourself';
@@ -113,6 +125,7 @@ const Playlistdetails = () => {
     {useNativeDriver: true},
   );
   const [modalIndex, setModalIndex] = useState(-1);
+  const [activationDistance, setActivationDistance] = useState(100);
   const onClose = () => {
     setModalIndex(-1);
   };
@@ -155,6 +168,7 @@ const Playlistdetails = () => {
   // useEffect(() => {
   //   setVisible(false);
   // }, [item]);
+  const [plalistMenuVisible, setPlaylistMenuVisible] = useState(false);
   const getSong = async index => {
     const items = await storage.getMultipleItems([
       storage.TOKEN,
@@ -165,7 +179,7 @@ const Playlistdetails = () => {
 
     dispatch({
       type: 'home/play_playlist_request',
-      payload: affirmations,
+      payload: temAffimation,
       navigation,
       index: index,
       user_id: user,
@@ -173,6 +187,42 @@ const Playlistdetails = () => {
       category_id: item.id,
       togglePlay: !togglePlay,
       item: item,
+    });
+  };
+  const [temAffimation, setTempAffimation] = useState([]);
+  useEffect(() => {
+    setTempAffimation(affirmations);
+  }, []);
+  const getPlayListItem = async (item, bool) => {
+    const token = await storage.getItem(storage.TOKEN);
+    console.log(item.id);
+    dispatch({
+      type: 'home/getPlayListItem_request',
+      playlist_id: item.id,
+      token,
+      url: 'playListItem',
+      navigation,
+      item: item,
+      isEdit: bool ?? false,
+      fromLibrary: true,
+    });
+  };
+  const onPressDelete = async item => {
+    const items = await storage.getMultipleItems([
+      storage.TOKEN,
+      storage.USER_ID,
+    ]);
+
+    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
+    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
+
+    dispatch({
+      type: 'home/delete_playlist_request',
+      user_id: user,
+      token,
+      playlist_id: item.id,
+      url: 'playListDelete',
+      navigation,
     });
   };
   return (
@@ -313,49 +363,41 @@ const Playlistdetails = () => {
         </Text>
       
       </View> */}
+
       <View
         style={{
-          borderColor: '#fff',
-          // height: '5%',
+          // zIndex: 5,
+          color: 'white',
+          alignSelf: 'center',
+          height: hp(10),
+          width: '100%',
+          borderRadius: wp(1),
+          elevation: 5,
           alignItems: 'center',
           justifyContent: 'space-between',
-          marginVertical: hp(2),
-          paddingHorizontal: wp(7),
-          marginTop: '3%',
+          flexDirection: 'row',
+          paddingHorizontal: wp(8),
         }}>
-        <View
+        <Buttun
           style={{
-            zIndex: 5,
-            color: 'white',
-            alignSelf: 'center',
-            height: hp(6.5),
-            width: '45%',
-            borderRadius: wp(1),
-            elevation: 5,
-            alignItems: 'center',
-            justifyContent: 'center',
+            height: '55%',
+            width: '40%',
             flexDirection: 'row',
-          }}>
-          <Buttun
-            style={{
-              height: '100%',
-              width: '100%',
-              flexDirection: 'row',
-              elevation: 3,
-              shadowColor: '#fff',
-            }}
-            onPress={() => {
-              setOnMainPage(true);
-              getSong(-1);
-              // dispatch({
-              //   type: 'home/currentPLaylist',
-              //   payload: item,
-              // });
-            }}
-            title={'Play'}
-            playlist
-          />
-        </View>
+            elevation: 3,
+            shadowColor: '#fff',
+          }}
+          onPress={() => {
+            setOnMainPage(true);
+            getSong(-1);
+            // dispatch({
+            //   type: 'home/currentPLaylist',
+            //   payload: item,
+            // });
+          }}
+          title={'Play'}
+          playlist
+        />
+
         <View
           style={{
             flexDirection: 'row',
@@ -366,85 +408,125 @@ const Playlistdetails = () => {
             // bottom: '5%',
             justifyContent: 'space-between',
             marginTop: '8%',
+            // borderWidth: 1,
           }}>
-          <FontAwesome
-            onPress={() => {
-              item.is_favorite ? removeFavroit(item) : getFavriote(item);
-            }}
-            name={item.is_favorite ? 'heart' : 'heart-o'}
-            size={25}
-            color={item.is_favorite ? '#B72658' : 'white'}
-          />
-          <Entypo name="share" size={25} color="white" />
+          {!fromLibrary.playlist ? (
+            <>
+              <FontAwesome
+                onPress={() => {
+                  item.is_favorite ? removeFavroit(item) : getFavriote(item);
+                }}
+                name={item.is_favorite ? 'heart' : 'heart-o'}
+                size={25}
+                color={item.is_favorite ? '#B72658' : 'white'}
+              />
+              <Entypo name="share" size={25} color="white" />
+            </>
+          ) : null}
           <Entypo
             onPress={() => {
-              setVisible(true);
+              if (fromLibrary.playlist) {
+                setPlaylistMenuVisible(true);
+              } else {
+                setVisible(true);
+              }
             }}
             name="dots-three-vertical"
             size={25}
             color="white"
+            style={[fromLibrary.playlist && {position: 'absolute', right: 0}]}
           />
         </View>
       </View>
+      <Playlist_Menu
+        //assets/playlist.png
+        image={require('../../assets/playlist.png')}
+        item={item.item}
+        visible={plalistMenuVisible}
+        onClose={() => {
+          setPlaylistMenuVisible(false);
+        }}
+        onPressListen={items => {
+          getSong(0);
+        }}
+        onPressEdit={data => {
+          getPlayListItem(data, true);
+        }}
+        onPressDelete={item => {
+          onPressDelete(item);
+        }}
+        loading={loading}
+      />
       <ScrollView
-        style={styles.scrollView}
-        scrollEventThrottle={16}
-        contentContainerStyle={styles.scrollViewContent}
-        onScroll={e => {
-          scrollY.setValue(e.nativeEvent.contentOffset.y);
-        }}>
-        <FlatList
-          data={affirmations}
-          keyExtractor={item => item.id}
-          contentContainerStyle={{
-            marginTop: '3%',
-          }}
-          renderItem={({item, index}) => (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignSelf: 'center',
-                height: hp(8),
-                width: wp(90),
-                marginVertical: 10,
-                backgroundColor: '#4A4949',
-                borderRadius: 8,
-              }}>
-              <Menu
-                onClose={onClose}
-                selectedItem={item}
-                visible={index == modalIndex}
-                selectedIndex={index}
-                affirmations={affirmations}
-                loading={loading}
-              />
-              <TouchableOpacity
-                onPress={() => {
-                  setOnMainPage(true);
-                  getSong(index);
-                  // dispatch({
-                  //   type: 'home/currentPLaylist',
-                  //   payload: playItem,
-                  // });
-                }}
-                style={{justifyContent: 'center', marginHorizontal: '10%'}}>
-                <Text style={styles.text}>
-                  {item.affirmation_text.substring(0, 40)}
-                </Text>
-              </TouchableOpacity>
-              <View style={{justifyContent: 'center'}}>
-                <Entypo
-                  onPress={() => {
-                    setModalIndex(index);
-                  }}
-                  name="dots-three-horizontal"
-                  size={20}
-                  color="white"
-                />
-              </View>
-            </View>
-          )}
-        />
+        style={styles.scrollViewContent}
+        scrollEnabled={activationDistance !== 0}
+        // contentContainerStyle={styles.scrollViewContent}
+      >
+        <NestableScrollContainer>
+          <DraggableFlatList
+            data={temAffimation}
+            activationDistance={activationDistance}
+            keyExtractor={item => item.id}
+            contentContainerStyle={{
+              marginTop: '3%',
+            }}
+            onDragEnd={({data}) => {
+              setTempAffimation(data);
+              setActivationDistance(100);
+            }}
+            renderItem={({item, index, drag, isActive}) => (
+              <ScaleDecorator>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignSelf: 'center',
+                    height: hp(8),
+                    width: wp(90),
+                    marginVertical: 10,
+                    backgroundColor: '#4A4949',
+                    borderRadius: 8,
+                  }}>
+                  <Menu
+                    onClose={onClose}
+                    selectedItem={item}
+                    visible={index == modalIndex}
+                    selectedIndex={index}
+                    affirmations={affirmations}
+                    loading={loading}
+                  />
+                  <TouchableOpacity
+                    onPress={() => {
+                      setOnMainPage(true);
+                      getSong(index);
+                      // dispatch({
+                      //   type: 'home/currentPLaylist',
+                      //   payload: playItem,
+                      // });
+                    }}
+                    onLongPress={() => {
+                      drag(), setActivationDistance(0);
+                    }}
+                    disabled={isActive}
+                    style={{justifyContent: 'center', marginHorizontal: '10%'}}>
+                    <Text style={styles.text}>
+                      {item.affirmation_text.substring(0, 40)}
+                    </Text>
+                  </TouchableOpacity>
+                  <View style={{justifyContent: 'center'}}>
+                    <Entypo
+                      onPress={() => {
+                        setModalIndex(index);
+                      }}
+                      name="dots-three-horizontal"
+                      size={20}
+                      color="white"
+                    />
+                  </View>
+                </View>
+              </ScaleDecorator>
+            )}
+          />
+        </NestableScrollContainer>
       </ScrollView>
       {playPlalist.length > 0 && getNameImage().name != '' ? (
         <PlayPopup />
@@ -460,12 +542,7 @@ const styles = StyleSheet.create({
   },
   header: {
     height: hp(40),
-    // position: 'absolute',
-    // top: 0,
-    // right: 0,
-    // left: 0,
-    // elevation: 4,
-    // zIndex: 8,
+
     backgroundColor: '#191919',
 
     borderColor: '#fff',
@@ -473,7 +550,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
-  scrollViewContent: {paddingTop: hp(0)},
+  scrollViewContent: {paddingBottom: hp(8)},
   text: {
     width: wp(60),
     marginLeft: 5,

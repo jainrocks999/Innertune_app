@@ -119,6 +119,13 @@ function* fetchAffirmation(action) {
         });
       }
       if (action.navigation) {
+        yield put({
+          type: 'home/setFromLibrary',
+          payload: {
+            playlist: false,
+            liked: false,
+          },
+        });
         action.navigation?.navigate(action.page);
       }
     } else {
@@ -277,9 +284,17 @@ function* fetchCreatefavriote(action) {
       });
       if (action.affirmation_id == '') {
         if (action.categories == undefined) {
-          yield yield put({
-            type: 'home/group_fetch_success',
-            payload: action.data,
+          yield put({
+            type: 'home/group_fetch_request',
+            token: action.token,
+            url: 'groups',
+            user_id: action.user_id,
+          });
+          yield put({
+            type: 'home/category_fetch_request',
+            token: action.token,
+            url: 'categories',
+            user_id: action.user_id,
           });
         } else {
           yield yield put({
@@ -344,6 +359,13 @@ function* getfavoriteList(action) {
       yield put({
         type: 'home/favoriteList_success',
         payload: res.data,
+      });
+      yield put({
+        type: 'home/setFromLibrary',
+        payload: {
+          playlist: true,
+          liked: true,
+        },
       });
       action.navigation.navigate('Playlistdetails');
     } else {
@@ -414,25 +436,25 @@ function* getPlayListItem(action) {
       params,
     });
     if (res.status) {
-      yield put({
-        type: 'home/playList_item',
-        payload: {
-          categories_image: [
-            {
-              original_url:
-                'https://images.unsplash.com/photo-1616356607338-fd87169ecf1a',
-            },
-          ],
-          categories_name: action.item.title,
-          from: true,
-          isFroiut: false,
-          item: action.item,
-        },
-      });
       if (!action.isEdit) {
         yield put({
           type: 'home/getPlayListItem_success',
           payload: res.data,
+        });
+        yield put({
+          type: 'home/playList_item',
+          payload: {
+            categories_image: [
+              {
+                original_url:
+                  'https://images.unsplash.com/photo-1616356607338-fd87169ecf1a',
+              },
+            ],
+            categories_name: action.item.title,
+            from: true,
+            isFroiut: false,
+            item: action.item,
+          },
         });
       } else {
         yield put({
@@ -441,6 +463,15 @@ function* getPlayListItem(action) {
         });
       }
       if (res.data.length > 0) {
+        if (!action.isEdit) {
+          yield put({
+            type: 'home/setFromLibrary',
+            payload: {
+              playlist: true,
+              liked: false,
+            },
+          });
+        }
         action.navigation.navigate(
           !action.isEdit ? 'Playlistdetails2' : 'EditPlayList',
         );
@@ -493,6 +524,13 @@ function* getFavoriout(action) {
             item: 'fav',
           },
         });
+        yield put({
+          type: 'home/setFromLibrary',
+          payload: {
+            playlist: true,
+            liked: true,
+          },
+        });
         action.navigation.navigate('Playlistdetails2');
       }
     } else {
@@ -511,7 +549,7 @@ function* getFavoriout(action) {
         ? 'Error with fatching favorite list'
         : 'Error with fatching favorite affirmation',
     );
-    console.log(error);
+    console.log('this is error', error);
   }
 }
 function* removeFavrioutList(action) {
@@ -546,6 +584,18 @@ function* removeFavrioutList(action) {
             : 'home/group_fetch_success',
           payload: action.data,
         });
+        yield put({
+          type: 'home/group_fetch_request',
+          token: action.token,
+          url: 'groups',
+          user_id: action.user_id,
+        });
+        yield put({
+          type: 'home/category_fetch_request',
+          token: action.token,
+          url: 'categories',
+          user_id: action.user_id,
+        });
         if (action.removeFromFavrioutList || action.isSearch) {
           yield put({
             type: 'home/category_fetch_request',
@@ -571,11 +621,11 @@ function* removeFavrioutList(action) {
       yield put({
         type: 'home/removeFavriout_erorr',
       });
-      console.log(res);
+      console.log('this sis resss', res);
       Toast.show('something gone wrong with remove from favorite list');
     }
   } catch (err) {
-    console.log(err);
+    console.log('this is error', err);
     yield put({
       type: 'home/removeFavriout_erorr',
     });
@@ -606,10 +656,18 @@ function* fetchAffirmationByCategory(action) {
           payload: {from: false, isFroiut: false, ...action.item},
         });
       }
-      if (action.navigation && res.data.categoryByAffermation.length > 0)
+      if (action.navigation && res.data.categoryByAffermation.length > 0) {
+        yield put({
+          type: 'home/setFromLibrary',
+          payload: {
+            playlist: false,
+            liked: false,
+          },
+        });
+
         action.navigation.navigate(action.page);
-      else {
-        Toast.show('No affiramtion is this playlist');
+      } else {
+        Toast.show('No affirmations are in this playlist');
       }
     } else {
       yield put({
@@ -674,7 +732,10 @@ function* deletePlaylist(action) {
         url: 'playList',
         user_id: action.user_id,
       });
-      Toast.show('Play list deleted Success fully');
+      if (action.navigation) {
+        action.navigation.goBack();
+      }
+      Toast.show('Playlist deleted Successfully');
     } else {
       console.log(res);
       yield put({

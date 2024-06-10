@@ -9,6 +9,7 @@ import {
   FlatList,
   ToastAndroid,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
@@ -77,6 +78,7 @@ const Playsong = ({route}) => {
     setScrollDirection,
     repeatMode,
     setRepeatMode,
+    PlayerLoading,
   } = useContext(MusicPlayerContext);
 
   const dispatch = useDispatch();
@@ -124,7 +126,6 @@ const Playsong = ({route}) => {
 
   useEffect(() => {
     if (progress < 100) {
-      // player('Sleeping.wav');
       setIsPaused(false);
     }
   }, []);
@@ -318,57 +319,7 @@ const Playsong = ({route}) => {
               />
             </View>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginTop: hp(15),
-              alignSelf: 'center',
-              marginTop: hp(60),
-              position: 'absolute',
-              zIndex: 1,
-              justifyContent: 'space-between',
 
-              width: '60%',
-            }}>
-            <TouchableOpacity
-              style={{zIndex: 2}}
-              onPress={() => {
-                !playPlalist[visibleIndex].is_favorite
-                  ? handleHeartPress(playPlalist[visibleIndex], visibleIndex)
-                  : removeFavroit(playPlalist[visibleIndex], visibleIndex);
-              }}>
-              <FontAwesome
-                name={
-                  playPlalist[visibleIndex]?.is_favorite ? 'heart' : 'heart-o'
-                }
-                size={28}
-                color={
-                  playPlalist[visibleIndex]?.is_favorite ? '#B72658' : 'white'
-                }
-              />
-            </TouchableOpacity>
-
-            <FontAwesome
-              name="repeat"
-              size={28}
-              color="white"
-              onPress={() => reset()}
-            />
-            <AntDesign
-              name="repeat"
-              size={28}
-              color={repeatMode == 1 ? '#B72658' : '#ffff'}
-              onPress={() => setMode()}
-            />
-
-            <TouchableOpacity
-              onPress={() => {
-                setVisibleMenuIndex(visibleIndex);
-                setVisibleMenu(true);
-              }}>
-              <Entypo name="dots-three-horizontal" size={28} color="#fff" />
-            </TouchableOpacity>
-          </View>
           <Menu
             onClose={onClose}
             selectedItem={playPlalist[visibleMenuIndex]}
@@ -413,6 +364,71 @@ const Playsong = ({route}) => {
                       }}>
                       <Text style={styles.text}>{item?.affirmation_text}</Text>
                     </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        marginTop: hp(15),
+                        alignSelf: 'center',
+                        top: '27%',
+                        position: 'absolute',
+                        zIndex: 1,
+                        justifyContent: 'space-between',
+
+                        width: '60%',
+                      }}>
+                      <TouchableOpacity
+                        style={{zIndex: 2}}
+                        onPress={() => {
+                          !playPlalist[visibleIndex].is_favorite
+                            ? handleHeartPress(
+                                playPlalist[visibleIndex],
+                                visibleIndex,
+                              )
+                            : removeFavroit(
+                                playPlalist[visibleIndex],
+                                visibleIndex,
+                              );
+                        }}>
+                        <FontAwesome
+                          name={
+                            playPlalist[visibleIndex]?.is_favorite
+                              ? 'heart'
+                              : 'heart-o'
+                          }
+                          size={28}
+                          color={
+                            playPlalist[visibleIndex]?.is_favorite
+                              ? '#B72658'
+                              : 'white'
+                          }
+                        />
+                      </TouchableOpacity>
+
+                      <FontAwesome
+                        name="repeat"
+                        size={28}
+                        color="white"
+                        onPress={() => reset()}
+                      />
+                      <AntDesign
+                        name="repeat"
+                        size={28}
+                        color={repeatMode == 1 ? '#B72658' : '#ffff'}
+                        onPress={() => setMode()}
+                      />
+
+                      <TouchableOpacity
+                        onPress={() => {
+                          setVisibleMenuIndex(visibleIndex);
+                          setVisibleMenu(true);
+                        }}>
+                        <Entypo
+                          name="dots-three-horizontal"
+                          size={28}
+                          color="#fff"
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 ) : (
                   <View style={{height: hp(100)}} />
@@ -442,20 +458,28 @@ const Playsong = ({route}) => {
               position: 'absolute',
               bottom: '20%',
             }}>
-            <Image
-              source={
-                isPaused
-                  ? require('../../assets/flaticon/play.png')
-                  : require('../../assets/flaticon/pause.png')
-              }
-              style={{
-                height: hp(3.5),
-                width: hp(3.5),
-                tintColor: !isPaused ? '#fff' : '#fff',
-                position: 'absolute',
-                zIndex: 0,
-              }}
-            />
+            {!PlayerLoading ? (
+              <Image
+                source={
+                  isPaused
+                    ? require('../../assets/flaticon/play.png')
+                    : require('../../assets/flaticon/pause.png')
+                }
+                style={{
+                  height: hp(3.5),
+                  width: hp(3.5),
+                  tintColor: !isPaused ? '#fff' : '#fff',
+                  position: 'absolute',
+                  zIndex: 0,
+                }}
+              />
+            ) : (
+              <ActivityIndicator
+                style={{alignSelf: 'center', position: 'absolute'}}
+                color={'#B72658'}
+                size={hp(4.5)}
+              />
+            )}
             <CircularProgress
               value={progress}
               radius={hp(5.3)}
@@ -494,7 +518,9 @@ const Playsong = ({route}) => {
                       justifyContent: 'flex-end',
                       flexDirection: 'row',
                       backgroundColor:
-                        selectedTab === item.title ? '#000000' : '#DEDEDE',
+                        selectedTab === item.title
+                          ? 'rgba(0,0,0,0.7)'
+                          : 'rgba(222,222,222,0.7)',
                       borderRadius: hp(5),
                       marginHorizontal: wp(1),
                       // paddingLeft: item.id == '2' ? '2%' : '0%',

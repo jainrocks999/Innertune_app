@@ -40,11 +40,18 @@ const initialState = {
     lastSesstion: [],
     Popular: [],
   },
+  fromLibrary: {
+    playlist: false,
+    liked: false,
+  },
 };
 const Home = createSlice({
   name: 'home',
   initialState,
   reducers: {
+    setFromLibrary: (state, action) => {
+      state.fromLibrary = action.payload;
+    },
     setTogglePlay: (state, action) => {
       return {...state, togglePlay: action.payload};
     },

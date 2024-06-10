@@ -66,7 +66,7 @@ const Horizontal = ({data, onPress, onPressHeart}) => {
 const styles = StyleSheet.create({
   main: {
     alignItems: 'center',
-    marginHorizontal: wp(2.5),
+    marginHorizontal: wp(0.5),
   },
   container: {
     height: wp(43),
@@ -77,10 +77,10 @@ const styles = StyleSheet.create({
   title: {
     color: 'white',
     marginTop: wp(2),
-    fontSize: wp(4.5),
+    fontSize: wp(3.8),
     width: wp(43),
     marginLeft: wp(4),
-    fontFamily: fonts.regular,
+    // fontFamily: fonts.regular,
   },
 });
 

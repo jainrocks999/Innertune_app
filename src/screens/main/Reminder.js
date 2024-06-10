@@ -23,6 +23,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../components/Loader';
 import storage from '../../utils/StorageService';
 import Remindmodal4 from './Reminder/Remindmodal4';
+import Buttun from '../Auth/compoents/Buttun';
 const data = [
   {id: '1', title: 'Daily Practice', time: '09:00', frequency: '1x Every Day'},
   {id: '2', title: 'Daily Practice', time: '09:00', frequency: '1x Every Day'},
@@ -260,7 +261,7 @@ const Reminder = () => {
         />
       </ScrollView>
       <View style={{alignSelf: 'center', bottom: hp(1)}}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             height: hp(6.5),
             backgroundColor: '#426e56',
@@ -274,7 +275,7 @@ const Reminder = () => {
           <LinearGradient
             style={{
               height: '100%',
-              width: '100%',
+              width: '80%',
               alignItems: 'center',
               justifyContent: 'center',
             }}
@@ -288,7 +289,17 @@ const Reminder = () => {
             colors={['#D485D1', '#B72658']}>
             <Text style={styles.loginText}>Add New Reminder</Text>
           </LinearGradient>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <Buttun
+          title={'Add New Reminder'}
+          style={{
+            width: '60%',
+            position: 'absolute',
+            bottom: hp(4),
+            alignSelf: 'center',
+            height: hp(6),
+          }}
+        />
       </View>
       <Modal2
         title={selectedModal}

@@ -8,6 +8,7 @@ import {
   Alert,
   Clipboard,
   BackHandler,
+  ImageBackground,
 } from 'react-native';
 import Header from '../../components/molecules/Header';
 import {useDispatch, useSelector, useStore} from 'react-redux';
@@ -378,6 +379,7 @@ const HomeScreen = props => {
                   fontSize: 15,
                   color: 'white',
                   fontFamily: fonts.bold,
+                  textDecorationLine: 'underline',
                 }}>
                 View All
               </Text>
@@ -430,14 +432,14 @@ const HomeScreen = props => {
           loading={loading}
           visible={currentVisbleIndex == -11}
           onCLose={() => setCurrentVisibleIndex(-1)}
-          title={'Populer Playlist'}
+          title={'Popular Playlist'}
           onCategories={items => {
             getAffetMationsbyCategories(items);
           }}
         />
-
+        {/* 3.7.2 */}
         <View style={styles.FeatureContainer}>
-          <Text style={styles.Featurecategory}>Populer Playlist</Text>
+          <Text style={styles.Featurecategory}>Popular Playlist</Text>
           <View style={{paddingHorizontal: '20%'}}>
             <TouchableOpacity
               onPress={() => {
@@ -448,6 +450,7 @@ const HomeScreen = props => {
                   ontSize: 15,
                   color: 'white',
                   fontFamily: fonts.bold,
+                  textDecorationLine: 'underline',
                 }}>
                 View All
               </Text>
@@ -495,12 +498,14 @@ const HomeScreen = props => {
                             ontSize: 15,
                             color: 'white',
                             fontFamily: fonts.bold,
+                            textDecorationLine: 'underline',
                           }}>
                           View All
                         </Text>
                       </TouchableOpacity>
                     </View>
                   </View>
+
                   <Horizontal
                     onPressHeart={(val, items) => {
                       val
@@ -515,86 +520,183 @@ const HomeScreen = props => {
                 </>
               ) : null}
               {index == 1 ? (
+                // <View
+                //   style={{
+                //     width: wp(100),
+                //     justifyContent: 'space-around',
+                //     marginVertical: wp(2),
+                //   }}>
+                //   <View style={styles.card}>
+                //     <TouchableOpacity>
+                //       <LinearGradient
+                //         start={{x: 0.0, y: 0.0}}
+                //         end={{x: 5, y: 0.0}}
+                //         locations={[0, 0.5, 0.3]}
+                //         colors={['#191919', '#89FFBF']}
+                //         style={styles.linearGradient}>
+                //         <Image
+                //           source={require('../../assets/review.jpg')}
+                //           style={{
+                //             height: hp(24),
+                //             width: hp(24),
+                //             borderRadius: 20,
+                //           }}
+                //         />
+                //         <View
+                //           style={{
+                //             flexDirection: 'column',
+                //             alignSelf: 'flex-end',
+                //             position: 'absolute',
+                //             width: wp(35),
+                //             marginHorizontal: '5%',
+                //             bottom: hp(2),
+                //           }}>
+                //           <Text
+                //             style={{
+                //               fontSize: 20,
+                //               fontWeight: '600',
+                //               color: '#ffffff',
+                //               backgroundColor: 'transparent',
+                //             }}>
+                //             Leave us review...
+                //           </Text>
+                //         </View>
+                //       </LinearGradient>
+                //     </TouchableOpacity>
+                //     <TouchableOpacity>
+                //       <LinearGradient
+                //         start={{x: 0.0, y: 0.0}}
+                //         end={{x: 5, y: 0.0}}
+                //         locations={[0, 0.5, 0.3]}
+                //         colors={['#191919', '#89FFBF']}
+                //         style={styles.linearGradient}>
+                //         <Image
+                //           source={require('../../assets/music1.jpg')}
+                //           style={{
+                //             height: hp(24),
+                //             width: hp(24),
+                //             borderRadius: 20,
+                //           }}
+                //         />
+                //         <View
+                //           style={{
+                //             flexDirection: 'column',
+                //             alignSelf: 'flex-end',
+                //             position: 'absolute',
+                //             width: wp(35),
+                //             marginHorizontal: '5%',
+                //             bottom: hp(2),
+                //           }}>
+                //           <Text
+                //             style={{
+                //               fontSize: 20,
+                //               color: '#ffffff',
+                //               backgroundColor: 'transparent',
+                //               fontFamily: fonts.bold,
+                //             }}>
+                //             Share Innertunes with your loved...
+                //           </Text>
+                //         </View>
+                //       </LinearGradient>
+                //     </TouchableOpacity>
+                //   </View>
+                // </View>
                 <View
                   style={{
-                    width: wp(100),
-                    justifyContent: 'space-around',
-                    marginVertical: 10,
+                    flexDirection: 'row',
+                    width: '100%',
+                    justifyContent: 'space-between',
+                    // borderWidth: 1,
+                    borderColor: '#fff',
+                    marginVertical: hp(2),
+                    paddingHorizontal: wp(4),
                   }}>
-                  <View style={styles.card}>
-                    <TouchableOpacity>
-                      <LinearGradient
-                        start={{x: 0.0, y: 0.0}}
-                        end={{x: 5, y: 0.0}}
-                        locations={[0, 0.5, 0.3]}
-                        colors={['#191919', '#89FFBF']}
-                        style={styles.linearGradient}>
-                        <Image
-                          source={require('../../assets/review.jpg')}
+                  <LinearGradient
+                    start={{x: 0.0, y: 0.0}}
+                    end={{x: 5, y: 0.0}}
+                    locations={[0, 0.5, 0.3]}
+                    colors={['#191919', '#89FFBF']}
+                    style={{
+                      width: hp(22),
+                      height: hp(27),
+                      borderRadius: wp(5),
+                      overflow: 'hidden',
+                    }}>
+                    <ImageBackground
+                      source={require('../../assets/review.jpg')}
+                      style={{height: '100%', width: '100%'}}>
+                      <View
+                        style={{
+                          flexDirection: 'column',
+                          alignSelf: 'flex-end',
+                          position: 'absolute',
+                          width: wp(40),
+                          marginHorizontal: '5%',
+                          bottom: hp(4),
+                        }}>
+                        <Text
                           style={{
-                            height: hp(30),
-                            width: wp(40),
-                            borderRadius: 20,
-                          }}
-                        />
-                        <View
-                          style={{
-                            flexDirection: 'column',
-                            alignSelf: 'flex-end',
-                            position: 'absolute',
-                            width: wp(35),
-                            marginHorizontal: '5%',
-                            bottom: hp(2),
+                            fontSize: 18,
+                            fontWeight: 'bold',
+                            color: '#ffffff',
+                            backgroundColor: 'transparent',
+                            zIndex: 3,
                           }}>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '600',
-                              color: '#ffffff',
-                              backgroundColor: 'transparent',
-                            }}>
-                            Leave us review...
-                          </Text>
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                      <LinearGradient
-                        start={{x: 0.0, y: 0.0}}
-                        end={{x: 5, y: 0.0}}
-                        locations={[0, 0.5, 0.3]}
-                        colors={['#191919', '#89FFBF']}
-                        style={styles.linearGradient}>
-                        <Image
-                          source={require('../../assets/music1.jpg')}
+                          Leave us review...
+                        </Text>
+                      </View>
+                    </ImageBackground>
+                    <View
+                      style={{
+                        height: '100%',
+                        width: '100%',
+                        backgroundColor: 'rgba(0,0,0,0.45)',
+                        position: 'absolute',
+                      }}></View>
+                  </LinearGradient>
+                  <LinearGradient
+                    start={{x: 0.0, y: 0.0}}
+                    end={{x: 5, y: 0.0}}
+                    locations={[0, 0.5, 0.3]}
+                    colors={['#191919', '#89FFBF']}
+                    style={{
+                      width: hp(22),
+                      height: hp(27),
+                      borderRadius: wp(5),
+                      overflow: 'hidden',
+                    }}>
+                    <ImageBackground
+                      style={{height: '100%', width: '100%'}}
+                      source={require('../../assets/music1.jpg')}>
+                      <View
+                        style={{
+                          flexDirection: 'column',
+                          alignSelf: 'flex-end',
+                          position: 'absolute',
+                          width: wp(40),
+                          marginHorizontal: '5%',
+                          bottom: hp(2),
+                        }}>
+                        <Text
                           style={{
-                            height: hp(30),
-                            width: wp(40),
-                            borderRadius: 20,
-                          }}
-                        />
-                        <View
-                          style={{
-                            flexDirection: 'column',
-                            alignSelf: 'flex-end',
-                            position: 'absolute',
-                            width: wp(35),
-                            marginHorizontal: '5%',
-                            bottom: hp(2),
+                            fontSize: 18,
+                            color: '#ffffff',
+                            backgroundColor: 'transparent',
+                            fontWeight: 'bold',
+                            zIndex: 3,
                           }}>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              color: '#ffffff',
-                              backgroundColor: 'transparent',
-                              fontFamily: fonts.bold,
-                            }}>
-                            Share Innertunes with your loved...
-                          </Text>
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  </View>
+                          Share Innertunes with your loved...
+                        </Text>
+                      </View>
+                    </ImageBackground>
+                    <View
+                      style={{
+                        height: '100%',
+                        width: '100%',
+                        backgroundColor: 'rgba(0,0,0,0.45)',
+                        position: 'absolute',
+                      }}></View>
+                  </LinearGradient>
                 </View>
               ) : null}
             </>
@@ -602,85 +704,9 @@ const HomeScreen = props => {
         />
       </ScrollView>
       {playPlalist.length > 0 && getNameImage().name != '' ? (
-        // <View
-        //   style={{
-        //     height: hp(10.5),
-        //     backgroundColor: '#191919 ',
-        //     borderTopStartRadius: wp(6),
-        //     borderTopEndRadius: wp(6),
-        //     alignItems: 'center',
-        //     flexDirection: 'row',
-        //     justifyContent: 'space-between',
-        //     elevation: 3,
-        //     shadowColor: '#fff',
-        //     // borderWidth: 1,
-        //     borderColor: 'lightgrey',
-        //   }}>
-        //   <View style={{marginLeft: '5%', flexDirection: 'row'}}>
-        //     <View style={{elevation: 2, shadowColor: '#fff'}}>
-        //       <Image
-        //         style={{
-        //           justifyContent: 'center',
-        //           // alignSelf: 'flex-end',
-        //           // alignItems: 'center',
-        //           height: wp(10),
-        //           width: wp(10),
-        //           marginBottom: '2%',
-        //           borderRadius: wp(10),
-        //         }}
-        //         source={{uri: getNameImage().image}}
-        //       />
-        //     </View>
-        //     <View style={{marginLeft: '10%'}}>
-        //       <Text
-        //         style={{
-        //           color: '#fff',
-        //           fontSize: wp(5),
-        //           fontWeight: fonts.bold,
-        //         }}>
-        //         {getNameImage().name}
-        //       </Text>
-        //       <Text style={{color: '#fff'}}>{getNameImage().title}</Text>
-        //     </View>
-        //   </View>
-        //   <TouchableOpacity
-        //     onPress={() => handlePlayPauseClick()}
-        //     style={{
-        //       justifyContent: 'center',
-        //       alignSelf: 'flex-end',
-        //       alignItems: 'center',
-        //       marginBottom: '2%',
-        //       marginRight: '5%',
-        //     }}>
-        //     <Image
-        //       source={
-        //         isPaused
-        //           ? require('../../assets/flaticon/play.png')
-        //           : require('../../assets/flaticon/pause.png')
-        //       }
-        //       style={{
-        //         height: hp(2.5),
-        //         width: hp(2.5),
-        //         tintColor: !isPaused ? '#ccc' : '#ccc',
-        //         position: 'absolute',
-        //         zIndex: 0,
-        //       }}
-        //     />
-        //     <CircularProgress
-        //       value={progress}
-        //       radius={hp(3.5)}
-        //       duration={200}
-        //       progressValueColor={'#ecf0f1'}
-        //       maxValue={100}
-        //       inActiveStrokeColor="#ccc"
-        //       showProgressValue={false}
-        //       activeStrokeWidth={wp(0.8)}
-        //       inActiveStrokeWidth={wp(0.8)}
-        //       activeStrokeColor="#B72658"
-        //     />
-        //   </TouchableOpacity>
-        // </View>
-        <PlayPopup />
+        <View style={{position: 'absolute', width: '100%', bottom: 0}}>
+          <PlayPopup />
+        </View>
       ) : null}
     </SafeAreaView>
   );
@@ -696,9 +722,10 @@ const styles = StyleSheet.create({
   FeatureContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10,
+    // paddingHorizontal: 10,
     width: wp(100),
     height: hp(6.5),
+    marginTop: '5%',
   },
   Featurecategory: {
     fontSize: wp(5),
@@ -708,7 +735,7 @@ const styles = StyleSheet.create({
     color: 'white',
     paddingHorizontal: 10,
   },
-  scrollView: {paddingBottom: hp(2)},
+  scrollView: {paddingBottom: hp(10)},
   imageContainer: {
     padding: 12,
   },
@@ -716,12 +743,6 @@ const styles = StyleSheet.create({
     width: hp(30),
     height: hp(20),
     resizeMode: 'stretch',
-    borderRadius: 20,
-  },
-
-  linearGradient: {
-    width: '100%',
-    flexDirection: 'row',
     borderRadius: 20,
   },
 
@@ -748,11 +769,7 @@ const styles = StyleSheet.create({
     fontWeight: '300',
   },
   card: {
-    height: hp(30),
-
-    width: wp(40),
     borderColor: 'black',
-
     flexDirection: 'row',
     borderRadius: 20,
   },

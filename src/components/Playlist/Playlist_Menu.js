@@ -13,6 +13,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Loader from '../Loader';
+import {useSelector} from 'react-redux';
 const data = [
   {
     id: '1',
@@ -42,13 +43,14 @@ const Playlist_Menu = ({
   loading,
 }) => {
   const parentItem = item;
+  const {fromLibrary} = useSelector(state => state.home);
 
   return (
     <Modal animationType="fade" visible={visible} transparent={true}>
       <View style={{flex: 1, backgroundColor: '#191919', opacity: 0.99}}>
         <Loader loading={loading} />
         <View style={{height: '20%'}} />
-        {item && item != 'fav' ? (
+        {(item && item != 'fav') || fromLibrary.liked ? (
           <View style={styles.card}>
             <View
               style={{
@@ -69,20 +71,19 @@ const Playlist_Menu = ({
               />
             </View>
             <View style={{paddingBottom: '5%'}}>
-              <Text style={styles.title}>{item.title}</Text>
+              <Text style={styles.title}>
+                {item.title ?? 'Liked affirmations'}
+              </Text>
               <Text
-                style={[
-                  styles.title,
-                  {fontSize: wp(5), fontFamily: fonts.medium},
-                ]}>
-                {item?.description?.substring(0, 20)}
+                style={[styles.title, {fontSize: wp(3.5), fontWeight: '400'}]}>
+                {item?.description?.substring(0, 20) ?? 'Liked by you'}
               </Text>
             </View>
           </View>
         ) : null}
         <View style={{paddingLeft: wp(5), paddingTop: hp(4)}}>
           <FlatList
-            data={data}
+            data={fromLibrary.liked ? data.slice(0, 1) : data}
             keyExtractor={item => item.id}
             contentContainerStyle={{alignSelf: 'right', marginLeft: wp(8)}}
             renderItem={({item, index}) => {
@@ -101,18 +102,18 @@ const Playlist_Menu = ({
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    marginVertical: '5%',
+                    marginVertical: '3%',
                   }}>
                   {index == 0 || index == 2 ? (
-                    <AntDesign color={'white'} size={wp(7)} name={item.icon} />
+                    <AntDesign color={'white'} size={wp(6)} name={item.icon} />
                   ) : (
-                    <Entypo color="white" size={wp(7)} name={item.icon} />
+                    <Entypo color="white" size={wp(6)} name={item.icon} />
                   )}
 
                   <Text
                     style={{
                       color: 'white',
-                      fontSize: wp(5),
+                      fontSize: wp(4),
                       marginLeft: '5%',
                       fontFamily: fonts.medium,
                     }}>
@@ -127,7 +128,7 @@ const Playlist_Menu = ({
           <Text
             style={{
               color: '#fff',
-              fontSize: wp(6.5),
+              fontSize: wp(6),
               fontFamily: fonts.medium,
               // fontWeight: 'bol000d',
             }}>
@@ -155,9 +156,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: wp(6),
+    fontSize: wp(4.5),
     marginLeft: wp(3),
-    fontFamily: fonts.bold,
+    fontWeight: 'bold',
     color: '#fff',
   },
   close: {
