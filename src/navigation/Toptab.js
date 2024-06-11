@@ -84,6 +84,7 @@ const Toptab = () => {
     playlist,
     favorite_Cat,
     affirmations,
+    fav_affirmations,
     category,
     affirmations2,
     loading,
@@ -150,6 +151,7 @@ const Toptab = () => {
   };
   useEffect(() => {
     getFavroitCategories(true);
+    getFavroitCategories(false);
   }, [grops, category]);
   const getAffetMations = async item => {
     const items = await storage.getMultipleItems([
@@ -256,7 +258,11 @@ const Toptab = () => {
       </View>
       <TouchableOpacity
         onPress={items => {
-          getFavroitCategories(false);
+          dispatch({
+            type: 'home/affirmationBYCategory_success',
+            payload: fav_affirmations,
+            navigation,
+          });
         }}>
         <View
           style={{
@@ -289,7 +295,9 @@ const Toptab = () => {
                   }}>
                   Afffirmation liked
                 </Text>
-                <Text style={styles.text2}>90 affirmations</Text>
+                <Text style={styles.text2}>
+                  {fav_affirmations.length} affirmations
+                </Text>
               </View>
             </LinearGradient>
           </View>

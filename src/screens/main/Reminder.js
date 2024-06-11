@@ -199,13 +199,13 @@ const Reminder = () => {
               }>
               <View
                 style={{
-                  height: hp(13),
+                  height: hp(12),
                   width: wp(90),
                   justifyContent: 'center',
                   alignSelf: 'center',
-                  backgroundColor: '#4A4949',
+                  backgroundColor: 'rgba(97, 95, 95,0.3)',
                   borderRadius: wp(2),
-                  marginVertical: 10,
+                  marginVertical: 5,
                   padding: '0%',
                   // alignItems: 'center',
                 }}>
@@ -213,8 +213,8 @@ const Reminder = () => {
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    marginHorizontal: '8%',
-                    marginTop: '3%',
+                    marginHorizontal: '7%',
+                    marginTop: '2%',
                   }}>
                   <Text
                     style={{
@@ -297,7 +297,10 @@ const Reminder = () => {
             position: 'absolute',
             bottom: hp(4),
             alignSelf: 'center',
-            height: hp(6),
+            height: hp(5),
+          }}
+          textStyle={{
+            fontSize: wp(5),
           }}
         />
       </View>
@@ -341,7 +344,7 @@ const styles = StyleSheet.create({
   },
   dayText: {
     color: '#000',
-    fontSize: 13,
+    fontSize: 10,
     fontWeight: '300',
     fontFamily: 'medium',
   },

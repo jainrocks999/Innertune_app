@@ -73,6 +73,8 @@ const HomeScreen = props => {
   const [searchvisble, setSearchvisible] = useState(false);
 
   const getAllCategories = async () => {
+    const tokenn = await storage.getItem(storage.FCM_TOKEN);
+    console.log('this issi siss ', tokenn);
     const items = await storage.getMultipleItems([
       storage.TOKEN,
       storage.USER_ID,

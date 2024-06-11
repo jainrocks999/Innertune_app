@@ -44,6 +44,7 @@ const initialState = {
     playlist: false,
     liked: false,
   },
+  fav_affirmations: [],
 };
 const Home = createSlice({
   name: 'home',
@@ -53,23 +54,30 @@ const Home = createSlice({
       state.fromLibrary = action.payload;
     },
     setTogglePlay: (state, action) => {
-      return {...state, togglePlay: action.payload};
+      // return {...state, togglePlay: action.payload};
+      state.togglePlay = action.payload;
     },
     currentPLaylist: (state, action) => {
-      return {...state, playItem: action.payload};
+      // return {...state, playItem: action.payload};
+      state.playItem = action.payload;
     },
 
     setPageChange: (state, action) => {
-      return {...state, screens: action.payload};
+      // return {...state, screens: action.payload};
+      state.screens = action.payload;
     },
     playList_item: (state, action) => {
-      return {...state, item: action.payload};
+      // return {...state, item: action.payload};
+      state.item = action.payload;
     },
     playlist_request: (state, action) => {
-      return {...state, loading: true};
+      // return {...state, loading: true};
+      state.loading = true;
     },
     playlist_success: (state, action) => {
-      return {...state, playlist: action.payload, loading: false};
+      // return {...state, playlist: action.payload, loading: false};
+      state.loading = false;
+      state.playlist = action.payload;
     },
     playlist_error: (state, action) => {
       return {...state, loading: false};
@@ -181,7 +189,7 @@ const Home = createSlice({
       return {...state, loading: true};
     },
     getFavriotAffermation_success: (state, action) => {
-      return {...state, affirmations: action.payload, loading: false};
+      return {...state, fav_affirmations: action.payload, loading: false};
     },
     getFavriot_error: (state, action) => {
       return {...state, loading: false};
@@ -199,7 +207,12 @@ const Home = createSlice({
       return {...state, loading: true};
     },
     affirmationBYCategory_success: (state, action) => {
-      return {...state, loading: false, affirmations: action.payload};
+      // return {...state, loading: false, affirmations: action.payload};
+      state.loading = false;
+      state.affirmations = action.payload;
+      if (action?.navigation) {
+        action.navigation.navigate('Playlistdetails2');
+      }
     },
     affirmationBYCategory_error: (state, action) => {
       return {...state, loading: false};

@@ -17,7 +17,6 @@ import {
 } from '../../components/atoms/responsive';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Slider from '@react-native-community/slider';
-import Tts from 'react-native-tts';
 import {fonts} from '../../Context/Conctants';
 const Img = [
   {

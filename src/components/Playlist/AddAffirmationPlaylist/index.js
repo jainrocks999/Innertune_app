@@ -19,10 +19,13 @@ import Buttun from '../../../screens/Auth/compoents/Buttun';
 import CheckCircle from './Animatecicle';
 import storage from '../../../utils/StorageService';
 import Loader from '../../Loader';
+import {useNavigation} from '@react-navigation/native';
+import {BlurView} from '@react-native-community/blur';
 const FullScreenModal = ({visible, onClose, loading, id}) => {
   const slideAnim = useRef(new Animated.Value(0)).current;
   const {playlist, paly} = useSelector(state => state.home);
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (visible) {
@@ -88,6 +91,12 @@ const FullScreenModal = ({visible, onClose, loading, id}) => {
           style={[styles.modalContent, {transform: [{translateY: slideIn}]}]}
           {...panResponder.panHandlers}>
           <View style={styles.handle} />
+          {/* <BlurView
+            style={{position: 'absolute', top: 0, left: 0, bottom: 0, right: 0}}
+            blurType="extraDark"
+            blurAmount={15}
+            reducedTransparencyFallbackColor="grey"
+          /> */}
 
           {/* <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.createButton}>
@@ -97,6 +106,16 @@ const FullScreenModal = ({visible, onClose, loading, id}) => {
           <Buttun
             style={styles.buttonContainer}
             title={'Create new Playlist'}
+            onPress={() => {
+              dispatch({
+                type: 'home/Add_item_to_Create_Playlist',
+                payload: [id],
+              });
+              navigation.navigate('saveplaylist', {isEdit: false});
+            }}
+            textStyle={{
+              fontSize: wp(5),
+            }}
           />
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             <FlatList
@@ -158,9 +177,6 @@ const FullScreenModal = ({visible, onClose, loading, id}) => {
             />
           </ScrollView>
           <View style={styles.bottomButtonContainer}>
-            {/* <TouchableOpacity style={styles.saveButton}>
-              <Text style={styles.buttonText}>Save</Text>
-            </TouchableOpacity> */}
             <Buttun
               onPress={async () => {
                 const token = await storage.getItem(storage.TOKEN);
@@ -174,6 +190,15 @@ const FullScreenModal = ({visible, onClose, loading, id}) => {
               }}
               style={styles.saveButton}
               title={'Save'}
+            />
+          </View>
+          <View style={styles.bottomButtonContainer}>
+            <Buttun
+              onPress={async () => {
+                onClose();
+              }}
+              style={styles.saveButton}
+              title={'Cancel'}
             />
           </View>
         </Animated.View>
@@ -202,11 +227,14 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: 'black',
+    backgroundColor: '#191919',
     padding: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     height: '95%', // Full-screen height
+    // borderWidth: 1,
+    // borderColor: '#fff',
+    overflow: 'hidden',
   },
   handle: {
     width: 40,
@@ -221,12 +249,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   buttonContainer: {
-    height: hp(7.5),
+    height: hp(6),
     width: '80%',
     justifyContent: 'center',
     alignSelf: 'center',
     marginBottom: 20,
-    borderRadius: wp(8),
+    borderRadius: wp(1),
     marginTop: '10%',
   },
   createButton: {
@@ -251,16 +279,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   bottomButtonContainer: {
-    height: hp(7.5),
+    height: hp(5.5),
     width: '40%',
     justifyContent: 'center',
     alignSelf: 'center',
+    marginBottom: '5%',
   },
   saveButton: {
     height: '100%',
     width: '100%',
     backgroundColor: '#dbed7b',
-    borderRadius: wp(8),
+    borderRadius: wp(1),
     alignItems: 'center',
     justifyContent: 'center',
   },

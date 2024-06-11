@@ -104,7 +104,7 @@ const Relax = ({data, onPress, backgroundSound}) => {
                 //   },
                 // };
                 // onPress(obj);
-                console.log(item);
+                console.log(item.media[1]?.original_url);
                 onPress(item.media[1]?.original_url);
               }}
               activeOpacity={0.7}

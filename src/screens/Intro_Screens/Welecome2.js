@@ -141,9 +141,11 @@ const Welecome2 = ({navigation}) => {
 
   const onNextPress = () => {
     if (currentIndex !== affirmations.length - 1) {
-      // const nextIndex = (currentIndex + 1) % affirmations.length;
-      // flatListRef.current.scrollToIndex({Animated2: true, index: nextIndex});
-      // setCurrentIndex(nextIndex);
+      setCurrentIndex(prev => {
+        const nextIndex = (prev + 1) % affirmations.length;
+        flatListRef.current.scrollToIndex({Animated2: true, index: nextIndex});
+        return nextIndex;
+      });
     } else {
       navigation.navigate('AksReminder');
     }
@@ -181,7 +183,7 @@ const Welecome2 = ({navigation}) => {
           style={{height: hp(height), marginTop: '8%'}}>
           <FlatList
             horizontal
-            scrollEventThrottle={1}
+            scrollEventThrottle={16}
             data={affirmations}
             ref={flatListRef}
             snapToAlignment="start"
@@ -275,45 +277,50 @@ const Welecome2 = ({navigation}) => {
             />
           </View>
         </View>
-        {currentIndex == affirmations.length - 1 ? (
-          <TouchableOpacity
-            onPress={onNextPress}
-            style={[
-              styles.nextBtn,
-              {
-                height: currentIndex == affirmations.length - 1 ? hp(6) : hp(7),
-                width: currentIndex == affirmations.length - 1 ? '60%' : hp(7),
-                borderRadius:
-                  currentIndex !== affirmations.length - 1 ? hp(3.5) : wp(1),
-                overflow: 'hidden',
-              },
-            ]}>
-            <LinearGradient
-              style={{
-                height: '100%',
-                width: '100%',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              start={{x: 1.8, y: 0}}
-              end={{x: 0, y: 1}}
-              locations={[0, 1]}
-              colors={['#D485D1', '#B72658']}>
-              {true ? (
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: wp(5.5),
-                    fontWeight: '400',
-                  }}>
-                  {'Next'}
-                </Text>
-              ) : (
-                <Entypo name="chevron-right" size={30} color={'white'} />
-              )}
-            </LinearGradient>
-          </TouchableOpacity>
-        ) : null}
+        {
+          //currentIndex == affirmations.length - 1
+          true ? (
+            <TouchableOpacity
+              onPress={onNextPress}
+              style={[
+                styles.nextBtn,
+                {
+                  height:
+                    currentIndex == affirmations.length - 1 ? hp(7) : hp(7),
+                  width:
+                    currentIndex == affirmations.length - 1 ? hp(6) : hp(6),
+                  borderRadius:
+                    currentIndex !== affirmations.length - 1 ? wp(1) : wp(1),
+                  overflow: 'hidden',
+                },
+              ]}>
+              <LinearGradient
+                style={{
+                  height: '100%',
+                  width: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                start={{x: 1.8, y: 0}}
+                end={{x: 0, y: 1}}
+                locations={[0, 1]}
+                colors={['#D485D1', '#B72658']}>
+                {true ? (
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontSize: wp(5.5),
+                      fontWeight: '400',
+                    }}>
+                    {'Next'}
+                  </Text>
+                ) : (
+                  <Entypo name="chevron-right" size={30} color={'white'} />
+                )}
+              </LinearGradient>
+            </TouchableOpacity>
+          ) : null
+        }
       </SafeAreaView>
     </View>
   );

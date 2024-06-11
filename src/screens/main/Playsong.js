@@ -21,7 +21,6 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Playlistdetails from '../Tab/Playlistdetails';
 import AntDesign from 'react-native-vector-icons/FontAwesome6';
-import Tts from 'react-native-tts';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Mymodal from '../../components/molecules/Modal';
 import {useNavigation} from '@react-navigation/native';
@@ -113,15 +112,6 @@ const Playsong = ({route}) => {
   const handleTabPress = async title => {
     setSelectedTab(title);
     setVisible(true);
-    const items = await storage.getMultipleItems([
-      storage.TOKEN,
-      storage.USER_ID,
-    ]);
-
-    const token = items.find(([key]) => key === storage.TOKEN)?.[1];
-    const user = items.find(([key]) => key === storage.USER_ID)?.[1];
-    if (title == 'Music') {
-    }
   };
 
   useEffect(() => {

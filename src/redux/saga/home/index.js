@@ -531,7 +531,7 @@ function* getFavoriout(action) {
             liked: true,
           },
         });
-        action.navigation.navigate('Playlistdetails2');
+        // action.navigation.navigate('Playlistdetails2');
       }
     } else {
       yield put({
@@ -840,7 +840,9 @@ function* Logoutapi(action) {
         payload: res.data,
       });
       Toast.show('Logout successfully ');
+      const fcm_token = yield storage.getItem(storage.FCM_TOKEN);
       yield storage.clear();
+      yield storage.setItem(storage.FCM_TOKEN, fcm_token);
       action.navigation.reset({index: 0, routes: [{name: 'login'}]});
     } else {
       yield put({

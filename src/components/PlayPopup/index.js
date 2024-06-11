@@ -43,8 +43,8 @@ const PlayPopup = () => {
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        // elevation: 3,
-        // shadowColor: '#fff',
+        elevation: 3,
+        shadowColor: '#fff',
         borderWidth: 0.5,
         borderBottomWidth: 0,
         borderColor: 'lightgrey',
@@ -56,7 +56,7 @@ const PlayPopup = () => {
         style={{position: 'absolute', top: 0, left: 0, bottom: 0, right: 0}}
         blurType="light"
         blurAmount={8}
-        reducedTransparencyFallbackColor="#191919"
+        reducedTransparencyFallbackColor="grey"
       />
       <TouchableOpacity
         activeOpacity={0.7}

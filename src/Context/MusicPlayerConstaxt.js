@@ -2,7 +2,7 @@ import React, {createContext, useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import TrackPlayer, {Event, RepeatMode, State} from 'react-native-track-player';
 import {setupPlayer} from '../utils/Setup';
-import {Alert} from 'react-native';
+import {Alert, Clipboard} from 'react-native';
 import SoundPlayer from 'react-native-sound-player';
 
 export const MusicPlayerContext = createContext();
@@ -22,13 +22,16 @@ export const MusicPlayerProvider = ({children}) => {
   const [onMainPage, setOnMainPage] = useState(true);
   const playPlalistRef = useRef(playPlalist);
   const timeOutRef = useRef(null);
-  const [voiceVolume, setVoiceVolume] = useState(0.5);
+  const [voiceVolume, setVoiceVolume] = useState(1);
   const [scrollDirection, setScrollDirection] = useState(null);
   const [ended, setEnded] = useState(false);
   const [backgroundSoundVolume, setBackgroundSoundsVolume] = useState(0.3);
   const [queended, setQueended] = useState(false);
   const [repeatMode, setRepeatMode] = useState(0);
   const [PlayerLoading, setPlayerLoading] = useState(true);
+  const [backgroundSound, setBackgroundSound] = useState(
+    'https://stimuli.forebearpro.co.in/storage/app/public/143/BGTWO_2.mp3',
+  );
   useEffect(() => {
     playPlalistRef.current = playPlalist;
   }, [playPlalist]);
@@ -59,6 +62,7 @@ export const MusicPlayerProvider = ({children}) => {
 
   const initializeTrackPlayer = async () => {
     setEnded(false);
+    await handleBackgroundSound();
     await setupPlayer();
     const tracks = await getSounds();
     await TrackPlayer.reset();
@@ -70,8 +74,8 @@ export const MusicPlayerProvider = ({children}) => {
   };
 
   useEffect(() => {
-    TrackPlayer.setVolume(0.5);
-    SoundPlayer.setVolume(0.4);
+    TrackPlayer.setVolume(1);
+    SoundPlayer.setVolume(0.5);
   }, []);
 
   const handleOnBackgroundSoundVolume = value => {
@@ -94,6 +98,7 @@ export const MusicPlayerProvider = ({children}) => {
           setProgress(100);
           setIsPaused(true);
           await TrackPlayer.pause();
+          SoundPlayer.pause();
         }
       } else if (PlayerLoading) {
         // Skip updating progress while loading
@@ -177,7 +182,6 @@ export const MusicPlayerProvider = ({children}) => {
         SoundPlayer.play();
         await TrackPlayer.play();
       } else {
-        SoundPlayer.pause();
         await TrackPlayer.pause();
         if (timeOutRef.current != null) {
           clearTimeout(timeOutRef.current);
@@ -207,7 +211,6 @@ export const MusicPlayerProvider = ({children}) => {
         }
         setIsPaused(true);
         await TrackPlayer.pause();
-        SoundPlayer.pause();
       }
     }
   };
@@ -244,17 +247,40 @@ export const MusicPlayerProvider = ({children}) => {
     initializeTrackPlayer();
   };
 
-  const [backgroundSound, setBackgroundSound] = useState(
-    'https://stimuli.forebearpro.co.in/storage/app/public/95/BGTWO.mp3',
-  );
   const playBackondSound = sound => {
     setBackgroundSound(sound);
-    if (!isPaused) {
-      SoundPlayer.playUrl(sound);
-    } else {
-      SoundPlayer.loadUrl(sound);
+  };
+
+  const handleBackgroundSound = async () => {
+    try {
+      setPlayerLoading(true);
+      await SoundPlayer.loadUrl(backgroundSound);
+      // setPlayerLoading(false);
+    } catch (error) {
+      console.error('Error loading background sound:', error);
+      setPlayerLoading(false);
     }
   };
+  useEffect(() => {
+    handleBackgroundSound();
+  }, [backgroundSound]);
+
+  // useEffect(() => {
+  //   const soundFinishedListener = SoundPlayer.addEventListener(
+  //     'FinishedPlaying',
+  //     async () => {
+  //       try {
+  //         await SoundPlayer.playUrl(backgroundSound);
+  //       } catch (error) {
+  //         console.error('Error reloading background sound:', error);
+  //       }
+  //     },
+  //   );
+
+  //   return () => {
+  //     soundFinishedListener.remove();
+  //   };
+  // }, [backgroundSound]);
   // useEffect(() => {
   //   if (backgroundSound) {
   //     SoundPlayer.loadUrl(backgroundSound);
@@ -291,6 +317,28 @@ export const MusicPlayerProvider = ({children}) => {
   //     SoundPlayer.play();
   //   }
   // }, [isPaused]);
+  useEffect(() => {
+    const player = SoundPlayer.addEventListener(
+      'FinishedLoadingURL',
+      status => {
+        if (status.success) {
+          if (!isPaused && status.success) {
+            SoundPlayer.play();
+          }
+        }
+      },
+    );
+    return () => {
+      player.remove();
+    };
+  }, [backgroundSound]);
+  useEffect(() => {
+    if (isPaused) {
+      SoundPlayer.pause();
+    } else {
+      SoundPlayer.play();
+    }
+  }, [isPaused]);
 
   return (
     <MusicPlayerContext.Provider

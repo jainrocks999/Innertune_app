@@ -13,6 +13,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Loader from '../Loader';
+import {BlurView} from '@react-native-community/blur';
 
 const Categores_menu = ({
   visible,
@@ -46,7 +47,13 @@ const Categores_menu = ({
 
   return (
     <Modal animationType="fade" visible={visible} transparent={true}>
-      <View style={{flex: 1, backgroundColor: '#191919', opacity: 0.99}}>
+      <View style={{flex: 1}}>
+        <BlurView
+          style={{position: 'absolute', top: 0, left: 0, bottom: 0, right: 0}}
+          blurType="dark"
+          blurAmount={15}
+          reducedTransparencyFallbackColor="grey"
+        />
         <Loader loading={loading} />
         <View style={{height: '20%'}} />
         <View style={styles.card}>
@@ -54,7 +61,7 @@ const Categores_menu = ({
             style={{
               height: hp(9),
               width: hp(9),
-              backgroundColor: '#fff',
+              // backgroundColor: '#fff',
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: wp(2),

@@ -8,7 +8,15 @@ import LinearGradient from 'react-native-linear-gradient';
 import Foundation from 'react-native-vector-icons/Foundation';
 import {fonts} from '../../../Context/Conctants';
 
-const Buttun = ({onPress, title, child, style, playlist, children}) => {
+const Buttun = ({
+  onPress,
+  textStyle,
+  title,
+  child,
+  style,
+  playlist,
+  children,
+}) => {
   let bool = playlist;
   return (
     <TouchableOpacity onPress={onPress} style={[styles.btn, style]}>
@@ -28,8 +36,8 @@ const Buttun = ({onPress, title, child, style, playlist, children}) => {
         // end={{x: 5, y: 0.0}}
         // locations={[0, 0.4, 0.2]}
         // colors={['#B72658', '#D485D1']}
-        start={{x: 1.4, y: 0}}
-        end={{x: 0, y: 1}}
+        start={{x: 0.5, y: 0}}
+        end={{x: 0.5, y: 0.8}}
         locations={[0, 1]}
         colors={['#D485D1', '#B72658']}>
         {!child ? (
@@ -42,13 +50,16 @@ const Buttun = ({onPress, title, child, style, playlist, children}) => {
               />
             ) : null}
             <Text
-              style={{
-                color: 'white',
-                fontSize: wp(bool ? 5.4 : 5.5),
-                fontWeight: '600',
-                marginTop: bool ? '-2%' : '0%',
-                fontFamily: fonts.medium,
-              }}>
+              style={[
+                {
+                  color: 'white',
+                  fontSize: wp(bool ? 5.4 : 5.5),
+                  fontWeight: '600',
+                  marginTop: bool ? '-2%' : '0%',
+                  fontFamily: fonts.medium,
+                },
+                textStyle,
+              ]}>
               {title}
             </Text>
           </>

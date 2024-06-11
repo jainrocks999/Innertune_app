@@ -19,6 +19,7 @@ import storage from '../../utils/StorageService';
 import {useDispatch} from 'react-redux';
 import Loader from '../Loader';
 import FullScreenModal from './AddAffirmationPlaylist';
+import {BlurView} from '@react-native-community/blur';
 
 const Menu = ({
   visible,
@@ -119,7 +120,13 @@ const Menu = ({
         onClose={() => setVisible(false)}
         visible={visibles}
       />
-      <View style={{flex: 1, backgroundColor: '#191919', opacity: 0.99}}>
+      <View style={{flex: 1}}>
+        <BlurView
+          style={{position: 'absolute', top: 0, left: 0, bottom: 0, right: 0}}
+          blurType="dark"
+          blurAmount={15}
+          reducedTransparencyFallbackColor="grey"
+        />
         <View style={{height: '25%'}} />
         <View style={styles.main}>
           <Text style={styles.txt}>{selectedItem?.affirmation_text}</Text>
@@ -148,6 +155,7 @@ const Menu = ({
                     }
                     case '2': {
                       setVisible(true);
+                      break;
                     }
                     case '3': {
                       Share.share({

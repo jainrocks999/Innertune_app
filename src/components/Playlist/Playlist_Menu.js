@@ -14,6 +14,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Loader from '../Loader';
 import {useSelector} from 'react-redux';
+import {BlurView} from '@react-native-community/blur';
 const data = [
   {
     id: '1',
@@ -47,7 +48,13 @@ const Playlist_Menu = ({
 
   return (
     <Modal animationType="fade" visible={visible} transparent={true}>
-      <View style={{flex: 1, backgroundColor: '#191919', opacity: 0.99}}>
+      <View style={{flex: 1}}>
+        <BlurView
+          style={{position: 'absolute', top: 0, left: 0, bottom: 0, right: 0}}
+          blurType="dark"
+          blurAmount={15}
+          reducedTransparencyFallbackColor="grey"
+        />
         <Loader loading={loading} />
         <View style={{height: '20%'}} />
         {(item && item != 'fav') || fromLibrary.liked ? (

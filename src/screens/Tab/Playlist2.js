@@ -7,6 +7,7 @@ import {
   Animated,
   ImageBackground,
   Alert,
+  Share,
 } from 'react-native';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import Header from '../../components/molecules/Header';
@@ -243,6 +244,11 @@ const Playlistdetails = () => {
           items.is_favorite ? removeFavroit(items) : getFavriote(items);
         }}
         loading={loading}
+        image={
+          image == ''
+            ? require('../../assets/profilepic/plalist.png')
+            : {uri: image}
+        }
       />
       <Animated.View style={[styles.header]}>
         <View
@@ -293,9 +299,9 @@ const Playlistdetails = () => {
                 color: 'white',
                 bottom: '8%',
                 fontSize: wp(6),
-                fontWeight: '600',
+                fontWeight: '700',
                 left: '5%',
-                fontFamily: fonts.medium,
+                // fontFamily: fonts.medium,
               }}>
               {title}
             </Text>
@@ -367,24 +373,36 @@ const Playlistdetails = () => {
       <View
         style={{
           // zIndex: 5,
-          color: 'white',
+          marginTop: hp(-2),
           alignSelf: 'center',
-          height: hp(10),
-          width: '100%',
-          borderRadius: wp(1),
+          height: hp(12),
+          width: '104%',
+          // backgroundColor: '#fff',
           elevation: 5,
           alignItems: 'center',
           justifyContent: 'space-between',
           flexDirection: 'row',
           paddingHorizontal: wp(8),
+          opacity: 1,
+          // paddingBottom: '5%',
+          // borderBottomWidth: 1,
+          shadowColor: 'grey',
+          borderBlockColor: '#fff',
+          borderBottomEndRadius: wp(9),
+          borderBottomLeftRadius: wp(9),
+          zIndex: 0,
         }}>
         <Buttun
           style={{
-            height: '55%',
-            width: '40%',
+            height: '35%',
+            width: '30%',
             flexDirection: 'row',
             elevation: 3,
             shadowColor: '#fff',
+            marginTop: '8%',
+          }}
+          textStyle={{
+            fontSize: wp(4.5),
           }}
           onPress={() => {
             setOnMainPage(true);
@@ -402,7 +420,7 @@ const Playlistdetails = () => {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            width: '45%',
+            width: '38%',
             zIndex: 5,
             alignSelf: 'center',
             // bottom: '5%',
@@ -417,10 +435,20 @@ const Playlistdetails = () => {
                   item.is_favorite ? removeFavroit(item) : getFavriote(item);
                 }}
                 name={item.is_favorite ? 'heart' : 'heart-o'}
-                size={25}
+                size={22}
                 color={item.is_favorite ? '#B72658' : 'white'}
               />
-              <Entypo name="share" size={25} color="white" />
+              <Entypo
+                onPress={() => {
+                  Share.share({
+                    title: title,
+                    message: title,
+                  });
+                }}
+                name="share"
+                size={22}
+                color="white"
+              />
             </>
           ) : null}
           <Entypo
@@ -432,7 +460,7 @@ const Playlistdetails = () => {
               }
             }}
             name="dots-three-vertical"
-            size={25}
+            size={20}
             color="white"
             style={[fromLibrary.playlist && {position: 'absolute', right: 0}]}
           />
@@ -474,23 +502,24 @@ const Playlistdetails = () => {
               setTempAffimation(data);
               setActivationDistance(100);
             }}
-            renderItem={({item, index, drag, isActive}) => (
+            renderItem={({item, drag, isActive, getIndex}) => (
               <ScaleDecorator>
                 <View
                   style={{
                     flexDirection: 'row',
                     alignSelf: 'center',
-                    height: hp(8),
+                    // height: hp(8),
                     width: wp(90),
-                    marginVertical: 10,
-                    backgroundColor: '#4A4949',
+                    marginVertical: 5,
+                    backgroundColor: 'rgba(97, 95, 95,0.3)', //#4A4949
                     borderRadius: 8,
+                    paddingVertical: wp(3),
                   }}>
                   <Menu
                     onClose={onClose}
                     selectedItem={item}
-                    visible={index == modalIndex}
-                    selectedIndex={index}
+                    visible={getIndex() == modalIndex}
+                    selectedIndex={getIndex()}
                     affirmations={affirmations}
                     loading={loading}
                   />
@@ -508,14 +537,12 @@ const Playlistdetails = () => {
                     }}
                     disabled={isActive}
                     style={{justifyContent: 'center', marginHorizontal: '10%'}}>
-                    <Text style={styles.text}>
-                      {item.affirmation_text.substring(0, 40)}
-                    </Text>
+                    <Text style={styles.text}>{item.affirmation_text}</Text>
                   </TouchableOpacity>
                   <View style={{justifyContent: 'center'}}>
                     <Entypo
                       onPress={() => {
-                        setModalIndex(index);
+                        setModalIndex(getIndex());
                       }}
                       name="dots-three-horizontal"
                       size={20}
@@ -528,9 +555,30 @@ const Playlistdetails = () => {
           />
         </NestableScrollContainer>
       </ScrollView>
+
       {playPlalist.length > 0 && getNameImage().name != '' ? (
         <PlayPopup />
-      ) : null}
+      ) : (
+        <LinearGradient
+          start={{x: 0.3, y: 0}}
+          end={{x: 0.3, y: 1}}
+          locations={[-3, 0.7, 1]}
+          colors={[
+            'rgba(0, 0, 0, 0)',
+            'rgba(0, 0, 0, 0.6)',
+            'rgba(0, 0, 0, 0.9)',
+          ]}
+          style={{
+            // backgroundColor: 'rgba(0,0,0,0.5)',
+            height: hp(8),
+            position: 'absolute',
+            bottom: 0,
+            zIndex: 1,
+            borderColor: '#fff',
+            // borderWidth: 1,
+            width: '100%',
+          }}></LinearGradient>
+      )}
     </View>
   );
 };
@@ -544,7 +592,7 @@ const styles = StyleSheet.create({
     height: hp(40),
 
     backgroundColor: '#191919',
-
+    zIndex: 1,
     borderColor: '#fff',
   },
   scrollView: {
@@ -555,7 +603,7 @@ const styles = StyleSheet.create({
     width: wp(60),
     marginLeft: 5,
     color: 'white',
-    fontSize: hp(2.5),
+    fontSize: wp(4.1),
     fontFamily: fonts.regular,
   },
   gradient: {

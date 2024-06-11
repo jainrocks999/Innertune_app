@@ -44,6 +44,7 @@ const App = () => {
     );
     PushNotification.configure({
       onRegister: async token => {
+        console.log('fcm_token', token.token);
         await storage.setItem(storage.FCM_TOKEN, token.token);
       },
       onNotification: notification => {
