@@ -5,6 +5,7 @@ import Loader from '../Loader';
 import {widthPrecent as wp, heightPercent as hp} from '../atoms/responsive';
 import {fonts} from '../../Context/Conctants';
 import Entypo from 'react-native-vector-icons/Entypo';
+import {BlurView} from '@react-native-community/blur';
 
 const CateGoriesModal = ({
   visible,
@@ -17,6 +18,12 @@ const CateGoriesModal = ({
   return (
     <Modal animationType="fade" visible={visible}>
       <View style={{flex: 1, backgroundColor: '#191919'}}>
+        {/* <BlurView
+          style={{position: 'absolute', top: 0, left: 0, bottom: 0, right: 0}}
+          blurType="dark"
+          blurAmount={15}
+          reducedTransparencyFallbackColor="grey"
+        /> */}
         <Loader loading={loading} />
         <View
           style={{

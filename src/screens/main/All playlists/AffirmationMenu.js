@@ -18,8 +18,8 @@ const AffirmationMenu = ({affirmations, visible, onClose, onSelect}) => {
               color: '#fff',
               marginTop: '5%',
               marginBottom: '5%',
-              fontSize: wp(6),
-              fontFamily: fonts.bold,
+              fontSize: wp(5.5),
+              fontWeight: '500',
             }}>
             Select affermation
           </Text>
@@ -34,14 +34,14 @@ const AffirmationMenu = ({affirmations, visible, onClose, onSelect}) => {
                     height: hp(7),
                     width: wp(90),
                     marginVertical: hp(1),
-                    backgroundColor: '#4A4949',
+                    backgroundColor: 'rgba(97, 95, 95,0.3)',
                     borderRadius: 8,
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     paddingHorizontal: wp(4),
                   }}>
                   <Text style={styles.text}>
-                    {item.affirmation_text.substring(0, 40)}
+                    {item.affirmation_text.substring(0, 35)}...
                   </Text>
 
                   <View style={{justifyContent: 'center'}}>
@@ -78,7 +78,7 @@ export default AffirmationMenu;
 const styles = StyleSheet.create({
   text: {
     color: 'white',
-    fontSize: wp(4.5),
+    fontSize: wp(4.1),
     fontFamily: fonts.regular,
   },
   text2: {
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginLeft: 5,
     color: 'black',
-    fontSize: 15,
+    fontSize: wp(2),
     fontWeight: '300',
   },
 });

@@ -123,10 +123,11 @@ const Createaffirmation = ({route}) => {
         <View style={{height: hp(5), width: wp(100)}}>
           <Text
             style={{
-              fontSize: 22,
-              fontWeight: '500',
-              marginHorizontal: '15%',
-              fontFamily: fonts.bold,
+              fontSize: wp(5),
+              fontWeight: '600',
+              marginHorizontal: '10%',
+              // fontFamily: fonts.bold,
+
               color: 'white',
             }}>
             Edit List of Affirmation
@@ -149,7 +150,7 @@ const Createaffirmation = ({route}) => {
                 height: hp(8),
                 width: wp(90),
                 marginVertical: hp(1),
-                backgroundColor: '#4A4949',
+                backgroundColor: 'rgba(97, 95, 95,0.3)',
                 borderRadius: 8,
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -186,8 +187,14 @@ const Createaffirmation = ({route}) => {
             navigation.navigate('saveplaylist', {isEdit: false});
           }}
           title={`${'Next'}`}
+          textStyle={{
+            fontSize: wp(5),
+          }}
           style={{
-            width: '58%',
+            width: '38%',
+            height: '50%',
+            elevation: 4,
+            shadowColor: '#fff',
           }}
         />
       </View>
@@ -216,7 +223,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-    fontSize: wp(4.5),
+    fontSize: wp(4),
     fontFamily: fonts.regular,
   },
   text2: {

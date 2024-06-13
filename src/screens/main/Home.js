@@ -400,12 +400,12 @@ const HomeScreen = props => {
         />
 
         <View style={styles.cardd}>
-          <LinearGradient
-            start={{x: 0.0, y: 0.0}}
-            end={{x: 5, y: 0.0}}
-            locations={[0, 0.3, 0.0]}
-            colors={['#B72658', '#D485D1']}
-            style={styles.linearGradientt}>
+          <ImageBackground
+            source={require('../../assets/sparkle_Images/3634321.jpg')}
+            style={[
+              styles.linearGradientt,
+              {overflow: 'hidden', opacity: 0.8},
+            ]}>
             <Image
               source={require('../../assets/music1.jpg')}
               style={{height: hp(13), width: wp(25), borderRadius: 20}}
@@ -419,15 +419,15 @@ const HomeScreen = props => {
               }}>
               <Text
                 style={{
-                  fontSize: 20,
-                  fontWeight: '600',
+                  fontSize: wp(5),
+                  fontWeight: '500',
                   color: '#ffffff',
                   backgroundColor: 'transparent',
                 }}>
-                Share Innertunes with your loved...
+                Share Stimuli with your loved...
               </Text>
             </View>
-          </LinearGradient>
+          </ImageBackground>
         </View>
         <CateGoriesModal
           data={category}
@@ -449,7 +449,7 @@ const HomeScreen = props => {
               }}>
               <Text
                 style={{
-                  ontSize: 15,
+                  fontSize: 15,
                   color: 'white',
                   fontFamily: fonts.bold,
                   textDecorationLine: 'underline',
@@ -497,7 +497,7 @@ const HomeScreen = props => {
                         }}>
                         <Text
                           style={{
-                            ontSize: 15,
+                            fontSize: 15,
                             color: 'white',
                             fontFamily: fonts.bold,
                             textDecorationLine: 'underline',
@@ -608,19 +608,15 @@ const HomeScreen = props => {
                     flexDirection: 'row',
                     width: '100%',
                     justifyContent: 'space-between',
-                    // borderWidth: 1,
                     borderColor: '#fff',
-                    marginVertical: hp(2),
-                    paddingHorizontal: wp(4),
+                    marginTop: hp(5),
+                    paddingBottom: hp(2),
+                    paddingHorizontal: wp(5),
                   }}>
-                  <LinearGradient
-                    start={{x: 0.0, y: 0.0}}
-                    end={{x: 5, y: 0.0}}
-                    locations={[0, 0.5, 0.3]}
-                    colors={['#191919', '#89FFBF']}
+                  <View
                     style={{
                       width: hp(22),
-                      height: hp(27),
+                      height: hp(32),
                       borderRadius: wp(5),
                       overflow: 'hidden',
                     }}>
@@ -638,8 +634,8 @@ const HomeScreen = props => {
                         }}>
                         <Text
                           style={{
-                            fontSize: 18,
-                            fontWeight: 'bold',
+                            fontSize: wp(5),
+                            fontWeight: '500',
                             color: '#ffffff',
                             backgroundColor: 'transparent',
                             zIndex: 3,
@@ -648,22 +644,22 @@ const HomeScreen = props => {
                         </Text>
                       </View>
                     </ImageBackground>
-                    <View
+                    {/* <View
                       style={{
                         height: '100%',
                         width: '100%',
                         backgroundColor: 'rgba(0,0,0,0.45)',
                         position: 'absolute',
-                      }}></View>
-                  </LinearGradient>
-                  <LinearGradient
-                    start={{x: 0.0, y: 0.0}}
-                    end={{x: 5, y: 0.0}}
-                    locations={[0, 0.5, 0.3]}
-                    colors={['#191919', '#89FFBF']}
+                      }}></View> */}
+                  </View>
+                  <View
+                    // start={{x: 0.0, y: 0.0}}
+                    // end={{x: 5, y: 0.0}}
+                    // locations={[0, 0.5, 0.3]}
+                    // colors={['#191919', '#89FFBF']}
                     style={{
                       width: hp(22),
-                      height: hp(27),
+                      height: hp(32),
                       borderRadius: wp(5),
                       overflow: 'hidden',
                     }}>
@@ -681,24 +677,24 @@ const HomeScreen = props => {
                         }}>
                         <Text
                           style={{
-                            fontSize: 18,
+                            fontSize: wp(5),
                             color: '#ffffff',
                             backgroundColor: 'transparent',
-                            fontWeight: 'bold',
+                            fontWeight: '500',
                             zIndex: 3,
                           }}>
-                          Share Innertunes with your loved...
+                          Share Stimuli with your loved...
                         </Text>
                       </View>
                     </ImageBackground>
-                    <View
+                    {/* <View
                       style={{
                         height: '100%',
                         width: '100%',
                         backgroundColor: 'rgba(0,0,0,0.45)',
                         position: 'absolute',
-                      }}></View>
-                  </LinearGradient>
+                      }}></View> */}
+                  </View>
                 </View>
               ) : null}
             </>
@@ -730,9 +726,9 @@ const styles = StyleSheet.create({
     marginTop: '5%',
   },
   Featurecategory: {
-    fontSize: wp(5),
+    fontSize: wp(4.8),
     width: wp(60),
-    fontWeight: '400',
+    fontWeight: '500',
     fontFamily: fonts.bold,
     color: 'white',
     paddingHorizontal: 10,
@@ -784,6 +780,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: wp(90),
     borderRadius: 20,
+    elevation: 5,
+    shadowColor: '#fff',
+    // borderWidth: 1,
+    // borderColor: '#fff',
   },
   linearGradienttt: {
     flexDirection: 'row',
@@ -815,11 +815,12 @@ const styles = StyleSheet.create({
     width: '46%',
     marginHorizontal: '2%',
     marginVertical: '2%',
-    backgroundColor: '#4A4949',
+    backgroundColor: 'rgba(97, 95, 95,0.3)',
     borderRadius: wp(2),
     flexDirection: 'row',
     alignItems: 'center',
     paddingRight: '2%',
+    paddingVertical: '1%',
   },
 });
 

@@ -36,6 +36,7 @@ import storage from '../../utils/StorageService';
 import {MusicPlayerContext} from '../../Context/MusicPlayerConstaxt';
 import Menu from '../../components/Playlist/Menu';
 import SoundPlayer from 'react-native-sound-player';
+import {BlurView} from '@react-native-community/blur';
 const data = [
   {
     id: '1',
@@ -48,7 +49,12 @@ const data = [
 
 const Playsong = ({route}) => {
   const indexxxx = route.params.index;
-  const {screens, bgSound, loading} = useSelector(state => state.home);
+  const {screens, bgSound, playItem, item, loading} = useSelector(
+    state => state.home,
+  );
+  const image =
+    playItem?.categories_image[0]?.original_url ??
+    'https://images.unsplash.com/photo-1616356607338-fd87169ecf1a';
 
   const {
     maxTimeInMinutes,
@@ -234,14 +240,20 @@ const Playsong = ({route}) => {
   return (
     <View style={{flex: 1}}>
       <ImageBackground
-        source={require('../../assets/music.jpg')}
+        source={image != '' ? {uri: image} : require('../../assets/music.jpg')}
         style={{width: '100%', height: '100%'}}>
         <View
           style={{
-            backgroundColor: 'rgba(25,25,25,0.8)',
+            backgroundColor: 'rgba(25,25,25,0.2)',
             height: hp(100),
             zIndex: 1,
           }}>
+          <BlurView
+            style={{position: 'absolute', top: 0, left: 0, bottom: 0, right: 0}}
+            blurType="extraDark"
+            blurAmount={6}
+            reducedTransparencyFallbackColor="red"
+          />
           <View
             style={{
               flexDirection: 'row',
@@ -258,7 +270,7 @@ const Playsong = ({route}) => {
             </View>
           </View>
 
-          <View
+          {/* <View
             style={[
               styles.card,
               {
@@ -308,7 +320,7 @@ const Playsong = ({route}) => {
                 }}
               />
             </View>
-          </View>
+          </View> */}
 
           <Menu
             onClose={onClose}
@@ -350,7 +362,7 @@ const Playsong = ({route}) => {
                         flexDirection: 'column',
                         width: wp(70),
                         position: 'absolute',
-                        top: '10%',
+                        top: '18%',
                       }}>
                       <Text style={styles.text}>{item?.affirmation_text}</Text>
                     </View>
@@ -359,7 +371,7 @@ const Playsong = ({route}) => {
                         flexDirection: 'row',
                         marginTop: hp(15),
                         alignSelf: 'center',
-                        top: '27%',
+                        top: '32%',
                         position: 'absolute',
                         zIndex: 1,
                         justifyContent: 'space-between',
@@ -385,7 +397,7 @@ const Playsong = ({route}) => {
                               ? 'heart'
                               : 'heart-o'
                           }
-                          size={28}
+                          size={25}
                           color={
                             playPlalist[visibleIndex]?.is_favorite
                               ? '#B72658'
@@ -396,13 +408,13 @@ const Playsong = ({route}) => {
 
                       <FontAwesome
                         name="repeat"
-                        size={28}
+                        size={25}
                         color="white"
                         onPress={() => reset()}
                       />
                       <AntDesign
                         name="repeat"
-                        size={28}
+                        size={25}
                         color={repeatMode == 1 ? '#B72658' : '#ffff'}
                         onPress={() => setMode()}
                       />
@@ -414,7 +426,7 @@ const Playsong = ({route}) => {
                         }}>
                         <Entypo
                           name="dots-three-horizontal"
-                          size={28}
+                          size={25}
                           color="#fff"
                         />
                       </TouchableOpacity>
@@ -486,7 +498,7 @@ const Playsong = ({route}) => {
           </TouchableOpacity>
           <View
             style={{
-              alignItems: 'center',
+              // alignItems: 'center',
 
               height: hp(10),
               width: wp(100),
@@ -502,7 +514,7 @@ const Playsong = ({route}) => {
                 <TouchableOpacity onPress={() => handleTabPress(item.title)}>
                   <View
                     style={{
-                      width: wp(30),
+                      width: wp(27),
                       height: hp(5),
                       alignItems: 'center',
                       justifyContent: 'flex-end',
@@ -513,6 +525,7 @@ const Playsong = ({route}) => {
                           : 'rgba(222,222,222,0.7)',
                       borderRadius: hp(5),
                       marginHorizontal: wp(1),
+                      marginLeft: wp(4),
                       // paddingLeft: item.id == '2' ? '2%' : '0%',
                     }}>
                     <Text
@@ -563,6 +576,8 @@ const Playsong = ({route}) => {
             setMaxTimeInMinutes(item.title);
           }}
           onMusicPress={player}
+          handleTabPress={handleTabPress}
+          selectedTab={selectedTab}
         />
       </ImageBackground>
     </View>
@@ -582,10 +597,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
   },
   text: {
-    fontSize: hp(4.0),
+    fontSize: wp(7),
     color: '#fff',
     width: wp(70),
     textAlign: 'center',
-    fontFamily: fonts.medium,
+    fontWeight: '400',
   },
 });

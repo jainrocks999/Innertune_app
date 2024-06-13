@@ -90,13 +90,13 @@ const FullScreenModal = ({visible, onClose, loading, id}) => {
         <Animated.View
           style={[styles.modalContent, {transform: [{translateY: slideIn}]}]}
           {...panResponder.panHandlers}>
-          <View style={styles.handle} />
-          {/* <BlurView
+          <BlurView
             style={{position: 'absolute', top: 0, left: 0, bottom: 0, right: 0}}
             blurType="extraDark"
             blurAmount={15}
             reducedTransparencyFallbackColor="grey"
-          /> */}
+          />
+          <View style={styles.handle} />
 
           {/* <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.createButton}>
@@ -235,6 +235,8 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     // borderColor: '#fff',
     overflow: 'hidden',
+    borderWidth: 0.5,
+    borderBlockColor: 'grey',
   },
   handle: {
     width: 40,

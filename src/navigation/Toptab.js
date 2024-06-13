@@ -7,6 +7,7 @@ import {
   ScrollView,
   Alert,
   Clipboard,
+  ImageBackground,
 } from 'react-native';
 import React, {useEffect, useState, useContext} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
@@ -120,7 +121,7 @@ const Toptab = () => {
     });
   }, []);
 
-  const getPlayListItem = async (item, bool) => {
+  const getPlayListItem = async (item, bool, image) => {
     const token = await storage.getItem(storage.TOKEN);
     dispatch({
       type: 'home/getPlayListItem_request',
@@ -129,6 +130,7 @@ const Toptab = () => {
       url: 'playListItem',
       navigation,
       item: item,
+      image,
       isEdit: bool ?? false,
       fromLibrary: true,
     });
@@ -259,6 +261,26 @@ const Toptab = () => {
       <TouchableOpacity
         onPress={items => {
           dispatch({
+            type: 'home/playList_item',
+            payload: {
+              categories_image: [
+                {
+                  original_url:
+                    'https://images.unsplash.com/photo-1616356607338-fd87169ecf1a',
+                },
+              ],
+              categories_name: 'Liked affirmations',
+              item: 'fav',
+            },
+          });
+          dispatch({
+            type: 'home/setFromLibrary',
+            payload: {
+              playlist: true,
+              liked: true,
+            },
+          });
+          dispatch({
             type: 'home/affirmationBYCategory_success',
             payload: fav_affirmations,
             navigation,
@@ -271,12 +293,13 @@ const Toptab = () => {
             top: hp(3),
           }}>
           <View style={styles.imageContainer}>
-            <LinearGradient
-              start={{x: 1, y: 0}}
-              end={{x: -0.2, y: 0}}
-              locations={[0.3, 1]}
-              colors={['#D485D1', '#B72658']}
-              style={styles.linearGradient}>
+            <ImageBackground
+              // start={{x: 1, y: 0}}
+              // end={{x: -0.2, y: 0}}
+              // locations={[0.3, 1]}
+              // colors={['#D485D1', '#B72658']}
+              source={require('../assets/sparkle_Images/3634321.jpg')}
+              style={[styles.linearGradient, {opacity: 0.8}]}>
               <View style={{justifyContent: 'center', marginLeft: '5%'}}>
                 <Entypo name="heart" size={30} color="white" />
               </View>
@@ -290,16 +313,16 @@ const Toptab = () => {
                     width: wp(50),
                     color: '#fff',
                     fontSize: wp(5),
-                    fontWeight: '500',
-                    fontFamily: fonts.bold,
+                    fontWeight: '700',
+                    // fontFamily: fonts.bold,
                   }}>
-                  Afffirmation liked
+                  Affirmation liked
                 </Text>
-                <Text style={styles.text2}>
+                <Text style={[styles.text2, {color: '#fff'}]}>
                   {fav_affirmations.length} affirmations
                 </Text>
               </View>
-            </LinearGradient>
+            </ImageBackground>
           </View>
         </View>
       </TouchableOpacity>
@@ -328,11 +351,77 @@ const Toptab = () => {
                   : 'https://images.unsplash.com/photo-1616356607338-fd87169ecf1a';
               // console.log(image, item.categories_name);
               return (
+                // <View
+                //   style={{
+                //     flexDirection: 'row',
+                //     alignSelf: 'center',
+                //     justifyContent: 'center',
+                //   }}>
+                //   <Categores_menu
+                //     visible={categoriesIndex == index}
+                //     image={{uri: image}}
+                //     item={item}
+                //     onClose={() => {
+                //       setCategoryIndex(-1);
+                //     }}
+                //     onPressListen={getAffetMationsbyCategories}
+                //     onPressEdit={removeFavroit}
+                //     loading={loading}
+                //   />
+                //   <TouchableOpacity
+                //     onPress={() => {
+                //       getAffetMations(item);
+                //     }}>
+                //     <View style={styles.imageeContainer}>
+                //       <View
+                //         style={{
+                //           justifyContent: 'center',
+                //           height: hp(8),
+                //           width: wp(16),
+                //           alignItems: 'center',
+                //           borderRadius: wp(2),
+                //           backgroundColor: 'white',
+                //           overflow: 'hidden',
+                //         }}>
+                //         <Image
+                //           source={{uri: image}}
+                //           style={{height: '100%', width: '100%'}}
+                //           resizeMode="stretch"
+                //         />
+                //       </View>
+                //       <View
+                //         style={{
+                //           flexDirection: 'column',
+                //           justifyContent: 'center',
+                //           marginHorizontal: hp(2.5),
+                //         }}>
+                //         <Text style={styles.text}>{item.categories_name}</Text>
+                //         <Text style={styles.text2}>{'Buy Stimuli '}</Text>
+                //       </View>
+                //       <View
+                //         style={{justifyContent: 'center', paddingRight: 20}}>
+                //         <Entypo
+                //           onPress={() => {
+                //             setCategoryIndex(index);
+                //           }}
+                //           name="dots-three-horizontal"
+                //           size={20}
+                //           color="white"
+                //         />
+                //       </View>
+                //     </View>
+                //   </TouchableOpacity>
+                // </View>
                 <View
                   style={{
-                    flexDirection: 'row',
+                    width: '98%',
+                    borderColor: '#fff',
+                    marginVertical: 8,
                     alignSelf: 'center',
-                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingHorizontal: '2%',
+                    paddingVertical: '1%',
                   }}>
                   <Categores_menu
                     visible={categoriesIndex == index}
@@ -348,46 +437,56 @@ const Toptab = () => {
                   <TouchableOpacity
                     onPress={() => {
                       getAffetMations(item);
+                    }}
+                    style={{
+                      height: '100%',
+                      width: '80%',
+                      flexDirection: 'row',
+                      // borderWidth: 1,
                     }}>
-                    <View style={styles.imageeContainer}>
-                      <View
-                        style={{
-                          justifyContent: 'center',
-                          height: hp(8),
-                          width: wp(16),
-                          alignItems: 'center',
-                          borderRadius: wp(2),
-                          backgroundColor: 'white',
-                          overflow: 'hidden',
-                        }}>
-                        <Image
-                          source={{uri: image}}
-                          style={{height: '100%', width: '100%'}}
-                          resizeMode="stretch"
-                        />
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'column',
-                          justifyContent: 'center',
-                          marginHorizontal: hp(2.5),
-                        }}>
-                        <Text style={styles.text}>{item.categories_name}</Text>
-                        <Text style={styles.text2}>{'Buy Stimuli '}</Text>
-                      </View>
-                      <View
-                        style={{justifyContent: 'center', paddingRight: 20}}>
-                        <Entypo
-                          onPress={() => {
-                            setCategoryIndex(index);
-                          }}
-                          name="dots-three-horizontal"
-                          size={20}
-                          color="white"
-                        />
-                      </View>
+                    <Image
+                      source={{uri: image}}
+                      style={{
+                        height: hp(9),
+                        width: hp(9),
+                        borderRadius: wp(2),
+                      }}
+                      // tintColor={!playImage?.uri ? '#B72658' : null}
+                    />
+                    <View
+                      style={{
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        marginHorizontal: hp(2.5),
+                        marginTop: '-7%',
+                      }}>
+                      <Text style={styles.text}>{item.categories_name}</Text>
+                      <Text style={styles.text2}>{'Buy Stimuli '}</Text>
                     </View>
                   </TouchableOpacity>
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      borderColor: 'lightgrey',
+                      marginRight: '2%',
+                      paddingHorizontal: '2.8%',
+                      paddingVertical: '3%',
+                      alignSelf: 'center',
+                      alignItems: 'center',
+                      elevation: 1,
+                      shadowColor: 'grey',
+                      // borderWidth: 0.3,
+                      borderRadius: hp(3.4),
+                    }}>
+                    <Entypo
+                      onPress={() => {
+                        setCategoryIndex(index);
+                      }}
+                      name="dots-three-horizontal"
+                      size={16}
+                      color="white"
+                    />
+                  </View>
                 </View>
               );
             }}
@@ -398,73 +497,183 @@ const Toptab = () => {
           data={playlist[0]?.playlist ?? []}
           keyExtractor={item => item?.id}
           scrollEnabled={false}
-          renderItem={({item, index}) => (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignSelf: 'center',
-                justifyContent: 'center',
-              }}>
-              <Playlist_Menu
-                image={require('../assets/playlist.png')}
-                item={item}
-                visible={index == visibleIndex}
-                onClose={() => setVisibleIndex(-1)}
-                onPressListen={items => {
-                  getPlayListItem(items);
-                }}
-                onPressEdit={data => {
-                  getPlayListItem(item, true);
-                }}
-                onPressDelete={item => {
-                  onPressDelete(item);
-                }}
-                loading={loading}
-              />
-              <TouchableOpacity
-                onPress={() => {
-                  getPlayListItem(item);
+          renderItem={({item, index}) => {
+            let playImage =
+              Array.isArray(item.media) && item.media.length > 0
+                ? {uri: item.media[0]?.original_url}
+                : require('../assets/playlist.png');
+            return (
+              // <View
+              //   style={{
+              //     flexDirection: 'row',
+              //     alignSelf: 'center',
+              //     justifyContent: 'center',
+              //     justifyContent: 'space-between',
+              //   }}>
+              //   <Playlist_Menu
+              //     image={playImage}
+              //     item={item}
+              //     visible={index == visibleIndex}
+              //     onClose={() => setVisibleIndex(-1)}
+              //     onPressListen={items => {
+              //       getPlayListItem(items, false, playImage);
+              //     }}
+              //     onPressEdit={data => {
+              //       getPlayListItem(data, true, playImage);
+              //       // console.log('thisissis', data);
+              //     }}
+              //     onPressDelete={item => {
+              //       onPressDelete(item);
+              //     }}
+              //     loading={loading}
+              //   />
+              //   <TouchableOpacity
+              //     onPress={() => {
+              //       getPlayListItem(item, false, playImage);
+              //     }}>
+              //     <View style={styles.imageeContainer}>
+              //       <View
+              //         style={{
+              //           justifyContent: 'center',
+              //           height: hp(8),
+              //           width: wp(16),
+              //           alignItems: 'center',
+              //           borderRadius: wp(2),
+              //           backgroundColor: 'white',
+              //           elevation: 5,
+              //           shadowColor: '#fff',
+              //         }}>
+              //         <Image
+              //           source={playImage}
+              //           style={
+              //             !playImage?.uri
+              //               ? styles.image
+              //               : {
+              //                   height: '100%',
+              //                   width: '100%',
+              //                   borderRadius: wp(2),
+              //                 }
+              //           }
+              //           tintColor={!playImage?.uri ? '#B72658' : null}
+              //         />
+              //       </View>
+              //       {/* </LinearGradient> */}
+              //       <View
+              //         style={{
+              //           flexDirection: 'column',
+              //           justifyContent: 'center',
+              //           marginHorizontal: hp(2.5),
+              //         }}>
+              //         <Text style={styles.text}>{item.title}</Text>
+              //         <Text style={styles.text2}>{item.description}</Text>
+              //       </View>
+              //     </View>
+              //   </TouchableOpacity>
+              //   <View
+              //     style={{
+              //       justifyContent: 'center',
+              //       paddingRight: 20,
+              //       borderWidth: 1,
+              //       borderColor: 'white',
+              //     }}>
+              //     <Entypo
+              //       onPress={() => {
+              //         setVisibleIndex(index);
+              //       }}
+              //       name="dots-three-horizontal"
+              //       size={16}
+              //       color="white"
+              //     />
+              //   </View>
+              // </View>
+              <View
+                style={{
+                  width: '98%',
+                  borderColor: '#fff',
+                  marginVertical: 8,
+                  alignSelf: 'center',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingHorizontal: '2%',
+                  paddingVertical: '1%',
                 }}>
-                <View style={styles.imageeContainer}>
-                  <View
-                    style={{
-                      justifyContent: 'center',
-                      height: hp(8),
-                      width: wp(16),
-                      alignItems: 'center',
-                      borderRadius: wp(2),
-                      backgroundColor: 'white',
-                    }}>
-                    <Image
-                      source={require('../assets/playlist.png')}
-                      style={styles.image}
-                      tintColor={'#B72658'}
-                    />
-                  </View>
-                  {/* </LinearGradient> */}
+                <Playlist_Menu
+                  image={playImage}
+                  item={item}
+                  visible={index == visibleIndex}
+                  onClose={() => setVisibleIndex(-1)}
+                  onPressListen={items => {
+                    getPlayListItem(items, false, playImage);
+                  }}
+                  onPressEdit={data => {
+                    getPlayListItem(data, true, playImage);
+                    // console.log('thisissis', data);
+                  }}
+                  onPressDelete={item => {
+                    onPressDelete(item);
+                  }}
+                  loading={loading}
+                />
+                <TouchableOpacity
+                  onPress={() => {
+                    getPlayListItem(item, false, playImage);
+                  }}
+                  style={{
+                    height: '100%',
+                    width: '80%',
+                    flexDirection: 'row',
+                    // borderWidth: 1,
+                  }}>
+                  <Image
+                    source={playImage}
+                    style={
+                      !playImage?.uri
+                        ? styles.image
+                        : {
+                            height: hp(9),
+                            width: hp(9),
+                            borderRadius: wp(2),
+                          }
+                    }
+                    tintColor={!playImage?.uri ? '#B72658' : null}
+                  />
                   <View
                     style={{
                       flexDirection: 'column',
                       justifyContent: 'center',
                       marginHorizontal: hp(2.5),
+                      marginTop: '-7%',
                     }}>
                     <Text style={styles.text}>{item.title}</Text>
                     <Text style={styles.text2}>{item.description}</Text>
                   </View>
-                  <View style={{justifyContent: 'center', paddingRight: 20}}>
-                    <Entypo
-                      onPress={() => {
-                        setVisibleIndex(index);
-                      }}
-                      name="dots-three-horizontal"
-                      size={20}
-                      color="white"
-                    />
-                  </View>
+                </TouchableOpacity>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    borderColor: 'lightgrey',
+                    marginRight: '2%',
+                    paddingHorizontal: '2.8%',
+                    paddingVertical: '3%',
+                    alignSelf: 'center',
+                    alignItems: 'center',
+                    elevation: 1,
+                    shadowColor: 'grey',
+                    // borderWidth: 0.3,
+                    borderRadius: hp(3.4),
+                  }}>
+                  <Entypo
+                    onPress={() => {
+                      setVisibleIndex(index);
+                    }}
+                    name="dots-three-horizontal"
+                    size={16}
+                    color="white"
+                  />
                 </View>
-              </TouchableOpacity>
-            </View>
-          )}
+              </View>
+            );
+          }}
         />
       </ScrollView>
       {playPlalist.length > 0 && getNameImage().name != '' ? (
@@ -478,9 +687,8 @@ export default Toptab;
 const styles = StyleSheet.create({
   imageContainer: {
     marginVertical: hp(1.5),
-
     justifyContent: 'space-around',
-
+    overflow: 'hidden',
     height: hp(10),
     width: wp(90),
     borderRadius: 10,
@@ -491,7 +699,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: wp(2),
     justifyContent: 'space-around',
-    paddingRight: '20%',
+    // paddingRight: '20%',
+    overflow: 'hidden',
+    borderRadius: 10,
   },
 
   imageeContainer: {
@@ -508,15 +718,16 @@ const styles = StyleSheet.create({
   text: {
     width: wp(50),
     color: 'white',
-    fontSize: hp(2),
+    fontSize: wp(4.5),
     fontWeight: '500',
     fontFamily: fonts.bold,
   },
   text2: {
     width: wp(50),
     top: 3,
-    color: 'white',
-    fontSize: hp(1.8),
+    marginTop: '3%',
+    color: 'grey',
+    fontSize: wp(3.5),
     fontWeight: '300',
     fontFamily: fonts.medium,
   },

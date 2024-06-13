@@ -286,9 +286,9 @@ const Welecome2 = ({navigation}) => {
                 styles.nextBtn,
                 {
                   height:
-                    currentIndex == affirmations.length - 1 ? hp(7) : hp(7),
-                  width:
                     currentIndex == affirmations.length - 1 ? hp(6) : hp(6),
+                  width:
+                    currentIndex == affirmations.length - 1 ? hp(20) : hp(20),
                   borderRadius:
                     currentIndex !== affirmations.length - 1 ? wp(1) : wp(1),
                   overflow: 'hidden',

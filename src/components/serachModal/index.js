@@ -21,6 +21,7 @@ import {ScrollView} from 'react-native';
 import storage from '../../utils/StorageService';
 import thisdata from './this';
 import Loader from '../Loader';
+import LinearGradient from 'react-native-linear-gradient';
 const SearchModal = ({visible, onClose, onCategories}) => {
   const dispatch = useDispatch();
   const {searchData, Createfavriote, loading} = useSelector(
@@ -87,6 +88,22 @@ const SearchModal = ({visible, onClose, onCategories}) => {
               styles.btn,
               {backgroundColor: searchType == 'All' ? '#D485D1' : 'white'},
             ]}>
+            {searchType == 'All' ? (
+              <LinearGradient
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                }}
+                start={{x: 0.5, y: 0}}
+                end={{x: 0.5, y: 0.8}}
+                locations={[0, 1]}
+                colors={['#D485D1', '#B72658']}
+              />
+            ) : null}
+
             <Fontisto
               color={searchType == 'All' ? 'white' : 'black'}
               name="star"
@@ -110,6 +127,21 @@ const SearchModal = ({visible, onClose, onCategories}) => {
               styles.btn,
               {backgroundColor: searchType == 'playlist' ? '#D485D1' : 'white'},
             ]}>
+            {searchType == 'playlist' ? (
+              <LinearGradient
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                }}
+                start={{x: 0.5, y: 0}}
+                end={{x: 0.5, y: 0.8}}
+                locations={[0, 1]}
+                colors={['#D485D1', '#B72658']}
+              />
+            ) : null}
             <SimpleLineIcons
               color={searchType == 'playlist' ? 'white' : 'black'}
               name="playlist"
@@ -136,6 +168,21 @@ const SearchModal = ({visible, onClose, onCategories}) => {
                   searchType == 'affirmation' ? '#D485D1' : 'white',
               },
             ]}>
+            {searchType == 'affirmation' ? (
+              <LinearGradient
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                }}
+                start={{x: 0.5, y: 0}}
+                end={{x: 0.5, y: 0.8}}
+                locations={[0, 1]}
+                colors={['#D485D1', '#B72658']}
+              />
+            ) : null}
             <FontAwesome
               color={searchType == 'affirmation' ? 'white' : 'black'}
               name="buysellads"

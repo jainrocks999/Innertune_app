@@ -83,8 +83,8 @@ const Addbutton = () => {
                   marginTop: hp(-2.5),
                   marginRight: 10,
                 }}>
-                  <TouchableOpacity>
-                <Icon name="heart" size={20} color="#434343" />
+                <TouchableOpacity>
+                  <Icon name="heart" size={20} color="#434343" />
                 </TouchableOpacity>
               </View>
               <Text style={styles.text2}>{item.title2}</Text>
@@ -104,7 +104,7 @@ const Addbutton = () => {
               marginHorizontal: '5%',
             }}>
             <Text style={{fontSize: 20, fontWeight: '600', color: 'white'}}>
-              Share Innertunes with your loved...
+              Share Innertunes with your ove..
             </Text>
           </View>
         </View>

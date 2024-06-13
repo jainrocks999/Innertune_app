@@ -19,6 +19,7 @@ import {fonts} from '../../../Context/Conctants';
 import {useDispatch, useSelector} from 'react-redux';
 import storage from '../../../utils/StorageService';
 import Loader from '../../../components/Loader';
+import {BlurView} from '@react-native-community/blur';
 const Img = [
   {
     id: '1',
@@ -205,7 +206,13 @@ const Remindmodal4 = ({onPressClose, value}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
+    <SafeAreaView style={{flex: 1, borderWidth: 1, borderColor: 'grey'}}>
+      <BlurView
+        style={{position: 'absolute', top: 0, left: 0, bottom: 0, right: 0}}
+        blurType="dark"
+        blurAmount={15}
+        reducedTransparencyFallbackColor="grey"
+      />
       <Loader loading={loading} />
       <View
         style={{
@@ -351,8 +358,8 @@ const Remindmodal4 = ({onPressClose, value}) => {
         <Buttun
           style={{
             alignSelf: 'center',
-            height: hp(7),
-            width: '60%',
+            height: hp(6.2),
+            width: '40%',
             borderRadius: wp(2),
             elevation: 4,
           }}
@@ -363,8 +370,8 @@ const Remindmodal4 = ({onPressClose, value}) => {
           <Buttun
             style={{
               alignSelf: 'center',
-              height: hp(7),
-              width: '60%',
+              height: hp(6.2),
+              width: '40%',
               borderRadius: wp(2),
               elevation: 4,
             }}

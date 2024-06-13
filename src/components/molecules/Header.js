@@ -21,10 +21,7 @@ const Header = ({placeholder, onChangeText, onPressSerach}) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('goal');
-        }}>
+      <View>
         <Image
           source={require('../../assets/logo/stimuili-logos1-.png')}
           style={{
@@ -35,7 +32,7 @@ const Header = ({placeholder, onChangeText, onPressSerach}) => {
             // tintColor: 'white',
           }}
         />
-      </TouchableOpacity>
+      </View>
       <TouchableOpacity
         activeOpacity={1}
         onPress={onPressSerach}

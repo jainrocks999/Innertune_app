@@ -118,11 +118,11 @@ const Createplaylist = () => {
         <View style={{height: hp(5), width: wp(100)}}>
           <Text
             style={{
-              fontSize: hp(2.5),
+              fontSize: wp(5),
               fontWeight: '600',
-              marginHorizontal: '15%',
-              // fontFamily: 'Montserrat-SemiBold',
-              fontFamily: fonts.bold,
+              marginHorizontal: '10%',
+              // fontFamily: fonts.bold,
+
               color: 'white',
             }}>
             Create Your Playlist
@@ -167,7 +167,7 @@ const Createplaylist = () => {
                 height: hp(8),
                 width: wp(90),
                 marginVertical: hp(1),
-                backgroundColor: '#4A4949',
+                backgroundColor: 'rgba(97, 95, 95,0.3)',
                 borderRadius: 8,
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -212,7 +212,12 @@ const Createplaylist = () => {
           }}
           title={`${'Added Affirmations '}${selected.length}`}
           style={{
-            width: '68%',
+            width: '55%',
+            elevation: 2,
+            shadowColor: '#fff',
+          }}
+          textStyle={{
+            fontSize: wp(4.5),
           }}
         />
       </View>
@@ -240,7 +245,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     marginLeft: 5,
     color: '#fff',
-    fontSize: wp(4.5),
+    fontSize: wp(4),
   },
   input: {
     marginLeft: 10,

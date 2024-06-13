@@ -18,6 +18,7 @@ import {
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Slider from '@react-native-community/slider';
 import {fonts} from '../../Context/Conctants';
+import {BlurView} from '@react-native-community/blur';
 const Img = [
   {
     id: '1',
@@ -88,9 +89,17 @@ const Voice = ({
       image: require('../../assets/profilepic/profile6.jpg'),
     },
   ];
+  console.log('voiceVolume', voiceVolume);
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
+    <SafeAreaView
+      style={{flex: 1, paddingTop: '5%', backgroundColor: '#191919'}}>
+      {/* <BlurView
+        style={{position: 'absolute', top: 0, left: 0, bottom: 0, right: 0}}
+        blurType="dark"
+        blurAmount={15}
+        reducedTransparencyFallbackColor="grey"
+      /> */}
       <View
         style={{
           flexDirection: 'row',
@@ -134,8 +143,8 @@ const Voice = ({
               <View
                 style={{
                   paddingRight: '4%',
-                  height: hp(7),
-                  borderRadius: hp(7),
+                  height: hp(5),
+                  borderRadius: hp(5),
                   backgroundColor: selectedVoice == item.id ? 'black' : 'gray',
                   marginHorizontal: wp(1),
                   width: selectedVoice == item.id ? wp(40) : wp(30), // Adjust the width here
@@ -159,15 +168,27 @@ const Voice = ({
         style={{
           flexDirection: 'row',
           margin: hp(2),
+          width: '100%',
+          justifyContent: 'space-between',
+          paddingRight: '12%',
         }}>
         <Text
           style={{
             fontSize: hp(2),
             fontWeight: '500',
-            color: 'grey',
+            color: '#fff',
             fontFamily: fonts.medium,
           }}>
           Voice Volume
+        </Text>
+        <Text
+          style={{
+            fontSize: hp(2),
+            fontWeight: '500',
+            color: '#fff',
+            fontFamily: fonts.medium,
+          }}>
+          {(voiceVolume * 100).toFixed(0) + '%'}
         </Text>
       </View>
 
@@ -185,7 +206,7 @@ const Voice = ({
           }}
         />
       </View>
-      <View
+      {/* <View
         style={{
           flexDirection: 'row',
           marginHorizontal: hp(2),
@@ -200,8 +221,8 @@ const Voice = ({
           }}>
           Affirmation Delay
         </Text>
-      </View>
-      <View style={{marginTop: hp(3), alignItems: 'center'}}>
+      </View> */}
+      {/* <View style={{marginTop: hp(3), alignItems: 'center'}}>
         <Slider
           style={{width: '90%', height: 30}}
           minimumValue={0}
@@ -210,7 +231,7 @@ const Voice = ({
           maximumTrackTintColor="white"
           thumbTintColor="white"
         />
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 };
@@ -221,13 +242,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   image: {
-    width: hp(7),
-    height: hp(7),
+    width: hp(5),
+    height: hp(5),
     borderRadius: hp(7),
   },
   text: {
     color: 'white',
-    fontSize: 18,
+    fontSize: wp(4),
     fontWeight: '500',
     fontFamily: fonts.bold,
   },

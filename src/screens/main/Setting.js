@@ -7,7 +7,7 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
@@ -27,6 +27,8 @@ import storage from '../../utils/StorageService';
 import Api from '../../redux/api';
 import Loader from '../../components/Loader';
 import {useDispatch, useSelector} from 'react-redux';
+import {MusicPlayerContext} from '../../Context/MusicPlayerConstaxt';
+import PlayPopup from '../../components/PlayPopup';
 const data = [
   {
     id: '1',
@@ -81,6 +83,7 @@ const data3 = [
 ];
 const Setting = ({}) => {
   const navigation = useNavigation();
+  const {getNameImage, playPlalist} = useContext(MusicPlayerContext);
   const dispatch = useDispatch();
   const {screens, loading} = useSelector(state => state.home);
   const Logout = async () => {
@@ -114,19 +117,21 @@ const Setting = ({}) => {
             fontSize: hp(4),
             color: 'white',
             marginVertical: 10,
-            fontFamily: fonts.medium,
           }}>
           Settings
         </Text>
       </View>
-      <ScrollView>
+      <ScrollView
+        contentContainerStyle={{
+          paddingBottom: playPlalist.length > 0 ? hp(5) : null,
+        }}>
         <View style={{marginHorizontal: 15}}>
           <Text
             style={{
               // fontFamily: 'Montserrat',
               fontSize: 20,
               color: 'white',
-              fontFamily: fonts.medium,
+
               marginVertical: 15,
             }}>
             Follow us
@@ -176,7 +181,7 @@ const Setting = ({}) => {
                     width: wp(94),
                     justifyContent: 'center',
                     alignSelf: 'center',
-                    backgroundColor: '#4A4949',
+                    backgroundColor: 'rgba(97, 95, 95,0.3)',
                     borderRadius: 10,
                     marginTop: 20,
                   }}>
@@ -190,16 +195,21 @@ const Setting = ({}) => {
                     <Text
                       style={{
                         color: 'white',
-                        fontSize: 17,
+                        fontSize: wp(4.5),
                         fontWeight: '400',
-                        fontFamily: fonts.medium,
                       }}>
                       {item.title}
                     </Text>
                     <Image
                       tintColor="#D1CECE"
                       source={item.image}
-                      style={styles.image}
+                      style={[
+                        styles.image,
+                        {
+                          height: hp(3),
+                          width: hp(3),
+                        },
+                      ]}
                     />
                   </View>
                 </View>
@@ -226,7 +236,7 @@ const Setting = ({}) => {
               width: wp(94),
               justifyContent: 'center',
               alignSelf: 'center',
-              backgroundColor: '#4A4949',
+              backgroundColor: 'rgba(97, 95, 95,0.3)',
               borderRadius: 10,
               marginTop: 20,
             }}>
@@ -240,17 +250,16 @@ const Setting = ({}) => {
               <Text
                 style={{
                   color: '#fff',
-                  fontSize: 17,
+                  fontSize: wp(4.5),
                   fontWeight: '400',
-                  fontFamily: fonts.medium,
                 }}>
                 Get premium
               </Text>
               <Image
                 source={require('../../assets/flaticon/handshake.png')}
                 style={{
-                  height: hp(5),
-                  width: wp(8),
+                  height: hp(3.8),
+                  width: hp(3.8),
                   borderRadius: 20,
                   tintColor: '#D1CECE',
                 }}
@@ -280,7 +289,7 @@ const Setting = ({}) => {
                 width: wp(94),
                 justifyContent: 'center',
                 alignSelf: 'center',
-                backgroundColor: '#4A4949',
+                backgroundColor: 'rgba(97, 95, 95,0.3)',
                 borderRadius: 10,
                 marginTop: 20,
               }}>
@@ -294,16 +303,18 @@ const Setting = ({}) => {
                 <Text
                   style={{
                     color: '#fff',
-                    fontSize: 17,
+                    fontSize: wp(4.5),
                     fontWeight: '400',
-                    fontFamily: fonts.medium,
                   }}>
                   {item.title}
                 </Text>
                 <Image
                   tintColor="#D1CECE"
                   source={item.image}
-                  style={styles.image}
+                  style={[
+                    styles.image,
+                    item.id == '3' ? {height: hp(3), width: hp(3)} : null,
+                  ]}
                 />
               </View>
             </View>
@@ -317,7 +328,7 @@ const Setting = ({}) => {
               width: wp(94),
               justifyContent: 'center',
               alignSelf: 'center',
-              backgroundColor: '#4A4949',
+              backgroundColor: 'rgba(97, 95, 95,0.3)',
               borderRadius: 10,
               marginTop: 20,
             }}>
@@ -331,17 +342,16 @@ const Setting = ({}) => {
               <Text
                 style={{
                   color: 'white',
-                  fontSize: 17,
+                  fontSize: wp(4.5),
                   fontWeight: '400',
-                  fontFamily: fonts.medium,
                 }}>
                 Manage subscription
               </Text>
               <Image
                 source={require('../../assets/flaticon/star.png')}
                 style={{
-                  height: hp(5),
-                  width: wp(9),
+                  height: hp(3.5),
+                  width: hp(3.5),
                   borderRadius: 20,
                   tintColor: '#D1CECE',
                 }}
@@ -373,7 +383,7 @@ const Setting = ({}) => {
                   width: wp(94),
                   justifyContent: 'center',
                   alignSelf: 'center',
-                  backgroundColor: '#4A4949',
+                  backgroundColor: 'rgba(97, 95, 95,0.3)',
                   borderRadius: 10,
                   marginTop: 20,
                 }}>
@@ -410,16 +420,18 @@ const Setting = ({}) => {
                   <Text
                     style={{
                       color: '#fff',
-                      fontSize: 17,
+                      fontSize: wp(4.5),
                       fontWeight: '400',
-                      fontFamily: fonts.medium,
                     }}>
                     {item.title}
                   </Text>
                   <Image
                     tintColor="#D1CECE"
                     source={item.image}
-                    style={styles.image}
+                    style={{
+                      height: hp(3),
+                      width: hp(3),
+                    }}
                   />
                 </TouchableOpacity>
               </View>
@@ -427,6 +439,11 @@ const Setting = ({}) => {
           />
         </View>
       </ScrollView>
+      {playPlalist.length > 0 && getNameImage().name != '' ? (
+        <View style={{position: 'absolute', width: '100%', bottom: 0}}>
+          <PlayPopup />
+        </View>
+      ) : null}
     </Background>
   );
 };
@@ -435,8 +452,8 @@ export default Setting;
 
 const styles = StyleSheet.create({
   image: {
-    width: hp(3.5),
     height: hp(3.5),
+    width: hp(3.5),
     resizeMode: 'stretch',
   },
 });

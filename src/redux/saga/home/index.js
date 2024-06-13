@@ -211,6 +211,9 @@ function* fetchCreatePlaylist(action) {
     formdata.append('description', action.description);
     formdata.append('title', action.title);
     formdata.append('user_id', action.user_id);
+    if (action.image) {
+      formdata.append('image', action.image);
+    }
     if (action.playlist_id) {
       formdata.append('playlist_id', action.playlist_id);
     }
@@ -441,27 +444,26 @@ function* getPlayListItem(action) {
           type: 'home/getPlayListItem_success',
           payload: res.data,
         });
-        yield put({
-          type: 'home/playList_item',
-          payload: {
-            categories_image: [
-              {
-                original_url:
-                  'https://images.unsplash.com/photo-1616356607338-fd87169ecf1a',
-              },
-            ],
-            categories_name: action.item.title,
-            from: true,
-            isFroiut: false,
-            item: action.item,
-          },
-        });
       } else {
         yield put({
           type: 'home/getPlayListItem_success2',
           payload: res.data,
         });
       }
+      yield put({
+        type: 'home/playList_item',
+        payload: {
+          categories_image: [
+            {
+              original_url: action.image.uri,
+            },
+          ],
+          categories_name: action.item.title,
+          from: true,
+          isFroiut: false,
+          item: action.item,
+        },
+      });
       if (res.data.length > 0) {
         if (!action.isEdit) {
           yield put({
@@ -476,7 +478,13 @@ function* getPlayListItem(action) {
           !action.isEdit ? 'Playlistdetails2' : 'EditPlayList',
         );
       } else {
-        Toast.show('There are no playlist item added');
+        if (action.isEdit) {
+          action.navigation.navigate(
+            !action.isEdit ? 'Playlistdetails2' : 'EditPlayList',
+          );
+        } else {
+          Toast.show('There are no playlist item added');
+        }
       }
     } else {
       yield put({
@@ -511,26 +519,6 @@ function* getFavoriout(action) {
         payload: res.data,
       });
       if (!action.category) {
-        yield put({
-          type: 'home/playList_item',
-          payload: {
-            categories_image: [
-              {
-                original_url:
-                  'https://images.unsplash.com/photo-1616356607338-fd87169ecf1a',
-              },
-            ],
-            categories_name: 'Liked affirmations',
-            item: 'fav',
-          },
-        });
-        yield put({
-          type: 'home/setFromLibrary',
-          payload: {
-            playlist: true,
-            liked: true,
-          },
-        });
         // action.navigation.navigate('Playlistdetails2');
       }
     } else {
@@ -766,7 +754,8 @@ function* deletePlaylistItme(action) {
       token: action.token,
       url: action.url,
     });
-    if (res.status) {
+    console.log('this sis update response', res);
+    if (res?.status) {
       yield put({
         type: 'home/update_playlistitem_success',
       });
@@ -779,11 +768,11 @@ function* deletePlaylistItme(action) {
       Toast.show('Error with update playlist item');
     }
   } catch (error) {
+    console.log('thuisisissiis', error);
     yield put({
       type: 'home/update_playlistitem_error',
     });
     Toast.show('Error with update playlist item');
-    console.log(error);
   }
 }
 function* playaffiramations(action) {

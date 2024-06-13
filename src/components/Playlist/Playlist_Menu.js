@@ -62,27 +62,34 @@ const Playlist_Menu = ({
             <View
               style={{
                 height: hp(9),
-                paddingHorizontal: wp(1),
-                paddingVertical: wp(1),
                 width: hp(9),
-                backgroundColor: '#fff',
+                backgroundColor: !image?.uri ? '#fff' : null,
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: wp(2),
+                overflow: 'hidden',
               }}>
               <Image
-                tintColor={'#B72658'}
+                tintColor={!image?.uri ? '#B72658' : null}
                 source={image}
                 style={{height: '100%', width: '100%'}}
-                resizeMode="contain"
+                resizeMode="stretch"
               />
             </View>
-            <View style={{paddingBottom: '5%'}}>
-              <Text style={styles.title}>
+            <View style={{paddingBottom: '5%', marginLeft: '2%'}}>
+              <Text style={[styles.title]}>
                 {item.title ?? 'Liked affirmations'}
               </Text>
               <Text
-                style={[styles.title, {fontSize: wp(3.5), fontWeight: '400'}]}>
+                style={[
+                  styles.title,
+                  {
+                    fontSize: wp(3.5),
+                    color: 'grey',
+                    fontWeight: '400',
+                    marginTop: '13%',
+                  },
+                ]}>
                 {item?.description?.substring(0, 20) ?? 'Liked by you'}
               </Text>
             </View>
@@ -151,14 +158,20 @@ export default Playlist_Menu;
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 0.2,
+    // borderWidth: 0.2,
+    borderRadius: wp(2),
+    paddingHorizontal: hp(1),
+    paddingVertical: hp(0.5),
     width: '80%',
     alignSelf: 'center',
     // paddingVertical: wp(1),
     paddingLeft: wp(1),
-    backgroundColor: '#4A4949',
+    // backgroundColor: '#4A4949',
+    backgroundColor: 'rgba(22, 21, 26,1)',
+    elevation: 10,
+    shadowColor: '#fff',
     borderColor: 'lightgrey',
-    borderRadius: wp(2),
+
     flexDirection: 'row',
     alignItems: 'center',
   },

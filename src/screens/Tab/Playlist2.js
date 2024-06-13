@@ -191,6 +191,7 @@ const Playlistdetails = () => {
     });
   };
   const [temAffimation, setTempAffimation] = useState([]);
+  console.log('this is item', item);
   useEffect(() => {
     setTempAffimation(affirmations);
   }, []);
@@ -504,7 +505,10 @@ const Playlistdetails = () => {
             }}
             renderItem={({item, drag, isActive, getIndex}) => (
               <ScaleDecorator>
-                <View
+                <TouchableOpacity
+                  onLongPress={() => {
+                    drag(), setActivationDistance(0);
+                  }}
                   style={{
                     flexDirection: 'row',
                     alignSelf: 'center',
@@ -549,7 +553,7 @@ const Playlistdetails = () => {
                       color="white"
                     />
                   </View>
-                </View>
+                </TouchableOpacity>
               </ScaleDecorator>
             )}
           />

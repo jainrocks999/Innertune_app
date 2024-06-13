@@ -27,6 +27,7 @@ import {fonts} from '../../../Context/Conctants';
 import Buttun from '../../Auth/compoents/Buttun';
 import Loader from '../../../components/Loader';
 import storage from '../../../utils/StorageService';
+import Toast from 'react-native-simple-toast';
 let launchImageLibrary = _launchImageLibrary;
 
 const Saveplaylist = ({route}) => {
@@ -55,6 +56,14 @@ const Saveplaylist = ({route}) => {
   };
   const dispatch = useDispatch();
   const handleSubmit = async () => {
+    if (playlistName == '') {
+      Toast.show('Please Enter Playlist Name');
+      return;
+    }
+    if (description == '') {
+      Toast.show('Please Enter Description');
+      return;
+    }
     const items = await storage.getMultipleItems([
       storage.TOKEN,
       storage.USER_ID,
@@ -71,6 +80,7 @@ const Saveplaylist = ({route}) => {
         token,
         navigation,
         selected: addetItems_to_playlist,
+        image: selectedImage,
       });
     } else {
       dispatch({
@@ -86,7 +96,11 @@ const Saveplaylist = ({route}) => {
       });
     }
   };
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState({
+    name: '',
+    type: '',
+    uri: '',
+  });
 
   const openImagePicker = () => {
     const options = {
@@ -96,19 +110,21 @@ const Saveplaylist = ({route}) => {
       maxWidth: 2000,
     };
 
-    launchImageLibrary(options, handleResponse);
+    launchImageLibrary(options, res => {
+      if (res.didCancel) {
+        console.log('user cancled the selecting of image');
+      } else {
+        let mainRes = res.assets[0];
+        setSelectedImage({
+          name: mainRes.fileName,
+          type: mainRes.type,
+          uri: mainRes.uri,
+        });
+      }
+    });
   };
+  console.log(selectedImage);
 
-  const handleResponse = response => {
-    if (response.didCancel) {
-      console.log('User cancelled image picker');
-    } else if (response.error) {
-      console.log('Image picker error: ', response.error);
-    } else {
-      let imageUri = response.uri || response.assets?.[0]?.uri;
-      setSelectedImage(imageUri);
-    }
-  };
   return (
     <View style={{flex: 1, backgroundColor: '#191919'}}>
       <Loader loading={loading} />
@@ -131,9 +147,11 @@ const Saveplaylist = ({route}) => {
         <View style={{height: hp(5), width: wp(100)}}>
           <Text
             style={{
-              fontSize: 22,
-              fontWeight: '500',
-              marginHorizontal: '17%',
+              fontSize: wp(5),
+              fontWeight: '600',
+              marginHorizontal: '10%',
+              // fontFamily: fonts.bold,
+
               color: 'white',
             }}>
             Save your Playlist
@@ -141,40 +159,61 @@ const Saveplaylist = ({route}) => {
         </View>
       </View>
       <ScrollView>
-        <TouchableOpacity onPress={openImagePicker}>
+        <TouchableOpacity
+          disabled={selectedImage.uri != ''}
+          onPress={openImagePicker}>
           <View
             style={{
-              height: hp(30),
-              width: wp(50),
+              height: hp(28),
+              width: hp(28),
               backgroundColor: '#B72658',
               borderRadius: 20,
               alignSelf: 'center',
               alignItems: 'center',
               marginTop: '10%',
               justifyContent: 'center',
+              overflow: 'hidden',
             }}>
-            <Image
-              source={require('../../../assets/upload.png')}
-              style={{
-                height: hp(15),
-                width: wp(24),
-                borderRadius: 20,
-                tintColor: 'white',
-              }}
-            />
-            <Text
-              style={{color: 'white', fontSize: 30, fontFamily: fonts.regular}}>
-              Upload File
-            </Text>
+            {selectedImage.uri == '' ? (
+              <>
+                <Image
+                  source={require('../../../assets/playlist.png')}
+                  style={{
+                    height: '40%',
+                    width: '40%',
+                    borderRadius: 20,
+                    tintColor: 'white',
+                  }}
+                  resizeMode="contain"
+                />
+                <Text
+                  style={{
+                    marginTop: '5%',
+                    fontSize: wp(5),
+                    color: '#fff',
+                    fontWeight: '700',
+                  }}>
+                  Select Image +
+                </Text>
+              </>
+            ) : (
+              <Image
+                style={{
+                  height: '100%',
+                  width: '100%',
+                }}
+                source={{uri: selectedImage.uri}}
+              />
+            )}
           </View>
         </TouchableOpacity>
         <View style={styles.container}>
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>My Playlist</Text>
+            <Text style={styles.label}>Add Playlist Name</Text>
             <TextInput
               style={styles.input}
               placeholder="Name"
-              placeholderTextColor={'#fff'}
+              placeholderTextColor={'grey'}
               value={playlistName}
               onChangeText={handlePlaylistNameChange}
             />
@@ -187,7 +226,7 @@ const Saveplaylist = ({route}) => {
                 {marginTop: 10, height: hp(15), textAlignVertical: 'top'},
               ]}
               placeholder="Description"
-              placeholderTextColor={'#fff'}
+              placeholderTextColor={'grey'}
               value={description}
               onChangeText={handleDescriptionChange}
               multiline={true}
@@ -200,9 +239,14 @@ const Saveplaylist = ({route}) => {
             title={'Create'}
             style={{
               height: hp(6.7),
-              width: wp(75),
+              width: wp(50),
+              elevation: 4,
+              shadowColor: '#fff',
             }}
             onPress={handleSubmit}
+            textStyle={{
+              fontSize: wp(5),
+            }}
           />
         </View>
       </ScrollView>
@@ -226,22 +270,23 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
   },
   input: {
-    backgroundColor: '#4A4949',
-    //backgroundColor: '#',
+    backgroundColor: 'rgba(97, 95, 95,0.3)',
     fontFamily: fonts.regular,
     borderRadius: 10,
-    color: 'white',
+    color: '#fff',
     paddingHorizontal: 10,
     marginVertical: 10,
     borderWidth: 0.4,
+    fontSize: wp(4.5),
+
     // elevation: 4,
     // shadowColor: 'grey',
   },
   label: {
-    marginBottom: 5,
-    fontSize: 15,
+    marginBottom: 2,
+    fontSize: wp(4.5),
     color: 'white',
-    // fontWeight: '500',
+    fontWeight: '500',
     fontFamily: fonts.bold,
   },
 });

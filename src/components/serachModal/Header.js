@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     height: hp(7),
     borderWidth: wp(0.5),
-    borderColor: 'gold',
+    borderColor: '#191919',
     width: '80%',
     borderRadius: wp(7),
     alignItems: 'center',

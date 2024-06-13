@@ -42,7 +42,7 @@ const Modal2 = ({visible, value, onClose, titles}) => {
             backgroundColor: 'white',
             height: hp(
               titles == 'Remindermodal1'
-                ? 50
+                ? 25
                 : titles == 'Remindmodal2'
                 ? 95
                 : titles == 'Remindmodal3'

@@ -17,31 +17,32 @@ import {
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Slider from '@react-native-community/slider';
 import {fonts} from '../../Context/Conctants';
+import {BlurView} from '@react-native-community/blur';
 const Img2 = [
   {
     id: '1',
     title: '1',
-    title2: 'min',
+    title2: 'Min',
   },
   {
     id: '2',
     title: '5',
-    title2: 'min',
+    title2: 'Min',
   },
   {
     id: '3',
     title: '10',
-    title2: 'min',
+    title2: 'Min',
   },
   {
     id: '4',
     title: '20',
-    title2: 'min',
+    title2: 'Min',
   },
   {
     id: '5',
     title: '30',
-    title2: 'min',
+    title2: 'Min',
   },
 ];
 
@@ -71,6 +72,7 @@ const Time = ({maxTimeInMinutes, onPress}) => {
           width: wp(100),
           marginHorizontal: hp(1),
           marginVertical: hp(6),
+          marginTop: hp(4),
         }}>
         <FlatList
           horizontal={true}
@@ -81,16 +83,18 @@ const Time = ({maxTimeInMinutes, onPress}) => {
           renderItem={({item}) => (
             <TouchableOpacity
               onPress={() => onPress(item)}
-              style={styles.imageContainerr}>
-              <View
-                style={{
-                  justifyContent: 'center',
-                  alignSelf: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text style={styles.textt}>{item.title}</Text>
-                <Text style={styles.textt}>{item.title2}</Text>
-              </View>
+              style={[
+                styles.imageContainerr,
+                maxTimeInMinutes == item.title && {
+                  borderWidth: 0.3,
+                  borderColor: 'grey',
+                  borderRadius: wp(2),
+                },
+              ]}>
+              <Text style={styles.textt}>{item.title}</Text>
+              <Text style={[styles.textt, {fontSize: wp(4)}]}>
+                {item.title2}
+              </Text>
             </TouchableOpacity>
           )}
         />
@@ -101,17 +105,15 @@ const Time = ({maxTimeInMinutes, onPress}) => {
 export default Time;
 const styles = StyleSheet.create({
   imageContainerr: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    width: hp(15),
     height: hp(15),
-    borderRadius: 20,
-    marginHorizontal: hp(0.5),
-    borderWidth: 1,
-    borderColor: 'black',
-    backgroundColor: '#4A4949',
+    width: hp(15),
+    backgroundColor: 'rgba(97, 95, 95,0.3)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: '2%',
+    marginHorizontal: wp(1),
+    overflow: 'hidden',
+    borderRadius: wp(2),
   },
   imagee: {
     width: hp(6),
@@ -121,8 +123,13 @@ const styles = StyleSheet.create({
   },
   textt: {
     color: 'white',
-    fontSize: hp(3),
+    fontSize: hp(6),
     fontFamily: fonts.medium,
     fontWeight: '500',
+    // elevation: 5,
+    // shadowColor: '#fff',
+    textShadowColor: 'lightgrey',
+    textShadowRadius: 4,
+    textShadowOffset: {width: 1, height: 1},
   },
 });

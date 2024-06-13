@@ -302,6 +302,7 @@ const Reminder = () => {
           textStyle={{
             fontSize: wp(5),
           }}
+          onPress={() => handleModalPress('Remindermodal1')}
         />
       </View>
       <Modal2

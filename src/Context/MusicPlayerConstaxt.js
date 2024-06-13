@@ -238,13 +238,19 @@ export const MusicPlayerProvider = ({children}) => {
     };
   };
 
-  const reset = () => {
+  const reset = async bool => {
     setProgress(0);
     currentTimeRef.current = 0;
     setRepeatMode(RepeatMode.Off);
-    setIsPaused(false);
+
     setVisibleIndex(0);
-    initializeTrackPlayer();
+    if (bool) {
+      await TrackPlayer.reset();
+      setIsPaused(true);
+    } else {
+      setIsPaused(false);
+      initializeTrackPlayer();
+    }
   };
 
   const playBackondSound = sound => {

@@ -1,17 +1,23 @@
 import {
+  Alert,
   Image,
+  Linking,
   PermissionsAndroid,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Background from './compoents/Background';
+import ForceUpdateModal from './compoents/UpdateModal';
 const Splash = () => {
   const navigation = useNavigation();
+  const [visible, setVisible] = useState(false);
+  const [update, setUpdate] = useState({});
 
   const requestPermissions = async () => {
     try {
@@ -36,27 +42,41 @@ const Splash = () => {
     }
   };
   const version = async () => {
-    const requestOptions = {
-      method: 'GET',
-      redirect: 'follow',
-    };
+    try {
+      const requestOptions = {
+        method: 'GET',
+        redirect: 'follow',
+      };
 
-    const res = fetch(
-      'https://stimuli.forebearpro.co.in/api/v1/version-update',
-      requestOptions,
-    )
-      .then(response => response.text())
-      .then(result => JSON.parse(result))
-      .catch(error => console.error(error));
+      const res = await fetch(
+        'https://stimuli.forebearpro.co.in/api/v1/version-update',
+        requestOptions,
+      )
+        .then(response => response.text())
+        .then(result => JSON.parse(result))
+        .catch(error => console.error(error));
+      if (res.code == '200') {
+        if (Platform.OS == 'android' && res.data.android_version > '1.0.0') {
+          setVisible(true);
+          setUpdate(res.data);
+        } else {
+          navigate();
+        }
+      } else {
+        navigate();
+      }
+    } catch (err) {
+      navigate();
+      console.log(err);
+    }
   };
   useEffect(() => {
-    version();
     requestPermissions();
   }, []);
 
   useEffect(() => {
     setTimeout(() => {
-      navigate();
+      version();
     }, 1500);
   }, []);
   const navigate = async () => {
@@ -67,6 +87,9 @@ const Splash = () => {
       navigation.replace('login');
     }
   };
+  const onUpdate = () => {
+    Linking.openURL(update?.android_url ?? 'www.google.com');
+  };
 
   return (
     <Background>
@@ -76,6 +99,12 @@ const Splash = () => {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
+        <ForceUpdateModal
+          appLogo={require('../../assets/logo/stimuili-logos1-.png')}
+          isVisible={visible}
+          onUpdate={onUpdate}
+          message={update.android_message}
+        />
         <Image
           style={{
             height: 180,

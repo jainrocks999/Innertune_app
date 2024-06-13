@@ -1,6 +1,7 @@
 import {
   FlatList,
   Image,
+  ImageBackground,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -23,6 +24,7 @@ import {TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import Loader from '../../components/Loader';
 import {fonts} from '../../Context/Conctants';
+import LinearGradient from 'react-native-linear-gradient';
 
 const data = [
   {id: '1', title: 'Focus'},
@@ -77,72 +79,125 @@ const Music = ({
           scrollEnabled={false}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
-            <TouchableOpacity onPress={() => handleTabPress(item.bg_name)}>
-              <View
-                style={{
-                  height: hp(6),
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor:
-                    selectedTab === item.bg_name ? '#D485D1' : '#DEDEDE',
-                  borderRadius: 10,
-                  marginHorizontal: hp(1),
-                  marginVertical: 20,
-                  paddingHorizontal: hp(4),
-                }}>
-                <Text
+            <TouchableOpacity
+              style={{
+                height: hp(6),
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor:
+                  selectedTab === item.bg_name ? '#D485D1' : '#DEDEDE',
+                borderRadius: 10,
+                marginHorizontal: hp(1),
+                marginVertical: 20,
+                paddingHorizontal: hp(4),
+                overflow: 'hidden',
+                elevation: 5,
+                shadowColor: '#fff',
+              }}
+              onPress={() => handleTabPress(item.bg_name)}>
+              {selectedTab === item.bg_name ? (
+                <LinearGradient
                   style={{
-                    color: selectedTab === item.bg_name ? 'white' : 'black',
-                    fontSize: 18,
-                    fontWeight: '400',
-                    fontFamily: fonts.bold,
-                  }}>
-                  {item.bg_name}
-                </Text>
-              </View>
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    left: 0,
+                    bottom: 0,
+                  }}
+                  start={{x: 0.5, y: 0}}
+                  end={{x: 0.5, y: 0.8}}
+                  locations={[0, 1]}
+                  colors={['#D485D1', '#B72658']}
+                />
+              ) : null}
+              <Text
+                style={{
+                  color: selectedTab === item.bg_name ? 'white' : 'black',
+                  fontSize: wp(4.5),
+                  fontWeight: '400',
+                  fontFamily: fonts.bold,
+                }}>
+                {item.bg_name}
+              </Text>
             </TouchableOpacity>
           )}
         />
       </View>
-      {/* {selectedTab == 'Focus' ? <Focus onPress={onPress} data={bgSound} /> : ''} */}
-      {
-        <Relax
-          onPress={playBackondSound}
-          backgroundSound={backgroundSound}
-          data={bgSound}
-        />
-      }
-      {/* {selectedTab == 'Sleep' ? <Sleep onPress={onPress} data={bgSound} /> : ''} */}
-      {/* {selectedTab == 'Focus' ? <Sleep onPress={onPress} data={bgSound} /> : ''} */}
+
+      <Relax
+        onPress={playBackondSound}
+        backgroundSound={backgroundSound}
+        data={bgSound}
+      />
+      <LinearGradient
+        start={{x: 0.3, y: 0}}
+        end={{x: 0.3, y: 1}}
+        locations={[-3, 0.7, 1]}
+        colors={[
+          'rgba(0, 0, 0, 0)',
+          'rgba(0, 0, 0, 0.6)',
+          'rgba(0, 0, 0, 0.9)',
+        ]}
+        style={{
+          // backgroundColor: 'rgba(0,0,0,0.5)',
+          height: hp(8),
+          position: 'absolute',
+          bottom: 0,
+          zIndex: 1,
+          borderColor: '#fff',
+          // borderWidth: 1,
+          width: '100%',
+        }}></LinearGradient>
       <View
         style={{
-          height: hp(12),
-          backgroundColor: '#4A4949',
-          // borderTopWidth: 1.5,
-          // borderTopColor: 'grey',
+          height: hp(15),
+          // backgroundColor: 'rgba(97, 95, 95,0.3)', //#4A4949
           borderTopEndRadius: 30,
           overflow: 'hidden',
           borderTopStartRadius: 30,
           shadowColor: 'white',
           shadowOpacity: 1,
+          marginBottom: hp(8),
+          // elevation: 1,
+          // borderWidth: 0.7,
+          // borderBottomWidth: 0,
+          // borderTopColor: 'lightgrey',
+          width: '105%',
+          marginLeft: '-2%',
         }}>
         <View
           style={{
             flexDirection: 'row',
-            marginLeft: wp(5.5),
-            marginTop: hp(2),
+            margin: hp(2),
+            width: '100%',
+            justifyContent: 'space-between',
+            paddingRight: '12%',
           }}>
           <Text
             style={{
               fontSize: hp(2),
               fontWeight: '500',
-              color: 'white',
+              color: '#fff',
               fontFamily: fonts.medium,
             }}>
             Background Volume
           </Text>
+          <Text
+            style={{
+              fontSize: hp(2),
+              fontWeight: '500',
+              color: '#fff',
+              fontFamily: fonts.medium,
+            }}>
+            {(bgVolume * 100).toFixed(0) + '%'}
+          </Text>
         </View>
-        <View style={{marginTop: hp(3), alignItems: 'center'}}>
+        <View
+          style={{
+            marginTop: hp(1),
+
+            alignItems: 'center',
+          }}>
           <Slider
             style={{width: '90%', height: 20}}
             minimumValue={0}

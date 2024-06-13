@@ -20,7 +20,11 @@ const EditPlayList = ({navigation}) => {
   const {item, affirmations2, affirmations, loading} = useSelector(
     state => state.home,
   );
+  const image =
+    item?.categories_image[0]?.original_url ??
+    'https://images.unsplash.com/photo-1616356607338-fd87169ecf1a';
   const data = item.item;
+
   const [selected, setSelected] = useState([]);
   useEffect(() => {
     setSelected(affirmations2);
@@ -74,6 +78,7 @@ const EditPlayList = ({navigation}) => {
     ]);
     const token = items.find(([key]) => key === storage.TOKEN)?.[1];
     const ids = getIds(selected);
+
     dispatch({
       type: 'home/update_playlistitem_request',
       url: 'deletePlayListItem',
@@ -120,23 +125,24 @@ const EditPlayList = ({navigation}) => {
         onPress={() => {
           navigation.navigate('saveplaylist', {isEdit: true});
         }}
-        style={styles.card}>
+        style={[styles.card, {borderRadius: wp(2)}]}>
         <View
           style={{
             height: hp(9),
-            paddingHorizontal: wp(1),
-            paddingVertical: wp(1),
+            paddingHorizontal: wp(0),
+            paddingVertical: wp(0),
             width: hp(9),
-            backgroundColor: '#fff',
+            // backgroundColor: '#fff',
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: wp(2),
+            overflow: 'hidden',
           }}>
           <Image
-            tintColor={'#B72658'}
-            source={require('../../../assets/playlist.png')}
+            // tintColor={'#B72658'}
+            source={{uri: image}}
             style={{height: '100%', width: '100%'}}
-            resizeMode="contain"
+            // resizeMode="contain"
           />
         </View>
         <View style={{paddingBottom: '5%'}}>
@@ -144,10 +150,10 @@ const EditPlayList = ({navigation}) => {
           <Text
             style={[
               styles.title,
-              {fontSize: wp(4), fontFamily: fonts.regular, marginTop: '2%'},
+              {fontSize: wp(3), fontFamily: fonts.regular, marginTop: '2%'},
             ]}>
-            <Entypo color="white" size={wp(3.5)} name={'pencil'} />
-            {'Edit Name and info'}
+            <Entypo color="white" size={wp(2.5)} name={'pencil'} />
+            {' Edit Name and info'}
           </Text>
         </View>
       </TouchableOpacity>
@@ -157,7 +163,7 @@ const EditPlayList = ({navigation}) => {
         style={styles.moreAffirmationBtn}>
         <Text
           style={{
-            fontSize: wp(5),
+            fontSize: wp(4.5),
             textAlign: 'center',
             color: '#fff',
             fontFamily: fonts.medium,
@@ -165,7 +171,7 @@ const EditPlayList = ({navigation}) => {
           {'Add More Affirmations'}
         </Text>
         <AntDesign
-          size={wp(6)}
+          size={wp(5)}
           style={{marginTop: '1%', marginLeft: '3%'}}
           name="plus"
           color={'#fff'}
@@ -200,14 +206,14 @@ const EditPlayList = ({navigation}) => {
                 height: hp(7),
                 width: wp(90),
                 marginVertical: hp(1),
-                backgroundColor: '#4A4949',
+                backgroundColor: 'rgba(97, 95, 95,0.3)',
                 borderRadius: 8,
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 paddingHorizontal: wp(4),
               }}>
               <Text style={styles.text}>
-                {item.affirmation_text.substring(0, 40)}
+                {item.affirmation_text.substring(0, 35)}...
               </Text>
 
               <View style={{justifyContent: 'center'}}>
@@ -229,12 +235,17 @@ const EditPlayList = ({navigation}) => {
         style={{
           alignSelf: 'center',
           position: 'absolute',
-          bottom: '1%',
-          width: '60%',
-          height: hp(5.5),
+          bottom: '4%',
+          width: '45%',
+          height: hp(4.6),
+          elevation: 4,
+          shadowColor: '#fff',
         }}
         onPress={() => {
           updatePlaylistItem();
+        }}
+        textStyle={{
+          fontSize: wp(4.5),
         }}
       />
     </View>
@@ -245,19 +256,19 @@ export default EditPlayList;
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 0.2,
+    // borderWidth: 0.2,
     width: '90%',
     alignSelf: 'center',
     paddingVertical: wp(1),
     paddingLeft: wp(1),
-    backgroundColor: '#4A4949',
+    backgroundColor: 'rgba(97, 95, 95,0.3)',
     borderColor: 'lightgrey',
     borderRadius: wp(2),
     flexDirection: 'row',
     alignItems: 'center',
   },
   title: {
-    fontSize: wp(5),
+    fontSize: wp(4.5),
     marginLeft: wp(3),
     fontFamily: fonts.bold,
     color: '#fff',
@@ -266,13 +277,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: '5%',
     height: hp(6),
-    width: wp(90),
+    width: wp(60),
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FDEBA3',
     borderRadius: wp(2),
     elevation: 5,
     flexDirection: 'row',
+    shadowColor: '#fff',
   },
   aded: {
     color: '#fff',
@@ -281,7 +293,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-    fontSize: wp(4.5),
+    fontSize: wp(4.1),
     fontFamily: fonts.regular,
   },
   text2: {
