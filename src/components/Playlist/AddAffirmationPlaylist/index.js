@@ -190,6 +190,10 @@ const FullScreenModal = ({visible, onClose, loading, id}) => {
               }}
               style={styles.saveButton}
               title={'Save'}
+              textStyle={{
+                alignSelf: 'center',
+                marginTop: '-5%',
+              }}
             />
           </View>
           <View style={styles.bottomButtonContainer}>
@@ -199,6 +203,10 @@ const FullScreenModal = ({visible, onClose, loading, id}) => {
               }}
               style={styles.saveButton}
               title={'Cancel'}
+              textStyle={{
+                alignSelf: 'center',
+                marginTop: '-5%',
+              }}
             />
           </View>
         </Animated.View>
@@ -252,7 +260,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     height: hp(6),
-    width: '80%',
+    width: '60%',
     justifyContent: 'center',
     alignSelf: 'center',
     marginBottom: 20,
@@ -281,7 +289,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   bottomButtonContainer: {
-    height: hp(5.5),
+    height: hp(6),
     width: '40%',
     justifyContent: 'center',
     alignSelf: 'center',
@@ -291,7 +299,7 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     backgroundColor: '#dbed7b',
-    borderRadius: wp(1),
+    borderRadius: wp(5),
     alignItems: 'center',
     justifyContent: 'center',
   },

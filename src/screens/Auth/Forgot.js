@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Background from './compoents/Background';
 import Intro from './compoents/Intro';
@@ -13,6 +13,7 @@ import {
 import {fonts} from '../../Context/Conctants';
 
 const Forgot = () => {
+  const [focused, setFocused] = useState(false);
   return (
     <Background>
       <Intro
@@ -29,6 +30,9 @@ const Forgot = () => {
           keyboardType="email-address"
           underlineColorAndroid="transparent"
           onChangeText={email => setEmail(email)}
+          focused={focused}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
         />
         <View style={{marginTop: '15%'}} />
         <Buttun title="Reset Password" />
@@ -41,7 +45,7 @@ const Forgot = () => {
         style={{
           alignSelf: 'center',
           marginTop: '5%',
-          color: 'white',
+          color: 'lightgrey',
           fontFamily: fonts.medium,
         }}>
         Don't have an account ?{' '}
@@ -50,10 +54,12 @@ const Forgot = () => {
             navigation.navigate('signup');
           }}
           style={{
-            color: '#B72658',
-            fontSize: wp(5),
-            fontWeight: '500',
             fontFamily: fonts.medium,
+            color: '#B72658',
+            fontSize: wp(4.5),
+            fontWeight: 'bold',
+            elevation: 4,
+            shadowColor: 'white',
           }}>
           {' Sign Up'}
         </Text>

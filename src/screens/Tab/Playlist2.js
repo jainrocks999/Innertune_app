@@ -512,7 +512,6 @@ const Playlistdetails = () => {
                   style={{
                     flexDirection: 'row',
                     alignSelf: 'center',
-                    // height: hp(8),
                     width: wp(90),
                     marginVertical: 5,
                     backgroundColor: 'rgba(97, 95, 95,0.3)', //#4A4949
@@ -526,11 +525,17 @@ const Playlistdetails = () => {
                     selectedIndex={getIndex()}
                     affirmations={affirmations}
                     loading={loading}
+                    onPressHeart={items => {
+                      // alert(item.is_favorite);
+                      item.is_favorite
+                        ? removeFavroit(item)
+                        : getFavriote(item);
+                    }}
                   />
                   <TouchableOpacity
                     onPress={() => {
                       setOnMainPage(true);
-                      getSong(index);
+                      getSong();
                       // dispatch({
                       //   type: 'home/currentPLaylist',
                       //   payload: playItem,

@@ -66,7 +66,7 @@ const Intrested = () => {
                 navigation.goBack();
               }}
               name="arrowleft"
-              size={25}
+              size={20}
               color="white"
               style={{margin: '5%'}}
             />
@@ -84,12 +84,12 @@ const Intrested = () => {
           <View style={{marginTop: '10%'}}>
             <Text
               style={{
-                marginLeft: wp(3),
+                marginLeft: wp(6),
                 width: '80%',
                 color: 'white',
                 fontSize: wp(5),
-                fontWeight: '500',
-                fontFamily: fonts.medium,
+                fontWeight: '700',
+                // marginTop: '10%',
               }}>
               What are your Intrest
             </Text>
@@ -97,10 +97,10 @@ const Intrested = () => {
               style={{
                 width: '95%',
                 textAlign: 'left',
-                marginLeft: wp(3),
+                marginLeft: wp(6),
                 marginTop: '1%',
                 color: 'white',
-                fontFamily: fonts.medium,
+                fontSize: wp(3.5),
               }}>
               You are capable, resilient, and worthy of all the good things life
               offers. Your unique qualities shine brightly, guiding you towards
@@ -134,17 +134,29 @@ const Intrested = () => {
               )}
             />
           </View>
-          <Buttun
-            style={{
-              alignSelf: 'center',
-              width: '60%',
-            }}
-            title={'Next'}
-            onPress={() => {
-              navigation.reset({index: 0, routes: [{name: 'Home'}]});
-            }}
-          />
         </ScrollView>
+        <Buttun
+          style={{
+            alignSelf: 'center',
+            zIndex: 1,
+            position: 'absolute',
+            height: hp(4.3),
+            width: hp(20),
+            elevation: 4,
+            borderRadius: wp(3),
+            overflow: 'hidden',
+            bottom: hp(4),
+          }}
+          title={'Next'}
+          onPress={() => {
+            navigation.reset({index: 0, routes: [{name: 'Home'}]});
+          }}
+          textStyle={{
+            color: 'white',
+            fontSize: wp(4.5),
+            fontWeight: '400',
+          }}
+        />
       </SafeAreaView>
     </View>
   );
@@ -161,7 +173,7 @@ const styles = StyleSheet.create({
     color: '#FFF',
     marginLeft: '-21%',
     fontSize: wp(5),
-    fontFamily: fonts.bold,
+    fontWeight: '600',
   },
   item: {
     width: wp(22),
@@ -179,17 +191,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: '80%',
     marginTop: '-15%',
-    fontFamily: fonts.medium,
+    fontSize: wp(3.5),
   },
   nextBtn: {
     alignSelf: 'center',
     zIndex: 1,
     position: 'absolute',
     height: hp(6),
-    width: wp(50),
+    width: hp(20),
     elevation: 4,
-    borderRadius: 5,
+    borderRadius: wp(3),
     overflow: 'hidden',
-    bottom: hp(-12),
+    bottom: hp(4),
   },
 });

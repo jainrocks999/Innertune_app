@@ -53,7 +53,7 @@ const Buttun = ({
               style={[
                 {
                   color: 'white',
-                  fontSize: wp(bool ? 5.4 : 5.5),
+                  fontSize: wp(bool ? 5.4 : 4),
                   fontWeight: '600',
                   marginTop: bool ? '-2%' : '0%',
                   fontFamily: fonts.medium,
@@ -75,10 +75,10 @@ export default Buttun;
 
 const styles = StyleSheet.create({
   btn: {
-    width: '88%',
-    height: hp(6.5),
+    width: '40%',
+    height: hp(6),
     borderColor: '#fff',
-    borderRadius: wp(1),
+    borderRadius: wp(3),
     marginTop: '6%',
     overflow: 'hidden',
     elevation: 3,

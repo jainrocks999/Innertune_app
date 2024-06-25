@@ -25,6 +25,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {fonts} from '../../Context/Conctants';
+import {Button} from 'react-native-elements/dist/buttons/Button';
 const affirmations = [
   {
     title: 'You are capable of achieving great things',
@@ -242,7 +243,7 @@ const Welecome2 = ({navigation}) => {
                               name="star"
                               style={{marginLeft: '2%'}}
                               color="yellow"
-                              size={22}
+                              size={18}
                             />
                           );
                         })}
@@ -291,6 +292,8 @@ const Welecome2 = ({navigation}) => {
                     currentIndex == affirmations.length - 1 ? hp(20) : hp(20),
                   borderRadius:
                     currentIndex !== affirmations.length - 1 ? wp(1) : wp(1),
+                  borderRadius: wp(3),
+                  overflow: 'hidden',
                   overflow: 'hidden',
                 },
               ]}>
@@ -309,7 +312,7 @@ const Welecome2 = ({navigation}) => {
                   <Text
                     style={{
                       color: 'white',
-                      fontSize: wp(5.5),
+                      fontSize: wp(4.5),
                       fontWeight: '400',
                     }}>
                     {'Next'}
@@ -337,11 +340,11 @@ const styles = StyleSheet.create({
   },
   txt: {
     color: 'white',
-    fontSize: wp(6),
-    fontWeight: '500',
+    fontSize: wp(5),
+    fontWeight: '700',
     zIndex: 1,
     marginLeft: '3%',
-    fontFamily: fonts.bold,
+    textAlign: 'center',
   },
   listContianer: {
     backgroundColor: '#fff',
@@ -360,26 +363,25 @@ const styles = StyleSheet.create({
     color: 'white',
     marginLeft: '2%',
     marginTop: '2%',
-    fontSize: wp(6),
-    fontFamily: fonts.medium,
+    fontSize: wp(5),
+    fontWeight: '700',
   },
 
   txt3: {
     color: 'white',
-    fontSize: wp(5),
+    fontSize: wp(4),
     marginLeft: '2%',
     fontFamily: fonts.regular,
   },
   dot: {
     backgroundColor: 'grey',
-    height: hp(0.6),
-    width: hp(5),
+    height: hp(0.7),
+    width: hp(0.7),
     borderRadius: hp(1.5),
     marginHorizontal: wp(1),
   },
   nextBtn: {
     alignSelf: 'center',
-    overflow: 'hidden',
     position: 'absolute',
     zIndex: 1,
     bottom: hp(3),

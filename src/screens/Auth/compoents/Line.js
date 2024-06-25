@@ -12,7 +12,7 @@ const Line = () => {
       <View style={styles.line}></View>
       <Text
         style={{
-          color: 'white',
+          color: 'grey',
           fontSize: wp(5),
           fontWeight: '800',
           marginTop: '-1.2%',
@@ -39,6 +39,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderWidth: 0.5,
     width: '45%',
-    borderColor: '#fff',
+    borderColor: 'grey',
   },
 });

@@ -26,7 +26,7 @@ const AksReminder = ({navigation}) => {
               navigation.goBack();
             }}
             name="arrowleft"
-            size={25}
+            size={20}
             color="white"
             style={{margin: '5%'}}
           />
@@ -41,30 +41,38 @@ const AksReminder = ({navigation}) => {
             source={require('../../assets/logo/stimuili-logos1-.png')}
           />
         </View>
-        <FastImage
+        <View
           style={{
             height: 200,
             width: 200,
-
             alignSelf: 'center',
+            borderRadius: wp(5),
             marginTop: '5%',
-            backfaceVisibility: 'hidden',
-          }}
-          source={require('../../assets/logo/Animatedgif.gif')}
-          resizeMode="contain"
-          onPointerMoveCapture={ec => {
-            console.log(ec);
-          }}
-        />
+            overflow: 'hidden',
+            elevation: 5,
+            shadowColor: '#fff',
+          }}>
+          <FastImage
+            style={{
+              height: '100%',
+              width: '100%',
+              alignSelf: 'center',
+            }}
+            source={require('../../assets/logo/Animatedgif.gif')}
+            resizeMode="contain"
+            onPointerMoveCapture={ec => {
+              console.log(ec);
+            }}
+          />
+        </View>
         <Text
           style={{
-            marginLeft: wp(3),
+            marginLeft: wp(6),
             width: '80%',
             color: 'white',
             fontSize: wp(5),
-            fontWeight: '500',
+            fontWeight: '700',
             marginTop: '10%',
-            fontFamily: fonts.medium,
           }}>
           Get reminded to respect along your favorite affirmations{' '}
         </Text>
@@ -72,11 +80,12 @@ const AksReminder = ({navigation}) => {
           style={{
             width: '95%',
             textAlign: 'left',
-            marginLeft: wp(3),
+            marginLeft: wp(6),
             marginTop: '1%',
             color: 'white',
+            fontSize: wp(3.5),
           }}>
-          ou are capable, resilient, and worthy of all the good things life
+          You are capable, resilient, and worthy of all the good things life
           offers. Your unique qualities shine brightly, guiding you towards
           success and fulfillment.
         </Text>
@@ -99,9 +108,8 @@ const AksReminder = ({navigation}) => {
             <Text
               style={{
                 color: 'white',
-                fontSize: wp(5.5),
+                fontSize: wp(4.5),
                 fontWeight: '400',
-                fontFamily: fonts.regular,
               }}>
               {'Next'}
             </Text>
@@ -123,16 +131,16 @@ const styles = StyleSheet.create({
     color: '#FFF',
     marginLeft: '-21%',
     fontSize: wp(5),
-    fontFamily: fonts.bold,
+    fontWeight: '600',
   },
   nextBtn: {
     alignSelf: 'center',
     zIndex: 1,
     position: 'absolute',
     height: hp(6),
-    width: wp(50),
+    width: hp(20),
     elevation: 4,
-    borderRadius: 5,
+    borderRadius: wp(3),
     overflow: 'hidden',
     bottom: hp(4),
   },

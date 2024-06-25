@@ -14,20 +14,22 @@ const Intro = ({title1, title2, title3, style}) => {
         style={{
           height: 65,
           width: 65,
-          margin: '6%',
-          marginBottom: '3%',
+          alignSelf: 'center',
+          marginTop: '6%',
         }}
         source={require('../../../assets/logo/stimuili-logos1-.png')}
       />
-      <View style={{marginLeft: '6%'}}>
+      <View style={{alignItems: 'center'}}>
         <Text style={styles.title}>{title1}</Text>
-        <Text style={[styles.title, {fontSize: wp(8)}]}>{title2}</Text>
+        <Text style={[styles.title, {fontSize: wp(9), marginTop: '-10%'}]}>
+          {title2}
+        </Text>
         <Text
           style={{
-            fontSize: wp(5),
+            fontSize: wp(4),
             color: 'white',
-            width: '55%',
-            fontFamily: 'OpenSans_Condensed-Regular',
+            marginTop: '-6%',
+            fontFamily: 'Charm-Regular',
           }}>
           {title3}
         </Text>
@@ -44,7 +46,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'white',
-    fontSize: wp(9),
-    fontFamily: fonts.medium,
+    fontSize: wp(12),
+    fontFamily: 'Charm-Regular',
+    marginTop: '-2%',
   },
 });

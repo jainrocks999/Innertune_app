@@ -23,6 +23,10 @@ const Login = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [focused, setFocused] = useState({
+    email: false,
+    password: false,
+  });
   const dispatch = useDispatch();
   function validateEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -60,6 +64,7 @@ const Login = () => {
     });
   };
   const getSigup = async () => {
+    console.log('called');
     const requestOptions = {
       method: 'GET',
       redirect: 'follow',
@@ -82,8 +87,8 @@ const Login = () => {
       <SafeAreaView style={{flex: 1}}>
         <ScrollView>
           <Intro
-            title1="Welcome"
-            title2="To STIMULI"
+            title1="Welcome To"
+            title2="STIMULI"
             title3="Let's Sign In here"
           />
           <View style={{alignItems: 'center'}}>
@@ -93,6 +98,13 @@ const Login = () => {
               keyboardType="email-address"
               underlineColorAndroid="transparent"
               onChangeText={email => setEmail(email)}
+              focused={focused.email}
+              onFocus={() => {
+                setFocused({
+                  email: true,
+                  password: false,
+                });
+              }}
             />
             <Input
               placeholder="Password"
@@ -100,18 +112,25 @@ const Login = () => {
               value={password}
               underlineColorAndroid="transparent"
               onChangeText={password => setPassword(password)}
+              focused={focused.password}
+              onFocus={() => {
+                setFocused({
+                  email: false,
+                  password: true,
+                });
+              }}
             />
             <Text
               onPress={() => {
                 navigation.navigate('Forgot');
               }}
               style={{
-                color: '#fff',
+                color: 'grey',
                 alignSelf: 'flex-end',
-                marginRight: '6%',
+                marginRight: '10%',
                 marginTop: '3%',
                 fontFamily: 'OpenSans_Condensed-Regular',
-                fontSize: wp(5),
+                fontSize: wp(4),
               }}>
               Forgot Your password ?
             </Text>
@@ -130,7 +149,7 @@ const Login = () => {
             style={{
               alignSelf: 'center',
               marginTop: '5%',
-              color: 'white',
+              color: 'lightgrey',
               fontFamily: fonts.medium,
             }}>
             Don't have an account ?{' '}
@@ -140,10 +159,12 @@ const Login = () => {
                 getSigup();
               }}
               style={{
-                color: '#B72658',
-                fontSize: wp(5),
-                fontWeight: '500',
                 fontFamily: fonts.medium,
+                color: '#B72658',
+                fontSize: wp(4.5),
+                fontWeight: 'bold',
+                elevation: 4,
+                shadowColor: 'white',
               }}>
               {' Sign Up'}
             </Text>

@@ -81,7 +81,7 @@ const Music = ({
           renderItem={({item}) => (
             <TouchableOpacity
               style={{
-                height: hp(6),
+                height: hp(5),
                 justifyContent: 'center',
                 alignItems: 'center',
                 backgroundColor:
@@ -113,7 +113,7 @@ const Music = ({
               <Text
                 style={{
                   color: selectedTab === item.bg_name ? 'white' : 'black',
-                  fontSize: wp(4.5),
+                  fontSize: wp(4.2),
                   fontWeight: '400',
                   fontFamily: fonts.bold,
                 }}>

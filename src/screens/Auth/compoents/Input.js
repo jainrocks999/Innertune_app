@@ -7,21 +7,31 @@ import {
 } from '../../../components/atoms/responsive';
 import {fonts} from '../../../Context/Conctants';
 
-const Input = ({value, ...props}) => {
+const Input = ({value, onFocus, focused, ...props}) => {
   return (
-    <View style={styles.input}>
+    <View
+      style={[
+        styles.input,
+        focused && {
+          borderColor: '#FFB6C1',
+          borderWidth: 0.5,
+          elevation: 1,
+          shadowColor: '#fff',
+          borderRadius: wp(4),
+        },
+      ]}>
       <TextInput
         {...props}
-        placeholderTextColor={'#fff'}
+        placeholderTextColor={'grey'}
         value={value}
         style={{
-          fontSize: wp(5),
-          fontFamily: fonts.medium,
-          color: '#fff',
+          fontSize: wp(3.8),
+          color: '#ccc',
           height: '100%',
-          width: '95%',
+          width: '100%',
           alignSelf: 'flex-end',
         }}
+        onFocus={onFocus}
       />
     </View>
   );
@@ -31,12 +41,13 @@ export default Input;
 
 const styles = StyleSheet.create({
   input: {
-    borderWidth: 1,
-    width: '88%',
-    height: hp(6.5),
-    borderColor: '#fff',
-    borderRadius: wp(1),
+    borderWidth: 0.2,
+    width: '80%',
+    height: hp(6.8),
+    borderColor: 'lightgrey',
+    borderRadius: wp(3),
     // paddingLeft: '5%',
     marginTop: '8%',
+    paddingLeft: '5%',
   },
 });

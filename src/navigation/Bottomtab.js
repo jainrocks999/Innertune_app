@@ -90,7 +90,11 @@ const MyTabs = () => {
             tabBarIcon: ({focused}) => (
               <View style={styles.tabIconContainer}>
                 <Image
-                  source={require('../assets/home.png')}
+                  source={
+                    focused
+                      ? require('../assets/home1.png')
+                      : require('../assets/home.png')
+                  }
                   resizeMode="contain"
                   style={[styles.tabIcon, getIconColor(focused)]}
                 />
@@ -111,7 +115,11 @@ const MyTabs = () => {
             tabBarIcon: ({focused}) => (
               <View style={styles.tabIconContainer}>
                 <Image
-                  source={require('../assets/heart.png')}
+                  source={
+                    focused
+                      ? require('../assets/heart1.png')
+                      : require('../assets/heart.png')
+                  }
                   resizeMode="contain"
                   style={[styles.tabIcon, getIconColor(focused)]}
                 />
@@ -192,11 +200,29 @@ const MyTabs = () => {
             tabBarIcon: ({focused}) => (
               <View style={styles.tabIconContainer}>
                 <Image
-                  source={require('../assets/clock.png')}
+                  source={
+                    focused
+                      ? require('../assets/clock1.png')
+                      : require('../assets/clock.png')
+                  }
                   resizeMode="contain"
-                  style={[styles.tabIcon, getIconColor(focused)]}
+                  style={[
+                    styles.tabIcon,
+                    getIconColor(focused),
+                    focused && {
+                      width: 26,
+                      height: 36,
+                      elevation: 5,
+                      marginTop: '-5%',
+                    },
+                  ]}
                 />
-                <Text style={[styles.textIcon, getTextColor(focused)]}>
+                <Text
+                  style={[
+                    styles.textIcon,
+                    getTextColor(focused),
+                    focused && {marginTop: '-5%'},
+                  ]}>
                   Reminder
                 </Text>
               </View>
@@ -214,7 +240,11 @@ const MyTabs = () => {
             tabBarIcon: ({focused}) => (
               <View style={styles.tabIconContainer}>
                 <Image
-                  source={require('../assets/setting.png')}
+                  source={
+                    focused
+                      ? require('../assets/setting1.png')
+                      : require('../assets/setting.png')
+                  }
                   resizeMode="contain"
                   style={[styles.tabIcon, getIconColor(focused)]}
                 />

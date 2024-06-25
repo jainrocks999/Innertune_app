@@ -67,8 +67,6 @@ const Playsong = ({route}) => {
     playPlalist,
     player,
     setVolume,
-    updateSpeechRate,
-    updateSpeechPitch,
     handlePlayPauseClick,
     visibleIndex,
     flatListRef,
