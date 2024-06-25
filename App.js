@@ -1,30 +1,21 @@
 import React, {useEffect} from 'react';
-import {Clipboard, Vibration} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import AppNavigator from './src/navigation/AppNavigator';
-import {LogBox, PermissionsAndroid} from 'react-native';
+import {LogBox} from 'react-native';
 import {Provider} from 'react-redux';
 import store from './src/redux/store';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import PushNotification from 'react-native-push-notification';
 import crashlytics from '@react-native-firebase/crashlytics';
-import SoundPlayer from 'react-native-sound-player';
-import {MusicPlayerProvider} from './src/Context/MusicPlayerConstaxt';
-import {
-  heightPercent as hp,
-  widthPrecent as wp,
-} from './src/components/atoms/responsive';
-import {View} from 'react-native';
 import Root from './src';
 import storage from './src/utils/StorageService';
 const App = () => {
   LogBox.ignoreAllLogs();
 
   const getCrashlyticsDetail = async () => {
+    const email = await storage.getItem(storage.USER_EMAIL);
     try {
-      crashlytics().setUserId('admin@admin.com');
+      crashlytics().setUserId(email);
 
-      crashlytics().setAttribute('username', 'admin@admin.com');
+      crashlytics().setAttribute('email', email);
     } catch (err) {
       crashlytics().recordError(err);
     }

@@ -203,7 +203,6 @@ const Menu = ({
               color: '#fff',
               fontSize: wp(6),
               fontFamily: fonts.medium,
-              // fontWeight: 'bol000d',
             }}>
             Close
           </Text>
