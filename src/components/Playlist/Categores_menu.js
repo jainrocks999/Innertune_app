@@ -43,7 +43,6 @@ const Categores_menu = ({
       icon: 'share',
     },
   ];
-  console.log('this is item', item.is_favorite, item.categories_name);
 
   return (
     <Modal animationType="fade" visible={visible} transparent={true}>

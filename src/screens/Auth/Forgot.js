@@ -17,7 +17,7 @@ const Forgot = () => {
   return (
     <Background>
       <Intro
-        title1="Forget your"
+        title1="Forget"
         title2="Your Password"
         title3="Well send you a verification code to your email"
         style={{

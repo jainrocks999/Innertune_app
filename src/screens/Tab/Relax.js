@@ -84,7 +84,7 @@ const Img = [
     title2: '90 affirmations',
   },
 ];
-const data = [
+const data1 = [
   {
     id: 1,
     bgsound_name: 'Volume One',
@@ -702,7 +702,7 @@ const data = [
     ],
   },
 ];
-const Relax = ({onPress, backgroundSound}) => {
+const Relax = ({onPress, backgroundSound, data}) => {
   return (
     <View style={{backgroundColor: '#191919', flex: 1}}>
       <View style={{width: '100%', alignItems: 'center', marginTop: '5%'}}>

@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'white',
-    fontSize: wp(12),
+    fontSize: wp(9),
     fontFamily: 'Charm-Regular',
     marginTop: '-2%',
   },

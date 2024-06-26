@@ -39,7 +39,7 @@ const affirmations = [
     description:
       'Embrace challenges as opportunities to learn and grow. With every challenge you overcome, you become stronger and more resilient.',
     image_url:
-      'https://www.shutterstock.com/shutterstock/photos/430299556/display_1500/stock-photo-business-concept-young-businessman-pushing-large-stone-uphill-with-copy-space-430299556.jpg',
+      'https://img.freepik.com/free-photo/relax-woman-jumping-sea-beach_1249-528.jpg',
   },
   {
     title: 'You are deserving of love and happiness',
@@ -213,7 +213,10 @@ const Welecome2 = ({navigation}) => {
                     style={[styles.gradient, {top: 0}]}
                   />
                   <Image
-                    style={{height: '100%', width: '100%'}}
+                    style={{
+                      height: '100%',
+                      width: '100%',
+                    }}
                     source={{uri: item.image_url}}
                   />
                   <LinearGradient

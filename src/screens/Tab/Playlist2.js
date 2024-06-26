@@ -94,7 +94,7 @@ const Img = [
 
 const Playlistdetails = () => {
   const dispatch = useDispatch();
-  const {getNameImage, playPlalist, setOnMainPage} =
+  const {getNameImage, playPlalist, setOnMainPage, Playing, isPaused} =
     useContext(MusicPlayerContext);
   const {favoriteList} = useSelector(state => state.home);
 
@@ -178,24 +178,28 @@ const Playlistdetails = () => {
     const token = items.find(([key]) => key === storage.TOKEN)?.[1];
     const user = items.find(([key]) => key === storage.USER_ID)?.[1];
 
-    dispatch({
-      type: 'home/play_playlist_request',
-      payload: temAffimation,
-      navigation,
-      index: index,
-      user_id: user,
-      token,
-      category_id: item.id,
-      togglePlay: !togglePlay,
-      item: item,
-    });
+    if (getSome()) {
+      dispatch({
+        type: 'home/play_playlist_request',
+        payload: temAffimation,
+        navigation,
+        index: index,
+        user_id: user,
+        token,
+        category_id: item.id,
+        togglePlay: !togglePlay,
+        item: item,
+      });
+    } else {
+      setOnMainPage(false);
+      navigation.navigate('playsong');
+    }
   };
   const [temAffimation, setTempAffimation] = useState([]);
-  console.log('this is item', item);
   useEffect(() => {
     setTempAffimation(affirmations);
   }, []);
-  const getPlayListItem = async (item, bool) => {
+  const getPlayListItem = async (item, bool, image) => {
     const token = await storage.getItem(storage.TOKEN);
     console.log(item.id);
     dispatch({
@@ -204,6 +208,7 @@ const Playlistdetails = () => {
       token,
       url: 'playListItem',
       navigation,
+      image,
       item: item,
       isEdit: bool ?? false,
       fromLibrary: true,
@@ -226,6 +231,28 @@ const Playlistdetails = () => {
       url: 'playListDelete',
       navigation,
     });
+  };
+  const getSome = () => {
+    // If playItem is undefined or null, return false
+    if (!playItem) {
+      alert('here');
+      return true;
+    }
+
+    // If playItem is an object with an item property and Playing is defined
+    if (playItem.item && Playing?.item) {
+      if (playItem.item.id == Playing.item.id) {
+        return false;
+      }
+    }
+    // If playItem is an object with an id property and Playing.item is defined
+    else if (playItem.id && Playing?.id) {
+      if (playItem.id == Playing.id) {
+        return false;
+      }
+    }
+
+    return true;
   };
   return (
     <View style={styles.container}>
@@ -413,10 +440,11 @@ const Playlistdetails = () => {
             //   payload: item,
             // });
           }}
-          title={'Play'}
+          title={!getSome() ? (isPaused ? 'Paused' : 'Playing') : 'Play'}
           playlist
+          iconName={!getSome() ? (isPaused ? 'play' : 'pause') : 'play'}
         />
-
+        {/* {"categories_image": [{"original_url": "https://stimuli.forebearpro.co.in/storage/app/public/154/pexels-pixabay-60597.jpg"}], "categories_name": "Test 345", "from": true, "isFroiut": false, "item": {"created_at": "2024-06-25 19:21:02", "deleted_at": null, "description": "Ahsnsjgjguh", "id": 67, "last_session": null, "media": [[Object]], "pivot": {"playlist_id": 67, "user_id": 1}, "title": "Test 345", "updated_at": "2024-06-25 19:21:02"}}  */}
         <View
           style={{
             flexDirection: 'row',
@@ -469,7 +497,7 @@ const Playlistdetails = () => {
       </View>
       <Playlist_Menu
         //assets/playlist.png
-        image={require('../../assets/playlist.png')}
+        image={{uri: image}}
         item={item.item}
         visible={plalistMenuVisible}
         onClose={() => {
@@ -479,7 +507,7 @@ const Playlistdetails = () => {
           getSong(0);
         }}
         onPressEdit={data => {
-          getPlayListItem(data, true);
+          getPlayListItem(data, true, {uri: image});
         }}
         onPressDelete={item => {
           onPressDelete(item);
@@ -565,7 +593,7 @@ const Playlistdetails = () => {
         </NestableScrollContainer>
       </ScrollView>
 
-      {playPlalist.length > 0 && getNameImage().name != '' ? (
+      {playPlalist.length > 0 && getNameImage().name != '' && getSome() ? (
         <PlayPopup />
       ) : (
         <LinearGradient

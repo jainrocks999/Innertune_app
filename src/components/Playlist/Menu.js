@@ -50,11 +50,11 @@ const Menu = ({
       text: 'Share',
       icon: 'share-alternative',
     },
-    {
-      id: '4',
-      text: 'Hide',
-      icon: 'minuscircleo',
-    },
+    // {
+    //   id: '4',
+    //   text: 'Hide',
+    //   icon: 'minuscircleo',
+    // },
   ];
 
   const getmodified = (array, indexs, bool) => {

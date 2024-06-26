@@ -62,6 +62,7 @@ export const MusicPlayerProvider = ({children}) => {
 
   const initializeTrackPlayer = async () => {
     setEnded(false);
+    setPlayerLoading(true);
     await handleBackgroundSound();
     await setupPlayer();
     const tracks = await getSounds();
@@ -71,6 +72,7 @@ export const MusicPlayerProvider = ({children}) => {
     if (playPlalist.length > 0) {
       TrackPlayer.play();
     }
+    setPlayerLoading(false);
   };
 
   useEffect(() => {
@@ -177,41 +179,20 @@ export const MusicPlayerProvider = ({children}) => {
 
   const handlePlayPauseClick = async () => {
     if (playPlalist.length === 0) return;
-    if (!ended) {
-      if (isPaused) {
-        SoundPlayer.play();
-        await TrackPlayer.play();
-      } else {
-        await TrackPlayer.pause();
-        if (timeOutRef.current != null) {
-          clearTimeout(timeOutRef.current);
-          timeOutRef.current = null;
-        }
-      }
-      setIsPaused(!isPaused);
-
-      if (isPaused && progress >= 100) {
-        reset();
-      }
-    } else {
-      if (isPaused) {
-        if (isPaused && progress >= 100) {
-          reset();
-        }
-        initializeTrackPlayer();
-        if (timeOutRef.current != null) {
-          clearTimeout(timeOutRef.current);
-          timeOutRef.current = null;
-        }
-        SoundPlayer.play();
-        setIsPaused(false);
-      } else {
-        if (isPaused && progress >= 100) {
-          reset();
-        }
-        setIsPaused(true);
-        await TrackPlayer.pause();
-      }
+    if (isPaused && progress >= 100) {
+      reset();
+      return;
+    }
+    if (isPaused) {
+      SoundPlayer.play();
+      await TrackPlayer.play();
+      setIsPaused(false);
+      return;
+    }
+    if (!isPaused) {
+      SoundPlayer.pause();
+      await TrackPlayer.pause();
+      setIsPaused(true);
     }
   };
 
@@ -380,6 +361,7 @@ export const MusicPlayerProvider = ({children}) => {
         repeatMode,
         setRepeatMode,
         PlayerLoading,
+        Playing: playItem,
       }}>
       {children}
     </MusicPlayerContext.Provider>

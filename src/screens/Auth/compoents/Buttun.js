@@ -16,6 +16,7 @@ const Buttun = ({
   style,
   playlist,
   children,
+  iconName,
 }) => {
   let bool = playlist;
   return (
@@ -44,9 +45,12 @@ const Buttun = ({
           <>
             {bool ? (
               <Foundation
-                style={{marginRight: '5%', color: 'white'}}
-                name="play"
-                size={25}
+                style={{
+                  marginRight: iconName == 'play' ? '5%' : '7%',
+                  color: 'white',
+                }}
+                name={iconName}
+                size={22}
               />
             ) : null}
             <Text
