@@ -170,7 +170,7 @@ const Goal = () => {
           alignSelf: 'center',
           flexDirection: 'row',
           margin: hp(2),
-          top: hp(15),
+          top: hp(5),
         }}>
         <Buttun title={'Continue'} />
       </View>

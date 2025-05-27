@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   heightPercent as hp,
   widthPrecent as wp,
@@ -17,7 +17,7 @@ import Modal2 from '../../../components/molecules/Modal2';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import Buttun from '../../Auth/compoents/Buttun';
-import {fonts} from '../../../Context/Conctants';
+import { fonts } from '../../../Context/Conctants';
 const Img = [
   {
     id: '1',
@@ -56,19 +56,27 @@ const Img = [
   },
 ];
 
-const Remindmodal2 = ({onPress}) => {
-  const [selectedDay, setSelectedDay] = useState([]);
-  const handleSelectedDay = items => {
-    // Alert.alert('i am here')
-    console.log(items.id);
-    if (selectedDay.includes(items.id)) {
-      // Alert.alert('i am here')
-      let filter = [...selectedDay].filter((item, index) => item != items.id);
-      console.log(filter);
-      setSelectedDay(filter);
-    } else {
-      setSelectedDay([...selectedDay, items.id]);
-    }
+const Remindmodal2 = ({ onPress }) => {
+  // const [selectedDay, setSelectedDay] = useState([]);
+  const [selectedDays, setSelectedDays] = useState([]);
+  // const handleSelectedDay = items => {
+  //   // Alert.alert('i am here')
+  //   console.log(items.id);
+  //   if (selectedDay.includes(items.id)) {
+  //     // Alert.alert('i am here')
+  //     let filter = [...selectedDay].filter((item, index) => item != items.id);
+  //     console.log(filter);
+  //     setSelectedDay(filter);
+  //   } else {
+  //     setSelectedDay([...selectedDay, items.id]);
+  //   }
+  // };
+  const handleDaySelection = (dayId) => {
+    setSelectedDays((prevSelected) =>
+      prevSelected.includes(dayId)
+        ? prevSelected.filter((id) => id !== dayId) 
+        : [...prevSelected, dayId] 
+    );
   };
   const [currentTime1, setCurrentTime1] = useState('9:00');
   const [currentTime2, setCurrentTime2] = useState('9:00');
@@ -122,8 +130,8 @@ const Remindmodal2 = ({onPress}) => {
   };
   const [reapeat, setRepeat] = useState(7);
   return (
-    <View style={{flex: 1, backgroundColor: '#191919'}}>
-      <View style={{height: '2%'}} />
+    <View style={{ flex: 1, backgroundColor: '#191919' }}>
+      <View style={{ height: '2%' }} />
       <Text
         style={{
           alignSelf: 'center',
@@ -134,7 +142,7 @@ const Remindmodal2 = ({onPress}) => {
         }}>
         Affirmations
       </Text>
-      <View style={{height: '2%'}} />
+      <View style={{ height: '2%' }} />
       <View
         style={{
           width: '100%',
@@ -143,7 +151,7 @@ const Remindmodal2 = ({onPress}) => {
           borderWidth: 0.5,
         }}
       />
-      <View style={{height: '2%'}} />
+      <View style={{ height: '2%' }} />
       <View style={styles.sec_container}>
         <View style={styles.rowContainer}>
           <TouchableOpacity
@@ -188,7 +196,7 @@ const Remindmodal2 = ({onPress}) => {
           How many
         </Text>
       </View>
-      <View style={{height: '2%'}} />
+      <View style={{ height: '2%' }} />
       <View
         style={{
           width: '100%',
@@ -197,14 +205,14 @@ const Remindmodal2 = ({onPress}) => {
           borderWidth: 0.5,
         }}
       />
-      <View style={{height: '2%'}} />
+      <View style={{ height: '2%' }} />
       <View style={styles.playlisttime}>
         <Text style={styles.txt2}>Select the playlist</Text>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={styles.txt2}>Genral </Text>
           <Feather
             name="chevron-right"
-            style={[styles.txt2, {fontSize: wp(6.5), marginTop: '5%'}]}
+            style={[styles.txt2, { fontSize: wp(6.5), marginTop: '5%' }]}
           />
         </View>
       </View>
@@ -217,7 +225,7 @@ const Remindmodal2 = ({onPress}) => {
           marginTop: '5%',
         }}
       />
-      <View style={{height: '2%'}} />
+      <View style={{ height: '2%' }} />
       <View style={styles.playlisttime}>
         <Text style={styles.txt2}>Start at</Text>
         <View
@@ -233,7 +241,7 @@ const Remindmodal2 = ({onPress}) => {
             <Entypo name="minus" style={styles.icon2} />
           </TouchableOpacity>
           <Text
-            style={{color: 'white', fontSize: wp(4), fontFamily: fonts.medium}}>
+            style={{ color: 'white', fontSize: wp(4), fontFamily: fonts.medium }}>
             {currentTime1}
           </Text>
           <TouchableOpacity
@@ -252,7 +260,7 @@ const Remindmodal2 = ({onPress}) => {
           marginTop: '5%',
         }}
       />
-      <View style={{height: '2%'}} />
+      <View style={{ height: '2%' }} />
       <View style={styles.playlisttime}>
         <Text style={styles.txt2}>Finish at</Text>
         <View
@@ -268,7 +276,7 @@ const Remindmodal2 = ({onPress}) => {
             <Entypo name="minus" style={styles.icon2} />
           </TouchableOpacity>
           <Text
-            style={{color: 'white', fontSize: wp(4), fontFamily: fonts.medium}}>
+            style={{ color: 'white', fontSize: wp(4), fontFamily: fonts.medium }}>
             {currentTime2}
           </Text>
           <TouchableOpacity
@@ -287,7 +295,7 @@ const Remindmodal2 = ({onPress}) => {
           marginTop: '5%',
         }}
       />
-      <View style={{height: '0%'}} />
+      <View style={{ height: '0%' }} />
       <View
         style={{
           marginTop: hp(2),
@@ -301,6 +309,36 @@ const Remindmodal2 = ({onPress}) => {
             height: hp(7),
           }}>
           <FlatList
+            data={Img}
+            horizontal
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => {
+              const isSelected = selectedDays.includes(item.id); // Check if selected
+
+              return (
+                <TouchableOpacity
+                  onPress={() => handleDaySelection(item.id)}
+                  style={[
+                    styles.listCircle,
+                    { backgroundColor: isSelected ? "#B72658" : "#fff" } // Selected: Pink, Unselected: White
+                  ]}
+                >
+                  <Text
+                    style={{
+                      alignSelf:'center',
+                      marginLeft: wp(1),
+                      color: isSelected ? "#fff" : "#B72658", // Selected text: White, Unselected: Pink
+                      fontWeight: "500",
+                      fontFamily: fonts.bold,
+                    }}
+                  >
+                    {item.title}
+                  </Text>
+                </TouchableOpacity>
+              );
+            }}
+          />
+          {/* <FlatList
             data={Img}
             horizontal
             keyExtractor={item => item.id}
@@ -317,11 +355,11 @@ const Remindmodal2 = ({onPress}) => {
                 </Text>
               </View>
             )}
-          />
+          /> */}
         </View>
       </View>
-      <View style={{height: '2%'}} />
-      <View style={{width: '100%', alignItems: 'center'}}>
+      <View style={{ height: '2%' }} />
+      <View style={{ width: '100%', alignItems: 'center' }}>
         <Text
           style={{
             color: 'white',
@@ -332,7 +370,7 @@ const Remindmodal2 = ({onPress}) => {
           Remind yourself on selected Affirmations
         </Text>
       </View>
-      <View style={{height: '1%'}} />
+      <View style={{ height: '1%' }} />
       <Buttun
         style={{
           alignSelf: 'center',
@@ -414,7 +452,7 @@ const styles = StyleSheet.create({
   },
   txt2: {
     color: 'white',
-    fontSize: wp(5.5),
+    fontSize: wp(4.5),
     textAlign: 'center',
     fontWeight: '600',
     fontFamily: fonts.medium,
@@ -429,225 +467,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-{
-  /*
-
-    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          marginTop: hp(2),
-        }}>
-        <Text style={{fontSize: hp(2.5), fontWeight: '500', color: 'white'}}>
-          Affirmations
-        </Text>
-      </View>
-
-      <View
-        style={{
-          height: hp(20),
-          width: wp(70),
-          backgroundColor: 'black',
-          borderRadius: 20,
-          alignSelf: 'center',
-          flexDirection: 'column',
-
-          alignItems: 'center',
-          marginTop: '10%',
-          justifyContent: 'center',
-        }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '55%',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <View style={styles.cicrcle}>
-              <Entypo name="minus" style={styles.icon} />
-            </View>
-            <Text style={{color: 'white', fontSize: wp(6)}}>9:00</Text>
-            <View style={styles.cicrcle}>
-              <Entypo name="plus" style={styles.icon} />
-            </View>
-          </View>
-          <Text style={{color: 'white', fontSize: 50}}> 7x </Text>
-          <View
-            style={{
-              height: hp(5),
-              width: wp(10),
-              backgroundColor: '#426e56',
-              borderRadius: 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text style={{color: 'white', fontSize: hp(3)}}> + </Text>
-          </View>
-        </View>
-
-        <View style={{marginTop: 10}}>
-          <Text style={{color: 'white', fontSize: hp(1.5)}}> How many </Text>
-        </View>
-      </View>
-
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginTop: hp(5),
-          paddingHorizontal: wp(8),
-        }}>
-        <Text style={{color: 'white', fontSize: hp(2)}}>
-          {' '}
-          Select the playlist{' '}
-        </Text>
-        <Text style={{color: 'white', fontSize: hp(2)}}> General </Text>
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginTop: hp(7),
-          paddingHorizontal: wp(8),
-        }}>
-        <Text style={{color: 'white', fontSize: hp(2)}}> Start at </Text>
-        <View style={{flexDirection: 'row'}}>
-          <View
-            style={{
-              height: hp(3),
-              width: wp(6),
-              backgroundColor: '#B72658',
-              borderRadius: 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text style={{color: 'white', fontSize: 20}}> - </Text>
-          </View>
-          <Text style={{color: 'white', fontSize: 20, marginHorizontal: wp(3)}}>
-            09:00
-          </Text>
-          <View
-            style={{
-              height: hp(3),
-              width: wp(6),
-              backgroundColor: '#426e56',
-              borderRadius: 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text style={{color: 'white', fontSize: 20}}> + </Text>
-          </View>
-        </View>
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginTop: hp(7),
-          paddingHorizontal: wp(8),
-        }}>
-        <Text style={{color: 'white', fontSize: hp(2)}}> Finish at </Text>
-        <View style={{flexDirection: 'row'}}>
-          <View
-            style={{
-              height: hp(3),
-              width: wp(6),
-              backgroundColor: '#426e56',
-              borderRadius: 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text style={{color: 'white', fontSize: 20}}> - </Text>
-          </View>
-          <Text style={{color: 'white', fontSize: 20, marginHorizontal: wp(3)}}>
-            20:00
-          </Text>
-          <View
-            style={{
-              height: hp(3),
-              width: wp(6),
-              backgroundColor: '#426e56',
-              borderRadius: 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text style={{color: 'white', fontSize: 20}}> + </Text>
-          </View>
-        </View>
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginTop: hp(7),
-          paddingHorizontal: wp(8),
-        }}>
-        <Text style={{color: 'white', fontSize: hp(2)}}> Repeat </Text>
-      </View>
-      <View
-        style={{
-          alignItems: 'center',
-          marginTop: hp(2),
-        }}>
-        <FlatList
-          data={Img}
-          horizontal
-          keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <TouchableOpacity
-              onPress={() => {
-                handleSelectedDay(item);
-              }}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-
-                justifyContent: 'center',
-                marginHorizontal: wp(1),
-                height: hp(5),
-                width: hp(5),
-                backgroundColor: selectedDay.includes(item.id)
-                  ? '#426e56'
-                  : 'white',
-                borderRadius: 50,
-              }}>
-              <Text
-                style={[
-                  styles.text,
-                  {
-                    color: selectedDay.includes(item.id) ? 'white' : 'black',
-                    left: 2,
-                  },
-                ]}>
-                {item.title}
-              </Text>
-            </TouchableOpacity>
-          )}
-        />
-      </View>
-      <View style={{alignSelf: 'center', top: hp(6)}}>
-        <TouchableOpacity
-          style={{
-            height: 45,
-            marginLeft: 20,
-            backgroundColor: '#426e56',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: wp(60),
-            borderRadius: 10,
-          }}
-          // onPress={() => {
-          //   navigation.navigate('saveplaylist');
-          // }}
-        >
-          <Text style={styles.loginText}>Create</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
-*/
-}

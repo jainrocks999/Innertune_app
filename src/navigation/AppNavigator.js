@@ -23,6 +23,8 @@ import Intrested from '../screens/Intro_Screens/Intrested';
 import Forgot from '../screens/Auth/Forgot';
 import Playlistdetails2 from '../screens/Tab/Playlist2';
 import EditPlayList from '../screens/main/All playlists/EditPlayList';
+import SuggestImprovementScreen from '../screens/main/SuggestImprovement';
+import SuggestAffirmationScreen from '../screens/main/SuggestAffirmation';
 const Stack = createStackNavigator();
 function MyStack() {
   return (
@@ -142,6 +144,16 @@ function MyStack() {
         component={EditPlayList}
         options={{headerShown: false}}
       />
+        <Stack.Screen
+        name="SuggestImprovementScreen"
+        component={SuggestImprovementScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+      name='SuggestAffirmationScreen'
+      component={SuggestAffirmationScreen}
+        options={{headerShown: false}}
+        />
     </Stack.Navigator>
   );
 }

@@ -123,9 +123,9 @@ const Createaffirmation = ({route}) => {
         <View style={{height: hp(5), width: wp(100)}}>
           <Text
             style={{
-              fontSize: 22,
+              fontSize: 20,
               fontWeight: '500',
-              marginHorizontal: '15%',
+              marginHorizontal: '8%',
               fontFamily: fonts.bold,
               color: 'white',
             }}>

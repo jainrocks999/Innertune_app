@@ -133,8 +133,8 @@ const Voice = ({voice, onPress, selectedVoice}) => {
                   borderRadius: hp(7),
                   backgroundColor: selectedVoice == item.id ? 'black' : 'gray',
                   marginHorizontal: wp(1),
-                  width: selectedVoice == item.id ? wp(40) : wp(30), // Adjust the width here
-                  justifyContent: 'center', // Center the content vertically
+                  width: selectedVoice == item.id ? wp(40) : wp(30), 
+                  justifyContent: 'center', 
                 }}>
                 <View style={styles.imageContainer}>
                   <Image source={item.image} style={styles.image} />
@@ -218,8 +218,9 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 12,
     fontWeight: '500',
+    marginLeft:wp(1),
     fontFamily: fonts.bold,
   },
 });

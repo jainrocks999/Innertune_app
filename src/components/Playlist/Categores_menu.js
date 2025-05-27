@@ -7,9 +7,9 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import {heightPercent as hp, widthPrecent as wp} from '../atoms/responsive';
-import {fonts} from '../../Context/Conctants';
-import {FlatList} from 'react-native-gesture-handler';
+import { heightPercent as hp, widthPrecent as wp } from '../atoms/responsive';
+import { fonts } from '../../Context/Conctants';
+import { FlatList } from 'react-native-gesture-handler';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Loader from '../Loader';
@@ -43,12 +43,17 @@ const Categores_menu = ({
     },
   ];
   console.log('this is item', item.is_favorite, item.categories_name);
+  console.log("Received Props in Categores_menu:", {
+    onPressDelete,
+    onPressEdit,
+    onPressListen
+  });
 
   return (
     <Modal animationType="fade" visible={visible} transparent={true}>
-      <View style={{flex: 1, backgroundColor: '#191919', opacity: 0.99}}>
+      <View style={{ flex: 1, backgroundColor: '#191919', opacity: 0.99 }}>
         <Loader loading={loading} />
-        <View style={{height: '20%'}} />
+        <View style={{ height: '20%' }} />
         <View style={styles.card}>
           <View
             style={{
@@ -60,27 +65,27 @@ const Categores_menu = ({
               borderRadius: wp(2),
               overflow: 'hidden',
             }}>
-            <Image source={image} style={{height: '100%', width: '100%'}} />
+            <Image source={image} style={{ height: '100%', width: '100%' }} />
           </View>
-          <View style={{paddingBottom: '5%'}}>
+          <View style={{ paddingBottom: '5%' }}>
             <Text style={styles.title}>
               {item.categories_name.substring(0, 15)}...
             </Text>
             <Text
               style={[
                 styles.title,
-                {fontSize: wp(5), fontFamily: fonts.medium},
+                { fontSize: wp(4), marginTop: 10, fontFamily: fonts.medium },
               ]}>
               {'by stumili'}
             </Text>
           </View>
         </View>
-        <View style={{paddingLeft: wp(5), paddingTop: hp(4)}}>
+        <View style={{ paddingLeft: wp(5), paddingTop: hp(4) }}>
           <FlatList
             data={data}
             keyExtractor={item => item.id}
-            contentContainerStyle={{alignSelf: 'right', marginLeft: wp(8)}}
-            renderItem={({item, index}) => {
+            contentContainerStyle={{ alignSelf: 'right', marginLeft: wp(8) }}
+            renderItem={({ item, index }) => {
               return (
                 <TouchableOpacity
                   activeOpacity={0.7}
@@ -89,9 +94,16 @@ const Categores_menu = ({
                       onPressListen(parentItem);
                     } else if (item.id == '2') {
                       onPressEdit(parentItem);
-                    } else if (item.id == '3') {
-                      onPressDelete(parentItem);
                     }
+                    // else if (item.id == '3') {
+                    //   onPressDelete(parentItem);
+                    // }
+                    else if (item.id == '3' && onPressDelete) {
+                      onPressDelete(parentItem);
+                    } else {
+                      console.log("onPressDelete function is missing!");
+                    }
+                    
                   }}
                   style={{
                     flexDirection: 'row',
@@ -162,7 +174,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: wp(6),
+    marginTop: 10,
+    fontSize: wp(5),
     marginLeft: wp(3),
     fontFamily: fonts.bold,
     color: '#fff',

@@ -28,9 +28,9 @@ const AksReminder = ({navigation}) => {
             name="arrowleft"
             size={25}
             color="white"
-            style={{margin: '5%'}}
+            style={{marginLeft: '5%'}}
           />
-          <Text style={styles.headerTitle}>Welecome to STIMUILI</Text>
+          <Text style={styles.headerTitle}>Welcome to stimuli</Text>
           <Image
             style={{
               marginTop: '2%',
@@ -58,10 +58,11 @@ const AksReminder = ({navigation}) => {
         />
         <Text
           style={{
+            paddingHorizontal:wp(1),
             marginLeft: wp(3),
             width: '80%',
             color: 'white',
-            fontSize: wp(5),
+            fontSize: wp(4.5),
             fontWeight: '500',
             marginTop: '10%',
             fontFamily: fonts.medium,
@@ -70,6 +71,8 @@ const AksReminder = ({navigation}) => {
         </Text>
         <Text
           style={{
+            paddingHorizontal:wp(1),
+            fontSize: wp(3.5),
             width: '95%',
             textAlign: 'left',
             marginLeft: wp(3),
@@ -100,7 +103,7 @@ const AksReminder = ({navigation}) => {
               style={{
                 color: 'white',
                 fontSize: wp(5.5),
-                fontWeight: '400',
+                // fontWeight: '400',
                 fontFamily: fonts.regular,
               }}>
               {'Get Started'}
@@ -121,7 +124,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     color: '#FFF',
-    marginLeft: '-21%',
+    // marginLeft: '1%',
     fontSize: wp(5),
     fontFamily: fonts.bold,
   },

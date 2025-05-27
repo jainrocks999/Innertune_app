@@ -21,9 +21,10 @@ const Intro = ({title1, title2, title3, style}) => {
       />
       <View style={{marginLeft: '6%'}}>
         <Text style={styles.title}>{title1}</Text>
-        <Text style={[styles.title, {fontSize: wp(8)}]}>{title2}</Text>
+        <Text style={[styles.title, {fontSize: wp(6),  marginTop: wp(-1),}]}>{title2}</Text>
         <Text
           style={{
+           
             fontSize: wp(5),
             color: 'white',
             width: '55%',
@@ -43,8 +44,9 @@ const styles = StyleSheet.create({
     height: hp(35),
   },
   title: {
+    marginTop: wp(3),
     color: 'white',
-    fontSize: wp(9),
+    fontSize: wp(7),  
     fontFamily: fonts.medium,
   },
 });

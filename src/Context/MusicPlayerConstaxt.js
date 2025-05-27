@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Tts from 'react-native-tts';
 import TrackPlayer from 'react-native-track-player';
 import {Alert} from 'react-native';
-// import affirmations from './affirmation';
+import affirmations from './affirmation';
 
 export const MusicPlayerContext = createContext();
 
@@ -34,6 +34,7 @@ export const MusicPlayerProvider = ({children}) => {
 
   const handleTTSFinish = () => {
     // if (affirmations.length === 0) return;
+    if (!affirmations || affirmations.length === 0) return; 
     setVisibleIndex(prevIndex => {
       const newIndex = (prevIndex + 1) % affirmations.length;
       readText(affirmations[newIndex]?.affirmation_text);

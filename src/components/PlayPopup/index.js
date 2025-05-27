@@ -27,7 +27,6 @@ const PlayPopup = () => {
         justifyContent: 'space-between',
         elevation: 3,
         shadowColor: '#fff',
-
         borderColor: 'lightgrey',
       }}>
       <TouchableOpacity
@@ -52,7 +51,7 @@ const PlayPopup = () => {
           <Text
             style={{
               color: '#fff',
-              fontSize: wp(5),
+              fontSize: wp(3.5),
               fontWeight: fonts.bold,
             }}>
             {getNameImage().name}

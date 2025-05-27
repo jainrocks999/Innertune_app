@@ -120,6 +120,7 @@ const Createplaylist = () => {
               fontSize: hp(2.5),
               fontWeight: '600',
               marginHorizontal: '15%',
+              marginLeft: '8%',
               // fontFamily: 'Montserrat-SemiBold',
               fontFamily: fonts.bold,
               color: 'white',
@@ -173,7 +174,7 @@ const Createplaylist = () => {
                 paddingHorizontal: wp(4),
               }}>
               <Text style={styles.text}>
-                {item.affirmation_text.substring(0, 40)}
+                {item.affirmation_text.substring(0, 35)}
               </Text>
 
               <View style={{justifyContent: 'center'}}>
@@ -206,9 +207,11 @@ const Createplaylist = () => {
             navigation.navigate('createaffirmation', {selected: []});
           }}
           title={`${'Added Affirmations '}${selected.length}`}
+          
           style={{
             width: '68%',
           }}
+          
         />
       </View>
     </View>
@@ -235,7 +238,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     marginLeft: 5,
     color: '#fff',
-    fontSize: wp(4.5),
+    fontSize: wp(4),
   },
   input: {
     marginLeft: 10,

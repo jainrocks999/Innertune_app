@@ -120,7 +120,7 @@ const Saveplaylist = ({route}) => {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <View style={{height: hp(5), marginLeft: '15%'}}>
+        <View style={{height: hp(5), marginLeft: '20%'}}>
           <Icon
             onPress={() => navigation.goBack()}
             name="arrow-back"
@@ -131,9 +131,9 @@ const Saveplaylist = ({route}) => {
         <View style={{height: hp(5), width: wp(100)}}>
           <Text
             style={{
-              fontSize: 22,
+              fontSize: 20,
               fontWeight: '500',
-              marginHorizontal: '17%',
+              marginHorizontal: '10%',
               color: 'white',
             }}>
             Save your Playlist
@@ -150,7 +150,7 @@ const Saveplaylist = ({route}) => {
               borderRadius: 20,
               alignSelf: 'center',
               alignItems: 'center',
-              marginTop: '10%',
+              marginTop: '15%',
               justifyContent: 'center',
             }}>
             <Image

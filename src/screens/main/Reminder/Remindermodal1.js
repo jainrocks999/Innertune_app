@@ -39,12 +39,12 @@ const Remindermodal1 = ({onPress}) => {
                 style={{
                   flexDirection: 'row',
                   alignSelf: 'center',
-                  width: wp(50),
+                  width: wp(30),
                   marginHorizontal: '10%',
                 }}>
                 <Text
                   style={{
-                    fontSize: 20,
+                    fontSize: 12,
                     fontWeight: '600',
                     color: '#ffffff',
                     backgroundColor: 'transparent',
@@ -69,18 +69,18 @@ const Remindermodal1 = ({onPress}) => {
               style={styles.linearGradient}>
               <Image
                 source={require('../../../assets/music.jpg')}
-                style={{height: hp(15), width: wp(30), borderRadius: 20}}
+                style={{height: hp(15), width: wp(30), borderRadius: 20, }}
               />
               <View
                 style={{
                   flexDirection: 'column',
                   alignSelf: 'center',
-                  width: wp(50),
+                  width: wp(30),
                   marginHorizontal: '10%',
                 }}>
                 <Text
                   style={{
-                    fontSize: 20,
+                    fontSize: 12,
                     fontWeight: '600',
                     color: '#ffffff',
                     backgroundColor: 'transparent',

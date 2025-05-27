@@ -6,23 +6,21 @@ import {
   View,
   Image,
   Alert,
+  Linking,
 } from 'react-native';
 import React from 'react';
-import Entypo from 'react-native-vector-icons/Entypo';
-import Feather from 'react-native-vector-icons/Feather';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-
-import {FlatList} from 'react-native';
+import Share from 'react-native-share';
+import { FlatList } from 'react-native';
 import {
   heightPercent as hp,
   widthPrecent as wp,
 } from '../../components/atoms/responsive';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
-import {fonts} from '../../Context/Conctants';
+import { useNavigation } from '@react-navigation/native';
+import { fonts } from '../../Context/Conctants';
 import Background from '../Auth/compoents/Background';
 import storage from '../../utils/StorageService';
+
 const data = [
   {
     id: '1',
@@ -74,14 +72,60 @@ const data3 = [
     image: require('../../assets/flaticon/switch.png'),
   },
 ];
-const Setting = ({}) => {
+
+const handleShare = async () => {
+  try {
+    const options = {
+      message: 'Check out the Innertune app! Download it now: https://innertune.app',
+    };
+    await Share.open(options);
+  } catch (error) {
+    console.log('Error sharing:', error);
+  }
+};
+const handleRateApp = async () => {
+  console.log('Rate App Clicked');
+
+  const url = 'market://details?id=com.innertune';
+  const webUrl = 'https://play.google.com/store/apps/details?id=com.innertune';
+
+  const supported = await Linking.canOpenURL(url);
+
+  if (supported) {
+    console.log('Opening Market URL');
+    Linking.openURL(url).catch(err => console.error('Error opening Play Store:', err));
+  } else {
+    console.log('Opening Web URL');
+    Linking.openURL(webUrl).catch(err => console.error('Error opening Web URL:', err));
+  }
+};
+const handleManageSubscription = () => {
+  const packageName = 'com.stimuli';
+  const url = `https://play.google.com/store/account/subscriptions?package=${packageName}`;
+
+  Linking.openURL(url).catch(() =>
+    Alert.alert('Error', 'Could not open subscription management page.')
+  );
+};
+const handleReportBug = () => {
+  const email = 'support@innertune.com';
+  const subject = encodeURIComponent('Bug Report');
+  const body = encodeURIComponent('Please describe the issue you faced:');
+
+  const mailtoUrl = `mailto:${email}?subject=${subject}&body=${body}`;
+
+  Linking.openURL(mailtoUrl).catch(() =>
+    Alert.alert('Error', 'Could not open email client.')
+  );
+};
+
+const Setting = ({ }) => {
   const navigation = useNavigation();
   return (
     <Background>
-      <View style={{marginHorizontal: 15, marginTop: 10}}>
+      <View style={{ marginHorizontal: 15, marginTop: 10 }}>
         <Text
           style={{
-            // fontFamily: 'Montserrat',
             fontSize: hp(4),
             color: 'white',
             marginVertical: 10,
@@ -91,10 +135,9 @@ const Setting = ({}) => {
         </Text>
       </View>
       <ScrollView>
-        <View style={{marginHorizontal: 15}}>
+        <View style={{ marginHorizontal: 15 }}>
           <Text
             style={{
-              // fontFamily: 'Montserrat',
               fontSize: 20,
               color: 'white',
               fontFamily: fonts.medium,
@@ -111,36 +154,53 @@ const Setting = ({}) => {
             marginVertical: wp(4),
             justifyContent: 'space-around',
           }}>
-          {/* <Entypo name="instagram" size={30} color="white" /> */}
-          <Image
-            style={{height: 30, width: 30}}
-            source={require('../../assets/social_logo/instagram.png')}
-          />
-          <Image
-            style={{height: 30, width: 30}}
-            tintColor="#1877F2"
-            source={require('../../assets/social_logo/facebook.png')}
-          />
-          <Image
-            style={{height: 30, width: 30}}
-            tintColor="#B72658"
-            source={require('../../assets/social_logo/social-media.png')}
-          />
-          <Image
-            style={{height: 38, width: 38}}
-            // tintColor="#fff"
-            source={require('../../assets/social_logo/youtube.png')}
-          />
-          {/* <Feather name="facebook" size={30} color="white" /> */}
-          {/* <FontAwesome6 name="x-twitter" size={30} color="white" /> */}
-          {/* <Feather name="youtube" size={30} color="white" /> */}
+          <TouchableOpacity onPress={() => Linking.openURL('https://www.instagram.com/')}>
+            <Image
+              style={{ height: 30, width: 30 }}
+              source={require('../../assets/social_logo/instagram.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => Linking.openURL('https://www.facebook.com/')}>
+            <Image
+              style={{ height: 30, width: 30 }}
+              tintColor="#1877F2"
+              source={require('../../assets/social_logo/facebook.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => Linking.openURL('https://www.twitter.com/')}>
+            <Image
+              style={{ height: 30, width: 30 }}
+              tintColor="#B72658"
+              source={require('../../assets/social_logo/social-media.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => Linking.openURL('https://www.youtube.com/')}>
+            <Image
+              style={{ height: 38, width: 38 }}
+              source={require('../../assets/social_logo/youtube.png')}
+            />
+          </TouchableOpacity>
         </View>
         <View>
           <FlatList
             data={data}
             keyExtractor={item => item.id}
-            renderItem={({item}) => (
-              <TouchableOpacity>
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => {
+                  console.log('Button Clicked:', item.title);
+                  if (item.title === 'Create reminders') {
+                    navigation.navigate('reminder'); 
+                  }
+                  else if (item.title === 'Share innertune app') {
+                    handleShare(); 
+                  }
+                  else if (item.title.trim() === 'Rate innertune on Googleplay') {
+                    handleRateApp(); 
+                  }
+
+                }}
+              >
                 <View
                   style={{
                     height: hp(7),
@@ -161,7 +221,7 @@ const Setting = ({}) => {
                     <Text
                       style={{
                         color: 'white',
-                        fontSize: 17,
+                        fontSize: 13,
                         fontWeight: '400',
                         fontFamily: fonts.medium,
                       }}>
@@ -178,13 +238,12 @@ const Setting = ({}) => {
             )}
           />
         </View>
-        <View style={{marginHorizontal: 20, marginTop: 10}}>
+        <View style={{ marginHorizontal: 20, marginTop: 10 }}>
           <Text
             style={{
               fontSize: 20,
               color: 'white',
               marginVertical: 10,
-              // fontWeight: '700',
               fontFamily: fonts.bold,
             }}>
             Partner Program
@@ -211,7 +270,7 @@ const Setting = ({}) => {
               <Text
                 style={{
                   color: '#fff',
-                  fontSize: 17,
+                  fontSize: 13,
                   fontWeight: '400',
                   fontFamily: fonts.medium,
                 }}>
@@ -229,10 +288,9 @@ const Setting = ({}) => {
             </View>
           </View>
         </TouchableOpacity>
-        <View style={{marginHorizontal: 20, marginTop: 10}}>
+        <View style={{ marginHorizontal: 20, marginTop: 10 }}>
           <Text
             style={{
-              // fontFamily: 'Montserrat',
               fontSize: 20,
               color: 'white',
               marginVertical: 10,
@@ -244,44 +302,57 @@ const Setting = ({}) => {
         <FlatList
           data={data2}
           keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <View
-              style={{
-                height: hp(7),
-                width: wp(94),
-                justifyContent: 'center',
-                alignSelf: 'center',
-                backgroundColor: '#4A4949',
-                borderRadius: 10,
-                marginTop: 20,
-              }}>
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => {
+                if (item.title === 'Report a bug') {
+                  handleReportBug(); 
+                }
+               else if (item.title === 'Suggest an app improvement') {
+                  navigation.navigate('SuggestImprovementScreen');
+                }
+                else if (item.title === 'Suggest an affirmation') {
+                  navigation.navigate('SuggestAffirmationScreen'); 
+                }
+              }}
+            >
               <View
                 style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginHorizontal: '5%',
+                  height: hp(7),
+                  width: wp(94),
+                  justifyContent: 'center',
+                  alignSelf: 'center',
+                  backgroundColor: '#4A4949',
+                  borderRadius: 10,
+                  marginTop: 20,
                 }}>
-                <Text
+                <View
                   style={{
-                    color: '#fff',
-                    fontSize: 17,
-                    fontWeight: '400',
-                    fontFamily: fonts.medium,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginHorizontal: '5%',
                   }}>
-                  {item.title}
-                </Text>
-                <Image
-                  tintColor="#D1CECE"
-                  source={item.image}
-                  style={styles.image}
-                />
+                  <Text
+                    style={{
+                      color: '#fff',
+                      fontSize: 13,
+                      fontWeight: '400',
+                      fontFamily: fonts.medium,
+                    }}>
+                    {item.title}
+                  </Text>
+                  <Image
+                    tintColor="#D1CECE"
+                    source={item.image}
+                    style={styles.image}
+                  />
+                </View>
               </View>
-            </View>
+            </TouchableOpacity>
           )}
         />
-
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleManageSubscription}>
           <View
             style={{
               height: hp(7),
@@ -302,7 +373,7 @@ const Setting = ({}) => {
               <Text
                 style={{
                   color: 'white',
-                  fontSize: 17,
+                  fontSize: 13,
                   fontWeight: '400',
                   fontFamily: fonts.medium,
                 }}>
@@ -311,8 +382,8 @@ const Setting = ({}) => {
               <Image
                 source={require('../../assets/flaticon/star.png')}
                 style={{
-                  height: hp(5),
-                  width: wp(9),
+                  height: hp(3),
+                  width: wp(7),
                   borderRadius: 20,
                   tintColor: '#D1CECE',
                 }}
@@ -320,24 +391,22 @@ const Setting = ({}) => {
             </View>
           </View>
         </TouchableOpacity>
-        <View style={{marginHorizontal: 20, marginTop: 10}}>
+        <View style={{ marginHorizontal: 20, marginTop: 10 }}>
           <Text
             style={{
-              // fontFamily: 'Montserrat',
               fontSize: 20,
               color: 'white',
               marginVertical: 10,
-              // fontWeight: '700',
               fontFamily: fonts.bold,
             }}>
             Account
           </Text>
         </View>
-        <View style={{marginBottom: 30}}>
+        <View style={{ marginBottom: 30 }}>
           <FlatList
             data={data3}
             keyExtractor={item => item.id}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <View
                 style={{
                   height: hp(7),
@@ -366,13 +435,13 @@ const Setting = ({}) => {
                               await storage.clear();
                               navigation.reset({
                                 index: 0,
-                                routes: [{name: 'login'}],
+                                routes: [{ name: 'login' }],
                               });
                             },
                             style: 'destructive',
                           },
                         ],
-                        {cancelable: true},
+                        { cancelable: true },
                       );
                     }
                   }}
@@ -385,7 +454,7 @@ const Setting = ({}) => {
                   <Text
                     style={{
                       color: '#fff',
-                      fontSize: 17,
+                      fontSize: 13,
                       fontWeight: '400',
                       fontFamily: fonts.medium,
                     }}>
@@ -405,13 +474,12 @@ const Setting = ({}) => {
     </Background>
   );
 };
-
 export default Setting;
 
 const styles = StyleSheet.create({
   image: {
-    width: hp(3.5),
-    height: hp(3.5),
-    resizeMode: 'stretch',
+    width: hp(3),
+    height: hp(3),
+    resizeMode: 'contain',
   },
 });

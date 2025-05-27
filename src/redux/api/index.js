@@ -29,6 +29,8 @@ export default class Api {
   static API_POST = async data => {
     var myHeaders = {
       Authorization: `Bearer ${data.token}`,
+         'Content-Type': 'multipart/form-data',
+    'Accept': 'application/json'
     };
 
     var requestOptions = {

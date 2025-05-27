@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     paddingLeft: '4%',
   },
   headerTitle: {
-    marginLeft: '10%',
+    marginLeft: '8%',
     color: 'white',
     fontSize: wp(4.5),
     fontWeight: '600',

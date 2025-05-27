@@ -14,11 +14,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
-import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import AntDesign from 'react-native-vector-icons/MaterialCommunityIcons';
 import Horizontal from '../../components/Home/Horizontal';
-// import {affirmations} from '../main/affmatin';
 import {Image} from 'react-native';
 import {
   heightPercent as hp,
@@ -301,6 +298,7 @@ const Playlistdetails = () => {
         }}>
         <View
           style={{
+            marginTop: 10,
             zIndex: 5,
             color: 'white',
             alignSelf: 'center',
@@ -448,7 +446,7 @@ const styles = StyleSheet.create({
     width: wp(60),
     marginLeft: 5,
     color: 'white',
-    fontSize: hp(2.5),
+    fontSize: hp(2),
     fontFamily: fonts.regular,
   },
   gradient: {

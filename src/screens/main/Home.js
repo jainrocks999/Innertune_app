@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -10,22 +10,22 @@ import {
   BackHandler,
 } from 'react-native';
 import Header from '../../components/molecules/Header';
-import {useDispatch, useSelector, useStore} from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import {
   heightPercent as hp,
   widthPrecent as wp,
 } from '../../components/atoms/responsive';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {FlatList} from 'react-native';
-import {TouchableOpacity} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { FlatList } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Horizontal from '../../components/Home/Horizontal';
 import Loader from '../../components/Loader';
-import {fonts} from '../../Context/Conctants';
+import { fonts } from '../../Context/Conctants';
 import storage from '../../utils/StorageService';
 import SearchModal from '../../components/serachModal';
 import CateGoriesModal from '../../components/Categories';
-import {MusicPlayerContext} from '../../Context/MusicPlayerConstaxt';
+import { MusicPlayerContext } from '../../Context/MusicPlayerConstaxt';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import PlayPopup from '../../components/PlayPopup';
 const Img = [
@@ -60,18 +60,16 @@ const Img = [
     title: 'Awaken Your Money Power',
   },
 ];
-
 const HomeScreen = props => {
-  const {navigation} = props;
-  const {getNameImage, affirmations} = useContext(MusicPlayerContext);
+  const { navigation } = props;
+  const { getNameImage, affirmations } = useContext(MusicPlayerContext);
   // console.log(progress);
   const dispatch = useDispatch();
-  const getFavriote = item => {};
-  const {groups, loading, category, playItem} = useSelector(
+  const getFavriote = item => { };
+  const { groups, loading, category, playItem } = useSelector(
     state => state.home,
   );
   const [searchvisble, setSearchvisible] = useState(false);
-
   const getAllCategories = async () => {
     const items = await storage.getMultipleItems([
       storage.TOKEN,
@@ -158,7 +156,7 @@ const HomeScreen = props => {
           ...items,
           groupByCategory: items.groupByCategory.map((item, idx) => {
             if (idx === cateIndex) {
-              return {...item, is_favorite: bool};
+              return { ...item, is_favorite: bool };
             }
             return item;
           }),
@@ -209,7 +207,7 @@ const HomeScreen = props => {
   };
   const getFilterCategories = (id, array, isFavorite) => {
     return array.map(item =>
-      item.id == id ? {...item, is_favorite: isFavorite} : item,
+      item.id == id ? { ...item, is_favorite: isFavorite } : item,
     );
   };
 
@@ -273,7 +271,7 @@ const HomeScreen = props => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#191919' }}>
       <Header
         onPressSerach={() => {
           setSearchvisible(true);
@@ -306,21 +304,22 @@ const HomeScreen = props => {
             showsHorizontalScrollIndicator={false}
             scrollEnabled={false}
             keyExtractor={item => item.id}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <View style={styles.lastSestionItem}>
                 <Image
                   source={item.image}
-                  style={{height: hp(8), width: hp(8), borderRadius: hp(1.5)}}
+                  style={{ height: hp(8), width: hp(8), borderRadius: hp(1.5) }}
                 />
                 <Text
                   style={{
+                    fontSize:12,
                     marginLeft: '5%',
                     fontWeight: '400',
                     fontFamily: 'Poppins-Medium',
                     color: '#ffffff',
                     width: '50%',
                   }}>
-                  {item.title.substring(0, 17)}
+                  {item.title.substring(0, 10)}...
                 </Text>
               </View>
             )}
@@ -338,7 +337,7 @@ const HomeScreen = props => {
         />
         <View style={styles.FeatureContainer}>
           <Text style={styles.Featurecategory}>Just For You</Text>
-          <View style={{paddingHorizontal: '20%'}}>
+          <View style={{ paddingHorizontal: '15%' }}>
             <TouchableOpacity
               onPress={() => {
                 setCurrentVisibleIndex(-10);
@@ -354,7 +353,6 @@ const HomeScreen = props => {
             </TouchableOpacity>
           </View>
         </View>
-
         <Horizontal
           onPress={items => {
             getAffetMations(items);
@@ -364,17 +362,16 @@ const HomeScreen = props => {
             !val ? addFavoriteNew(item) : removeFavroitNew(item);
           }}
         />
-
         <View style={styles.cardd}>
           <LinearGradient
-            start={{x: 0.0, y: 0.0}}
-            end={{x: 5, y: 0.0}}
+            start={{ x: 0.0, y: 0.0 }}
+            end={{ x: 5, y: 0.0 }}
             locations={[0, 0.3, 0.0]}
             colors={['#B72658', '#D485D1']}
             style={styles.linearGradientt}>
             <Image
               source={require('../../assets/music1.jpg')}
-              style={{height: hp(13), width: wp(25), borderRadius: 20}}
+              style={{ height: hp(13), width: wp(25), borderRadius: 20 }}
             />
             <View
               style={{
@@ -385,7 +382,7 @@ const HomeScreen = props => {
               }}>
               <Text
                 style={{
-                  fontSize: 20,
+                  fontSize: 15,
                   fontWeight: '600',
                   color: '#ffffff',
                   backgroundColor: 'transparent',
@@ -408,7 +405,7 @@ const HomeScreen = props => {
 
         <View style={styles.FeatureContainer}>
           <Text style={styles.Featurecategory}>Populer Playlist</Text>
-          <View style={{paddingHorizontal: '20%'}}>
+          <View style={{ paddingHorizontal: '15%' }}>
             <TouchableOpacity
               onPress={() => {
                 setCurrentVisibleIndex(-11);
@@ -436,7 +433,7 @@ const HomeScreen = props => {
 
         <FlatList
           data={groups}
-          renderItem={({item, index}) => (
+          renderItem={({ item, index }) => (
             <>
               {item.groupByCategory.length > 0 ? (
                 <>
@@ -455,7 +452,7 @@ const HomeScreen = props => {
                     <Text style={styles.Featurecategory}>
                       {item?.group_name}
                     </Text>
-                    <View style={{paddingHorizontal: '20%'}}>
+                    <View style={{ paddingHorizontal: '15%' }}>
                       <TouchableOpacity
                         onPress={() => {
                           setCurrentVisibleIndex(index);
@@ -494,8 +491,8 @@ const HomeScreen = props => {
                   <View style={styles.card}>
                     <TouchableOpacity>
                       <LinearGradient
-                        start={{x: 0.0, y: 0.0}}
-                        end={{x: 5, y: 0.0}}
+                        start={{ x: 0.0, y: 0.0 }}
+                        end={{ x: 5, y: 0.0 }}
                         locations={[0, 0.5, 0.3]}
                         colors={['#191919', '#89FFBF']}
                         style={styles.linearGradient}>
@@ -530,8 +527,8 @@ const HomeScreen = props => {
                     </TouchableOpacity>
                     <TouchableOpacity>
                       <LinearGradient
-                        start={{x: 0.0, y: 0.0}}
-                        end={{x: 5, y: 0.0}}
+                        start={{ x: 0.0, y: 0.0 }}
+                        end={{ x: 5, y: 0.0 }}
                         locations={[0, 0.5, 0.3]}
                         colors={['#191919', '#89FFBF']}
                         style={styles.linearGradient}>
@@ -554,7 +551,7 @@ const HomeScreen = props => {
                           }}>
                           <Text
                             style={{
-                              fontSize: 20,
+                              fontSize: 15,
                               color: '#ffffff',
                               backgroundColor: 'transparent',
                               fontFamily: fonts.bold,
@@ -572,84 +569,7 @@ const HomeScreen = props => {
         />
       </ScrollView>
       {affirmations.length > 0 && getNameImage().name != '' ? (
-        // <View
-        //   style={{
-        //     height: hp(10.5),
-        //     backgroundColor: '#191919 ',
-        //     borderTopStartRadius: wp(6),
-        //     borderTopEndRadius: wp(6),
-        //     alignItems: 'center',
-        //     flexDirection: 'row',
-        //     justifyContent: 'space-between',
-        //     elevation: 3,
-        //     shadowColor: '#fff',
-        //     // borderWidth: 1,
-        //     borderColor: 'lightgrey',
-        //   }}>
-        //   <View style={{marginLeft: '5%', flexDirection: 'row'}}>
-        //     <View style={{elevation: 2, shadowColor: '#fff'}}>
-        //       <Image
-        //         style={{
-        //           justifyContent: 'center',
-        //           // alignSelf: 'flex-end',
-        //           // alignItems: 'center',
-        //           height: wp(10),
-        //           width: wp(10),
-        //           marginBottom: '2%',
-        //           borderRadius: wp(10),
-        //         }}
-        //         source={{uri: getNameImage().image}}
-        //       />
-        //     </View>
-        //     <View style={{marginLeft: '10%'}}>
-        //       <Text
-        //         style={{
-        //           color: '#fff',
-        //           fontSize: wp(5),
-        //           fontWeight: fonts.bold,
-        //         }}>
-        //         {getNameImage().name}
-        //       </Text>
-        //       <Text style={{color: '#fff'}}>{getNameImage().title}</Text>
-        //     </View>
-        //   </View>
-        //   <TouchableOpacity
-        //     onPress={() => handlePlayPauseClick()}
-        //     style={{
-        //       justifyContent: 'center',
-        //       alignSelf: 'flex-end',
-        //       alignItems: 'center',
-        //       marginBottom: '2%',
-        //       marginRight: '5%',
-        //     }}>
-        //     <Image
-        //       source={
-        //         isPaused
-        //           ? require('../../assets/flaticon/play.png')
-        //           : require('../../assets/flaticon/pause.png')
-        //       }
-        //       style={{
-        //         height: hp(2.5),
-        //         width: hp(2.5),
-        //         tintColor: !isPaused ? '#ccc' : '#ccc',
-        //         position: 'absolute',
-        //         zIndex: 0,
-        //       }}
-        //     />
-        //     <CircularProgress
-        //       value={progress}
-        //       radius={hp(3.5)}
-        //       duration={200}
-        //       progressValueColor={'#ecf0f1'}
-        //       maxValue={100}
-        //       inActiveStrokeColor="#ccc"
-        //       showProgressValue={false}
-        //       activeStrokeWidth={wp(0.8)}
-        //       inActiveStrokeWidth={wp(0.8)}
-        //       activeStrokeColor="#B72658"
-        //     />
-        //   </TouchableOpacity>
-        // </View>
+       
         <PlayPopup />
       ) : null}
     </SafeAreaView>
@@ -678,7 +598,7 @@ const styles = StyleSheet.create({
     color: 'white',
     paddingHorizontal: 10,
   },
-  scrollView: {paddingBottom: hp(2)},
+  scrollView: { paddingBottom: hp(2), paddingRight:5 },
   imageContainer: {
     padding: 12,
   },

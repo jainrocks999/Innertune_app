@@ -55,18 +55,25 @@ const Img = [
 ];
 const Remindmodal4 = ({onPressClose}) => {
   const [selectedDay, setSelectedDay] = useState([]);
-  const handleSelectedDay = items => {
-
-    if (selectedDay.includes(items.id)) {
-      const filter = [...selectedDay].filter((item, index) => item != items.id);
-      console.log(filter);
-      setSelectedDay(filter);
-    } else {
-      setSelectedDay([...selectedDay, items.id]);
-    }
-  };
-
+  const [selectedDays, setSelectedDays] = useState([]);
   const [currentTime, setCurrentTime] = useState('9:00');
+  // const handleSelectedDay = items => {
+
+  //   if (selectedDay.includes(items.id)) {
+  //     const filter = [...selectedDay].filter((item, index) => item != items.id);
+  //     console.log(filter);
+  //     setSelectedDay(filter);
+  //   } else {
+  //     setSelectedDay([...selectedDay, items.id]);
+  //   }
+  // };
+  const handleSelectedDay = (dayId) => {
+    setSelectedDays((prevSelected) =>
+      prevSelected.includes(dayId)
+        ? prevSelected.filter((id) => id !== dayId)
+        : [...prevSelected, dayId]
+    );
+  };
   const updateTime = increment => {
     let [hour, minute] = currentTime.split(':');
     hour = parseInt(hour);
@@ -91,6 +98,13 @@ const Remindmodal4 = ({onPressClose}) => {
 
     setCurrentTime(hour + ':' + minute);
   };
+
+  const handleSave = () => {
+    console.log('Saved Days:', selectedDays);
+    console.log('Selected Time:', currentTime);
+    // API call ya state update ke liye logic add karein
+  };
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#191919'}}>
       <View
@@ -183,7 +197,7 @@ const Remindmodal4 = ({onPressClose}) => {
           alignItems: 'center',
           marginTop: hp(2),
         }}>
-        <FlatList
+        {/* <FlatList
           data={Img}
           horizontal
           keyExtractor={item => item.id}
@@ -200,15 +214,43 @@ const Remindmodal4 = ({onPressClose}) => {
               </Text>
             </View>
           )}
+        /> */}
+         <FlatList
+          data={Img}
+          horizontal
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => {
+            const isSelected = selectedDays.includes(item.id);
+            return (
+              <TouchableOpacity
+                onPress={() => handleSelectedDay(item.id)}
+                style={[
+                  styles.listCircle,
+                  { backgroundColor: isSelected ? "#B72658" : "#fff" } // Selected: Pink, Unselected: White
+                ]}
+              >
+                <Text
+                  style={{
+                    marginLeft: wp(1.5),
+                    color: isSelected ? "#fff" : "#B72658", 
+                    fontWeight: "500",
+                    fontFamily: fonts.bold,
+                  }}
+                >
+                  {item.title}
+                </Text>
+              </TouchableOpacity>
+            );
+          }}
         />
       </View>
-      <View
+      {/* <View
         style={{
           alignSelf: 'center',
           bottom: hp(6),
           width: '100%',
           position: 'absolute',
-        }}>
+        }}> */}
         {/* <TouchableOpacity
           style={{
             height: 45,
@@ -225,7 +267,7 @@ const Remindmodal4 = ({onPressClose}) => {
         >
           <Text style={styles.loginText}>Close</Text>
         </TouchableOpacity> */}
-        <Buttun
+        {/* <Buttun
           style={{
             alignSelf: 'center',
             height: hp(7),
@@ -235,6 +277,30 @@ const Remindmodal4 = ({onPressClose}) => {
           }}
           onPress={onPressClose}
           title="Close"
+        />
+      </View> */}
+       <View style={{ alignSelf: 'center', bottom: hp(6), width: '100%', position: 'absolute', flexDirection: 'row', justifyContent: 'space-around' , paddingHorizontal:wp(2)}}>
+        <Buttun
+          style={{
+            marginLeft: wp(1),
+            height: hp(7),
+            width: '47%',
+            borderRadius: wp(2),
+            elevation: 4,
+          }}
+          onPress={onPressClose}
+          title="Close"
+        />
+        <Buttun
+          style={{
+            height: hp(7),
+            width: '47%',
+            borderRadius: wp(2),
+            elevation: 4,
+            backgroundColor: '#B72658',
+          }}
+          onPress={handleSave}
+          title="Save"
         />
       </View>
     </SafeAreaView>

@@ -44,7 +44,7 @@ const Buttun = ({onPress, title, child, style, playlist, children}) => {
             <Text
               style={{
                 color: 'white',
-                fontSize: wp(bool ? 5.4 : 5.5),
+                fontSize: wp(bool ? 4.4 : 4.5),
                 fontWeight: '600',
                 marginTop: bool ? '-2%' : '0%',
                 fontFamily: fonts.medium,

@@ -158,6 +158,7 @@ const Welecome2 = ({navigation}) => {
             size={25}
             color="white"
             style={{margin: '5%'}}
+            // onPress={() => navigation.goBack()}
           />
           <Image
             style={{
@@ -227,10 +228,11 @@ const Welecome2 = ({navigation}) => {
                     style={[styles.gradient]}>
                     <View
                       style={{
+                        paddingHorizontal: wp(2),
                         flexDirection: 'row',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        marginTop: '14%',
+                        marginTop: '-10%',
                       }}>
                       <Text style={[styles.txt2]}>
                         {item.title.substring(0, 15)}....
@@ -355,14 +357,15 @@ const styles = StyleSheet.create({
     color: 'white',
     marginLeft: '2%',
     marginTop: '2%',
-    fontSize: wp(6),
+    fontSize: wp(5.5),
     fontFamily: fonts.medium,
   },
 
   txt3: {
     color: 'white',
-    fontSize: wp(5),
-    marginLeft: '2%',
+    fontSize: wp(4.5),
+    marginLeft: '3%',
+   paddingHorizontal: wp(2),
     fontFamily: fonts.regular,
   },
   dot: {

@@ -188,12 +188,12 @@ const MyTabs = () => {
                 style={{
                   flexDirection: 'row',
                   alignSelf: 'center',
-                  width: wp(50),
+                  width: wp(30),
                   marginHorizontal: '10%',
                 }}>
                 <Text
                   style={{
-                    fontSize: 20,
+                    fontSize: 12,
                     fontWeight: '600',
                     color: '#ffffff',
                     backgroundColor: 'transparent',
@@ -222,12 +222,12 @@ const MyTabs = () => {
                   style={{
                     flexDirection: 'column',
                     alignSelf: 'center',
-                    width: wp(50),
-                    marginHorizontal: '5%',
+                    width: wp(30),
+                    marginHorizontal: '10%',
                   }}>
                   <Text
                     style={{
-                      fontSize: 20,
+                      fontSize: 12,
                       fontWeight: '600',
                       color: '#ffffff',
                       backgroundColor: 'transparent',

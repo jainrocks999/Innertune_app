@@ -68,9 +68,9 @@ const Reminder = () => {
         <View style={{height: hp(5), width: wp(100)}}>
           <Text
             style={{
-              fontSize: 22,
+              fontSize: 20,
               fontWeight: '500',
-              marginHorizontal: '17%',
+              marginHorizontal: '8%',
               color: 'white',
               fontFamily: fonts.bold,
             }}>
@@ -110,7 +110,7 @@ const Reminder = () => {
                   <Text
                     style={{
                       color: '#fff',
-                      fontSize: 15,
+                      fontSize: 12,
                       fontWeight: '500',
                       fontFamily: fonts.bold,
                     }}>
@@ -119,7 +119,7 @@ const Reminder = () => {
                   <Text
                     style={{
                       color: '#fff',
-                      fontSize: 15,
+                      fontSize: 13,
                       fontWeight: '400',
                       fontFamily: fonts.medium,
                     }}>
@@ -137,7 +137,7 @@ const Reminder = () => {
                   <Text
                     style={{
                       color: '#fff',
-                      fontSize: 15,
+                      fontSize: 13,
                       fontWeight: '300',
                       fontFamily: fonts.medium,
                     }}>
@@ -263,7 +263,7 @@ export default Reminder;
 const styles = StyleSheet.create({
   loginText: {
     color: '#FFFFFF',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '400',
   },
 });

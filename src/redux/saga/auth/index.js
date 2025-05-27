@@ -8,6 +8,7 @@ function* doLogin(action) {
     const res = yield call(Api.getToken, data);
     const formdata = new FormData();
     formdata.append('email', data.email);
+    formdata.append('fcm_token', 'eaNTcT6oTAqFaZFYH0Gnez:APA91bGCaILXCtWA4RKocVDU6Oq7GwgrWpz7ENckRc5UqTYM3ThoRAKiMEmPb7pxGCayRU8mhYA4jELDmbA2toK_iDgw-0McmXUuez7y1UtRU95tvmwuBHKwK1rxKfSzv7-r5DfcYfCL');
     formdata.append('password', data.password);
     if (res?.access_token) {
       const mainRes = yield call(Api.API_POST, {
